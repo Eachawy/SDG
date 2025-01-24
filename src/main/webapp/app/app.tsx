@@ -34,7 +34,7 @@ export const App = () => {
     <BrowserRouter basename={baseHref}>
       <div className="app-container">
         <ToastContainer
-          position="top-left"
+          position="top-right"
           className="toastify-container"
           toastClassName="toastify-toast"
         />
