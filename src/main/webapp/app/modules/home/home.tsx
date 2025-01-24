@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { translate, Translate } from 'react-jhipster';
-import { Alert, Col, Row } from 'reactstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { translate, Translate } from "react-jhipster";
+import { Alert, Col, Row } from "reactstrap";
 
-import { useAppSelector } from 'app/config/store';
-import { transform } from 'lodash';
+import { useAppSelector } from "app/config/store";
+import { transform } from "lodash";
 
 export const Home = () => {
   {/* prettier-ignore */ }
@@ -13,7 +13,7 @@ export const Home = () => {
   return (
     <div>
       Home
-      {translate('home.subtitle')}
+      {translate("home.subtitle")}
       <Translate contentKey="home.subtitle">This is your homepage</Translate>
     </div>
   );

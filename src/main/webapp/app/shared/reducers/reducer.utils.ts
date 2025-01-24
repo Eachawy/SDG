@@ -6,57 +6,69 @@ import {
   UnknownAction,
   ValidateSliceCaseReducers,
   createSlice,
-} from '@reduxjs/toolkit';
-import { AxiosError, isAxiosError } from 'axios';
+} from "@reduxjs/toolkit";
+import { AxiosError, isAxiosError } from "axios";
 
 /**
  * Model for redux actions with pagination
  */
-export type IQueryParams = { query?: string; page?: number; size?: number; sort?: string };
+export type IQueryParams = {
+  query?: string;
+  page?: number;
+  size?: number;
+  sort?: string;
+};
 
 /**
  * Useful types for working with actions
  */
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
-export type PendingAction = ReturnType<GenericAsyncThunk['pending']>;
-export type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>;
-export type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>;
+export type PendingAction = ReturnType<GenericAsyncThunk["pending"]>;
+export type RejectedAction = ReturnType<GenericAsyncThunk["rejected"]>;
+export type FulfilledAction = ReturnType<GenericAsyncThunk["fulfilled"]>;
 
 /**
  * Check if the async action type is rejected
  */
 export function isRejectedAction(action: UnknownAction) {
-  return action.type.endsWith('/rejected');
+  return action.type.endsWith("/rejected");
 }
 
 /**
  * Check if the async action type is pending
  */
 export function isPendingAction(action: UnknownAction) {
-  return action.type.endsWith('/pending');
+  return action.type.endsWith("/pending");
 }
 
 /**
  * Check if the async action type is completed
  */
 export function isFulfilledAction(action: UnknownAction) {
-  return action.type.endsWith('/fulfilled');
+  return action.type.endsWith("/fulfilled");
 }
 
-const commonErrorProperties: Array<keyof SerializedError> = ['name', 'message', 'stack', 'code'];
+const commonErrorProperties: Array<keyof SerializedError> = [
+  "name",
+  "message",
+  "stack",
+  "code",
+];
 
 /**
  * serialize function used for async action errors,
  * since the default function from Redux Toolkit strips useful info from axios errors
  */
-export const serializeAxiosError = (value: any): AxiosError | SerializedError => {
-  if (typeof value === 'object' && value !== null) {
+export const serializeAxiosError = (
+  value: any,
+): AxiosError | SerializedError => {
+  if (typeof value === "object" && value !== null) {
     if (isAxiosError(value)) {
       return value;
     }
     const simpleError: SerializedError = {};
     for (const property of commonErrorProperties) {
-      if (typeof value[property] === 'string') {
+      if (typeof value[property] === "string") {
         simpleError[property] = value[property];
       }
     }
@@ -81,8 +93,11 @@ export interface EntityState<T> {
  * A wrapper on top of createSlice from Redux Toolkit to extract
  * common reducers and matchers used by entities
  */
-export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntityState<T>>>({
-  name = '',
+export const createEntitySlice = <
+  T,
+  Reducers extends SliceCaseReducers<EntityState<T>>,
+>({
+  name = "",
   initialState,
   reducers,
   extraReducers,
