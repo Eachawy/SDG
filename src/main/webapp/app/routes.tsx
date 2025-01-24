@@ -3,7 +3,7 @@ import { Route } from "react-router";
 
 import Loadable from "react-loadable";
 
-import Home from "app/modules/home/home";
+import LoginPage from "app/modules/login/login";
 import ErrorBoundaryRoutes from "app/shared/error/error-boundary-routes";
 import PageNotFound from "app/shared/error/page-not-found";
 import { AUTHORITIES } from "app/config/constants";
@@ -14,7 +14,7 @@ const AppRoutes = () => {
   return (
     <div className="view-routes">
       <ErrorBoundaryRoutes>
-        <Route index element={<Home />} />
+        <Route index element={<LoginPage />} />
         {/* prettier-ignore */}
         {/*         
         <Route path="login" element={<Login />} />
