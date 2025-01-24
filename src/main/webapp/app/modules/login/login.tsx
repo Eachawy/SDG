@@ -6,17 +6,17 @@ import { Alert, Col, Row } from "reactstrap";
 import { useAppSelector } from "app/config/store";
 import { transform } from "lodash";
 
-export const Home = () => {
+export const LoginPage = () => {
   {/* prettier-ignore */ }
   // const account = useAppSelector(state => state.authentication.account);
 
   return (
     <div>
-      Home
+      Login Page
       {translate("home.subtitle")}
       <Translate contentKey="home.subtitle">This is your homepage</Translate>
     </div>
   );
 };
 
-export default Home;
+export default LoginPage;
