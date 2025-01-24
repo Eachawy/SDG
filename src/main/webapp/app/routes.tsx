@@ -1,12 +1,12 @@
-import React from 'react';
-import { Route } from 'react-router';
+import React from "react";
+import { Route } from "react-router";
 
-import Loadable from 'react-loadable';
+import Loadable from "react-loadable";
 
-import Home from 'app/modules/home/home';
-import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
-import PageNotFound from 'app/shared/error/page-not-found';
-import { AUTHORITIES } from 'app/config/constants';
+import Home from "app/modules/home/home";
+import ErrorBoundaryRoutes from "app/shared/error/error-boundary-routes";
+import PageNotFound from "app/shared/error/page-not-found";
+import { AUTHORITIES } from "app/config/constants";
 
 const loading = <div>loading ...</div>;
 

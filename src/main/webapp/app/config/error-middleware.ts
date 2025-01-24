@@ -1,14 +1,14 @@
-const getErrorMessage = errorData => {
+const getErrorMessage = (errorData) => {
   let { message } = errorData;
   if (errorData.fieldErrors) {
-    errorData.fieldErrors.forEach(fErr => {
+    errorData.fieldErrors.forEach((fErr) => {
       message += `\nfield: ${fErr.field},  Object: ${fErr.objectName}, message: ${fErr.message}\n`;
     });
   }
   return message;
 };
 
-export default () => next => action => {
+export default () => (next) => (action) => {
   /**
    *
    * The error middleware serves to log error messages from dispatch
@@ -17,7 +17,9 @@ export default () => next => action => {
   if (DEVELOPMENT) {
     const { error } = action;
     if (error) {
-      console.error(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
+      console.error(
+        `${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`,
+      );
       if (error.response && error.response.data) {
         const message = getErrorMessage(error.response.data);
         console.error(`Actual cause: ${message}`);
