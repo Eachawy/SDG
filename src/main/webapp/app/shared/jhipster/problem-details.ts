@@ -15,9 +15,14 @@ export type ProblemDetails = {
   instance: string;
 };
 
-export const ProblemWithMessageType = 'https://www.jhipster.tech/problem/problem-with-message';
+export const ProblemWithMessageType =
+  "https://www.jhipster.tech/problem/problem-with-message";
 
-export type FieldErrorVM = { message: string; objectName: string; field: string };
+export type FieldErrorVM = {
+  message: string;
+  objectName: string;
+  field: string;
+};
 
 export type ProblemWithMessage = ProblemDetails & {
   type: typeof ProblemWithMessageType;
@@ -30,4 +35,5 @@ export type ProblemWithMessage = ProblemDetails & {
   fieldErrors?: FieldErrorVM[];
 };
 
-export const isProblemWithMessage = (data: any): data is ProblemWithMessage => data?.type === ProblemWithMessageType;
+export const isProblemWithMessage = (data: any): data is ProblemWithMessage =>
+  data?.type === ProblemWithMessageType;
