@@ -1,57 +1,27 @@
+/* eslint-disable prettier/prettier */
 import React from "react";
 import { Route } from "react-router";
 
-import Loadable from "react-loadable";
-
-import LoginPage from "app/modules/login/login";
+import LoginPage from "app/modules/login/login.page";
 import ErrorBoundaryRoutes from "app/shared/error/error-boundary-routes";
 import PageNotFound from "app/shared/error/page-not-found";
-import { AUTHORITIES } from "app/config/constants";
-
-const loading = <div>loading ...</div>;
+import CreateNewProfilePage from "app/modules/new-profile/create-new-profile/createNewProfile.page";
+import LayoutSystemTemplete from "./shared/layout/layout-system/layoutSystem.templete";
 
 const AppRoutes = () => {
   return (
-    <div className="view-routes">
+    <div>
       <ErrorBoundaryRoutes>
         <Route index element={<LoginPage />} />
-        {/* prettier-ignore */}
-        {/*         
-        <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
-        <Route path="account">
+
+        <Route path="" element={<LayoutSystemTemplete />} >
           <Route
-            path="*"
-            element={
-              <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
-                <Account />
-              </PrivateRoute>
-            }
+            path="/create-new-profile"
+            element={<CreateNewProfilePage />}
           />
-          <Route path="register" element={<Register />} />
-          <Route path="activate" element={<Activate />} />
-          <Route path="reset">
-            <Route path="request" element={<PasswordResetInit />} />
-            <Route path="finish" element={<PasswordResetFinish />} />
-          </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Route>
-        <Route
-          path="admin/*"
-          element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN]}>
-              <Admin />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER]}>
-              <EntitiesRoutes />
-            </PrivateRoute>
-          }
-        /> */}
-        <Route path="*" element={<PageNotFound />} />
+
       </ErrorBoundaryRoutes>
     </div>
   );

@@ -1,0 +1,50 @@
+@import "../../../content/scss/variables/bgAndColor.scss";
+
+.breadcrumbComponent {
+  margin: 0 0 32px;
+  ul {
+    display: flex;
+    padding: 0 !important;
+    li {
+      font: 13px/21px "Cairo-Bold";
+      color: $color_5;
+      display: flex;
+      &:after {
+        content: "\005C";
+        color: $color_5;
+        font-size: 12px;
+        margin: 0 12px;
+      }
+      a {
+        color: $color_10;
+        text-decoration: none;
+      }
+      .home {
+        background: url("../../../content/images/home.svg") no-repeat;
+        height: 18px;
+        width: 17px;
+        background-size: contain;
+        margin-top: 2px;
+        cursor: pointer;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+html[dir="rtl"] {
+  .breadcrumbComponent {
+    ul {
+      li {
+        &:after {
+          content: "/";
+        }
+      }
+    }
+  }
+}

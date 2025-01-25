@@ -1,0 +1,84 @@
+@import "./scss/reset.scss";
+@import "./scss/mixins/mixins.scss";
+@import "./scss/variables/bgAndColor.scss";
+@import "./scss/fonts.scss";
+
+body {
+  background: $color_BG;
+  margin: 0;
+  font-family: "Cairo-Regular";
+}
+
+body,
+* {
+  @include scrollbars(5px, $color_2, $color_3);
+}
+
+.sdg-container {
+  .sdg_content {
+    padding-top: 32px;
+  }
+  .sdg_Header {
+    background-color: $color_6;
+    box-shadow: outside 0px 1px 0px 0px $color_11;
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+
+      .part_1 {
+        display: flex;
+        .navbar_toggler {
+          background: url("../content/images/navbar_toggler.svg") no-repeat
+            0 -11px;
+          width: 30px;
+          height: 37px;
+          cursor: pointer;
+        }
+        .logo {
+          background: url("../content/images/logo.svg") no-repeat;
+          width: 93px;
+          height: 38px;
+          margin: 0 32px;
+        }
+      }
+
+      .part_2 {
+        width: 60%;
+        .search_container {
+          border: 1px solid $color_8;
+          border-radius: 8px;
+          display: flex;
+          height: 48px;
+          padding: 3px 16px;
+          justify-content: space-between;
+          align-items: center;
+          input {
+            border: 0;
+            font-size: 14px;
+            color: $color_9;
+            margin: 0 16px;
+            width: 100%;
+          }
+          .search {
+            background: url("../content/images/search_Icon.svg") no-repeat;
+            height: 22px;
+            width: 22px;
+            background-size: contain;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .sdg_page {
+    box-shadow: outside 0px 1px 0px 0px $color_11;
+    background-color: $color_6;
+    padding: 32px;
+    border-radius: 16px;
+  }
+}
+
+@import "./sdg_ar.scss";
