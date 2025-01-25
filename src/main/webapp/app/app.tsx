@@ -7,7 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { getSession } from "app/shared/reducers/authentication";
-import Header from "app/shared/layout/header/header";
 import ErrorBoundary from "app/shared/error/error-boundary";
 import AppRoutes from "app/routes";
 import { setTextDirection } from "./config/translation";
@@ -38,9 +37,6 @@ export const App = () => {
           className="toastify-container"
           toastClassName="toastify-toast"
         />
-        <ErrorBoundary>
-          <Header currentLocale={currentLocale} />
-        </ErrorBoundary>
         <div>
           <ErrorBoundary>
             <AppRoutes />
