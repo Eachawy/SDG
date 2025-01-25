@@ -1,10 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { translate, Translate } from "react-jhipster";
-import { Alert, Col, Row } from "reactstrap";
-
-import { useAppSelector } from "app/config/store";
-import { transform } from "lodash";
 
 export const LoginPage = () => {
   {/* prettier-ignore */ }

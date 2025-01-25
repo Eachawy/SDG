@@ -34,7 +34,7 @@ const Header = (props: IHeaderProps) => {
   };
 
   return (
-    <div>
+    <div className="sdg_Header">
       <div>
         <span onClick={handleLocaleChange}>Change Lang</span>
         {props.currentLocale}

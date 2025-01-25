@@ -23,5 +23,5 @@ export const setTextDirection = (lang: string) => {
 };
 
 export const registerLocale = (store) => {
-  store.dispatch(setLocale(Storage.session.get("locale", "en")));
+  store.dispatch(setLocale(Storage.session.get("locale", "ar")));
 };
