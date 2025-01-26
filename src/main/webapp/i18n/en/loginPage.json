@@ -1,0 +1,12 @@
+{
+    "loginPage": {
+        "hello": "Hello, log in to your account.",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Passsword",
+        "passwordPlaceholder": "Enter your password",
+        "rememberMe": " Remember me",
+        "forgotThePassword": "Forgot the password",
+        "logIn": "LogIn"
+    }
+}

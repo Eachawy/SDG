@@ -1,0 +1,13 @@
+{
+    "loginPage": {
+       "hello": "مرحبا، قم بتسجيل الدخول إلى حسابك",
+       "email": "بريد الكتروني",
+       "emailPlaceholder": "أدخل بريدك الإلكتروني",
+       "password": "كلمة المرور",
+       "passwordPlaceholder": "أدخل كلمة المرور الخاصة بك",
+       "rememberMe": " تذكرني",
+       "forgotThePassword": "نسيت كلمة المرور",
+       "logIn": "تسجيل الدخول"
+
+    }
+}
