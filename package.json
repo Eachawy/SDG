@@ -29,12 +29,14 @@
     "webapp:dev-verbose": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --progress=profile --env stats=normal",
     "webapp:prod": "npm run clean-www && npm run webapp:build:prod --",
     "webapp:test": "npm run test --",
-    "webpack-dev-server": "webpack serve"
+    "webpack-dev-server": "webpack serve",
+    "i": "npm install @eachawy/frontend-library && npm i"
   },
   "config": {
     "default_environment": "prod"
   },
   "dependencies": {
+    "@eachawy/frontend-library": "^1.0.6",
     "@eslint/js": "9.17.0",
     "@fortawesome/fontawesome-svg-core": "6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
