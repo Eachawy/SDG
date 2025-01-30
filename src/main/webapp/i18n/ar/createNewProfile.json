@@ -1,0 +1,27 @@
+{
+  "createNewProfile": {
+    "createNewFile": "إنشاء ملف جديد",
+    "createNewFileDescription": "قم بإنشاء ملف جديد (شركة / أفراد)",
+    "selectFileType": "تحديد نوع الملف",
+    "selectFileTypeDescription": "تحديد نوع الملف (قضايا / طلب مستعجل / تحصيل)",
+    "assignResponsibility": "تحديد المسؤولية والمتابعة",
+    "assignResponsibilityDescription": "شارك البيانات مع الشخص المسؤول للمتابعة",
+    "serialAndSubNumber": "الرقم التسلسلي  /  الرقم الفرعي",
+    "serialNumber": "الرقم التسلسلي",
+    "companyTypeCorporate": "شركة",
+    "companyTypePersonal": "شخصي",
+    "companyNameAr": "اسم {{name}} باللغة العربية",
+    "companyNameEn": "اسم {{name}} باللغة الانجليزية",
+    "company": "الشركة",
+    "person": "الشخص",
+    "nationalNumber": "الرقم الوطني",
+    "address": "العنوان",
+    "enterTheAddress": "إدخل العنوان",
+    "exm": "مثال: ",
+    "phoneNumber": "رقم الهاتف",
+    "email": "الايميل",
+    "attachments": "المرفقات",
+    "saveAndClose": "حفظ وإغلاق",
+    "next": "التالي"
+  }
+}

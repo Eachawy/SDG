@@ -1,0 +1,14 @@
+{
+    "selectFileType": {
+        "companySubFileData": "بيانات الملف الفرعي للشركة",
+        "companyName": "اسم الشركة",
+        "fileOpenDate": "تاريخ فتح الملف",
+        "fileTypeSelection": "اختيار نوع الملف",
+        "fileTypePlaceholder": "اختر نوع الملف",
+        "delegatedPersonName": "اسم الشخص المفوض للمتابعة",
+        "delegatedPersonPlaceholder": "اختر الشخص",
+        "searchPlaceholder": "ادخل كلمة البحث",
+        "privateFile": "ملف خاص",
+        "privateFileSelection": "اختر الاشخاص"
+    }
+}

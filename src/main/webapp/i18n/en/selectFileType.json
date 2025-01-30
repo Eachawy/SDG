@@ -1,0 +1,14 @@
+{
+    "selectFileType": {
+        "companySubFileData": "Company Sub-File Data",
+        "companyName": "Company Name",
+        "fileOpenDate": "File Opening Date",
+        "fileTypeSelection": "Select File Type",
+        "fileTypePlaceholder": "Choose File Type",
+        "delegatedPersonName": "Authorized Person's Name",
+        "delegatedPersonPlaceholder": "Select Person",
+        "searchPlaceholder": "Enter Search Keyword",
+        "privateFile": "Private File",
+        "privateFileSelection": "Select People"
+    }
+}

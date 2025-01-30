@@ -2,18 +2,16 @@
 // prettier-ignore
 
 import React, { useState } from "react";
-import { translate, Translate } from "react-jhipster";
+import { translate } from "react-jhipster";
 import { InputText } from "primereact/inputtext";
-import { Checkbox } from 'primereact/checkbox';
-
-import { Dropdown } from "primereact/dropdown";
-import { Storage } from "react-jhipster";
-import { Button } from "reactstrap";
+import { useNavigate } from "react-router";
 export const LoginPage = () => {
   const [email, seEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false)
   const [checked, setChecked] = useState(false)
+
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -43,8 +41,8 @@ export const LoginPage = () => {
   }
 
   const logInBtn = () => {
-
-  }
+    navigate("/create-new-profile");
+  };
 
   return (
     <div className="loginPage">

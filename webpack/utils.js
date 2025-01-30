@@ -1,13 +1,13 @@
-const path = require('path');
+const path = require("path");
 
-const tsconfig = require('../tsconfig.json');
+const tsconfig = require("../tsconfig.json");
 
 module.exports = {
   root,
   mapTypescriptAliasToWebpackAlias,
 };
 
-const _root = path.resolve(__dirname, '..');
+const _root = path.resolve(__dirname, "..");
 
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);
@@ -27,8 +27,8 @@ function mapTypescriptAliasToWebpackAlias(alias = {}) {
     .map(([key, value]) => {
       // if Typescript alias ends with /* then remove this for Webpack
       const regexToReplace = /\/\*$/;
-      const aliasKey = key.replace(regexToReplace, '');
-      const aliasValue = value[0].replace(regexToReplace, '');
+      const aliasKey = key.replace(regexToReplace, "");
+      const aliasValue = value[0].replace(regexToReplace, "");
       return [aliasKey, root(aliasValue)];
     })
     .reduce((aliases, [key, value]) => {

@@ -1,4 +1,44 @@
 @import "./scss/rtl.scss";
 
 html[dir="rtl"] {
+
+    .sdg-container {
+        .sdg_content {
+            .createProfileSteps {
+
+                div:first-of-type {
+                    &::before {
+                        left: 255px;
+                        
+                        @media (min-width: 993px) and (max-width: 1200px) {
+                            left: 229px;
+                        }
+                    }
+                }
+
+                div:nth-of-type(2) {
+                    &::before {
+                        left: 322px;
+
+
+                        @media (min-width: 993px) and (max-width: 1200px) {
+                            left: 229px;
+                        }
+                    }
+                }
+
+                >div {
+                    &::before {
+                        transform: scaleX(1);
+                        top: 8px;
+
+                        @media screen and (max-width: 992px) {
+                            transform: rotate(90deg);
+                            top: 66px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
