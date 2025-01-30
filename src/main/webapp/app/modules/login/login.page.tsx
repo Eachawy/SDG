@@ -1,95 +1,74 @@
 /* eslint-disable */
 // prettier-ignore
-
-import React, { useState } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
-import { InputText } from "primereact/inputtext";
-import { useNavigate } from "react-router";
-export const LoginPage = () => {
-  const [email, seEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false)
-  const [checked, setChecked] = useState(false)
+import { useForm } from "react-hook-form";
+import { ButtonComponent, CheckBoxComponent, InputComponent } from "@eachawy/frontend-library";
 
-  const navigate = useNavigate();
+const LoginPage = () => {
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  // const handleLocaleChange = () => {
-  //   window.location.reload();
-  //   const sessionLocale = sessionStorage.getItem("locale");
-  //   const langKey =
-  //     sessionLocale === "en" || typeof sessionLocale === "undefined"
-  //       ? "ar"
-  //       : "en";
-  //   sessionStorage.setItem("locale", langKey);
-  //   dispatch(setLocale(langKey));
-  //   setTextDirection(langKey);
-  // };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(e.target.checked);
-
-    console.log("checkbox Test :", e.target.checked)
-  };
-
-
-  const forgetThePasswordFn = () => {
-
-  }
-
-  const logInBtn = () => {
-    navigate("/create-new-profile");
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({ mode: 'onTouched', });
+  const forgetThePasswordFn = () => { };
+  const handleLogin = (data) => {
+    console.log(data);
   };
 
   return (
     <div className="loginPage">
-      {/* <button onClick={handleLocaleChange}>🌐 Lang</button> */}
-      <div className="loginContainer">
-        <p>{translate("loginPage.hello")}</p>
+      <form className="form" onSubmit={handleSubmit(handleLogin)}>
+        <div className="loginContainer">
+          <p>{translate("loginPage.hello")}</p>
 
-        <label>{translate("loginPage.email")}</label>
-        <InputText placeholder={translate("loginPage.emailPlaceholder")} value={email} onChange={(e) => seEmail(e.target.value)} />
-
-        <div className="passDiv">
-          <label>{translate("loginPage.password")}</label>
-          <InputText type={showPassword ? "text" : "password"} placeholder={translate("loginPage.passwordPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} />
-
-          <span
-            onClick={togglePasswordVisibility}
-            className={showPassword ? "passIconOn" : "passIconOff"}
+          <InputComponent
+            id="email"
+            type="email"
+            name="email"
+            label={translate("loginPage.email")}
+            placeholder={translate("loginPage.emailPlaceholder")}
+            register={register}
+            rules={{ required: 'You must enter your first name.' }}
+            errors={errors}
+            setValueMethod={setValue}
+            watch={watch}
+            onChange={(e) => setValue("email", e.target.value)}
           />
-        </div>
 
-        <div className="rememberAndForgetPassDiv">
-          <div className="checkboxDiv">
-            <input
-              type="checkbox"
+          <InputComponent
+            id="password"
+            type="text"
+            name="password"
+            label={translate("loginPage.password")}
+            placeholder={translate("loginPage.passwordPlaceholder")}
+            register={register}
+            rules={{
+              required: "This is required.",
+            }}
+            errors={errors}
+            password
+            setValueMethod={setValue}
+            watch={watch}
+            onChange={(e) => setValue("password", e.target.value)}
+          />
+
+          <div className="rememberAndForgetPassDiv">
+            <CheckBoxComponent
               id="rememberMe"
-              checked={checked}
-              onChange={handleCheckboxChange}
+              name="rememberMe"
+              label={translate("loginPage.rememberMe")}
+              register={register}
+              setValueMethod={setValue}
+              setValue={true}
+              watch={watch}
+              onChange={(e) => setValue("rememberMe", e.value)}
             />
-            <label htmlFor="rememberMe">{translate("loginPage.rememberMe")}</label>
+            <span className="forgetPassword" onClick={forgetThePasswordFn}>{translate("loginPage.forgotThePassword")}</span>
           </div>
-          <span onClick={forgetThePasswordFn}>{translate("loginPage.forgotThePassword")}</span>
+
+          <ButtonComponent Class={'btnStyle'} onClick={() => { }}>{translate("loginPage.logIn")}</ButtonComponent>
         </div>
-        <div onClick={logInBtn} className="btnStyle">{translate("loginPage.logIn")}</div>
-      </div>
+      </form>
     </div>
   );
 };
 
 export default LoginPage;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
-
-function setLocale(langKey: string): any {
-  throw new Error("Function not implemented.");
-}
-
-function setTextDirection(langKey: string) {
-  throw new Error("Function not implemented.");
-}
