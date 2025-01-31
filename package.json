@@ -36,7 +36,7 @@
     "default_environment": "prod"
   },
   "dependencies": {
-    "@eachawy/frontend-library": "^1.0.8",
+    "@eachawy/frontend-library": "^1.0.9",
     "@eslint/js": "9.17.0",
     "@fortawesome/fontawesome-svg-core": "6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
