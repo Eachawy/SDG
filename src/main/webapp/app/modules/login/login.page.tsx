@@ -64,7 +64,7 @@ const LoginPage = () => {
             <span className="forgetPassword" onClick={forgetThePasswordFn}>{translate("loginPage.forgotThePassword")}</span>
           </div>
 
-          <ButtonComponent Class={'btnStyle'} onClick={() => { }}>{translate("loginPage.logIn")}</ButtonComponent>
+          <ButtonComponent Class={'btnStyle'} >{translate("loginPage.logIn")}</ButtonComponent>
         </div>
       </form>
     </div>
