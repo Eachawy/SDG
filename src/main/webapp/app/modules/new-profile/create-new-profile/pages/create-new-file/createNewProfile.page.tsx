@@ -7,6 +7,7 @@ import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileStep
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
+import { useAppSelector } from "app/config/store";
 
 interface Country {
     name: string;
@@ -15,10 +16,13 @@ interface Country {
 
 const CreateNewProfilePage = () => {
 
+    const lang = useAppSelector(state => state.locale.currentLocale);
+
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
     useEffect(() => {
         setValue('companyType', 'corporateType');
+        console.log(lang);
     }, []);
 
 
