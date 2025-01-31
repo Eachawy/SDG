@@ -8,11 +8,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
-
-interface Country {
-    name: string;
-    code: string;
-}
+import { countryCode } from "app/shared/util/date-utils";
 
 const CreateNewProfilePage = () => {
 
@@ -25,19 +21,36 @@ const CreateNewProfilePage = () => {
         console.log(lang);
     }, []);
 
-
-    const countryCode: Country[] = [
-        { name: '+962', code: 'ORD' },
-        { name: '+20', code: 'EGY' },
-    ]
-
     const saveAndCloseFn = () => { };
 
     const handleLogin = (data) => {
-        console.log(data);
+        const _data = {
+            ...data,
+            phoneNumber: data.countryCode.name + data.phoneNumber
+        }
+        console.log(_data);
         navigate("/select-file-type");
     };
 
+    const selectedCountryCodeTemplate = (option) => {
+        if (option) {
+            return (
+                <div className="countryCodeTemplate">
+                    <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
+                    <div>{option.name}</div>
+                </div>
+            );
+        }
+    };
+
+    const countryCodeOptionTemplate = (option) => {
+        return (
+            <div className="countryCodeTemplate">
+                <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
+                <div>{option.name}</div>
+            </div>
+        );
+    };
 
 
     return (
@@ -145,7 +158,9 @@ const CreateNewProfilePage = () => {
                                 optionLabel="name"
                                 errors={errors}
                                 onChange={(e) => setValue("countryCode", e.value as object)}
-                                setValue={{ name: '+962', code: 'ORD' }}
+                                setValue={countryCode[0]}
+                                valueTemplate={selectedCountryCodeTemplate}
+                                itemTemplate={countryCodeOptionTemplate}
                             />
                             <InputComponent
                                 id="phoneNumber"

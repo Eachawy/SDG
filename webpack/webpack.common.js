@@ -114,6 +114,10 @@ module.exports = async (options) => {
         new CopyWebpackPlugin({
           patterns: [
             { from: "./src/main/webapp/content/", to: "content/" },
+            {
+              from: "./node_modules/@eachawy/frontend-library/lib/resource/images/",
+              to: "content",
+            },
             { from: "./src/main/webapp/favicon.ico", to: "favicon.ico" },
             {
               from: "./src/main/webapp/manifest.webapp",
