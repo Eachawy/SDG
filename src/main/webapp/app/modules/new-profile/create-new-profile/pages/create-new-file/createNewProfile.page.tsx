@@ -1,5 +1,5 @@
 /* eslint-disable */
-// prettier-ignore
+/*prettier-ignore */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
@@ -138,7 +138,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.address")}
                         placeholder={translate("createNewProfile.enterTheAddress")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'You must enter your Adress.' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -155,7 +155,7 @@ const CreateNewProfilePage = () => {
                                 watch={watch}
                                 setValueMethod={setValue}
                                 options={countryCode}
-                                optionLabel="name"
+                                optionLabel={`name.${lang}`}
                                 errors={errors}
                                 onChange={(e) => setValue("countryCode", e.value as object)}
                                 setValue={countryCode[0]}
@@ -183,7 +183,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.email")}
                         placeholder={translate("loginPage.emailPlaceholder")}
                         register={register}
-                        // rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'You must enter your first name.' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}

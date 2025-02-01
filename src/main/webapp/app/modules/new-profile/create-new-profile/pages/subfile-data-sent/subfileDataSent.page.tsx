@@ -36,7 +36,7 @@ const SubfileDataSentPage = () => {
           </p>
         </div>
         <div className="actionBtns">
-          <div onClick={returnToMainMenuFn} className="white_btnStyle">
+          <div onClick={returnToMainMenuFn} className="BtnCancel">
             {translate("subfileDataSent.returnToMainMenu")}
           </div>
         </div>
