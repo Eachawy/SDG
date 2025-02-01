@@ -10,3 +10,8 @@ export const convertDateTimeToServer = (date?: string): dayjs.Dayjs | null =>
 
 export const displayDefaultDateTime = () =>
   dayjs().startOf("day").format(APP_LOCAL_DATETIME_FORMAT);
+
+export const countryCode = [
+  { name: "+962", code: "JO" },
+  { name: "+971", code: "AE" },
+];

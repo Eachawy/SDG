@@ -1,0 +1,10 @@
+{
+    "subfileDataSent": {
+        "successMessage": "لقد تم إرسال بيانات الملف الفرعي الجديد لممثل الشركة بنجاح",
+        "companyRepresentativeData": "بيانات ممثل للشركة",
+        "clientEmail": "ايميل العميل",
+        "phoneNumber": "رقم الهاتف",
+        "transactionNumber": "رقم العملية",
+        "returnToMainMenu": "الرجوع الى القائمة الرئيسية"
+    }
+}

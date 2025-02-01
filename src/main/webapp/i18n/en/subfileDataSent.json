@@ -1,0 +1,10 @@
+{
+    "subfileDataSent": {
+        "successMessage": "The new sub-file data has been successfully sent to the company representative",
+        "companyRepresentativeData": "Company Representative Data",
+        "clientEmail": "Client Email",
+        "phoneNumber": "Phone Number",
+        "transactionNumber": "Transaction Number",
+        "returnToMainMenu": "Return to Main Menu"
+    }
+}

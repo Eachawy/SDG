@@ -1,0 +1,7 @@
+{
+    "assignResponsibilityAndFollowUp": {
+        "completionMessage": "تم الانتهاء من ادخال البيانات بنجاح يرجى مشاركه العميل بالبيانات للمتابعه والمراجعه",
+        "addCompanyRepresentative": "إضافة ممثل للشركة للمتابعة",
+        "sendToCompanyRepresentative": "ارسال الى ممثل الشركة"
+    }
+}

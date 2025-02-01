@@ -1,0 +1,7 @@
+{
+    "assignResponsibilityAndFollowUp": {
+        "completionMessage": "Data entry has been successfully completed please share the data with the client for follow-up and review",
+        "addCompanyRepresentative": "Add a company representative for follow-up",
+        "sendToCompanyRepresentative": "Send to the company representative"
+    }
+}
