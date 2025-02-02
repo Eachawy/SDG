@@ -19,6 +19,10 @@ body,
   .flag-icon {
     line-height: 27px;
     margin: 0 2px;
+    height: 30px;
+    + div {
+      line-height: 30px;
+    }
   }
 }
 
@@ -491,6 +495,7 @@ body,
                   .p-dropdown-label {
                     font-size: 12px;
                     line-height: 21px;
+                    padding: 0;
                   }
                 }
               }
@@ -970,6 +975,10 @@ body,
   .GCInputComponent {
     margin-bottom: 24px;
   }
+
+  ._col {
+    width: calc(50% - 14px);
+  }
 }
 
 .p-dropdown-panel {
@@ -1011,52 +1020,6 @@ body,
 
       svg {
         display: none;
-      }
-    }
-  }
-}
-
-.p-multiselect-panel {
-  .p-multiselect-header {
-    display: none;
-  }
-
-  .p-multiselect-items-wrapper {
-    .p-multiselect-items {
-      padding: 0;
-      margin: 0;
-
-      li:last-of-type {
-        border-bottom: none;
-      }
-
-      li {
-        padding: 8px 10px;
-        border-bottom: 1px solid #f1f1f1;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #f2f2f2;
-          font-weight: 700;
-        }
-
-        .p-checkbox-box {
-          border: 1px solid #d1d5db;
-          width: 16px;
-          height: 16px;
-          border-radius: 4px;
-          top: 0;
-
-          svg {
-            zoom: 0.8;
-          }
-        }
-
-        span {
-          font-size: 12px;
-          font-weight: 400;
-          padding: 0 8px;
-        }
       }
     }
   }
