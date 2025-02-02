@@ -114,21 +114,19 @@ const CompanySubFileData = (props) => {
         />
 
         {getValues().privateFileCheckBox && (
-          <div className="privateFileMultiSelect">
-            <DropDownMultiComponent
-              id="privateFileSelection"
-              name="privateFileSelection"
-              register={register}
-              watch={watch}
-              setValueMethod={setValue}
-              display="chip"
-              onChange={onChangeMultipleSelect}
-              options={privateFileList}
-              optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
-              placeholder={translate("selectFileType.privateFileSelection")}
-              setValue={getValues().selectedDelegatedPerson && [getValues().selectedDelegatedPerson]}
-            />
-          </div>
+          <DropDownMultiComponent
+            id="privateFileSelection"
+            name="privateFileSelection"
+            register={register}
+            watch={watch}
+            setValueMethod={setValue}
+            display="chip"
+            onChange={onChangeMultipleSelect}
+            options={privateFileList}
+            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
+            placeholder={translate("selectFileType.privateFileSelection")}
+            setValue={getValues().selectedDelegatedPerson && [getValues().selectedDelegatedPerson]}
+          />
         )}
       </div>
     </div>
