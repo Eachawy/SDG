@@ -22,6 +22,12 @@ body,
   }
 }
 
+.disable {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
+
 .sdg-container {
   .sdg_content {
     padding-top: 32px;
@@ -144,7 +150,7 @@ body,
         }
       }
 
-      >div {
+      > div {
         display: flex;
         flex-direction: row;
         gap: 16px;
@@ -161,7 +167,8 @@ body,
           width: 34px;
           height: 34px;
           pointer-events: none;
-          background: url("../content/images/step-arrow.svg") center / contain no-repeat;
+          background: url("../content/images/step-arrow.svg") center / contain
+            no-repeat;
           transform: scaleX(-1);
           left: 296px;
           top: 13px;
@@ -199,7 +206,8 @@ body,
               width: 24px;
               height: 24px;
               pointer-events: none;
-              background: url("../content/images/check-sign.svg") center / contain no-repeat;
+              background: url("../content/images/check-sign.svg") center /
+                contain no-repeat;
               left: 12px;
               top: 12px;
             }
@@ -259,7 +267,7 @@ body,
           justify-content: flex-start;
           margin-bottom: 32px;
 
-          >div {
+          > div {
             .p-radiobutton {
               input {
                 border-color: #000;
@@ -288,7 +296,7 @@ body,
             flex-direction: column;
           }
 
-          >div {
+          > div {
             width: calc(50% - 14px);
             display: flex;
             flex-direction: column;
@@ -332,7 +340,7 @@ body,
               }
             }
 
-            >div {
+            > div {
               display: flex;
               flex-direction: row;
               gap: 8px;
@@ -396,7 +404,7 @@ body,
           margin-bottom: 32px;
           padding-bottom: 50px;
 
-          >div:first-of-type {
+          > div:first-of-type {
             background-color: #fafafb;
             padding: 20px;
             border-radius: 8px;
@@ -452,7 +460,7 @@ body,
                 flex-direction: column;
               }
 
-              >div {
+              > div {
                 display: flex;
                 flex-direction: column;
                 width: calc(50% - 12px);
@@ -470,7 +478,6 @@ body,
                   font-weight: 400;
                   padding: 0;
 
-
                   span {
                     color: #ee0000;
                   }
@@ -483,6 +490,7 @@ body,
 
                   .p-dropdown-label {
                     font-size: 12px;
+                    line-height: 21px;
                   }
                 }
               }
@@ -607,7 +615,8 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center /
+              contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -632,7 +641,7 @@ body,
           flex-direction: column;
         }
 
-        >div {
+        > div {
           width: calc(50% - 14px);
           display: flex;
           flex-direction: column;
@@ -676,7 +685,7 @@ body,
             }
           }
 
-          >div {
+          > div {
             display: flex;
             flex-direction: row;
             gap: 8px;
@@ -744,7 +753,8 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center /
+              contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -833,7 +843,8 @@ body,
         display: flex;
 
         .navbar_toggler {
-          background: url("../content/images/navbar_toggler.svg") no-repeat 0 -11px;
+          background: url("../content/images/navbar_toggler.svg") no-repeat
+            0 -11px;
           width: 30px;
           height: 37px;
           cursor: pointer;
@@ -905,7 +916,8 @@ body,
       height: 100%;
       z-index: -1;
       pointer-events: none;
-      background: #2d51a3 url("../content/images/login_bg.svg") center / cover no-repeat;
+      background: #2d51a3 url("../content/images/login_bg.svg") center / cover
+        no-repeat;
     }
 
     .loginContainer {
@@ -1066,19 +1078,6 @@ body,
     .p-multiselect-items {
       padding: 0;
       margin: 0;
-
-      li:first-of-type {
-        background-color: #fafafb;
-        border-bottom: none;
-
-        .p-checkbox-box {
-          background-color: #d9d9d9;
-        }
-
-        .p-checkbox-icon {
-          color: #5a5a63;
-        }
-      }
 
       li:last-of-type {
         border-bottom: none;

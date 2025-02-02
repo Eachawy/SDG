@@ -1,3 +1,5 @@
+/* eslint-disable */
+/*prettier-ignore */
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import { MultiSelect, MultiSelectChangeEvent } from "primereact/multiselect";
@@ -6,15 +8,13 @@ import {
   ButtonComponent,
   CheckBoxComponent,
   DropDownComponent,
+  DropDownMultiComponent,
 } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
 
 const CompanySubFileData = (props) => {
-  const { triggerHandleSubmit, onValidationSuccess } = props;
-  const lang = useAppSelector((state) => state.locale.currentLocale);
 
-  const [privateFileCheck, setPrivateFileCheckBox] = useState(false);
-  const [selectedPrivateFile, setSelectedPrivateFile] = useState([]);
+  const lang = useAppSelector((state) => state.locale.currentLocale);
 
   const {
     register,
@@ -25,10 +25,6 @@ const CompanySubFileData = (props) => {
     getValues,
   } = useForm({ mode: "onTouched" });
 
-  useEffect(() => {
-    setValue("companyType", "corporateType");
-  }, [setValue]);
-
   const fileTypes = [
     { name: { ar: "قضايا", en: "Lawsuits" }, code: "T1" },
     { name: { ar: "طلب مستعجل", en: "Urgent Request" }, code: "T2" },
@@ -36,69 +32,29 @@ const CompanySubFileData = (props) => {
   ];
 
   const delegatedPeopleNames = [
-    {
-      name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" },
-      code: "P1",
-    },
-    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "P2" },
-    {
-      name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" },
-      code: "P3",
-    },
+    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
+    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
+    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" }
   ];
 
   const privateFileList = [
-    {
-      name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" },
-      code: "PF1",
-    },
+    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
     { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-    {
-      name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" },
-      code: "PF3",
-    },
-    {
-      name: {
-        ar: "الدميري منصور عبد الرحمن",
-        en: "Mansour Abd El Rahman El Demiry",
-      },
-      code: "PF4",
-    },
+    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" },
+    { name: { ar: "الدميري منصور عبد الرحمن", en: "Mansour Abd El Rahman El Demiry" }, code: "PF4" }
   ];
 
-  useEffect(() => {
-    setSelectedPrivateFile((prevSelected) => {
-      if (!prevSelected.some((item) => item.code === privateFileList[0].code)) {
-        return [privateFileList[0], ...prevSelected];
-      }
-      return prevSelected;
-    });
-  }, []);
-
-  const handleSelectionChange = (e: MultiSelectChangeEvent) => {
-    const selectedValues = e.value.filter(
-      (item) => item.code !== privateFileList[0].code,
-    );
-    setSelectedPrivateFile([privateFileList[0], ...selectedValues]);
-  };
-
-  const onPrivateFileChange = (e) => {
-    setPrivateFileCheckBox(e);
-  };
-
-  const onSubmit = (data) => {
-    // console.log("Form submitted:", data);
-    onValidationSuccess(true);
-  };
+  const onSubmit = (data) => props.onChangeControls(data);
 
   useEffect(() => {
-    if (triggerHandleSubmit > 0) {
-      handleSubmit(
-        (data) => onSubmit(data),
-        () => onValidationSuccess(false),
-      )();
+    if (props.triggerHandleSubmit > 0) {
+      handleSubmit(data => onSubmit(data))();
     }
-  }, [triggerHandleSubmit, handleSubmit, onValidationSuccess]);
+  }, [props.triggerHandleSubmit, props.onChangeControls]);
+
+  const onChangeMultipleSelect = (e) => {
+    setValue("privateFileSelection", e.value as []);
+  }
 
   return (
     <div className="companySubFileData">
@@ -114,7 +70,6 @@ const CompanySubFileData = (props) => {
           </p>
         </div>
       </div>
-
       <div className="privateFileDiv">
         <div className="fileTypeAndDelegatedPersonDiv">
           <DropDownComponent
@@ -125,13 +80,12 @@ const CompanySubFileData = (props) => {
             watch={watch}
             setValueMethod={setValue}
             options={fileTypes}
-            optionLabel={`name.${lang}`}
+            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
             errors={errors}
             onChange={(e) => setValue("fileType", e.value as object)}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
             rules={{ required: "You must select the file type." }}
           />
-
           <DropDownComponent
             id="selectedDelegatedPerson"
             name="selectedDelegatedPerson"
@@ -140,34 +94,18 @@ const CompanySubFileData = (props) => {
             watch={watch}
             setValueMethod={setValue}
             options={delegatedPeopleNames}
-            optionLabel={`name.${lang}`}
+            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
             errors={errors}
-            onChange={(e) =>
-              setValue("selectedDelegatedPerson", e.value as object)
-            }
+            onChange={e => setValue("selectedDelegatedPerson", e.value as object)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
           />
         </div>
-        {/* <div className="checkBoxDiv">
-                    <Checkbox
-                        inputId="privateFileCheckBox"
-                        name="privateFileCheckBox"
-                        value="privateFileCheckBox"
-                        onChange={(e) => onPrivateFileChange(e.checked)}
-                        checked={privateFileCheck}
-                    />
-                    <label htmlFor="privateFileCheckBox" className="ml-2">
-                        {translate("selectFileType.privateFile")}
-                    </label>
-                </div> */}
-
         <CheckBoxComponent
           id="privateFileCheckBox"
           name="privateFileCheckBox"
           label={translate("selectFileType.privateFile")}
-          className="mb-2"
           register={register}
           errors={errors}
           setValueMethod={setValue}
@@ -175,24 +113,20 @@ const CompanySubFileData = (props) => {
           onChange={(e) => setValue("privateFileCheckBox", e.value)}
         />
 
-        {watch("privateFileCheckBox") && (
+        {getValues().privateFileCheckBox && (
           <div className="privateFileMultiSelect">
-            <MultiSelect
-              value={selectedPrivateFile}
-              onChange={handleSelectionChange}
-              options={privateFileList}
-              optionLabel="name.ar"
+            <DropDownMultiComponent
+              id="privateFileSelection"
+              name="privateFileSelection"
+              register={register}
+              watch={watch}
+              setValueMethod={setValue}
               display="chip"
+              onChange={onChangeMultipleSelect}
+              options={privateFileList}
+              optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
               placeholder={translate("selectFileType.privateFileSelection")}
-              itemTemplate={(option) => (
-                <div
-                  style={{
-                    opacity: option.code === privateFileList[0].code ? 0.7 : 1,
-                  }}
-                >
-                  {option.name.ar}
-                </div>
-              )}
+              setValue={getValues().selectedDelegatedPerson && [getValues().selectedDelegatedPerson]}
             />
           </div>
         )}
