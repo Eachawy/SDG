@@ -7,17 +7,53 @@ import {
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
-import { useForm } from "react-hook-form";
+import { FieldError, useFieldArray, useForm, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 const Cheque = (props) => {
+  type FormValues = {
+    inputForm: string;
+    bankName: string;
+    bankBranch: string;
+    chequeAmount: string;
+    ChequeNo: string;
+    dueDate: string;
+    replayDate: string;
+    firstBeneficiary: string;
+    firstBeneficiaryName: string;
+    currencyList: string;
+    rows: { drawerName: string }[];
+  };
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-    watch,
-    setValue,
     getValues,
-  } = useForm({ mode: "onTouched" });
+    setValue,
+    watch,
+  } = useForm<FormValues>({
+    mode: "onTouched",
+    defaultValues: {
+      inputForm: "",
+      bankName: "",
+      bankBranch: "",
+      chequeAmount: "",
+      ChequeNo: "",
+      dueDate: "",
+      replayDate: "",
+      firstBeneficiary: "",
+      firstBeneficiaryName: "",
+      currencyList: "",
+      rows: [{ drawerName: "" }],
+    },
+  });
+
+  // Manage dynamic inputs using useFieldArray
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "rows",
+  });
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
@@ -26,16 +62,30 @@ const Cheque = (props) => {
   const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
   const [rows, setRows] = useState([{ id: Date.now(), drawerName: "" }]);
 
+  // const addNewRow = () => {
+  //   setRows([...rows, { id: Date.now(), drawerName: "" }]);
+  // };
+
+  // const removeRow = (id) => {
+  //   setRows(rows.filter((row) => row.id !== id));
+  // };
+
+  // const handleRowChange = (id, value) => {
+  //   setRows(
+  //     rows.map((row) => (row.id === id ? { ...row, drawerName: value } : row)),
+  //   );
+  // };
+
   const addNewRow = () => {
-    setRows([...rows, { id: Date.now(), drawerName: "" }]);
+    append({ drawerName: "" }); // Appends a new empty row
   };
 
-  const removeRow = (id) => {
-    setRows(rows.filter((row) => row.id !== id));
+  const removeRow = (index) => {
+    remove(index); // Removes row at given index
   };
 
-  const handleRowChange = (id, value) => {
-    setRows(rows.map((row) => (row.id === id ? { ...row, drawerName: value } : row)));
+  const handleRowChange = (index, value) => {
+    setValue(`rows.${index}.drawerName`, value); // Updates the value in react-hook-form
   };
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
@@ -95,8 +145,8 @@ const Cheque = (props) => {
           setValueMethod={setValue}
           options={bankNames}
           optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("bankName", e.value as object)}
+          errors={errors?.bankName ? { bankName: errors.bankName } : undefined}
+          onChange={(e) => setValue("bankName", e.value)}
           placeholder="اختر اسم البنك"
           rules={{ required: "You must select the Bank Name" }}
           label="اسم البنك"
@@ -104,11 +154,13 @@ const Cheque = (props) => {
 
         <InputComponent
           id="legalBondBankBranch"
-          type="bankBranch"
+          type="text"
           name="bankBranch"
           placeholder={translate("createNewProfile.exm") + "فرع الرشيد"}
           register={register}
-          errors={errors}
+          errors={
+            errors?.bankBranch ? { bankBranch: errors.bankBranch } : undefined
+          }
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("bankBranch", e.target.value)}
@@ -118,11 +170,15 @@ const Cheque = (props) => {
         <div className="chequeAmount">
           <InputComponent
             id="legalBondchequeAmount"
-            type="chequeAmount"
+            type="text"
             name="chequeAmount"
             placeholder="المبلغ"
             register={register}
-            errors={errors}
+            errors={
+              errors?.chequeAmount
+                ? { chequeAmount: errors.chequeAmount }
+                : undefined
+            }
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("chequeAmount", e.target.value)}
@@ -137,8 +193,12 @@ const Cheque = (props) => {
             setValueMethod={setValue}
             options={currencyList}
             optionLabel={`name.${lang}`}
-            errors={errors}
-            onChange={(e) => setValue("currencyList", e.value as object)}
+            errors={
+              errors?.currencyList
+                ? { currencyList: errors.currencyList }
+                : undefined
+            }
+            onChange={(e) => setValue("currencyList", e.value)}
             placeholder="دينار"
             rules={{ required: "You must select the currency" }}
           />
@@ -146,11 +206,11 @@ const Cheque = (props) => {
 
         <InputComponent
           id="legalBondsChequeNo"
-          type="ChequeNo"
+          type="text"
           name="ChequeNo"
           placeholder={translate("createNewProfile.exm") + "123456789"}
           register={register}
-          errors={errors}
+          errors={errors?.ChequeNo ? { ChequeNo: errors.ChequeNo } : undefined}
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("ChequeNo", e.target.value)}
@@ -166,7 +226,7 @@ const Cheque = (props) => {
           placeholder={"DD/MM/YYYY"}
           register={register}
           rules={{ required: "You must select the due date" }}
-          errors={errors}
+          errors={errors?.dueDate ? { dueDate: errors.dueDate } : undefined}
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("dueDate", e.target.value)}
@@ -179,7 +239,9 @@ const Cheque = (props) => {
           className={"_col"}
           placeholder={"DD/MM/YYYY"}
           register={register}
-          errors={errors}
+          errors={
+            errors?.replayDate ? { replayDate: errors.replayDate } : undefined
+          }
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("replayDate", e.target.value)}
@@ -193,8 +255,12 @@ const Cheque = (props) => {
           setValueMethod={setValue}
           options={firstBeneficiaryList}
           optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("firstBeneficiary", e.value as object)}
+          errors={
+            errors?.firstBeneficiary
+              ? { firstBeneficiary: errors.firstBeneficiary }
+              : undefined
+          }
+          onChange={(e) => setValue("firstBeneficiary", e.value)}
           placeholder="اختر المستفيد"
           rules={{ required: "You must select the Beneficiary" }}
           label="مستفيد"
@@ -203,11 +269,15 @@ const Cheque = (props) => {
         {true && (
           <InputComponent
             id="legalBondsfirstBeneficiaryName"
-            type="firstBeneficiaryName"
+            type="text"
             name="firstBeneficiaryName"
             placeholder="اضف اسم المستفيد الأول"
             register={register}
-            errors={errors}
+            errors={
+              errors?.firstBeneficiaryName
+                ? { firstBeneficiaryName: errors.firstBeneficiaryName }
+                : undefined
+            }
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("firstBeneficiaryName", e.target.value)}
@@ -216,15 +286,19 @@ const Cheque = (props) => {
           />
         )}
 
-        {rows.map((row, index) => (
+        {/* {rows.map((row, index) => (
           <div key={row.id} className="drawerNameDiv">
             <InputComponent
               id={`legalBondsDrawerName_${row.id}`}
-              type="drawerName"
-              name={`drawerName_${row.id}`}
+              type="text"
+              name={`rows.${index}.drawerName`}
               placeholder="اضف اسم الساحب"
               register={register}
-              errors={errors}
+              errors={
+                errors?.rows?.[index]?.drawerName
+                  ? { [`drawerName_${row.id}`]: errors.rows[index].drawerName }
+                  : undefined
+              }
               setValueMethod={setValue}
               watch={watch}
               onChange={(e) => handleRowChange(row.id, e.target.value)}
@@ -233,11 +307,55 @@ const Cheque = (props) => {
               value={row.drawerName}
             />
             <div className="actionRowDiv">
-              {index !== 0 && <span onClick={() => removeRow(row.id)} className="deleteBtn">حذف</span>}
-              {index === rows.length - 1 && <span onClick={addNewRow} className="addBtn">اضف اسم ساحب جديد</span>}
+              {index !== 0 && (
+                <span onClick={() => removeRow(row.id)} className="deleteBtn">
+                  حذف
+                </span>
+              )}
+              {index === rows.length - 1 && (
+                <span onClick={addNewRow} className="addBtn">
+                  اضف اسم ساحب جديد
+                </span>
+              )}
+            </div>
+          </div>
+        ))} */}
+
+        {fields.map((field, index) => (
+          <div key={field.id} className="drawerNameDiv">
+            <InputComponent
+              id={`legalBondsDrawerName_${field.id}`}
+              type="text"
+              name={`rows.${index}.drawerName`}
+              placeholder="اضف اسم الساحب"
+              register={register as unknown as UseFormRegister<Record<string, unknown>>} 
+              errors={
+                errors?.rows?.[index]?.drawerName 
+                  ? { [`drawerName_${field.id}`]: errors.rows[index].drawerName }
+                  : undefined
+              }
+              setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+              watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+              onChange={(e) => handleRowChange(index, e.target.value)} 
+              rules={{ required: "You must enter the drawer name" }}
+              label="اسم الساحب"
+              value={watch(`rows.${index}.drawerName`)}
+            />
+            <div className="actionRowDiv">
+              {index !== 0 && (
+                <span onClick={() => removeRow(index)} className="deleteBtn">
+                  حذف
+                </span>
+              )}
+              {index === fields.length - 1 && (
+                <span onClick={addNewRow} className="addBtn">
+                  اضف اسم ساحب جديد
+                </span>
+              )}
             </div>
           </div>
         ))}
+
 
         <div className="uploaderContainer">
           <h4>{translate("createNewProfile.attachments")}</h4>
@@ -247,7 +365,7 @@ const Cheque = (props) => {
           <div onClick={cancelFn} className="BtnCancel">
             إلغاء
           </div>
-          <div onClick={addChequeFn} className="btnStyle">
+          <div onClick={handleSubmit(addChequeFn)} className="btnStyle">
             إضافة شيك
           </div>
         </div>
