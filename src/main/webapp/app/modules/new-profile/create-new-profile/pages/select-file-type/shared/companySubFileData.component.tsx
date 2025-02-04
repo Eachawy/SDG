@@ -3,7 +3,6 @@ import { translate } from "react-jhipster";
 import { MultiSelect, MultiSelectChangeEvent } from "primereact/multiselect";
 import { useForm } from "react-hook-form";
 import {
-  ButtonComponent,
   CheckBoxComponent,
   DropDownComponent,
 } from "@eachawy/frontend-library";
@@ -45,6 +44,14 @@ const CompanySubFileData = (props) => {
       name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" },
       code: "P3",
     },
+  ];
+
+  const legalStatusOfTheParty = [
+    {
+      name: { ar: "مدعى عليه", en: "Defendant" },
+      code: "DE",
+    },
+    { name: { ar: "مشتكى عليه", en: "Accused" }, code: "AC" },
   ];
 
   const privateFileList = [
@@ -129,6 +136,7 @@ const CompanySubFileData = (props) => {
             errors={errors}
             onChange={(e) => setValue("fileType", e.value as object)}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
+            // placeholder="Test Placeholder"
             rules={{ required: "You must select the file type." }}
           />
 
@@ -196,6 +204,25 @@ const CompanySubFileData = (props) => {
             />
           </div>
         )}
+      </div>
+
+      <div className="selectedLegalStatusOfThePartyDiv">
+        <DropDownComponent
+          id="selectedLegalStatusOfTheParty"
+          name="selectedLegalStatusOfTheParty"
+          label="صفة الخصم"
+          register={register}
+          watch={watch}
+          setValueMethod={setValue}
+          options={legalStatusOfTheParty}
+          optionLabel={`name.${lang}`}
+          errors={errors}
+          onChange={(e) =>
+            setValue("selectedLegalStatusOfTheParty", e.value as object)
+          }
+          placeholder="اختر صفة الخصم"
+          rules={{ required: "You must select the legal status of the party" }}
+        />
       </div>
     </div>
   );
