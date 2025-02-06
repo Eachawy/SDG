@@ -8,6 +8,7 @@ import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
 import { useForm } from "react-hook-form";
 import Cheque from "./shared/cheque";
+import DefendantInfoComponent from "./shared/defendantInfo/defendantInfo.component.tsx";
 
 const LegalBonds = (props) => {
   const {
@@ -69,6 +70,8 @@ const LegalBonds = (props) => {
         </div>
       </div>
       {showlegalBondPopup && <Cheque />}
+
+      <DefendantInfoComponent />
     </div>
   );
 };

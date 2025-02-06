@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-binary-expression */
 import {
   DatePickerComponent,
   DropDownComponent,
@@ -7,7 +6,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
-import { FieldError, useFieldArray, useForm, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import {
+  FieldError,
+  useFieldArray,
+  useForm,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 const Cheque = (props) => {
   type FormValues = {
@@ -18,7 +24,7 @@ const Cheque = (props) => {
     ChequeNo: string;
     dueDate: string;
     replayDate: string;
-    firstBeneficiary: string;
+    firstBeneficiary: any;
     firstBeneficiaryName: string;
     currencyList: string;
     rows: { drawerName: string }[];
@@ -126,10 +132,11 @@ const Cheque = (props) => {
     setShowlegalBondPopup(true);
   };
 
-  const cancelFn = () => { };
+  const cancelFn = () => {};
   const addChequeFn = () => {
     const formData = getValues();
     console.log("Cheque Form Data:", formData);
+    console.log("test watch: ", watch("firstBeneficiary"));
   };
 
   return (
@@ -266,12 +273,16 @@ const Cheque = (props) => {
           label="مستفيد"
         />
 
-        {true && (
+        {watch("firstBeneficiary")?.code === "FB" && (
           <InputComponent
             id="legalBondsfirstBeneficiaryName"
             type="text"
             name="firstBeneficiaryName"
-            placeholder="اضف اسم المستفيد الأول"
+            placeholder={
+              watch("firstBeneficiary")?.code === "FB"
+                ? "اضف اسم المستفيد الأول"
+                : "اضف اسم المجيز"
+            }
             register={register}
             errors={
               errors?.firstBeneficiaryName
@@ -282,7 +293,11 @@ const Cheque = (props) => {
             watch={watch}
             onChange={(e) => setValue("firstBeneficiaryName", e.target.value)}
             rules={{ required: "You must enter the first Beneficiary Name" }}
-            label="اسم المستفيد الأول"
+            label={
+              watch("firstBeneficiary")?.code === "FB"
+                ? "اسم المستفيد الأول"
+                : "اسم المجيز"
+            }
           />
         )}
 
@@ -321,41 +336,64 @@ const Cheque = (props) => {
           </div>
         ))} */}
 
-        {fields.map((field, index) => (
-          <div key={field.id} className="drawerNameDiv">
-            <InputComponent
-              id={`legalBondsDrawerName_${field.id}`}
-              type="text"
-              name={`rows.${index}.drawerName`}
-              placeholder="اضف اسم الساحب"
-              register={register as unknown as UseFormRegister<Record<string, unknown>>} 
-              errors={
-                errors?.rows?.[index]?.drawerName 
-                  ? { [`drawerName_${field.id}`]: errors.rows[index].drawerName }
-                  : undefined
-              }
-              setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
-              watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
-              onChange={(e) => handleRowChange(index, e.target.value)} 
-              rules={{ required: "You must enter the drawer name" }}
-              label="اسم الساحب"
-              value={watch(`rows.${index}.drawerName`)}
-            />
-            <div className="actionRowDiv">
-              {index !== 0 && (
-                <span onClick={() => removeRow(index)} className="deleteBtn">
-                  حذف
-                </span>
-              )}
-              {index === fields.length - 1 && (
-                <span onClick={addNewRow} className="addBtn">
-                  اضف اسم ساحب جديد
-                </span>
-              )}
+        {watch("firstBeneficiary") &&
+          fields.map((field, index) => (
+            <div key={field.id} className="drawerNameDiv">
+              <InputComponent
+                id={`legalBondsDrawerName_${field.id}`}
+                type="text"
+                name={`rows.${index}.drawerName`}
+                placeholder={
+                  watch("firstBeneficiary")?.code === "FB"
+                    ? "اضف اسم المستفيد الأول"
+                    : "اضف اسم المجيز"
+                }
+                register={
+                  register as unknown as UseFormRegister<
+                    Record<string, unknown>
+                  >
+                }
+                errors={
+                  errors?.rows?.[index]?.drawerName
+                    ? {
+                        [`drawerName_${field.id}`]:
+                          errors.rows[index].drawerName,
+                      }
+                    : undefined
+                }
+                setValueMethod={
+                  setValue as unknown as UseFormSetValue<
+                    Record<string, unknown>
+                  >
+                }
+                watch={
+                  watch as unknown as UseFormWatch<Record<string, unknown>>
+                }
+                onChange={(e) => handleRowChange(index, e.target.value)}
+                rules={{ required: "You must enter the drawer name" }}
+                label={
+                  watch("firstBeneficiary")?.code === "FB"
+                    ? "اسم الساحب"
+                    : "اسم المجيز"
+                }
+                value={watch(`rows.${index}.drawerName`)}
+              />
+              <div className="actionRowDiv">
+                {index !== 0 && (
+                  <span onClick={() => removeRow(index)} className="deleteBtn">
+                    حذف
+                  </span>
+                )}
+                {index === fields.length - 1 && (
+                  <span onClick={addNewRow} className="addBtn">
+                    {watch("firstBeneficiary")?.code === "FB"
+                      ? " اضف اسم ساحب جديد"
+                      : "اضف اسم مجيز جديد"}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-
+          ))}
 
         <div className="uploaderContainer">
           <h4>{translate("createNewProfile.attachments")}</h4>

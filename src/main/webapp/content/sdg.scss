@@ -748,6 +748,7 @@ body,
             flex-wrap: nowrap;
             gap: 16px;
             align-items: center;
+            margin-bottom: 32px;
 
             .GCDropDownComponent {
               width: calc(50% - 16px);
@@ -952,6 +953,7 @@ body,
 
                   &.deleteBtn {
                     color: #ED0000;
+
                     &::before {
                       background: url("../content/images/red_delete.svg") center / contain no-repeat;
                     }
@@ -959,8 +961,173 @@ body,
 
                   &.addBtn {
                     color: #2563EB;
+
                     &::before {
-                       background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+                      background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .defendantInfo {
+            margin-bottom: 32px;
+
+            h4 {
+              font-size: 18px;
+              color: #000;
+              font-weight: 700;
+              margin-bottom: 32px;
+            }
+
+            .tabsRowAndActionBtnsDiv {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 16px;
+
+              .actionTableBtnsDiv {
+                display: flex;
+                flex-direction: row;
+                gap: 16px;
+                justify-content: space-between;
+                align-items: center;
+
+                span {
+                  color: #2563EB;
+                  font-weight: 400;
+                  font-size: 12px;
+                  text-decoration: underline;
+                  cursor: pointer;
+                }
+              }
+
+              .tabsRowDiv {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 82%;
+
+                .tab {
+                  color: #2D51A3;
+                  background-color: #fff;
+                  font-size: 12px;
+                  font-weight: 700;
+                  gap: 8px;
+                  padding: 10px 20px;
+                  border: 1px solid #D9D9D9;
+                  border-radius: 8px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  cursor: pointer;
+                  user-select: none;
+
+                  &._active {
+                    border-color: 2D51A3;
+                    color: #fff;
+                    font-weight: 400;
+                    background-color: #2563EB;
+                  }
+                }
+              }
+            }
+
+            .cheque-table-container {
+              width: 100%;
+              border-radius: 8px;
+
+              .p-datatable {
+                // border: 1px solid #ccc;
+                border-radius: 8px;
+                overflow: hidden;
+
+                .p-datatable-header {
+                  background-color: #003366;
+                  color: #ffffff;
+                  font-weight: bold;
+                  // text-align: right;
+                }
+
+                .p-datatable-thead {
+                  >tr {
+                    >th {
+                      background: #2D51A3;
+                      color: #fff;
+                      text-align: left;
+                      padding: 14px 10px;
+                      font-size: 12px;
+                      font-weight: 400;
+                    }
+                  }
+                }
+
+                .p-datatable-tbody {
+                  >tr {
+                    border-bottom: 1px solid #ddd;
+
+                    &:nth-child(even) {
+                      background-color: #f5f5f5;
+                    }
+
+                    &:hover {
+                      background: #e0e0e0;
+                    }
+
+                    >td {
+                      padding: 12px 10px;
+                      text-align: left;
+                      font-size: 13px;
+
+                      .action-column {
+                        position: relative;
+                        text-align: center;
+                        padding: 0 8px;
+
+                      }
+
+                      .dots-menu {
+                        cursor: pointer;
+                        font-size: 20px;
+                        display: inline-block;
+                        width: 24px;
+                        height: 24px;
+                        pointer-events: none;
+                        background: url("../content/images/threeDotsMenu.svg") center / contain no-repeat;
+                        left: 16px;
+                        top: 16px;
+                      }
+
+                      .actionList {
+                        position: absolute;
+                        top: 25px;
+                        right: 0;
+                        background: white;
+                        border: 1px solid #ddd;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        z-index: 100;
+                      }
+                      
+                      .actionList{
+                        span {
+                          padding: 5px;
+                          cursor: pointer;
+                        }
+                      } 
+                      
+                      .actionList{
+                        span:hover {
+                          background: #f0f0f0;
+                        }
+                      } 
                     }
                   }
                 }
