@@ -8,7 +8,6 @@ export default () => {
   return (
     <div>
       <ErrorBoundaryRoutes>
-        {/* prettier-ignore */}
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

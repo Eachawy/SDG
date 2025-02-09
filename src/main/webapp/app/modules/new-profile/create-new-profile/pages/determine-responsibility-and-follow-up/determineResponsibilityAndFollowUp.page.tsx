@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
@@ -43,13 +42,13 @@ const DetermineResponsibilityAndFollowUpPage = () => {
   };
 
   const nextFn = async () => {
-    const isValid = await trigger(); 
+    const isValid = await trigger();
     if (isValid) {
       handleSubmit(handleValidationSuccess)();
     }
   };
 
-  const saveAndCloseFn = () => {};
+  const saveAndCloseFn = () => { };
 
   return (
     <div className="DetermineResponsibilityAndFollowUpPage">

@@ -1,5 +1,3 @@
-/* eslint-disable */
-/*prettier-ignore */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useState } from "react";
 import { translate } from "react-jhipster";

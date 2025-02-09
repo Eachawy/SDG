@@ -101,10 +101,10 @@ export default () => (next) => (action) => {
           } else {
             toast.error(
               data?.detail ??
-                data?.message ??
-                data?.error ??
-                data?.title ??
-                "Unknown error!",
+              data?.message ??
+              data?.error ??
+              data?.title ??
+              "Unknown error!",
             );
           }
         }
@@ -113,7 +113,6 @@ export default () => (next) => (action) => {
       error.config?.url?.endsWith("api/account") &&
       error.config?.method === "get"
     ) {
-      /* eslint-disable no-console */
       console.log(
         "Authentication Error: Trying to access url api/account with GET.",
       );

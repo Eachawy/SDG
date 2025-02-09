@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import ErrorBoundary from "app/shared/error/error-boundary";
 import React, { Children } from "react";
 import { Outlet } from "react-router-dom";

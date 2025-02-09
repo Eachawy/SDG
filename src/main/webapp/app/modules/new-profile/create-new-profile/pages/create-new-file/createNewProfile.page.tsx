@@ -1,5 +1,3 @@
-/* eslint-disable */
-/*prettier-ignore */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
@@ -9,8 +7,9 @@ import { useForm } from "react-hook-form";
 import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
 import { countryCode } from "app/shared/util/date-utils";
+import AttachmentMultiFileComponent from "app/shared/components/attachmentMultiFile.Component/attachmentMultiFile.Component";
 
-import { Calendar } from 'primereact/calendar';
+
 
 const CreateNewProfilePage = () => {
 
@@ -53,10 +52,6 @@ const CreateNewProfilePage = () => {
             </div>
         );
     };
-
-
-    const [date, setDate] = useState(null);
-
 
     return (
         <div className="createNewProfilePage">
@@ -198,7 +193,10 @@ const CreateNewProfilePage = () => {
 
                 <div className="uploaderContainer">
                     <h4>{translate("createNewProfile.attachments")}</h4>
-                    <input type="file" id="avatar" name="avatar" accept="image/*" onChange={e => console.log(e)} />
+
+                    <div className="row">
+                        <AttachmentMultiFileComponent class="col-6" />
+                    </div>
 
                 </div>
 
