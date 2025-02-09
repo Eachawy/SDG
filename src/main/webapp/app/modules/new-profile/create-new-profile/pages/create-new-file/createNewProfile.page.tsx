@@ -1,14 +1,15 @@
-/* eslint-disable */
-/*prettier-ignore */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { ButtonComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
 import { countryCode } from "app/shared/util/date-utils";
+import AttachmentMultiFileComponent from "app/shared/components/attachmentMultiFile.Component/attachmentMultiFile.Component";
+
+
 
 const CreateNewProfilePage = () => {
 
@@ -51,7 +52,6 @@ const CreateNewProfilePage = () => {
             </div>
         );
     };
-
 
     return (
         <div className="createNewProfilePage">
@@ -193,12 +193,18 @@ const CreateNewProfilePage = () => {
 
                 <div className="uploaderContainer">
                     <h4>{translate("createNewProfile.attachments")}</h4>
+
+                    <div className="row">
+                        <AttachmentMultiFileComponent class="col-6" />
+                    </div>
+
                 </div>
 
                 <div className="actionBtns">
                     <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
                     <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(handleLogin)}>{translate("createNewProfile.next")}</ButtonComponent>
                 </div>
+
 
             </div>
         </div>

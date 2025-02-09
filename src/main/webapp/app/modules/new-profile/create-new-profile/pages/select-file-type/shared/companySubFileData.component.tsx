@@ -1,5 +1,3 @@
-/* eslint-disable */
-/*prettier-ignore */
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import { MultiSelectChangeEvent } from "primereact/multiselect";

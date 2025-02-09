@@ -1,5 +1,3 @@
-/* eslint-disable */
-// prettier-ignore
 import React from "react";
 import { translate } from "react-jhipster";
 import { useForm } from "react-hook-form";

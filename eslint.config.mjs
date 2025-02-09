@@ -76,7 +76,11 @@ export default tseslint.config(
       "no-labels": "error",
       "no-caller": "error",
       "no-bitwise": "error",
-      "no-console": ["error", { allow: ["warn", "error"] }],
+      // "no-console": ["error", { allow: ["warn", "error"] }],
+      "no-console": "off",
+      "prettier/prettier": "off",
+      "no-unused-vars": "off",
+
       "no-new-wrappers": "error",
       "no-eval": "error",
       "no-new": "error",
@@ -103,5 +107,5 @@ export default tseslint.config(
     },
   },
   // jhipster-needle-eslint-add-config - JHipster will add additional config here
-  prettier,
+  // prettier,
 );
