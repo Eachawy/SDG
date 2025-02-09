@@ -16,6 +16,7 @@ body,
 
 .countryCodeTemplate {
   display: flex;
+
   .flag-icon {
     line-height: 27px;
     margin: 0 2px;
@@ -35,6 +36,27 @@ body,
 .sdg-container {
   .sdg_content {
     padding-top: 32px;
+
+    .p-checkbox-box {
+      border: 1px solid #d1d5db;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      top: 0;
+
+      svg {
+        zoom: 0.8;
+      }
+    }
+
+    .GCCheckBoxComponent {
+      display: flex;
+      justify-content: flex-end;
+
+      .p-dropdown {
+        line-height: 24px !important;
+      }
+    }
 
     .actionBtns {
       display: flex;
@@ -68,6 +90,12 @@ body,
         }
 
         &:hover {
+          background-color: #f7941d;
+          color: #fff;
+          border-color: transparent;
+        }
+
+        &._saveAndAdd {
           background-color: #f7941d;
           color: #fff;
           border-color: transparent;
@@ -452,6 +480,11 @@ body,
           .privateFileDiv {
             display: flex;
             flex-direction: column;
+            margin-bottom: 32px;
+
+            label {
+              padding: 0 !important;
+            }
 
             .fileTypeAndDelegatedPersonDiv {
               display: flex;
@@ -480,7 +513,7 @@ body,
                   font-size: 14px;
                   line-height: 16px;
                   font-weight: 400;
-                  padding: 0;
+                  padding: 0 !important;
 
                   span {
                     color: #ee0000;
@@ -535,9 +568,626 @@ body,
             }
           }
 
+          .selectedLegalStatusOfThePartyDiv {
+            .GCDropDownComponent {
+              width: calc(50% - 16px);
+            }
+          }
+
           .GCCheckBoxComponent {
             span {
               margin: 0 8px !important;
+            }
+          }
+        }
+
+        .lawsuits {
+          .GCInputComponent,
+          .GCDropDownComponent {
+            margin: 0;
+          }
+
+          h4 {
+            font-size: 18px;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 32px;
+          }
+
+          div:has(.amountToCollect) {
+            .amountToCollect {
+              width: calc(50% - 24px);
+              margin: 0 24px 0 0;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+
+              @media screen and (max-width: 768px) {
+                width: 95.4%;
+              }
+
+              .GCInputComponent {
+                width: calc(81% - 4px);
+                margin-top: 2px;
+              }
+
+              .GCDropDownComponent {
+                width: calc(23% - 4px);
+                margin-top: 27px;
+                padding: 0;
+              }
+            }
+          }
+
+          .lawsuitsInputFormDiv {
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 28px 32px;
+
+            > div {
+              width: calc(50% - 16px);
+
+              &.amountToCollect {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 8px;
+                align-items: flex-end;
+
+                .GCInputComponent {
+                  width: calc(77% - 4px);
+                }
+
+                .GCDropDownComponent {
+                  width: calc(23% - 4px);
+                }
+              }
+            }
+          }
+        }
+
+        .urgentRequest {
+          .GCInputComponent,
+          .GCDropDownComponent {
+            margin: 0;
+          }
+
+          h4 {
+            font-size: 18px;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 32px;
+          }
+
+          div:has(.amountToCollect) {
+            .amountToCollect {
+              width: calc(50% - 24px);
+              margin: 0 24px 0 0;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+
+              @media screen and (max-width: 768px) {
+                width: 95.4%;
+              }
+
+              .GCInputComponent {
+                width: calc(81% - 4px);
+                margin-top: 2px;
+              }
+
+              .GCDropDownComponent {
+                width: calc(23% - 4px);
+                margin-top: 27px;
+                padding: 0;
+              }
+            }
+          }
+
+          .urgentRequestInputFormDiv {
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 28px 32px;
+
+            > div {
+              width: calc(50% - 16px);
+
+              &.amountToCollect {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 8px;
+                align-items: flex-end;
+
+                .GCInputComponent {
+                  width: calc(77% - 4px);
+                }
+
+                .GCDropDownComponent {
+                  width: calc(23% - 4px);
+                }
+              }
+            }
+          }
+        }
+
+        .collection {
+          margin-bottom: 32px;
+
+          .GCInputComponent,
+          .GCDropDownComponent {
+            margin: 0;
+          }
+
+          h4 {
+            font-size: 18px;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 32px;
+          }
+
+          div:has(.amountToCollect) {
+            .amountToCollect {
+              width: calc(50% - 24px);
+              margin: 0 24px 0 0;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+
+              @media screen and (max-width: 768px) {
+                width: 95.4%;
+              }
+
+              .GCInputComponent {
+                width: calc(81% - 4px);
+                margin-top: 2px;
+              }
+
+              .GCDropDownComponent {
+                width: calc(23% - 4px);
+                margin-top: 27px;
+                padding: 0;
+              }
+            }
+          }
+
+          .collectionInputFormDiv {
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 28px 32px;
+
+            > div {
+              width: calc(50% - 16px);
+
+              &.amountToCollect {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 8px;
+                align-items: flex-end;
+
+                .GCInputComponent {
+                  width: calc(77% - 4px);
+                }
+
+                .GCDropDownComponent {
+                  width: calc(23% - 4px);
+                }
+              }
+            }
+          }
+        }
+
+        .legalBonds {
+          margin-bottom: 32px;
+
+          .GCDropDownComponent {
+            margin: 0;
+          }
+
+          h4 {
+            font-size: 18px;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 32px;
+          }
+
+          .btnStyle {
+            background-color: #2d51a3;
+            color: #fff;
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 8px 40px 11px;
+            user-select: none;
+            font-family: "Cairo-Regular";
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            margin-top: 0;
+
+            @media screen and (max-width: 768px) {
+              width: 100%;
+              text-align: center;
+            }
+
+            &._saveAndAdd {
+              background-color: #f7941d;
+              color: #fff;
+              border-color: transparent;
+            }
+          }
+
+          .legalBondsRowDiv {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 32px;
+
+            .GCDropDownComponent {
+              width: calc(50% - 16px);
+              gap: 8px;
+              margin: 0;
+            }
+
+            .btnStyle {
+              background-color: #2d51a3;
+              color: #fff;
+              font-size: 16px;
+              line-height: 16px;
+              font-weight: 400;
+              cursor: pointer;
+              border-radius: 6px;
+              padding: 8px 40px 11px;
+              user-select: none;
+              font-family: "Cairo-Regular";
+              height: 48px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              @media screen and (max-width: 768px) {
+                width: 100%;
+                text-align: center;
+              }
+
+              &._saveAndAdd {
+                background-color: #f7941d;
+                color: #fff;
+                border-color: transparent;
+              }
+            }
+          }
+
+          .legalBondChequeOverlay {
+            padding: 32px;
+            h4 {
+              font-size: 18px;
+              color: #000;
+              font-weight: 700;
+              margin-bottom: 32px;
+              width: 100%;
+            }
+
+            .GCInputComponent,
+            .GCDropDownComponent {
+              margin: 0;
+            }
+            .chequeAmount {
+              width: calc(50% - 24px);
+              margin: 0 24px 0 0;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+
+              @media screen and (max-width: 768px) {
+                width: 95.4%;
+              }
+
+              .GCInputComponent {
+                width: calc(81% - 4px);
+                margin-top: 2px;
+              }
+
+              .GCDropDownComponent {
+                width: calc(23% - 4px);
+                margin-top: 27px;
+                padding: 0;
+              }
+            }
+            .uploaderContainer,
+            .actionBtns {
+              width: 100%;
+            }
+            .actionBtns {
+              display: flex;
+              flex-direction: row;
+              gap: 16px;
+
+              @media screen and (max-width: 768px) {
+                flex-direction: column;
+              }
+              .btnStyle,
+              .BtnCancel {
+                background-color: #2d51a3;
+                color: #fff;
+                font-size: 16px;
+                line-height: 16px;
+                font-weight: 400;
+                cursor: pointer;
+                border-radius: 6px;
+                padding: 8px 40px 11px;
+                user-select: none;
+                font-family: "Cairo-Regular";
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                @media screen and (max-width: 768px) {
+                  width: 100%;
+                  text-align: center;
+                }
+
+                &:hover {
+                  background-color: #f7941d;
+                  color: #fff;
+                  border-color: transparent;
+                }
+
+                &._saveAndAdd {
+                  background-color: #f7941d;
+                  color: #fff;
+                  border-color: transparent;
+                }
+              }
+
+              .BtnCancel {
+                background-color: #fff;
+                color: #000;
+                border: 1px solid #d9d9d9;
+                min-width: 158px;
+              }
+
+              .btnStyle {
+                min-width: 120px;
+              }
+            }
+            .switchDiv {
+              width: 100%;
+              display: flex;
+              flex-wrap: nowrap;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              margin-bottom: 32px;
+              label {
+                cursor: pointer;
+                padding: 0 8px;
+                user-select: none;
+                color: #000;
+              }
+            }
+            .actionRowDiv {
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              gap: 32px;
+              align-items: center;
+
+              span {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 700;
+                padding: 0 0 0 32px;
+                cursor: pointer;
+                position: relative;
+
+                &::before {
+                  position: absolute;
+                  content: "";
+                  width: 24px;
+                  height: 24px;
+                  pointer-events: none;
+                  left: 0;
+                  top: 0;
+                  cursor: pointer;
+                }
+
+                &.deleteBtn {
+                  color: #ed0000;
+
+                  &::before {
+                    background: url("../content/images/red_delete.svg") center /
+                      contain no-repeat;
+                  }
+                }
+
+                &.addBtn {
+                  color: #2563eb;
+
+                  &::before {
+                    background: url("../content/images/blue_plus.svg") center /
+                      contain no-repeat;
+                  }
+                }
+              }
+            }
+          }
+
+          .defendantInfo {
+            margin-bottom: 32px;
+
+            h4 {
+              font-size: 18px;
+              color: #000;
+              font-weight: 700;
+              margin-bottom: 32px;
+            }
+
+            .tabsRowAndActionBtnsDiv {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 16px;
+
+              .actionTableBtnsDiv {
+                display: flex;
+                flex-direction: row;
+                gap: 16px;
+                justify-content: space-between;
+                align-items: center;
+
+                span {
+                  color: #2563eb;
+                  font-weight: 400;
+                  font-size: 12px;
+                  text-decoration: underline;
+                  cursor: pointer;
+                }
+              }
+
+              .tabsRowDiv {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 82%;
+
+                .tab {
+                  color: #2d51a3;
+                  background-color: #fff;
+                  font-size: 12px;
+                  font-weight: 700;
+                  gap: 8px;
+                  padding: 10px 20px;
+                  border: 1px solid #d9d9d9;
+                  border-radius: 8px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  cursor: pointer;
+                  user-select: none;
+
+                  &._active {
+                    border-color: 2D51A3;
+                    color: #fff;
+                    font-weight: 400;
+                    background-color: #2563eb;
+                  }
+                }
+              }
+            }
+
+            .cheque-table-container {
+              width: 100%;
+              border-radius: 8px;
+
+              .p-datatable {
+                border-radius: 8px;
+                overflow: hidden;
+
+                .p-datatable-header {
+                  background-color: #003366;
+                  color: #ffffff;
+                  font-weight: bold;
+                }
+
+                .p-datatable-thead {
+                  > tr {
+                    > th {
+                      background: #2d51a3;
+                      color: #fff;
+                      text-align: left;
+                      padding: 14px 10px;
+                      font-size: 12px;
+                      font-weight: 400;
+                    }
+                  }
+                }
+
+                .p-datatable-tbody {
+                  > tr {
+                    border-bottom: 1px solid #ddd;
+
+                    &:nth-child(even) {
+                      background-color: #f5f5f5;
+                    }
+
+                    &:hover {
+                      background: #e0e0e0;
+                    }
+
+                    > td {
+                      padding: 12px 10px;
+                      text-align: left;
+                      font-size: 13px;
+
+                      .action-column {
+                        position: relative;
+                        text-align: center;
+                        padding: 0 8px;
+                      }
+
+                      .dots-menu {
+                        cursor: pointer;
+                        font-size: 20px;
+                        display: inline-block;
+                        width: 24px;
+                        height: 24px;
+                        pointer-events: none;
+                        background: url("../content/images/threeDotsMenu.svg")
+                          center / contain no-repeat;
+                        left: 16px;
+                        top: 16px;
+                      }
+
+                      .actionList {
+                        position: absolute;
+                        top: 25px;
+                        right: 0;
+                        background: white;
+                        border: 1px solid #ddd;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        z-index: 100;
+                      }
+
+                      .actionList {
+                        span {
+                          padding: 5px;
+                          cursor: pointer;
+                        }
+                      }
+
+                      .actionList {
+                        span:hover {
+                          background: #f0f0f0;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -1022,6 +1672,103 @@ body,
         display: none;
       }
     }
+  }
+}
+
+.p-multiselect-panel {
+  .p-multiselect-header {
+    display: none;
+  }
+
+  .p-multiselect-items-wrapper {
+    .p-multiselect-items {
+      padding: 0;
+      margin: 0;
+
+      li:first-of-type {
+        background-color: #fafafb;
+        border-bottom: none;
+
+        .p-checkbox-box {
+          background-color: #d9d9d9;
+        }
+
+        .p-checkbox-icon {
+          color: #5a5a63;
+        }
+      }
+
+      li:last-of-type {
+        border-bottom: none;
+      }
+
+      li {
+        padding: 8px 10px;
+        border-bottom: 1px solid #f1f1f1;
+        background-color: #fff;
+
+        &:hover {
+          background-color: #f2f2f2;
+          font-weight: 700;
+        }
+
+        .p-checkbox-box {
+          border: 1px solid #d1d5db;
+          width: 16px;
+          height: 16px;
+          border-radius: 4px;
+          top: 0;
+
+          svg {
+            zoom: 0.8;
+          }
+        }
+
+        span {
+          font-size: 12px;
+          font-weight: 400;
+          padding: 0 8px;
+        }
+      }
+    }
+  }
+}
+
+.p-dropdown {
+  line-height: 26px !important;
+  min-height: 48px !important;
+}
+
+.GCInputComponent,
+.GCDatePickerComponent {
+  margin-top: 5px !important;
+}
+
+.p-calendar {
+  min-height: 48px !important;
+}
+
+.popupView {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 31%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  > .content {
+    background-color: #fff;
+    padding: 8px;
+    height: 600px;
+    border-radius: 16px;
+    width: 85%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    outline: 8px solid #fff;
   }
 }
 

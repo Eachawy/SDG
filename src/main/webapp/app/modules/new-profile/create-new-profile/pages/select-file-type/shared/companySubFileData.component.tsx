@@ -2,10 +2,9 @@
 /*prettier-ignore */
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
-import { MultiSelect, MultiSelectChangeEvent } from "primereact/multiselect";
+import { MultiSelectChangeEvent } from "primereact/multiselect";
 import { useForm } from "react-hook-form";
 import {
-  ButtonComponent,
   CheckBoxComponent,
   DropDownComponent,
   DropDownMultiComponent,
@@ -37,6 +36,14 @@ const CompanySubFileData = (props) => {
     { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" }
   ];
 
+  const legalStatusOfTheParty = [
+    {
+      name: { ar: "مدعى عليه", en: "Defendant" },
+      code: "DE",
+    },
+    { name: { ar: "مشتكى عليه", en: "Accused" }, code: "AC" },
+  ];
+
   const privateFileList = [
     { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
     { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
@@ -44,7 +51,16 @@ const CompanySubFileData = (props) => {
     { name: { ar: "الدميري منصور عبد الرحمن", en: "Mansour Abd El Rahman El Demiry" }, code: "PF4" }
   ];
 
-  const onSubmit = (data) => props.onChangeControls(data);
+  const handleSelectionChange = (e: MultiSelectChangeEvent) => {
+    const selectedValues = e.value.filter(
+      (item) => item.code !== privateFileList[0].code,
+    );
+    setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
+  };
+
+  const onSubmit = (data) => {
+    // console.log("Form submitted:", data);
+  };
 
   useEffect(() => {
     if (props.triggerHandleSubmit > 0) {
@@ -70,12 +86,13 @@ const CompanySubFileData = (props) => {
           </p>
         </div>
       </div>
-      <div className="privateFileDiv">
-        <div className="fileTypeAndDelegatedPersonDiv">
+
+      {/* del=> privateFileDiv */}
+      <div className="container p-0">
+        <div className="row g-4 d-flex mb-4">
           <DropDownComponent
             id="fileType"
             name="fileType"
-            label={translate("selectFileType.fileTypeSelection")}
             register={register}
             watch={watch}
             setValueMethod={setValue}
@@ -85,27 +102,31 @@ const CompanySubFileData = (props) => {
             onChange={(e) => setValue("fileType", e.value as object)}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
             rules={{ required: "You must select the file type." }}
+            label={translate("selectFileType.fileTypeSelection")}
+            className="col-md-6 flex-1"
           />
           <DropDownComponent
             id="selectedDelegatedPerson"
             name="selectedDelegatedPerson"
-            label={translate("selectFileType.delegatedPersonName")}
             register={register}
             watch={watch}
             setValueMethod={setValue}
             options={delegatedPeopleNames}
             optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
             errors={errors}
-            onChange={e => setValue("selectedDelegatedPerson", e.value as object)}
+            onChange={(e) => setValue("selectedDelegatedPerson", e.value as object)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
+            label={translate("selectFileType.delegatedPersonName")}
+            className="col-md-6 flex-1"
           />
         </div>
         <CheckBoxComponent
           id="privateFileCheckBox"
           name="privateFileCheckBox"
           label={translate("selectFileType.privateFile")}
+          className="col-12 mb-2"
           register={register}
           errors={errors}
           setValueMethod={setValue}
@@ -113,21 +134,43 @@ const CompanySubFileData = (props) => {
           onChange={(e) => setValue("privateFileCheckBox", e.value)}
         />
 
-        {getValues().privateFileCheckBox && (
+        {watch("privateFileCheckBox") && (
+
           <DropDownMultiComponent
-            id="privateFileSelection"
             name="privateFileSelection"
+            label={translate("selectFileType.delegatedPersonName")}
             register={register}
             watch={watch}
             setValueMethod={setValue}
-            display="chip"
-            onChange={onChangeMultipleSelect}
             options={privateFileList}
-            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
-            placeholder={translate("selectFileType.privateFileSelection")}
-            setValue={getValues().selectedDelegatedPerson && [getValues().selectedDelegatedPerson]}
+            optionLabel={`name.${lang}`}
+            onChange={handleSelectionChange}
+            placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
+            rules={{ required: "You must select the Delegated Person." }}
+            setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
           />
         )}
+      </div>
+
+      {/* <div className="selectedLegalStatusOfThePartyDiv"> */}
+      <div className="row g-4">
+        <DropDownComponent
+          id="selectedLegalStatusOfTheParty"
+          name="selectedLegalStatusOfTheParty"
+          label="صفة الخصم"
+          register={register}
+          watch={watch}
+          setValueMethod={setValue}
+          options={legalStatusOfTheParty}
+          optionLabel={`name.${lang}`}
+          errors={errors}
+          onChange={(e) =>
+            setValue("selectedLegalStatusOfTheParty", e.value as object)
+          }
+          placeholder="اختر صفة الخصم"
+          rules={{ required: "You must select the legal status of the party" }}
+          className="col-md-6"
+        />
       </div>
     </div>
   );
