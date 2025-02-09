@@ -144,9 +144,10 @@ const Cheque = (props) => {
   };
 
   return (
-    <div className="legalBondChequeOverlay">
-      <div className="container">
-        <div className="row g-4 mb-4">
+    <div className="popupView">
+      <div className="content">
+
+        <div className="legalBondChequeOverlay row g-4 mb-4">
           <h4>إضافة بيانات الشيك</h4>
 
           <DropDownComponent
@@ -397,6 +398,7 @@ const Cheque = (props) => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
