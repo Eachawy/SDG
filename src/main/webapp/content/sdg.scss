@@ -20,7 +20,17 @@ body,
   .flag-icon {
     line-height: 27px;
     margin: 0 2px;
+    height: 30px;
+    + div {
+      line-height: 30px;
+    }
   }
+}
+
+.disable {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
 }
 
 .sdg-container {
@@ -517,6 +527,8 @@ body,
 
                   .p-dropdown-label {
                     font-size: 12px;
+                    line-height: 21px;
+                    padding: 0;
                   }
                 }
               }
@@ -551,61 +563,8 @@ body,
               padding: 0 8px;
             }
 
-            .privateFileMultiSelect {
+            .GCDropDownMultiComponent {
               width: calc(50% - 12px);
-
-              @media screen and (max-width: 879px) {
-                width: 100%;
-              }
-
-              .p-multiselect {
-                width: 100%;
-                border: 1px solid #d9d9d9;
-                border-radius: 10px;
-                padding: 9px 8px;
-
-                .p-multiselect-label-container {
-                  width: 99%;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  text-overflow: ellipsis !important;
-                  text-overflow: ellipsis !important;
-
-                  .p-multiselect-label {
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    max-width: 100%;
-                    display: block;
-
-                    &.p-placeholder {
-                      font-size: 12px;
-                      min-height: 29px;
-                      display: flex;
-                      align-items: center;
-                    }
-
-                    .p-multiselect-token {
-                      padding: 4px 8px;
-                      background-color: #f5f5f5;
-                      border-radius: 4px;
-                      font-size: 14px;
-                      font-weight: 400;
-                      margin: 0 4px;
-
-                      span {
-                        padding: 0 8px;
-                        font-size: 12px;
-                        font-weight: 400;
-                      }
-
-                      svg {
-                        margin: 0;
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
 
@@ -1665,6 +1624,10 @@ body,
 
   .GCInputComponent {
     margin-bottom: 24px;
+  }
+
+  ._col {
+    width: calc(50% - 14px);
   }
 }
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+/*prettier-ignore */
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import { MultiSelectChangeEvent } from "primereact/multiselect";
@@ -10,11 +12,8 @@ import {
 import { useAppSelector } from "app/config/store";
 
 const CompanySubFileData = (props) => {
-  const { triggerHandleSubmit, onValidationSuccess } = props;
-  const lang = useAppSelector((state) => state.locale.currentLocale);
 
-  const [privateFileCheck, setPrivateFileCheckBox] = useState(false);
-  const [selectedPrivateFile, setSelectedPrivateFile] = useState([]);
+  const lang = useAppSelector((state) => state.locale.currentLocale);
 
   const {
     register,
@@ -25,10 +24,6 @@ const CompanySubFileData = (props) => {
     getValues,
   } = useForm({ mode: "onTouched" });
 
-  useEffect(() => {
-    setValue("companyType", "corporateType");
-  }, [setValue]);
-
   const fileTypes = [
     { name: { ar: "قضايا", en: "Lawsuits" }, code: "T1" },
     { name: { ar: "طلب مستعجل", en: "Urgent Request" }, code: "T2" },
@@ -36,15 +31,9 @@ const CompanySubFileData = (props) => {
   ];
 
   const delegatedPeopleNames = [
-    {
-      name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" },
-      code: "P1",
-    },
-    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "P2" },
-    {
-      name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" },
-      code: "P3",
-    },
+    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
+    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
+    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" }
   ];
 
   const legalStatusOfTheParty = [
@@ -56,58 +45,32 @@ const CompanySubFileData = (props) => {
   ];
 
   const privateFileList = [
-    {
-      name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" },
-      code: "PF1",
-    },
+    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
     { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-    {
-      name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" },
-      code: "PF3",
-    },
-    {
-      name: {
-        ar: "الدميري منصور عبد الرحمن",
-        en: "Mansour Abd El Rahman El Demiry",
-      },
-      code: "PF4",
-    },
+    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" },
+    { name: { ar: "الدميري منصور عبد الرحمن", en: "Mansour Abd El Rahman El Demiry" }, code: "PF4" }
   ];
-
-  useEffect(() => {
-    setSelectedPrivateFile((prevSelected) => {
-      if (!prevSelected.some((item) => item.code === privateFileList[0].code)) {
-        return [privateFileList[0], ...prevSelected];
-      }
-      return prevSelected;
-    });
-  }, []);
 
   const handleSelectionChange = (e: MultiSelectChangeEvent) => {
     const selectedValues = e.value.filter(
       (item) => item.code !== privateFileList[0].code,
     );
-    // setSelectedPrivateFile([privateFileList[0], ...selectedValues]);
     setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
-  };
-
-  const onPrivateFileChange = (e) => {
-    setPrivateFileCheckBox(e);
   };
 
   const onSubmit = (data) => {
     // console.log("Form submitted:", data);
-    onValidationSuccess(true);
   };
 
   useEffect(() => {
-    if (triggerHandleSubmit > 0) {
-      handleSubmit(
-        (data) => onSubmit(data),
-        () => onValidationSuccess(false),
-      )();
+    if (props.triggerHandleSubmit > 0) {
+      handleSubmit(data => onSubmit(data))();
     }
-  }, [triggerHandleSubmit, handleSubmit, onValidationSuccess]);
+  }, [props.triggerHandleSubmit, props.onChangeControls]);
+
+  const onChangeMultipleSelect = (e) => {
+    setValue("privateFileSelection", e.value as []);
+  }
 
   return (
     <div className="companySubFileData">
@@ -142,7 +105,6 @@ const CompanySubFileData = (props) => {
             label={translate("selectFileType.fileTypeSelection")}
             className="col-md-6 flex-1"
           />
-
           <DropDownComponent
             id="selectedDelegatedPerson"
             name="selectedDelegatedPerson"
@@ -150,7 +112,7 @@ const CompanySubFileData = (props) => {
             watch={watch}
             setValueMethod={setValue}
             options={delegatedPeopleNames}
-            optionLabel={`name.${lang}`}
+            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
             errors={errors}
             onChange={(e) => setValue("selectedDelegatedPerson", e.value as object)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
@@ -160,7 +122,6 @@ const CompanySubFileData = (props) => {
             className="col-md-6 flex-1"
           />
         </div>
-
         <CheckBoxComponent
           id="privateFileCheckBox"
           name="privateFileCheckBox"
@@ -176,18 +137,18 @@ const CompanySubFileData = (props) => {
         {watch("privateFileCheckBox") && (
 
           <DropDownMultiComponent
-              name="privateFileSelection"
-              label={translate("selectFileType.delegatedPersonName")}
-              register={register}
-              watch={watch}
-              setValueMethod={setValue}
-              options={privateFileList}
-              optionLabel={`name.${lang}`}
-              onChange={handleSelectionChange}
-              placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
-              rules={{ required: "You must select the Delegated Person." }}
-              setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
-            />
+            name="privateFileSelection"
+            label={translate("selectFileType.delegatedPersonName")}
+            register={register}
+            watch={watch}
+            setValueMethod={setValue}
+            options={privateFileList}
+            optionLabel={`name.${lang}`}
+            onChange={handleSelectionChange}
+            placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
+            rules={{ required: "You must select the Delegated Person." }}
+            setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
+          />
         )}
       </div>
 

@@ -1,4 +1,5 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
+/*prettier-ignore */
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React, { useState } from "react";
 import { translate } from "react-jhipster";
@@ -19,13 +20,12 @@ const SelectFileTypePage = () => {
     }
 
     const nextFn = () => {
-        setTriggerHandleSubmit((t) => t + 1);
+        setTriggerHandleSubmit(t => t + 1);
     };
 
-    const handleValidationResult = (isValid: boolean) => {
-        if (isValid) {
-            navigate("/determine-responsibility-and-follow-up");
-        }
+    const handleValidationResult = (_data) => {
+        console.log("Form submitted:", _data);
+        // navigate("/determine-responsibility-and-follow-up");
     };
 
     return (
