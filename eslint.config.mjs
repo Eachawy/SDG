@@ -80,6 +80,7 @@ export default tseslint.config(
       "no-console": "off",
       "prettier/prettier": "off",
       "no-unused-vars": "off",
+      "no-constant-binary-expression": "off",
 
       "no-new-wrappers": "error",
       "no-eval": "error",
