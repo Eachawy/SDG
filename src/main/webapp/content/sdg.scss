@@ -473,12 +473,6 @@ body,
             margin-bottom: 32px;
 
             label {
-              // margin-bottom: 8px;
-              // align-self: flex-start;
-              // color: #52525b;
-              // font-size: 14px;
-              // line-height: 16px;
-              // font-weight: 400;
               padding: 0 !important;
             }
 
@@ -1050,7 +1044,6 @@ body,
                   width: 24px;
                   height: 24px;
                   pointer-events: none;
-                  // background: url("../content/images/blue_plus.svg") center / contain no-repeat;
                   left: 0;
                   top: 0;
                   cursor: pointer;
@@ -1149,7 +1142,6 @@ body,
               border-radius: 8px;
 
               .p-datatable {
-                // border: 1px solid #ccc;
                 border-radius: 8px;
                 overflow: hidden;
 
@@ -1157,7 +1149,6 @@ body,
                   background-color: #003366;
                   color: #ffffff;
                   font-weight: bold;
-                  // text-align: right;
                 }
 
                 .p-datatable-thead {

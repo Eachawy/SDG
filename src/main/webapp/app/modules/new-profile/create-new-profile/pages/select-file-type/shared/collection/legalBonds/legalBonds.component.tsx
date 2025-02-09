@@ -1,7 +1,5 @@
 import {
-  CheckBoxComponent,
   DropDownComponent,
-  InputComponent,
 } from "@eachawy/frontend-library";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";

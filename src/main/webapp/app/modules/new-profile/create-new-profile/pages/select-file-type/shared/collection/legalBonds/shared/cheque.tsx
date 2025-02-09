@@ -57,7 +57,6 @@ const Cheque = (props) => {
     },
   });
 
-  // Manage dynamic inputs using useFieldArray
   const { fields, append, remove } = useFieldArray({
     control,
     name: "rows",
@@ -72,30 +71,16 @@ const Cheque = (props) => {
 
   const [isChequeStamped, setIsChequeStamped] = useState(false);
 
-  // const addNewRow = () => {
-  //   setRows([...rows, { id: Date.now(), drawerName: "" }]);
-  // };
-
-  // const removeRow = (id) => {
-  //   setRows(rows.filter((row) => row.id !== id));
-  // };
-
-  // const handleRowChange = (id, value) => {
-  //   setRows(
-  //     rows.map((row) => (row.id === id ? { ...row, drawerName: value } : row)),
-  //   );
-  // };
-
   const addNewRow = () => {
-    append({ drawerName: "" }); // Appends a new empty row
+    append({ drawerName: "" });
   };
 
   const removeRow = (index) => {
-    remove(index); // Removes row at given index
+    remove(index); 
   };
 
   const handleRowChange = (index, value) => {
-    setValue(`rows.${index}.drawerName`, value); // Updates the value in react-hook-form
+    setValue(`rows.${index}.drawerName`, value); 
   };
 
   const lang = useAppSelector((state) => state.locale.currentLocale);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { set } from "lodash";
 
 const ChequeTableComponent = () => {
   const [selectedCheques, setSelectedCheques] = useState([]);

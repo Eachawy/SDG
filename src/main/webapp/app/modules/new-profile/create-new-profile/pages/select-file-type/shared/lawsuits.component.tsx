@@ -3,7 +3,7 @@ import {
   DropDownComponent,
   InputComponent,
 } from "@eachawy/frontend-library";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
 import { useForm } from "react-hook-form";
@@ -63,7 +63,6 @@ const Lawsuits = (props) => {
   return (
     <div className="lawsuits container p-0">
       <h4>بيانات قضايا</h4>
-      {/* del=> lawsuitsInputFormDiv */}
       <div className="row g-4 gy-4 d-flex mb-4">
         <div className="amountToCollect row p-0 col-md-6 mb-4">
           <InputComponent

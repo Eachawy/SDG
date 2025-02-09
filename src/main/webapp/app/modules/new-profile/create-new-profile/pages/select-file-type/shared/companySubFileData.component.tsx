@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
-import { MultiSelect, MultiSelectChangeEvent } from "primereact/multiselect";
+import { MultiSelectChangeEvent } from "primereact/multiselect";
 import { useForm } from "react-hook-form";
 import {
   CheckBoxComponent,
@@ -174,25 +174,6 @@ const CompanySubFileData = (props) => {
         />
 
         {watch("privateFileCheckBox") && (
-          // <div className="privateFileMultiSelect mb-4">
-          //   <MultiSelect
-          //     value={selectedPrivateFile}
-          //     onChange={handleSelectionChange}
-          //     options={privateFileList}
-          //     optionLabel="name.ar"
-          //     display="chip"
-          //     placeholder={translate("selectFileType.privateFileSelection")}
-          //     itemTemplate={(option) => (
-          //       <div
-          //         style={{
-          //           opacity: option.code === privateFileList[0].code ? 0.7 : 1,
-          //         }}
-          //       >
-          //         {option.name.ar}
-          //       </div>
-          //     )}
-          //   />
-          // </div>
 
           <DropDownMultiComponent
               name="privateFileSelection"
