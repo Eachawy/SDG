@@ -151,22 +151,31 @@ const ChequeTableComponent = () => {
 
   const actionBodyTemplate = (rowData: any) => {
     return (
-      <div className="action-column"
-        onClick={
-          (e) => {
-            e.stopPropagation()
-            setActionRowId(rowData.id);
-            setIsActionList(true);
-          }}
+      <div
+        className="action-column"
+        onClick={(e) => {
+          e.stopPropagation();
+          setActionRowId(rowData.id);
+          setIsActionList(true);
+        }}
       >
-        <span
-          className="dots-menu"
-        >
-        </span>
+        <span className="dots-menu"></span>
         {actionRowId === rowData.id && isActionList && (
           <div className="actionList" onClick={(e) => e.stopPropagation()}>
-            <span onClick={() => {setIsActionList(false)}}>تعديل</span>
-            <span onClick={() => {setIsActionList(false)}}>حذف</span>
+            <span
+              onClick={() => {
+                setIsActionList(false);
+              }}
+            >
+              تعديل
+            </span>
+            <span
+              onClick={() => {
+                setIsActionList(false);
+              }}
+            >
+              حذف
+            </span>
           </div>
         )}
       </div>

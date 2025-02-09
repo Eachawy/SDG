@@ -50,8 +50,10 @@ const LegalBonds = (props) => {
 
   return (
     <div className="legalBonds">
-      <h4>بيانات حالة المدعي عليه</h4>
-      <div className="legalBondsRowDiv">
+      {/* <h4>بيانات حالة المدعي عليه</h4> */}
+
+      {/* legalBondsRowDiv */}
+      <div className="row g-5 gy-4 mb-4">
         <DropDownComponent
           id="legalBondsCurrencyList"
           name="currencyList"
@@ -64,6 +66,7 @@ const LegalBonds = (props) => {
           onChange={(e) => setValue("currencyList", e.value as object)}
           placeholder="اختر السند القانوني"
           rules={{ required: "You must select the legal bonds" }}
+          className="col-md-6"
         />
         <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
           إضافة
@@ -71,7 +74,7 @@ const LegalBonds = (props) => {
       </div>
       {showlegalBondPopup && <Cheque />}
 
-      <DefendantInfoComponent />
+      {/* <DefendantInfoComponent /> */}
     </div>
   );
 };

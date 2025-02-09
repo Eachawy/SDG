@@ -35,8 +35,8 @@ const SelectFileTypePage = () => {
             <div className="sdg_page ">
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span></label>
                 <CompanySubFileData triggerHandleSubmit={triggerHandleSubmit} onValidationSuccess={handleValidationResult} />
-                {false && <Lawsuits />}
-                {false && <UrgentRequest />}
+                {true && <Lawsuits />}
+                {true && <UrgentRequest />}
                 {true && <Collection />}
                 {true && <LegalBonds />}
 

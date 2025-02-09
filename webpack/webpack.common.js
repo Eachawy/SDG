@@ -116,7 +116,7 @@ module.exports = async (options) => {
             { from: "./src/main/webapp/content/", to: "content/" },
             {
               from: "./node_modules/@eachawy/frontend-library/lib/resource/images/",
-              to: "content",
+              to: "content/images/",
             },
             { from: "./src/main/webapp/favicon.ico", to: "favicon.ico" },
             {

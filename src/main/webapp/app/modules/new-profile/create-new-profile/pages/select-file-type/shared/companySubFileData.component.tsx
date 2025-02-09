@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import {
   CheckBoxComponent,
   DropDownComponent,
+  DropDownMultiComponent,
 } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
 
@@ -86,7 +87,8 @@ const CompanySubFileData = (props) => {
     const selectedValues = e.value.filter(
       (item) => item.code !== privateFileList[0].code,
     );
-    setSelectedPrivateFile([privateFileList[0], ...selectedValues]);
+    // setSelectedPrivateFile([privateFileList[0], ...selectedValues]);
+    setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
   };
 
   const onPrivateFileChange = (e) => {
@@ -122,60 +124,48 @@ const CompanySubFileData = (props) => {
         </div>
       </div>
 
-      <div className="privateFileDiv">
-        <div className="fileTypeAndDelegatedPersonDiv">
+      {/* del=> privateFileDiv */}
+      <div className="container p-0">
+        <div className="row g-4 d-flex mb-4">
           <DropDownComponent
             id="fileType"
             name="fileType"
-            label={translate("selectFileType.fileTypeSelection")}
             register={register}
             watch={watch}
             setValueMethod={setValue}
             options={fileTypes}
-            optionLabel={`name.${lang}`}
+            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
             errors={errors}
             onChange={(e) => setValue("fileType", e.value as object)}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
-            // placeholder="Test Placeholder"
             rules={{ required: "You must select the file type." }}
+            label={translate("selectFileType.fileTypeSelection")}
+            className="col-md-6 flex-1"
           />
 
           <DropDownComponent
             id="selectedDelegatedPerson"
             name="selectedDelegatedPerson"
-            label={translate("selectFileType.delegatedPersonName")}
             register={register}
             watch={watch}
             setValueMethod={setValue}
             options={delegatedPeopleNames}
             optionLabel={`name.${lang}`}
             errors={errors}
-            onChange={(e) =>
-              setValue("selectedDelegatedPerson", e.value as object)
-            }
+            onChange={(e) => setValue("selectedDelegatedPerson", e.value as object)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
+            label={translate("selectFileType.delegatedPersonName")}
+            className="col-md-6 flex-1"
           />
         </div>
-        {/* <div className="checkBoxDiv">
-                    <Checkbox
-                        inputId="privateFileCheckBox"
-                        name="privateFileCheckBox"
-                        value="privateFileCheckBox"
-                        onChange={(e) => onPrivateFileChange(e.checked)}
-                        checked={privateFileCheck}
-                    />
-                    <label htmlFor="privateFileCheckBox" className="ml-2">
-                        {translate("selectFileType.privateFile")}
-                    </label>
-                </div> */}
 
         <CheckBoxComponent
           id="privateFileCheckBox"
           name="privateFileCheckBox"
           label={translate("selectFileType.privateFile")}
-          className="mb-2"
+          className="col-12 mb-2"
           register={register}
           errors={errors}
           setValueMethod={setValue}
@@ -184,29 +174,44 @@ const CompanySubFileData = (props) => {
         />
 
         {watch("privateFileCheckBox") && (
-          <div className="privateFileMultiSelect">
-            <MultiSelect
-              value={selectedPrivateFile}
-              onChange={handleSelectionChange}
+          // <div className="privateFileMultiSelect mb-4">
+          //   <MultiSelect
+          //     value={selectedPrivateFile}
+          //     onChange={handleSelectionChange}
+          //     options={privateFileList}
+          //     optionLabel="name.ar"
+          //     display="chip"
+          //     placeholder={translate("selectFileType.privateFileSelection")}
+          //     itemTemplate={(option) => (
+          //       <div
+          //         style={{
+          //           opacity: option.code === privateFileList[0].code ? 0.7 : 1,
+          //         }}
+          //       >
+          //         {option.name.ar}
+          //       </div>
+          //     )}
+          //   />
+          // </div>
+
+          <DropDownMultiComponent
+              name="privateFileSelection"
+              label={translate("selectFileType.delegatedPersonName")}
+              register={register}
+              watch={watch}
+              setValueMethod={setValue}
               options={privateFileList}
-              optionLabel="name.ar"
-              display="chip"
-              placeholder={translate("selectFileType.privateFileSelection")}
-              itemTemplate={(option) => (
-                <div
-                  style={{
-                    opacity: option.code === privateFileList[0].code ? 0.7 : 1,
-                  }}
-                >
-                  {option.name.ar}
-                </div>
-              )}
+              optionLabel={`name.${lang}`}
+              onChange={handleSelectionChange}
+              placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
+              rules={{ required: "You must select the Delegated Person." }}
+              setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
             />
-          </div>
         )}
       </div>
 
-      <div className="selectedLegalStatusOfThePartyDiv">
+      {/* <div className="selectedLegalStatusOfThePartyDiv"> */}
+      <div className="row g-4">
         <DropDownComponent
           id="selectedLegalStatusOfTheParty"
           name="selectedLegalStatusOfTheParty"
@@ -222,6 +227,7 @@ const CompanySubFileData = (props) => {
           }
           placeholder="اختر صفة الخصم"
           rules={{ required: "You must select the legal status of the party" }}
+          className="col-md-6"
         />
       </div>
     </div>

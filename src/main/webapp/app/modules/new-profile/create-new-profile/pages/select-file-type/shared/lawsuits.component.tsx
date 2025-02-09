@@ -61,10 +61,11 @@ const Lawsuits = (props) => {
   ];
 
   return (
-    <div className="lawsuits">
+    <div className="lawsuits container p-0">
       <h4>بيانات قضايا</h4>
-      <div className="lawsuitsInputFormDiv">
-        <div className="amountToCollect">
+      {/* del=> lawsuitsInputFormDiv */}
+      <div className="row g-4 gy-4 d-flex mb-4">
+        <div className="amountToCollect row p-0 col-md-6 mb-4">
           <InputComponent
             id="amountToBeCollected"
             type="amountToBeCollected"
@@ -105,6 +106,7 @@ const Lawsuits = (props) => {
           onChange={(e) => setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
           rules={{ required: "You must select the court" }}
+          className="col-md-6 mb-4"
         />
 
         <DropDownComponent
@@ -120,6 +122,7 @@ const Lawsuits = (props) => {
           onChange={(e) => setValue("lawsuitsType", e.value as object)}
           placeholder="اختر نوع القضية"
           rules={{ required: "You must select the lawsuits Type" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
@@ -134,6 +137,7 @@ const Lawsuits = (props) => {
           watch={watch}
           onChange={(e) => setValue("lawsuitsNo", e.target.value)}
           rules={{ required: "You must enter lawsuits Number" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
@@ -148,13 +152,13 @@ const Lawsuits = (props) => {
           watch={watch}
           onChange={(e) => setValue("Judge", e.target.value)}
           rules={{ required: "You must enter Judge name" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <DatePickerComponent
           id="lawsuitsRecordDate"
           name="lawsuitsRecordDate"
           label={"تاريخ تسجيل القضية"}
-          className={"_col"}
           placeholder={"DD/MM/YYYY"}
           register={register}
           rules={{ required: "You must select lawsuits record date" }}
@@ -162,6 +166,7 @@ const Lawsuits = (props) => {
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("lawsuitsRecordDate", e.target.value)}
+          className="col-md-6 flex-1 mb-4"
         />
       </div>
 

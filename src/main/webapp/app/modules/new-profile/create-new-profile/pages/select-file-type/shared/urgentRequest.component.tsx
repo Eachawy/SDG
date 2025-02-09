@@ -61,10 +61,11 @@ const UrgentRequest = (props) => {
   ];
 
   return (
-    <div className="urgentRequest">
+    <div className="urgentRequest container p-0">
       <h4>بيانات طلب مستعجل</h4>
-      <div className="urgentRequestInputFormDiv">
-        <div className="amountToCollect">
+      {/* del=> urgentRequestInputFormDiv */}
+      <div className="row g-4 gy-4 d-flex mb-4">
+        <div className="amountToCollect row p-0 col-md-6 mb-4">
           <InputComponent
             id="amountToBeCollected"
             type="amountToBeCollected"
@@ -105,6 +106,7 @@ const UrgentRequest = (props) => {
           onChange={(e) => setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
           rules={{ required: "You must select the court" }}
+          className="col-md-6 mb-4"
         />
 
         <DropDownComponent
@@ -120,6 +122,7 @@ const UrgentRequest = (props) => {
           onChange={(e) => setValue("urgentRequestType", e.value as object)}
           placeholder="اختر نوع الطلب"
           rules={{ required: "You must select the urgent request Type" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
@@ -134,6 +137,7 @@ const UrgentRequest = (props) => {
           watch={watch}
           onChange={(e) => setValue("urgentRequestNo", e.target.value)}
           rules={{ required: "You must enter urgentr request Number" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
@@ -148,13 +152,13 @@ const UrgentRequest = (props) => {
           watch={watch}
           onChange={(e) => setValue("Judge", e.target.value)}
           rules={{ required: "You must enter Judge name" }}
+          className="col-md-6 flex-1 mb-4"
         />
 
         <DatePickerComponent
           id="urgentRequestRecordDate"
           name="urgentRequestRecordDate"
           label={"تاريخ تسجيل الطلب"}
-          className={"_col"}
           placeholder={"DD/MM/YYYY"}
           register={register}
           rules={{ required: "You must select urgent request record date" }}
@@ -162,6 +166,7 @@ const UrgentRequest = (props) => {
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("urgentRequestRecordDate", e.target.value)}
+          className="col-md-6 flex-1 mb-4"
         />
       </div>
 

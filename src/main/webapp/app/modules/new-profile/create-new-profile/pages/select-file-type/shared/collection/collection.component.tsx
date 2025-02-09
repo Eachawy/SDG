@@ -27,20 +27,23 @@ const Collection = (props) => {
   ];
 
   return (
-    <div className="collection">
+    <div className="collection container p-0">
       <h4>بيانات حالة المدعي عليه</h4>
-      <div className="collectionInputFormDiv">
-        <div className="amountToCollect">
+      {/* del=> collectionInputFormDiv */}
+      <div className="row g-4 gy-4 d-flex mb-4">
+        <div className="amountToCollect row p-0 col-md-6 mb-5 ">
           <InputComponent
             id="amountToBeCollected"
-            type="amountToBeCollected"
-            name="amountToBeCollected"
+            type="text"
+            name="originalOfTheConscience"
             placeholder={translate("createNewProfile.exm") + "20,000"}
             register={register}
             errors={errors}
             setValueMethod={setValue}
             watch={watch}
-            onChange={(e) => setValue("amountToBeCollected", e.target.value)}
+            onChange={(e) =>
+              setValue("originalOfTheConscience", e.target.value)
+            }
             label="اصل الذمة"
           />
           <DropDownComponent
@@ -60,7 +63,7 @@ const Collection = (props) => {
 
         <InputComponent
           id="amountToBeCollected"
-          type="amountToBeCollected"
+          type="text"
           name="amountToBeCollected"
           placeholder={translate("createNewProfile.exm") + "20,000"}
           register={register}
@@ -70,6 +73,7 @@ const Collection = (props) => {
           onChange={(e) => setValue("amountToBeCollected", e.target.value)}
           label="المبلغ المراد تحصيله"
           rules={{ required: "You must enter the amount to be collected" }}
+          className="col-md-6 mb-4"
         />
       </div>
     </div>
