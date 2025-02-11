@@ -5,8 +5,9 @@ import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/creat
 import { useNavigate } from "react-router";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { InputComponent } from "@eachawy/frontend-library";
+import { DropDownComponent, InputComponent } from "@eachawy/frontend-library";
 import { useForm } from "react-hook-form";
+import { useAppSelector } from "app/config/store";
 
 interface Country {
   name: string;
@@ -32,8 +33,16 @@ const DetermineResponsibilityAndFollowUpPage = () => {
     trigger,
   } = useForm({ mode: "onTouched" });
 
+  const lang = useAppSelector((state) => state.locale.currentLocale);
+
   useEffect(() => {
     setValue("companyType", "corporateType");
+  }, []);
+
+  useEffect(() => {
+    if (countryCode?.length > 0) {
+      setValue("DRAFCountryCode", countryCode[0]);
+    }
   }, []);
 
   const handleValidationSuccess = (data: any) => {
@@ -50,6 +59,26 @@ const DetermineResponsibilityAndFollowUpPage = () => {
 
   const saveAndCloseFn = () => { };
 
+  const selectedCountryCodeTemplate = (option) => {
+    if (option) {
+      return (
+        <div className="countryCodeTemplate">
+          <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
+          <div>{option.name}</div>
+        </div>
+      );
+    }
+  };
+
+  const countryCodeOptionTemplate = (option) => {
+    return (
+      <div className="countryCodeTemplate">
+        <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
+        <div>{option.name}</div>
+      </div>
+    );
+  };
+
   return (
     <div className="DetermineResponsibilityAndFollowUpPage">
       <BreadcrumbComponent />
@@ -65,7 +94,7 @@ const DetermineResponsibilityAndFollowUpPage = () => {
 
         <div className="emailAndPhoneDiv">
           <InputComponent
-            id="email"
+            id="DetermineResponsibilityAndFollowUpEmail-id"
             type="email"
             name="email"
             label={translate("createNewProfile.email")}
@@ -75,9 +104,9 @@ const DetermineResponsibilityAndFollowUpPage = () => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("email", e.target.value)}
-            rules={{ required: 'You must enter your Email.' }}
+            rules={{ required: 'يجب ادخال البريد الالكتروني' }}
           />
-          <div>
+          {/* <div>
             <label>
               {translate("createNewProfile.phoneNumber")}
               <span>*</span>
@@ -97,6 +126,42 @@ const DetermineResponsibilityAndFollowUpPage = () => {
               <InputText
                 placeholder={translate("createNewProfile.exm") + "1234567"}
                 className="nationalNoInput"
+              />
+            </div>
+          </div> */}
+
+          <div className="phoneNoDiv col-md-6">
+            <label>رقم الهاتف <span>*</span></label>
+            <div>
+              <DropDownComponent
+                id="DetermineResponsibilityAndFollowUpPhoneNumber-id"
+                name="DRAFCountryCode"
+                register={register}
+                watch={watch}
+                setValueMethod={setValue}
+                options={countryCode}
+                optionLabel={`name.${lang}`}
+                errors={errors}
+                onChange={(e) => setValue("DRAFCountryCode", e.value)}
+                value={watch("DRAFCountryCode")}
+                valueTemplate={selectedCountryCodeTemplate}
+                itemTemplate={countryCodeOptionTemplate}
+              />
+
+              <InputComponent
+                id="DRAFPhoneNo-id"
+                type="text"
+                name="DRAFPhoneNo"
+                placeholder="مثال: 1234567"
+                register={register}
+                errors={errors}
+                setValueMethod={setValue}
+                watch={watch}
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                  setValue("DRAFPhoneNo", numericValue);
+                }}
+                value={watch("DRAFPhoneNo")}
               />
             </div>
           </div>

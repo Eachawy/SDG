@@ -6,6 +6,8 @@ const ChequeTableComponent = () => {
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
   const [isActionList, setIsActionList] = useState(false);
+  const [isBeneficiaryInfoList, setIsBeneficiaryInfoList] = useState(false);
+  const [beneficiaryInfoListRowId, setBeneficiaryInfoListRowId] = useState<number | null>(null);
 
   const chequeData = [
     {
@@ -134,19 +136,56 @@ const ChequeTableComponent = () => {
     setSelectedCheques(e.value);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".action-column")) {
-        setIsActionList(false);
-        setActionRowId(null);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (!(event.target as HTMLElement).closest(".action-column")) {
+  //       setIsActionList(false);
+  //       setIsBeneficiaryInfoList(false)
+  //       setActionRowId(null);
+  //       setBeneficiaryInfoListRowId(null);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  const beneficiaryInfoTemplateList = (rowData: any) => {
+    return (
+      <div className="tdContent"
+        onClick={(e) => {
+          e.stopPropagation();
+          setBeneficiaryInfoListRowId(rowData.id);
+          setIsBeneficiaryInfoList(true)
+        }}
+      >
+        <div className="tdinnerDiv">
+          <span className="dropDownArrow" />
+          <p>{rowData.drawer}</p>
+        </div>
+        {beneficiaryInfoListRowId === rowData.id && isBeneficiaryInfoList && (
+          <div className="actionList" onClick={(e) => e.stopPropagation()}>
+            <span
+              onClick={() => {
+                setIsActionList(false);
+              }}
+            >
+              تعديل
+            </span>
+            <span
+              onClick={() => {
+                setIsActionList(false);
+              }}
+            >
+              حذف
+            </span>
+          </div>
+        )}
+      </div>
+    )
+  }
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -158,7 +197,7 @@ const ChequeTableComponent = () => {
           setIsActionList(true);
         }}
       >
-        <span className="dots-menu"></span>
+        <span className="dots-menu" />
         {actionRowId === rowData.id && isActionList && (
           <div className="actionList" onClick={(e) => e.stopPropagation()}>
             <span
@@ -220,6 +259,7 @@ const ChequeTableComponent = () => {
           field="drawer"
           header="اسم المستفيد / الحساب / مصدر له"
           className="columnStyle"
+          body={beneficiaryInfoTemplateList}
         />
         <Column field="remarks" header="الملاحظات" className="columnStyle" />
         <Column body={actionBodyTemplate} className="columnStyle" />

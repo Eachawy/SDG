@@ -67,14 +67,17 @@ const Lawsuits = (props) => {
         <div className="amountToCollect row p-0 col-md-6 mb-4">
           <InputComponent
             id="amountToBeCollected"
-            type="amountToBeCollected"
+            type="text"
             name="amountToBeCollected"
             placeholder={translate("createNewProfile.exm") + "20,000"}
             register={register}
             errors={errors}
             setValueMethod={setValue}
             watch={watch}
-            onChange={(e) => setValue("amountToBeCollected", e.target.value)}
+            onChange={(e) => {
+              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+              setValue("amountToBeCollected", numericValue);
+            }}
             label="المبلغ المراد تحصيله"
           />
           <DropDownComponent
@@ -88,7 +91,7 @@ const Lawsuits = (props) => {
             errors={errors}
             onChange={(e) => setValue("currencyList", e.value as object)}
             placeholder="دينار"
-            rules={{ required: "You must select the currency" }}
+            rules={{ required: "يحب ادخال العملة" }}
           />
         </div>
 
@@ -104,7 +107,7 @@ const Lawsuits = (props) => {
           errors={errors}
           onChange={(e) => setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
-          rules={{ required: "You must select the court" }}
+          rules={{ required: "يجب اختيار المحكمة" }}
           className="col-md-6 mb-4"
         />
 
@@ -120,13 +123,13 @@ const Lawsuits = (props) => {
           errors={errors}
           onChange={(e) => setValue("lawsuitsType", e.value as object)}
           placeholder="اختر نوع القضية"
-          rules={{ required: "You must select the lawsuits Type" }}
+          rules={{ required: "يجب اختيار نوع القضية" }}
           className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
           id="lawsuitsNo"
-          type="lawsuitsNo"
+          type="text"
           name="lawsuitsNo"
           label="رقم القضية"
           placeholder="رقم القضية"
@@ -135,13 +138,13 @@ const Lawsuits = (props) => {
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("lawsuitsNo", e.target.value)}
-          rules={{ required: "You must enter lawsuits Number" }}
+          rules={{ required: "يجب ادخال رقم القضية" }}
           className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
           id="Judge"
-          type="Judge"
+          type="text"
           name="Judge"
           label="القاضي"
           placeholder="ادخل اسم القاضي"
@@ -149,8 +152,12 @@ const Lawsuits = (props) => {
           errors={errors}
           setValueMethod={setValue}
           watch={watch}
-          onChange={(e) => setValue("Judge", e.target.value)}
-          rules={{ required: "You must enter Judge name" }}
+          onChange={(e) => {
+            const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+            setValue("Judge", letterValue);
+                      }}
+      
+          rules={{ required: "يجب ادخال اسم القاضي" }}
           className="col-md-6 flex-1 mb-4"
         />
 
@@ -160,7 +167,7 @@ const Lawsuits = (props) => {
           label={"تاريخ تسجيل القضية"}
           placeholder={"DD/MM/YYYY"}
           register={register}
-          rules={{ required: "You must select lawsuits record date" }}
+          rules={{ required: "يجب اختيار تاريخ تسجيل القضية" }}
           errors={errors}
           setValueMethod={setValue}
           watch={watch}

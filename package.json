@@ -30,7 +30,8 @@
     "webapp:prod": "npm run clean-www && npm run webapp:build:prod --",
     "webapp:test": "npm run test --",
     "webpack-dev-server": "webpack serve",
-    "i": "npm install @eachawy/frontend-library && npm i"
+    "i": "npm install @eachawy/frontend-library && npm i",
+    "cdi": "del package-lock.json && npm cache clean --force && npm cache verify && npm run i"
   },
   "config": {
     "default_environment": "prod"
