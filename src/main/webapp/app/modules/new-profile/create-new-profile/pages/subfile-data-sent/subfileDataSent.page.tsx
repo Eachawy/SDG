@@ -2,9 +2,15 @@ import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React from "react";
 import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/createNewProfileSteps.component";
+import { useNavigate } from "react-router";
 
 const SubfileDataSentPage = () => {
-  const returnToMainMenuFn = () => {};
+
+  const navigate = useNavigate();
+
+  const returnToMainMenuFn = () => {
+    navigate("/create-new-profile");
+  };
 
   return (
     <div className="subFileDataSentPage">

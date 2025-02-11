@@ -19,11 +19,11 @@ const SelectFileTypePage = () => {
 
     const nextFn = () => {
         setTriggerHandleSubmit(t => t + 1);
+        navigate("/determine-responsibility-and-follow-up");
     };
 
     const handleValidationResult = (_data) => {
         console.log("Form submitted:", _data);
-        // navigate("/determine-responsibility-and-follow-up");
     };
 
     return (
