@@ -3,26 +3,13 @@ import {
   DropDownComponent,
   InputComponent,
 } from "@eachawy/frontend-library";
-import React, { useEffect } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
-import { useForm } from "react-hook-form";
 
 const Lawsuits = (props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-    getValues,
-  } = useForm({ mode: "onTouched" });
 
-  useEffect(() => {
-    setValue("inputForm", "lawsuits");
-  }, [setValue]);
-
-  const lang = useAppSelector((state) => state.locale.currentLocale);
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
 
   const currencyList = [
     { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
@@ -70,28 +57,28 @@ const Lawsuits = (props) => {
             type="text"
             name="amountToBeCollected"
             placeholder={translate("createNewProfile.exm") + "20,000"}
-            register={register}
-            errors={errors}
-            setValueMethod={setValue}
-            watch={watch}
+            register={props.register}
+            errors={props.errors}
+            setValueMethod={props.setValue}
+            watch={props.watch}
+            rules={{ required: "يجب إضافة المبلغ" }}
             onChange={(e) => {
               const numericValue = e.target.value.replace(/[^0-9]/g, "");
-              setValue("amountToBeCollected", numericValue);
+              props.setValue("amountToBeCollected", numericValue);
             }}
             label="المبلغ المراد تحصيله"
           />
           <DropDownComponent
             id="lawsuitsCurrencyList"
             name="currencyList"
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
+            register={props.register}
+            watch={props.watch}
+            setValueMethod={props.setValue}
             options={currencyList}
-            optionLabel={`name.${lang}`}
-            errors={errors}
-            onChange={(e) => setValue("currencyList", e.value as object)}
+            optionLabel={`name.${$lang}`}
+            errors={props.errors}
+            onChange={(e) => props.setValue("currencyList", e.value as object)}
             placeholder="دينار"
-            rules={{ required: "يحب ادخال العملة" }}
           />
         </div>
 
@@ -99,13 +86,13 @@ const Lawsuits = (props) => {
           id="court"
           name="court"
           label="المحكمة"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
+          register={props.register}
+          watch={props.watch}
+          setValueMethod={props.setValue}
           options={courts}
-          optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("court", e.value as object)}
+          optionLabel={`name.${$lang}`}
+          errors={props.errors}
+          onChange={(e) => props.setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
           rules={{ required: "يجب اختيار المحكمة" }}
           className="col-md-6 mb-4"
@@ -115,13 +102,13 @@ const Lawsuits = (props) => {
           id="lawsuitsType"
           name="lawsuitsType"
           label="نوع القضية"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
+          register={props.register}
+          watch={props.watch}
+          setValueMethod={props.setValue}
           options={lawsuitsType}
-          optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("lawsuitsType", e.value as object)}
+          optionLabel={`name.${$lang}`}
+          errors={props.errors}
+          onChange={(e) => props.setValue("lawsuitsType", e.value as object)}
           placeholder="اختر نوع القضية"
           rules={{ required: "يجب اختيار نوع القضية" }}
           className="col-md-6 flex-1 mb-4"
@@ -133,11 +120,11 @@ const Lawsuits = (props) => {
           name="lawsuitsNo"
           label="رقم القضية"
           placeholder="رقم القضية"
-          register={register}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
-          onChange={(e) => setValue("lawsuitsNo", e.target.value)}
+          register={props.register}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("lawsuitsNo", e.target.value)}
           rules={{ required: "يجب ادخال رقم القضية" }}
           className="col-md-6 flex-1 mb-4"
         />
@@ -148,15 +135,15 @@ const Lawsuits = (props) => {
           name="Judge"
           label="القاضي"
           placeholder="ادخل اسم القاضي"
-          register={register}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
+          register={props.register}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
           onChange={(e) => {
             const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
-            setValue("Judge", letterValue);
-                      }}
-      
+            props.setValue("Judge", letterValue);
+          }}
+
           rules={{ required: "يجب ادخال اسم القاضي" }}
           className="col-md-6 flex-1 mb-4"
         />
@@ -166,12 +153,12 @@ const Lawsuits = (props) => {
           name="lawsuitsRecordDate"
           label={"تاريخ تسجيل القضية"}
           placeholder={"DD/MM/YYYY"}
-          register={register}
+          register={props.register}
           rules={{ required: "يجب اختيار تاريخ تسجيل القضية" }}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
-          onChange={(e) => setValue("lawsuitsRecordDate", e.target.value)}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("lawsuitsRecordDate", e.target.value)}
           className="col-md-6 flex-1 mb-4"
         />
       </div>

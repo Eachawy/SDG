@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
 import { MultiSelectChangeEvent } from "primereact/multiselect";
-import { useForm } from "react-hook-form";
 import {
   CheckBoxComponent,
   DropDownComponent,
@@ -11,16 +10,7 @@ import { useAppSelector } from "app/config/store";
 
 const CompanySubFileData = (props) => {
 
-  const lang = useAppSelector((state) => state.locale.currentLocale);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-    getValues,
-  } = useForm({ mode: "onTouched" });
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
 
   const fileTypes = [
     { name: { ar: "قضايا", en: "Lawsuits" }, code: "T1" },
@@ -53,22 +43,8 @@ const CompanySubFileData = (props) => {
     const selectedValues = e.value.filter(
       (item) => item.code !== privateFileList[0].code,
     );
-    setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
+    props.setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
   };
-
-  const onSubmit = (data) => {
-    // console.log("Form submitted:", data);
-  };
-
-  useEffect(() => {
-    if (props.triggerHandleSubmit > 0) {
-      handleSubmit(data => onSubmit(data))();
-    }
-  }, [props.triggerHandleSubmit, props.onChangeControls]);
-
-  const onChangeMultipleSelect = (e) => {
-    setValue("privateFileSelection", e.value as []);
-  }
 
   return (
     <div className="companySubFileData">
@@ -84,20 +60,18 @@ const CompanySubFileData = (props) => {
           </p>
         </div>
       </div>
-
-      {/* del=> privateFileDiv */}
       <div className="container p-0">
         <div className="row g-4 d-flex mb-4">
           <DropDownComponent
             id="fileType"
             name="fileType"
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
+            register={props.register}
+            watch={props.watch}
+            setValueMethod={props.setValue}
             options={fileTypes}
-            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
-            errors={errors}
-            onChange={(e) => setValue("fileType", e.value as object)}
+            optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
+            errors={props.errors}
+            onChange={e => props.setValue("fileType", e.value as object)}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
             rules={{ required: "You must select the file type." }}
             label={translate("selectFileType.fileTypeSelection")}
@@ -106,13 +80,13 @@ const CompanySubFileData = (props) => {
           <DropDownComponent
             id="selectedDelegatedPerson"
             name="selectedDelegatedPerson"
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
+            register={props.register}
+            watch={props.watch}
+            setValueMethod={props.setValue}
             options={delegatedPeopleNames}
-            optionLabel={`name.${lang === "en" ? "en" : "ar"}`}
-            errors={errors}
-            onChange={(e) => setValue("selectedDelegatedPerson", e.value as object)}
+            optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
+            errors={props.errors}
+            onChange={(e) => props.setValue("selectedDelegatedPerson", e.value as object)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
@@ -125,53 +99,52 @@ const CompanySubFileData = (props) => {
           name="privateFileCheckBox"
           label={translate("selectFileType.privateFile")}
           className="col-12 mb-2"
-          register={register}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
-          onChange={(e) => setValue("privateFileCheckBox", e.value)}
+          register={props.register}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("privateFileCheckBox", e.value)}
         />
-
-        {watch("privateFileCheckBox") && (
+        {props.watch("privateFileCheckBox") && (
           <div className="row g-4 mb-4">
             <DropDownMultiComponent
               name="privateFileSelection"
               label={translate("selectFileType.delegatedPersonName")}
-              register={register}
-              watch={watch}
-              setValueMethod={setValue}
+              register={props.register}
+              watch={props.watch}
+              setValueMethod={props.setValue}
               options={privateFileList}
-              optionLabel={`name.${lang}`}
+              optionLabel={`name.${$lang}`}
               onChange={handleSelectionChange}
               placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
               rules={{ required: "You must select the Delegated Person." }}
-              setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
+              setValue={props.watch('selectedDelegatedPerson') && [props.watch('selectedDelegatedPerson')]}
               className="col-md-6"
             />
           </div>
         )}
       </div>
-
-      {/* <div className="selectedLegalStatusOfThePartyDiv"> */}
-      <div className="row g-4">
-        <DropDownComponent
-          id="selectedLegalStatusOfTheParty"
-          name="selectedLegalStatusOfTheParty"
-          label="صفة الخصم"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
-          options={legalStatusOfTheParty}
-          optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) =>
-            setValue("selectedLegalStatusOfTheParty", e.value as object)
-          }
-          placeholder="اختر صفة الخصم"
-          rules={{ required: "You must select the legal status of the party" }}
-          className="col-md-6"
-        />
-      </div>
+      {props.watch("fileType")?.code === "T1" &&
+        <div className="row g-4">
+          <DropDownComponent
+            id="selectedLegalStatusOfTheParty"
+            name="selectedLegalStatusOfTheParty"
+            label="صفة الخصم"
+            register={props.register}
+            watch={props.watch}
+            setValueMethod={props.setValue}
+            options={legalStatusOfTheParty}
+            optionLabel={`name.${$lang}`}
+            errors={props.errors}
+            onChange={(e) =>
+              props.setValue("selectedLegalStatusOfTheParty", e.value as object)
+            }
+            placeholder="اختر صفة الخصم"
+            rules={{ required: "You must select the legal status of the party" }}
+            className="col-md-6"
+          />
+        </div>
+      }
     </div>
   );
 };
