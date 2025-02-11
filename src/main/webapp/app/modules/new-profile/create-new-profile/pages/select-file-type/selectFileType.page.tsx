@@ -9,6 +9,7 @@ import UrgentRequest from "./shared/urgentRequest.component";
 import Collection from "./shared/collection/collection.component";
 import LegalBonds from "./shared/collection/legalBonds/legalBonds.component";
 import { useForm } from "react-hook-form";
+import { ButtonComponent } from "@eachawy/frontend-library";
 
 const SelectFileTypePage = () => {
 
@@ -51,9 +52,9 @@ const SelectFileTypePage = () => {
                 {watch('fileType')?.code === "T3" && <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
 
                 <div className="actionBtns">
-                    <div onClick={saveAndCloseFn} className="BtnCancel">{translate("createNewProfile.saveAndClose")}</div>
-                    <div onClick={handleSubmit(saveAndCloseFn)} className="btnStyle _saveAndAdd">حفظ وإضافة</div>
-                    <div onClick={handleSubmit(nextFn)} className="btnStyle">{translate("createNewProfile.next")}</div>
+                    <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
+                    <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.addAndSave")}</ButtonComponent>
+                    <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(nextFn)}>{translate("createNewProfile.next")}</ButtonComponent>
                 </div>
             </div>
         </div>

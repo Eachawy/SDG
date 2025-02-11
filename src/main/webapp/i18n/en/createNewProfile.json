@@ -22,6 +22,7 @@
     "email": "Email",
     "attachments": "Attachments",
     "saveAndClose": "Save and Close",
-    "next": "Next"
+    "next": "Next",
+    "addAndSave": "Save and Add"
   }
 }
