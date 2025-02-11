@@ -18,6 +18,8 @@ import {
 import { InputSwitch } from 'primereact/inputswitch';
 
 const Cheque = (props) => {
+
+  const { closepopUpFn } = props;
   type FormValues = {
     inputForm: string;
     bankName: string;
@@ -28,7 +30,7 @@ const Cheque = (props) => {
     replayDate: string;
     firstBeneficiary: any;
     firstBeneficiaryName: string;
-    currencyList: string;
+    currencyList: any;
     rows: { drawerName: string }[];
   };
 
@@ -66,8 +68,11 @@ const Cheque = (props) => {
     setValue("inputForm", "legalBonds");
   }, [setValue]);
 
-  const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
-  const [rows, setRows] = useState([{ id: Date.now(), drawerName: "" }]);
+  useEffect(() => {
+    if (currencyList?.length > 0) {
+      setValue("currencyList", currencyList[0]);
+    }
+  }, []);
 
   const [isChequeStamped, setIsChequeStamped] = useState(false);
 
@@ -76,30 +81,15 @@ const Cheque = (props) => {
   };
 
   const removeRow = (index) => {
-    remove(index); 
+    remove(index);
   };
 
   const handleRowChange = (index, value) => {
-    setValue(`rows.${index}.drawerName`, value); 
+    const letterValue = value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+    setValue(`rows.${index}.drawerName`, letterValue);
   };
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
-
-  const bondTypes = [
-    { name: { ar: "شيك", en: "Cheque" }, code: "CHQ" },
-    { name: { ar: "كمبيالة", en: "Promissory Note" }, code: "PN" },
-    {
-      name: {
-        ar: "اقرار خطي/ سند امانة",
-        en: "Written Acknowledgment / Trust Bond",
-      },
-      code: "WTB",
-    },
-    { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
-    { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
-    { name: { ar: "عقد ايجار", en: "Lease Contract" }, code: "LC" },
-    { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
-  ];
 
   const bankNames = [
     { name: { ar: "بنك ابو ظبي الاول", en: "FAB" }, code: "FAB" },
@@ -117,11 +107,11 @@ const Cheque = (props) => {
     { name: { ar: "درهم امراتي", en: "UAE Dirham" }, code: "AED" },
   ];
 
-  const legalBondFn = () => {
-    setShowlegalBondPopup(true);
-  };
+  const cancelFn = () => {
 
-  const cancelFn = () => { };
+    closepopUpFn(false)
+    console.log("Test CAncel Btn")
+  };
   const addChequeFn = () => {
     const formData = getValues();
     console.log("Cheque Form Data:", formData);
@@ -131,8 +121,7 @@ const Cheque = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-
-        <div className="legalBondChequeOverlay row g-4 mb-4">
+        <div className="row chequePopup">
           <h4>إضافة بيانات الشيك</h4>
 
           <DropDownComponent
@@ -146,7 +135,7 @@ const Cheque = (props) => {
             errors={errors?.bankName ? { bankName: errors.bankName } : undefined}
             onChange={(e) => setValue("bankName", e.value)}
             placeholder="اختر اسم البنك"
-            rules={{ required: "You must select the Bank Name" }}
+            rules={{ required: "يجب اختيار اسم البنك" }}
             label="اسم البنك"
             className="col-md-6 mb-4"
           />
@@ -167,7 +156,7 @@ const Cheque = (props) => {
             className="col-md-6 mb-4"
           />
 
-          <div className="chequeAmount row p-0 col-md-6 mb-4">
+          <div className="ammountDiv row col-md-6">
             <InputComponent
               id="legalBondchequeAmount"
               type="text"
@@ -181,8 +170,11 @@ const Cheque = (props) => {
               }
               setValueMethod={setValue}
               watch={watch}
-              onChange={(e) => setValue("chequeAmount", e.target.value)}
-              rules={{ required: "You must select the cheque amount" }}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                setValue("chequeAmount", numericValue);
+              }}
+              rules={{ required: "يجب ادخال قيمة الشيك" }}
               label="قيمة الشيك"
             />
 
@@ -201,7 +193,7 @@ const Cheque = (props) => {
               }
               onChange={(e) => setValue("currencyList", e.value)}
               placeholder="دينار"
-              rules={{ required: "You must select the currency" }}
+              rules={{ required: "يجب اختيار العملة" }}
             />
           </div>
 
@@ -215,7 +207,7 @@ const Cheque = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("ChequeNo", e.target.value)}
-            rules={{ required: "You must select the cheque number" }}
+            rules={{ required: "يجب ادخال رقم الشيك" }}
             label="رقم الشيك"
             className="col-md-6 mb-4"
           />
@@ -236,7 +228,7 @@ const Cheque = (props) => {
             label={"تاريخ الاستحقاق"}
             placeholder={"DD/MM/YYYY"}
             register={register}
-            rules={{ required: "You must select the due date" }}
+            rules={{ required: "يجب اختيار تاريخ الاستحقاق" }}
             errors={errors?.dueDate ? { dueDate: errors.dueDate } : undefined}
             setValueMethod={setValue}
             watch={watch}
@@ -259,7 +251,7 @@ const Cheque = (props) => {
             className="col-md-6 mb-4"
           />}
 
-          <div className="row g-4">
+          <div className="firstBeneficiaryDiv g-4 row">
             <DropDownComponent
               id="legalBondsFirstBeneficiary"
               name="firstBeneficiary"
@@ -275,7 +267,7 @@ const Cheque = (props) => {
               }
               onChange={(e) => setValue("firstBeneficiary", e.value)}
               placeholder="اختر المستفيد"
-              rules={{ required: "You must select the Beneficiary" }}
+              rules={{ required: "يجب اختيار المستفيد" }}
               label="مستفيد"
               className="col-md-6 mb-4"
             />
@@ -298,8 +290,16 @@ const Cheque = (props) => {
                 }
                 setValueMethod={setValue}
                 watch={watch}
-                onChange={(e) => setValue("firstBeneficiaryName", e.target.value)}
-                rules={{ required: "You must enter the first Beneficiary Name" }}
+                onChange={(e) => {
+                  const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                  setValue("firstBeneficiaryName", letterValue);
+                }}
+                rules={{
+                  required:
+                    watch("firstBeneficiary")?.code === "FB"
+                      ? "يجب ادخال اسم المستفيد الاول"
+                      : "يجب ادخال اسم المجيز"
+                }}
                 label={
                   watch("firstBeneficiary")?.code === "FB"
                     ? "اسم المستفيد الأول"
@@ -312,7 +312,7 @@ const Cheque = (props) => {
 
           {watch("firstBeneficiary") &&
             fields.map((field, index) => (
-              <div key={field.id} className="drawerNameDiv row  mb-4">
+              <div key={field.id} className="drawerNameDiv row">
                 <InputComponent
                   id={`legalBondsDrawerName_${field.id}`}
                   type="text"
@@ -344,7 +344,11 @@ const Cheque = (props) => {
                     watch as unknown as UseFormWatch<Record<string, unknown>>
                   }
                   onChange={(e) => handleRowChange(index, e.target.value)}
-                  rules={{ required: "You must enter the drawer name" }}
+                  rules={{
+                    required: watch("firstBeneficiary")?.code === "FB"
+                      ? "يجب ادخال اسم الساحب"
+                      : "يجب ادخال اسم المجيز"
+                  }}
                   label={
                     watch("firstBeneficiary")?.code === "FB"
                       ? "اسم الساحب"
@@ -383,7 +387,6 @@ const Cheque = (props) => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

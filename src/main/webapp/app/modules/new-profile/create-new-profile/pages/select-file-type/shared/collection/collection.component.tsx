@@ -41,9 +41,10 @@ const Collection = (props) => {
             errors={errors}
             setValueMethod={setValue}
             watch={watch}
-            onChange={(e) =>
-              setValue("originalOfTheConscience", e.target.value)
-            }
+            onChange={(e) => {
+              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+              setValue("originalOfTheConscience", numericValue);
+            }}
             label="اصل الذمة"
           />
           <DropDownComponent
@@ -57,7 +58,7 @@ const Collection = (props) => {
             errors={errors}
             onChange={(e) => setValue("currencyList", e.value as object)}
             placeholder="دينار"
-            rules={{ required: "You must select the currency" }}
+            rules={{ required: "يجب ادخال العملة" }}
           />
         </div>
 
@@ -70,9 +71,12 @@ const Collection = (props) => {
           errors={errors}
           setValueMethod={setValue}
           watch={watch}
-          onChange={(e) => setValue("amountToBeCollected", e.target.value)}
+          onChange={(e) => {
+            const numericValue = e.target.value.replace(/[^0-9]/g, "");
+            setValue("amountToBeCollected", numericValue);
+          }}
           label="المبلغ المراد تحصيله"
-          rules={{ required: "You must enter the amount to be collected" }}
+          rules={{ required: "يجب ادخال المبلغ المراد تحصيله" }}
           className="col-md-6 mb-4"
         />
       </div>

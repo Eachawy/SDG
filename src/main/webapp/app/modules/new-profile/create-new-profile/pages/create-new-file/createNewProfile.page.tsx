@@ -87,7 +87,7 @@ const CreateNewProfilePage = () => {
                 <div className="profileDataContainer">
                     <InputComponent
                         id="NameAr"
-                        type="NameAr"
+                        type="text"
                         name="NameAr"
                         label={
                             (getValues().companyType === 'corporateType') ?
@@ -96,7 +96,7 @@ const CreateNewProfilePage = () => {
                             (getValues().companyType === 'corporateType') ?
                                 translate("createNewProfile.companyNameAr") : translate("createNewProfile.personNameAr")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: "يجب ادخال الاسم باللغة العربية" }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -107,7 +107,7 @@ const CreateNewProfilePage = () => {
                     />
                     <InputComponent
                         id="NameEn"
-                        type="NameEn"
+                        type="text"
                         name="NameEn"
                         label={
                             (getValues().companyType === 'corporateType') ?
@@ -116,7 +116,7 @@ const CreateNewProfilePage = () => {
                             (getValues().companyType === 'corporateType') ?
                                 translate("createNewProfile.companyNameEn") : translate("createNewProfile.personNameEn")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال الاسم باللغة الإنجليزية' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -132,7 +132,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.nationalNumber")}
                         placeholder={translate("createNewProfile.exm") + "1234567"}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال الرقم الوطني' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -148,7 +148,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.address")}
                         placeholder={translate("createNewProfile.enterTheAddress")}
                         register={register}
-                        rules={{ required: 'You must enter your Adress.' }}
+                        rules={{ required: 'يجب ادخال العنوان' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -174,7 +174,7 @@ const CreateNewProfilePage = () => {
                             />
                             <InputComponent
                                 id="phoneNumber"
-                                type="phoneNumber"
+                                type="text"
                                 name="phoneNumber"
                                 placeholder={translate("createNewProfile.exm") + "1234567"}
                                 register={register}
@@ -197,7 +197,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.email")}
                         placeholder={translate("loginPage.emailPlaceholder")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال البريد الالكتروني' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}

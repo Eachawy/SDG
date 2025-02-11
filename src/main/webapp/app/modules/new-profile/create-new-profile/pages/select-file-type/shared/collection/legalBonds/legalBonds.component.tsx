@@ -7,6 +7,10 @@ import { useAppSelector } from "app/config/store";
 import { useForm } from "react-hook-form";
 import Cheque from "./shared/cheque";
 import DefendantInfoComponent from "./shared/defendantInfo/defendantInfo.component.tsx";
+import PromissoryNote from "./shared/promissoryNote";
+import MortgageBond from "./shared/mortgageBond.component";
+import AccountStatement from "./shared/accountStatement.component";
+import Invoice from "./shared/Invoice.component";
 
 const LegalBonds = (props) => {
   const {
@@ -23,6 +27,10 @@ const LegalBonds = (props) => {
   }, [setValue]);
 
   const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
+
+  const closepopUpFn = (e) => {
+    setShowlegalBondPopup(e)
+  }
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
 
@@ -43,34 +51,42 @@ const LegalBonds = (props) => {
   ];
 
   const legalBondFn = () => {
-    setShowlegalBondPopup(true);
+    if ((watch("legalBondsList")?.code)) {
+      setShowlegalBondPopup(true);
+    }
   };
 
   return (
     <div className="legalBonds">
-      {/* <h4>بيانات حالة المدعي عليه</h4> */}
 
       {/* legalBondsRowDiv */}
-      <div className="row g-5 gy-4 mb-4">
+      <div className="row g-4 gy-4 mb-4">
         <DropDownComponent
-          id="legalBondsCurrencyList"
-          name="currencyList"
+          id="legalBondsList-id"
+          name="legalBondsList"
           register={register}
           watch={watch}
           setValueMethod={setValue}
           options={bondTypes}
           optionLabel={`name.${lang}`}
           errors={errors}
-          onChange={(e) => setValue("currencyList", e.value as object)}
+          onChange={(e) => setValue("legalBondsList", e.value as object)}
           placeholder="اختر السند القانوني"
-          rules={{ required: "You must select the legal bonds" }}
+          rules={{ required: "يجب اختيار السند القانوني" }}
           className="col-md-6"
         />
         <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
           إضافة
         </div>
       </div>
-      {showlegalBondPopup && <Cheque />}
+
+      {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <PromissoryNote closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />}
+
+
 
       {/* <DefendantInfoComponent /> */}
     </div>
