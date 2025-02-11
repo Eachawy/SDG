@@ -86,7 +86,7 @@ const CreateNewProfilePage = () => {
                 <div className="profileDataContainer">
                     <InputComponent
                         id="NameAr"
-                        type="NameAr"
+                        type="text"
                         name="NameAr"
                         label={
                             (getValues().companyType === 'corporateType') ?
@@ -95,15 +95,18 @@ const CreateNewProfilePage = () => {
                             (getValues().companyType === 'corporateType') ?
                                 translate("createNewProfile.companyNameAr") : translate("createNewProfile.personNameAr")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: "يجب ادخال الاسم باللغة العربية" }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("NameAr", e.target.value)}
+                        onChange={(e) => {
+                            const arabicOnly = e.target.value.replace(/[^\u0600-\u06FF\s]/g, "");
+                            setValue("NameAr", arabicOnly);
+                          }}
                     />
                     <InputComponent
                         id="NameEn"
-                        type="NameEn"
+                        type="text"
                         name="NameEn"
                         label={
                             (getValues().companyType === 'corporateType') ?
@@ -112,11 +115,14 @@ const CreateNewProfilePage = () => {
                             (getValues().companyType === 'corporateType') ?
                                 translate("createNewProfile.companyNameEn") : translate("createNewProfile.personNameEn")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال الاسم باللغة الإنجليزية' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("NameEn", e.target.value)}
+                        onChange={(e) => {
+                            const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                            setValue("NameEn", englishOnly);
+                          }}
                     />
                     <InputComponent
                         id="nationalNumber"
@@ -125,11 +131,14 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.nationalNumber")}
                         placeholder={translate("createNewProfile.exm") + "1234567"}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال الرقم الوطني' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("nationalNumber", e.target.value)}
+                        onChange={(e) => {
+                            const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                            setValue("nationalNumber", numericValue);
+                          }}
                     />
                     <InputComponent
                         id="address"
@@ -138,7 +147,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.address")}
                         placeholder={translate("createNewProfile.enterTheAddress")}
                         register={register}
-                        rules={{ required: 'You must enter your Adress.' }}
+                        rules={{ required: 'يجب ادخال العنوان' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -164,14 +173,18 @@ const CreateNewProfilePage = () => {
                             />
                             <InputComponent
                                 id="phoneNumber"
-                                type="phoneNumber"
+                                type="text"
                                 name="phoneNumber"
                                 placeholder={translate("createNewProfile.exm") + "1234567"}
                                 register={register}
                                 errors={errors}
                                 setValueMethod={setValue}
                                 watch={watch}
-                                onChange={(e) => setValue("phoneNumber", e.target.value)}
+                                onChange={(e) => {
+                                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                                    setValue("phoneNumber", numericValue);
+                                  }}
+                                  
                             />
                         </div>
                     </div>
@@ -183,7 +196,7 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.email")}
                         placeholder={translate("loginPage.emailPlaceholder")}
                         register={register}
-                        rules={{ required: 'You must enter your first name.' }}
+                        rules={{ required: 'يجب ادخال البريد الالكتروني' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}

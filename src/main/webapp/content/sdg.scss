@@ -21,7 +21,8 @@ body,
     line-height: 27px;
     margin: 0 2px;
     height: 30px;
-    + div {
+
+    +div {
       line-height: 30px;
     }
   }
@@ -114,6 +115,47 @@ body,
       }
     }
 
+    .sideBtnStyle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 0 0 0 32px;
+      cursor: pointer;
+      position: relative;
+      height: fit-content;
+      margin: 12px 0 10px 10px;
+
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        left: 0;
+        cursor: pointer;
+      }
+
+      &.deleteBtn {
+        color: #ed0000;
+
+        &::before {
+          background: url("../content/images/red_delete.svg") center / contain no-repeat;
+        }
+      }
+
+      &.addBtn {
+        color: #2563eb;
+        width: fit-content;
+
+        &::before {
+          background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+        }
+      }
+    }
+
     .serialNoSubNo {
       display: flex;
       align-items: center;
@@ -182,7 +224,7 @@ body,
         }
       }
 
-      > div {
+      >div {
         display: flex;
         flex-direction: row;
         gap: 16px;
@@ -199,8 +241,7 @@ body,
           width: 34px;
           height: 34px;
           pointer-events: none;
-          background: url("../content/images/step-arrow.svg") center / contain
-            no-repeat;
+          background: url("../content/images/step-arrow.svg") center / contain no-repeat;
           transform: scaleX(-1);
           left: 296px;
           top: 13px;
@@ -238,8 +279,7 @@ body,
               width: 24px;
               height: 24px;
               pointer-events: none;
-              background: url("../content/images/check-sign.svg") center /
-                contain no-repeat;
+              background: url("../content/images/check-sign.svg") center / contain no-repeat;
               left: 12px;
               top: 12px;
             }
@@ -299,7 +339,7 @@ body,
           justify-content: flex-start;
           margin-bottom: 32px;
 
-          > div {
+          >div {
             .p-radiobutton {
               input {
                 border-color: #000;
@@ -328,7 +368,7 @@ body,
             flex-direction: column;
           }
 
-          > div {
+          >div {
             width: calc(50% - 14px);
             display: flex;
             flex-direction: column;
@@ -372,7 +412,7 @@ body,
               }
             }
 
-            > div {
+            >div {
               display: flex;
               flex-direction: row;
               gap: 8px;
@@ -414,6 +454,10 @@ body,
               }
             }
           }
+
+          .GCDropDownComponent {
+            margin-top: 5px;
+          }
         }
 
         .uploaderContainer {
@@ -436,7 +480,7 @@ body,
           margin-bottom: 32px;
           padding-bottom: 50px;
 
-          > div:first-of-type {
+          >div:first-of-type {
             background-color: #fafafb;
             padding: 20px;
             border-radius: 8px;
@@ -497,7 +541,7 @@ body,
                 flex-direction: column;
               }
 
-              > div {
+              >div {
                 display: flex;
                 flex-direction: column;
                 width: calc(50% - 12px);
@@ -582,6 +626,7 @@ body,
         }
 
         .lawsuits {
+
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -626,7 +671,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -649,6 +694,7 @@ body,
         }
 
         .urgentRequest {
+
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -664,7 +710,7 @@ body,
           div:has(.amountToCollect) {
             .amountToCollect {
               width: calc(50% - 24px);
-              margin: 0 24px 0 0;
+              margin: 1px 24px 0 0;
               display: flex;
               flex-direction: row;
               flex-wrap: nowrap;
@@ -679,7 +725,7 @@ body,
               }
 
               .GCDropDownComponent {
-                width: calc(23% - 4px);
+                width: calc(24% - 10px);
                 margin-top: 27px;
                 padding: 0;
               }
@@ -693,7 +739,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -762,7 +808,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -787,9 +833,12 @@ body,
         .legalBonds {
           margin-bottom: 32px;
 
-          .GCDropDownComponent {
-            margin: 0;
+          >div {
+            .GCDropDownComponent {
+              margin: 0;
+            }
           }
+
 
           h4 {
             font-size: 18px;
@@ -825,6 +874,13 @@ body,
               background-color: #f7941d;
               color: #fff;
               border-color: transparent;
+              margin: 0 12px;
+
+              @media screen and (max-width: 768px) {
+                margin-top: 16px;
+                ;
+                max-width: 95%;
+              }
             }
           }
 
@@ -871,158 +927,320 @@ body,
             }
           }
 
-          .legalBondChequeOverlay {
-            padding: 32px;
-            h4 {
-              font-size: 18px;
-              color: #000;
-              font-weight: 700;
-              margin-bottom: 32px;
-              width: 100%;
-            }
+          .popupView {
+            >.content {
+              >div {
+                &.chequePopup {
+                  padding: 32px;
 
-            .GCInputComponent,
-            .GCDropDownComponent {
-              margin: 0;
-            }
-            .chequeAmount {
-              width: calc(50% - 24px);
-              margin: 0 24px 0 0;
-              display: flex;
-              flex-direction: row;
-              flex-wrap: nowrap;
+                  h4 {
+                    font-size: 18px;
+                    color: #000;
+                    font-weight: 700;
+                    margin-bottom: 32px;
+                    width: 100%;
+                  }
 
-              @media screen and (max-width: 768px) {
-                width: 95.4%;
-              }
+                  .GCInputComponent,
+                  .GCDropDownComponent {
+                    margin: 0;
+                  }
 
-              .GCInputComponent {
-                width: calc(81% - 4px);
-                margin-top: 2px;
-              }
+                  .ammountDiv {
+                    margin: 1px 0 32px 0px;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
 
-              .GCDropDownComponent {
-                width: calc(23% - 4px);
-                margin-top: 27px;
-                padding: 0;
-              }
-            }
-            .uploaderContainer,
-            .actionBtns {
-              width: 100%;
-            }
-            .actionBtns {
-              display: flex;
-              flex-direction: row;
-              gap: 16px;
+                    @media screen and (max-width: 768px) {
+                      width: 95.4%;
+                    }
 
-              @media screen and (max-width: 768px) {
-                flex-direction: column;
-              }
-              .btnStyle,
-              .BtnCancel {
-                background-color: #2d51a3;
-                color: #fff;
-                font-size: 16px;
-                line-height: 16px;
-                font-weight: 400;
-                cursor: pointer;
-                border-radius: 6px;
-                padding: 8px 40px 11px;
-                user-select: none;
-                font-family: "Cairo-Regular";
-                height: 48px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                    .GCInputComponent {
+                      width: calc(78%);
+                      margin-top: 4px !important;
+                    }
 
-                @media screen and (max-width: 768px) {
-                  width: 100%;
-                  text-align: center;
-                }
+                    .GCDropDownComponent {
+                      width: calc(20%);
+                      margin-top: 27px !important;
+                      padding: 0;
+                    }
+                  }
 
-                &:hover {
-                  background-color: #f7941d;
-                  color: #fff;
-                  border-color: transparent;
-                }
+                  .uploaderContainer,
+                  .actionBtns {
+                    width: 100%;
+                  }
 
-                &._saveAndAdd {
-                  background-color: #f7941d;
-                  color: #fff;
-                  border-color: transparent;
-                }
-              }
+                  .actionBtns {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 16px;
 
-              .BtnCancel {
-                background-color: #fff;
-                color: #000;
-                border: 1px solid #d9d9d9;
-                min-width: 158px;
-              }
+                    @media screen and (max-width: 768px) {
+                      flex-direction: column;
+                    }
 
-              .btnStyle {
-                min-width: 120px;
-              }
-            }
-            .switchDiv {
-              width: 100%;
-              display: flex;
-              flex-wrap: nowrap;
-              flex-direction: row;
-              justify-content: flex-start;
-              align-items: center;
-              margin-bottom: 32px;
-              label {
-                cursor: pointer;
-                padding: 0 8px;
-                user-select: none;
-                color: #000;
-              }
-            }
-            .actionRowDiv {
-              display: flex;
-              flex-direction: row;
-              flex-wrap: nowrap;
-              gap: 32px;
-              align-items: center;
+                    .btnStyle,
+                    .BtnCancel {
+                      background-color: #2d51a3;
+                      color: #fff;
+                      font-size: 16px;
+                      line-height: 16px;
+                      font-weight: 400;
+                      cursor: pointer;
+                      border-radius: 6px;
+                      padding: 8px 40px 11px;
+                      user-select: none;
+                      font-family: "Cairo-Regular";
+                      height: 48px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
 
-              span {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                font-size: 14px;
-                font-weight: 700;
-                padding: 0 0 0 32px;
-                cursor: pointer;
-                position: relative;
+                      @media screen and (max-width: 768px) {
+                        width: 100%;
+                        text-align: center;
+                      }
 
-                &::before {
-                  position: absolute;
-                  content: "";
-                  width: 24px;
-                  height: 24px;
-                  pointer-events: none;
-                  left: 0;
-                  top: 0;
-                  cursor: pointer;
-                }
+                      &:hover {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
 
-                &.deleteBtn {
-                  color: #ed0000;
+                      &._saveAndAdd {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
+                    }
 
-                  &::before {
-                    background: url("../content/images/red_delete.svg") center /
-                      contain no-repeat;
+                    .BtnCancel {
+                      background-color: #fff;
+                      color: #000;
+                      border: 1px solid #d9d9d9;
+                      min-width: 158px;
+                    }
+
+                    .btnStyle {
+                      min-width: 120px;
+                    }
+                  }
+
+                  .switchDiv {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 32px;
+
+                    label {
+                      cursor: pointer;
+                      padding: 0 8px;
+                      user-select: none;
+                      color: #000;
+                    }
+                  }
+
+                  .firstBeneficiaryDiv {
+                    padding-right: 0;
+
+                    .GCDropDownComponent {
+                      padding: 0 0 0 12px;
+                    }
+
+                    .GCInputComponent {
+                      padding: 0 0 0 24px;
+                    }
+                  }
+
+                  .drawerNameDiv {
+                    margin-bottom: 32px;
+
+                    .GCInputComponent {
+                      padding-right: 0;
+                    }
+                  }
+
+                  .actionRowDiv {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    gap: 32px;
+                    align-items: center;
+                    padding-top: 24px;
+                    padding-left: 24px;
+
+                    span {
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      font-size: 12px;
+                      font-weight: 700;
+                      padding: 0 0 0 32px;
+                      cursor: pointer;
+                      position: relative;
+
+                      &::before {
+                        position: absolute;
+                        content: "";
+                        width: 20px;
+                        height: 20px;
+                        pointer-events: none;
+                        left: 0;
+                        top: 0;
+                        cursor: pointer;
+                      }
+
+                      &.deleteBtn {
+                        color: #ed0000;
+
+                        &::before {
+                          background: url("../content/images/red_delete.svg") center / contain no-repeat;
+                        }
+                      }
+
+                      &.addBtn {
+                        color: #2563eb;
+
+                        &::before {
+                          background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+                        }
+                      }
+                    }
                   }
                 }
 
-                &.addBtn {
-                  color: #2563eb;
+                &.promissoryNotePopup {
+                  padding: 32px;
 
-                  &::before {
-                    background: url("../content/images/blue_plus.svg") center /
-                      contain no-repeat;
+                  .ammountDiv {
+                    margin: 1px 0 0 0;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+
+                    @media screen and (max-width: 768px) {
+                      width: 95.4%;
+                    }
+
+                    .GCInputComponent {
+                      width: calc(78%);
+                      margin-top: 4px !important;
+                    }
+
+                    .GCDropDownComponent {
+                      width: calc(20%);
+                      margin-top: 27px !important;
+                      padding: 0;
+                    }
+                  }
+
+                  .phoneNoDiv {
+                    margin-top: 1px;
+
+                    >div {
+                      display: flex;
+                      flex-direction: row;
+                      gap: 8px;
+
+                      .GCInputComponent {
+                        margin-top: 0 !important;
+                        flex: 1;
+                      }
+                    }
+
+                  }
+
+                  .debtorNameDiv {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                  }
+
+                  .uploaderContainer,
+                  .actionBtns {
+                    width: 100%;
+                  }
+
+                  .sideBtnStyle {
+                    &.addBtn {
+                      margin: -8px 12px 32px 12px;
+                    }
+                  }
+
+                  .GCCheckBoxComponent {
+                    margin-bottom: 16px !important;
+                  }
+
+                  .uploaderContainer {
+                    margin-top: 16px;
+                  }
+
+
+                  .actionBtns {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 16px;
+
+                    @media screen and (max-width: 768px) {
+                      flex-direction: column;
+                    }
+
+                    .btnStyle,
+                    .BtnCancel {
+                      background-color: #2d51a3;
+                      color: #fff;
+                      font-size: 16px;
+                      line-height: 16px;
+                      font-weight: 400;
+                      cursor: pointer;
+                      border-radius: 6px;
+                      padding: 8px 40px 11px;
+                      user-select: none;
+                      font-family: "Cairo-Regular";
+                      height: 48px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+
+                      @media screen and (max-width: 768px) {
+                        width: 100%;
+                        text-align: center;
+                      }
+
+                      &:hover {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
+
+                      &._saveAndAdd {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
+                    }
+
+                    .BtnCancel {
+                      background-color: #fff;
+                      color: #000;
+                      border: 1px solid #d9d9d9;
+                      min-width: 158px;
+                    }
+
+                    .btnStyle {
+                      min-width: 120px;
+                    }
                   }
                 }
               }
@@ -1111,8 +1329,8 @@ body,
                 }
 
                 .p-datatable-thead {
-                  > tr {
-                    > th {
+                  >tr {
+                    >th {
                       background: #2d51a3;
                       color: #fff;
                       text-align: left;
@@ -1124,7 +1342,7 @@ body,
                 }
 
                 .p-datatable-tbody {
-                  > tr {
+                  >tr {
                     border-bottom: 1px solid #ddd;
 
                     &:nth-child(even) {
@@ -1135,7 +1353,7 @@ body,
                       background: #e0e0e0;
                     }
 
-                    > td {
+                    >td {
                       padding: 12px 10px;
                       text-align: left;
                       font-size: 13px;
@@ -1153,8 +1371,7 @@ body,
                         width: 24px;
                         height: 24px;
                         pointer-events: none;
-                        background: url("../content/images/threeDotsMenu.svg")
-                          center / contain no-repeat;
+                        background: url("../content/images/threeDotsMenu.svg") center / contain no-repeat;
                         left: 16px;
                         top: 16px;
                       }
@@ -1217,8 +1434,7 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center /
-              contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -1243,7 +1459,7 @@ body,
           flex-direction: column;
         }
 
-        > div {
+        >div {
           width: calc(50% - 14px);
           display: flex;
           flex-direction: column;
@@ -1287,7 +1503,7 @@ body,
             }
           }
 
-          > div {
+          >div {
             display: flex;
             flex-direction: row;
             gap: 8px;
@@ -1329,6 +1545,10 @@ body,
             }
           }
         }
+
+        .GCDropDownComponent {
+          margin-top: 5px;
+        }
       }
     }
 
@@ -1355,8 +1575,7 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center /
-              contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -1445,8 +1664,7 @@ body,
         display: flex;
 
         .navbar_toggler {
-          background: url("../content/images/navbar_toggler.svg") no-repeat
-            0 -11px;
+          background: url("../content/images/navbar_toggler.svg") no-repeat 0 -11px;
           width: 30px;
           height: 37px;
           cursor: pointer;
@@ -1518,8 +1736,7 @@ body,
       height: 100%;
       z-index: -1;
       pointer-events: none;
-      background: #2d51a3 url("../content/images/login_bg.svg") center / cover
-        no-repeat;
+      background: #2d51a3 url("../content/images/login_bg.svg") center / cover no-repeat;
     }
 
     .loginContainer {
@@ -1760,7 +1977,8 @@ body,
   align-items: center;
   justify-content: center;
   z-index: 999;
-  > .content {
+
+  >.content {
     background-color: #fff;
     padding: 8px;
     height: 600px;
@@ -1777,28 +1995,33 @@ body,
   padding: 24px 20px;
   border-radius: 8px;
   cursor: pointer;
+
   .dropzone {
     display: flex;
   }
+
   p {
     font-size: 16px;
     color: #6c757d;
     margin-bottom: 4px;
     line-height: 21px;
   }
+
   span {
     font-size: 14px;
     color: #6c757d;
     line-height: 21px;
   }
-  > div {
+
+  >div {
     &:before {
       content: "";
       background: url("../content/images/upload_icon.svg") no-repeat;
       width: 48px;
       height: 48px;
     }
-    > div {
+
+    >div {
       padding: 0 12px;
     }
   }
@@ -1808,31 +2031,37 @@ body,
   border: 1px solid #ced4da;
   padding: 24px 20px;
   border-radius: 8px;
-  > div {
+
+  >div {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
+
     .downloadIcon {
       background: url("../content/images/download_icon.svg") no-repeat;
       width: 48px;
       height: 48px;
       cursor: pointer;
     }
+
     .deleteFile_icon {
       background: url("../content/images/delete_icon.svg") no-repeat;
       width: 22px;
       height: 22px;
       cursor: pointer;
     }
-    > div {
+
+    >div {
       width: 80%;
+
       p {
         font-size: 16px;
         color: #2d51a3;
         margin-bottom: 4px;
         line-height: 21px;
       }
+
       span {
         font-size: 14px;
         color: #6c757d;
@@ -1840,6 +2069,16 @@ body,
       }
     }
   }
+}
+
+.p-multiselect,
+.p-inputtext,
+.p-dropdown-label {
+  height: 48px;
+}
+
+.p-multiselect-label {
+  padding-top: 0;
 }
 
 @import "./sdg_ar.scss";

@@ -63,19 +63,21 @@ const UrgentRequest = (props) => {
   return (
     <div className="urgentRequest container p-0">
       <h4>بيانات طلب مستعجل</h4>
-      {/* del=> urgentRequestInputFormDiv */}
       <div className="row g-4 gy-4 d-flex mb-4">
         <div className="amountToCollect row p-0 col-md-6 mb-4">
           <InputComponent
             id="amountToBeCollected"
-            type="amountToBeCollected"
+            type="text"
             name="amountToBeCollected"
             placeholder={translate("createNewProfile.exm") + "20,000"}
             register={register}
             errors={errors}
             setValueMethod={setValue}
             watch={watch}
-            onChange={(e) => setValue("amountToBeCollected", e.target.value)}
+            onChange={(e) => {
+              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+              setValue("amountToBeCollected", numericValue);
+            }}
             label="المبلغ المراد تحصيله"
           />
           <DropDownComponent
@@ -89,7 +91,7 @@ const UrgentRequest = (props) => {
             errors={errors}
             onChange={(e) => setValue("currencyList", e.value as object)}
             placeholder="دينار"
-            rules={{ required: "You must select the currency" }}
+            rules={{ required: "يجب اختيار العملة" }}
           />
         </div>
 
@@ -105,7 +107,7 @@ const UrgentRequest = (props) => {
           errors={errors}
           onChange={(e) => setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
-          rules={{ required: "You must select the court" }}
+          rules={{ required: "يجب اختيار المحكمة" }}
           className="col-md-6 mb-4"
         />
 
@@ -121,13 +123,13 @@ const UrgentRequest = (props) => {
           errors={errors}
           onChange={(e) => setValue("urgentRequestType", e.value as object)}
           placeholder="اختر نوع الطلب"
-          rules={{ required: "You must select the urgent request Type" }}
+          rules={{ required: "يجب اختيار نوع الطلب" }}
           className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
           id="urgentRequestNo"
-          type="urgentRequestNo"
+          type="text"
           name="urgentRequestNo"
           label="رقم الطلب"
           placeholder="رقم الطلب"
@@ -136,13 +138,13 @@ const UrgentRequest = (props) => {
           setValueMethod={setValue}
           watch={watch}
           onChange={(e) => setValue("urgentRequestNo", e.target.value)}
-          rules={{ required: "You must enter urgentr request Number" }}
+          rules={{ required: "يجب ادخال رقم الطلب" }}
           className="col-md-6 flex-1 mb-4"
         />
 
         <InputComponent
           id="Judge"
-          type="Judge"
+          type="text"
           name="Judge"
           label="القاضي"
           placeholder="ادخل اسم القاضي"
@@ -150,8 +152,11 @@ const UrgentRequest = (props) => {
           errors={errors}
           setValueMethod={setValue}
           watch={watch}
-          onChange={(e) => setValue("Judge", e.target.value)}
-          rules={{ required: "You must enter Judge name" }}
+          onChange={(e) => {
+            const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+            setValue("Judge", letterValue);
+          }}
+          rules={{ required: "يجب ادخال اسم القاضي" }}
           className="col-md-6 flex-1 mb-4"
         />
 

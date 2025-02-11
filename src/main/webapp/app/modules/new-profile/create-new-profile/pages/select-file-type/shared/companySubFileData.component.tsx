@@ -133,20 +133,22 @@ const CompanySubFileData = (props) => {
         />
 
         {watch("privateFileCheckBox") && (
-
-          <DropDownMultiComponent
-            name="privateFileSelection"
-            label={translate("selectFileType.delegatedPersonName")}
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
-            options={privateFileList}
-            optionLabel={`name.${lang}`}
-            onChange={handleSelectionChange}
-            placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
-            rules={{ required: "You must select the Delegated Person." }}
-            setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
-          />
+          <div className="row g-4 mb-4">
+            <DropDownMultiComponent
+              name="privateFileSelection"
+              label={translate("selectFileType.delegatedPersonName")}
+              register={register}
+              watch={watch}
+              setValueMethod={setValue}
+              options={privateFileList}
+              optionLabel={`name.${lang}`}
+              onChange={handleSelectionChange}
+              placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
+              rules={{ required: "You must select the Delegated Person." }}
+              setValue={watch('selectedDelegatedPerson') && [watch('selectedDelegatedPerson')]}
+              className="col-md-6"
+            />
+          </div>
         )}
       </div>
 
