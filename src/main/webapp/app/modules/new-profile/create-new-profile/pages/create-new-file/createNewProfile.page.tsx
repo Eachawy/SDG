@@ -8,18 +8,19 @@ import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent
 import { useAppSelector } from "app/config/store";
 import { countryCode } from "app/shared/util/date-utils";
 import AttachmentMultiFileComponent from "app/shared/components/attachmentMultiFile.Component/attachmentMultiFile.Component";
+import AttachmentFileComponent from "app/shared/components/attachmentFIle.Component/attachmentFIle.Component";
 
 
 
 const CreateNewProfilePage = () => {
 
-    const lang = useAppSelector(state => state.locale.currentLocale);
+    const $lang = useAppSelector(state => state.locale.currentLocale);
 
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
     useEffect(() => {
         setValue('companyType', 'corporateType');
-        console.log(lang);
+        console.log($lang);
     }, []);
 
     const saveAndCloseFn = () => { };
@@ -99,7 +100,10 @@ const CreateNewProfilePage = () => {
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("NameAr", e.target.value)}
+                        onChange={(e) => {
+                            const arabicOnly = e.target.value.replace(/[^\u0600-\u06FF\s]/g, "");
+                            setValue("NameAr", arabicOnly);
+                        }}
                     />
                     <InputComponent
                         id="NameEn"
@@ -116,7 +120,10 @@ const CreateNewProfilePage = () => {
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("NameEn", e.target.value)}
+                        onChange={(e) => {
+                            const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                            setValue("NameEn", englishOnly);
+                        }}
                     />
                     <InputComponent
                         id="nationalNumber"
@@ -129,7 +136,10 @@ const CreateNewProfilePage = () => {
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
-                        onChange={(e) => setValue("nationalNumber", e.target.value)}
+                        onChange={(e) => {
+                            const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                            setValue("nationalNumber", numericValue);
+                        }}
                     />
                     <InputComponent
                         id="address"
@@ -155,7 +165,7 @@ const CreateNewProfilePage = () => {
                                 watch={watch}
                                 setValueMethod={setValue}
                                 options={countryCode}
-                                optionLabel={`name.${lang}`}
+                                optionLabel={`name.${$lang}`}
                                 errors={errors}
                                 onChange={(e) => setValue("countryCode", e.value as object)}
                                 setValue={countryCode[0]}
@@ -171,7 +181,11 @@ const CreateNewProfilePage = () => {
                                 errors={errors}
                                 setValueMethod={setValue}
                                 watch={watch}
-                                onChange={(e) => setValue("phoneNumber", e.target.value)}
+                                onChange={(e) => {
+                                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                                    setValue("phoneNumber", numericValue);
+                                }}
+
                             />
                         </div>
                     </div>
@@ -195,7 +209,24 @@ const CreateNewProfilePage = () => {
                     <h4>{translate("createNewProfile.attachments")}</h4>
 
                     <div className="row">
-                        <AttachmentMultiFileComponent class="col-6" />
+                        <AttachmentMultiFileComponent
+                            attachList={e => console.log(e)}
+                            fileTypeList={[
+                                { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                                { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                            ]}
+                            lang={$lang}
+                            fileTypePlaceHolder={'Select a File Type'}
+                        />
+                        <AttachmentFileComponent
+                            attachList={e => console.log(e)}
+                            fileTypeList={[
+                                { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                                { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                            ]}
+                            lang={$lang}
+                            fileTypePlaceHolder={'Select a File Type'}
+                        />
                     </div>
 
                 </div>

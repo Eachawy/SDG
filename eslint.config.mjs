@@ -71,7 +71,7 @@ export default tseslint.config(
       "@typescript-eslint/array-type": "off",
       "@typescript-eslint/no-misused-promises": "off",
       "@typescript-eslint/no-shadow": "error",
-      "spaced-comment": ["warn", "always"],
+      "spaced-comment": "off",
       "guard-for-in": "error",
       "no-labels": "error",
       "no-caller": "error",

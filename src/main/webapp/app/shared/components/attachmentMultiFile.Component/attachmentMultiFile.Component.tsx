@@ -6,18 +6,26 @@ import _ from 'lodash';
 
 const AttachmentMultiFileComponent = props => {
 
-
     const [aFile, setAFile] = React.useState([]);
 
     const OnUploaderChanged = file => {
+        const _files = [...aFile, file];
         setAFile((prevState) => [...prevState, file]);
+        props.attachList(_files);
     }
 
     const onDeleteAttachFile = _name => {
         const files = _.remove(aFile, obj => obj.name !== _name);
         setAFile(files);
+        props.attachList(files);
     }
 
+    const onFileTypeChanged = (e: any, file: any) => {
+        const files = aFile;
+        _.set(_.find(files, { name: file.name }), 'fileType', e);
+        setAFile(files);
+        props.attachList(files);
+    }
 
     return (
         <div className={props.class}>
@@ -29,6 +37,11 @@ const AttachmentMultiFileComponent = props => {
                     fileName={file.name}
                     file={file}
                     onDeleteFile={() => onDeleteAttachFile(file.name)}
+                    class={'col-6'}
+                    fileType={props?.fileTypeList}
+                    lang={props.lang}
+                    fileTypeChange={e => onFileTypeChanged(e, file)}
+                    fileTypePlaceHolder={props.fileTypePlaceHolder}
                 />
             )}
 
@@ -40,6 +53,7 @@ const AttachmentMultiFileComponent = props => {
                     // 'image/*': [],
                     'image/*': ['.jpeg', '.png']
                 }}
+                class={'col-6'}
             />
         </div>
     );

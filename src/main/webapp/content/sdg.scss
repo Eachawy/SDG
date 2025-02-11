@@ -114,6 +114,48 @@ body,
       }
     }
 
+    .sideBtnStyle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 0 0 0 32px;
+      cursor: pointer;
+      position: relative;
+      height: fit-content;
+      margin: 12px 0 10px 10px;
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        left: 0;
+        cursor: pointer;
+      }
+
+      &.deleteBtn {
+        color: #ed0000;
+
+        &::before {
+          background: url("../content/images/red_delete.svg") center / contain
+            no-repeat;
+        }
+      }
+
+      &.addBtn {
+        color: #2563eb;
+        width: fit-content;
+
+        &::before {
+          background: url("../content/images/blue_plus.svg") center / contain
+            no-repeat;
+        }
+      }
+    }
+
     .serialNoSubNo {
       display: flex;
       align-items: center;
@@ -417,8 +459,8 @@ body,
         }
 
         .uploaderContainer {
-          display: flex;
-          flex-direction: column gap 16px;
+          // display: flex;
+          // flex-direction: column gap 16px;
           margin-bottom: 32px;
 
           h4 {
@@ -787,8 +829,10 @@ body,
         .legalBonds {
           margin-bottom: 32px;
 
-          .GCDropDownComponent {
-            margin: 0;
+          > div {
+            .GCDropDownComponent {
+              margin: 0;
+            }
           }
 
           h4 {
@@ -825,6 +869,12 @@ body,
               background-color: #f7941d;
               color: #fff;
               border-color: transparent;
+              margin: 0 12px;
+
+              @media screen and (max-width: 768px) {
+                margin-top: 16px;
+                max-width: 95%;
+              }
             }
           }
 
@@ -871,15 +921,11 @@ body,
             }
           }
 
-          .legalBondChequeOverlay {
-            padding: 32px;
-            h4 {
-              font-size: 18px;
-              color: #000;
-              font-weight: 700;
-              margin-bottom: 32px;
-              width: 100%;
-            }
+          .popupView {
+            > .content {
+              > div {
+                &.chequePopup {
+                  padding: 32px;
 
             .GCInputComponent,
             .GCDropDownComponent {
@@ -1011,18 +1057,229 @@ body,
                 &.deleteBtn {
                   color: #ed0000;
 
-                  &::before {
-                    background: url("../content/images/red_delete.svg") center /
-                      contain no-repeat;
+                    .BtnCancel {
+                      background-color: #fff;
+                      color: #000;
+                      border: 1px solid #d9d9d9;
+                      min-width: 158px;
+                    }
+
+                    .btnStyle {
+                      min-width: 120px;
+                    }
+                  }
+
+                  .switchDiv {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 32px;
+
+                    label {
+                      cursor: pointer;
+                      padding: 0 8px;
+                      user-select: none;
+                      color: #000;
+                    }
+                  }
+
+                  .firstBeneficiaryDiv {
+                    padding-right: 0;
+
+                    .GCDropDownComponent {
+                      padding: 0 0 0 12px;
+                    }
+
+                    .GCInputComponent {
+                      padding: 0 0 0 24px;
+                    }
+                  }
+
+                  .drawerNameDiv {
+                    margin-bottom: 32px;
+
+                    .GCInputComponent {
+                      padding-right: 0;
+                    }
+                  }
+
+                  .actionRowDiv {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    gap: 32px;
+                    align-items: center;
+                    padding-top: 24px;
+                    padding-left: 24px;
+
+                    span {
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      font-size: 12px;
+                      font-weight: 700;
+                      padding: 0 0 0 32px;
+                      cursor: pointer;
+                      position: relative;
+
+                      &::before {
+                        position: absolute;
+                        content: "";
+                        width: 20px;
+                        height: 20px;
+                        pointer-events: none;
+                        left: 0;
+                        top: 0;
+                        cursor: pointer;
+                      }
+
+                      &.deleteBtn {
+                        color: #ed0000;
+
+                        &::before {
+                          background: url("../content/images/red_delete.svg")
+                            center / contain no-repeat;
+                        }
+                      }
+
+                      &.addBtn {
+                        color: #2563eb;
+
+                        &::before {
+                          background: url("../content/images/blue_plus.svg")
+                            center / contain no-repeat;
+                        }
+                      }
+                    }
                   }
                 }
 
                 &.addBtn {
                   color: #2563eb;
 
-                  &::before {
-                    background: url("../content/images/blue_plus.svg") center /
-                      contain no-repeat;
+                  .ammountDiv {
+                    margin: 1px 0 0 0;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+
+                    @media screen and (max-width: 768px) {
+                      width: 95.4%;
+                    }
+
+                    .GCInputComponent {
+                      width: calc(78%);
+                      margin-top: 4px !important;
+                    }
+
+                    .GCDropDownComponent {
+                      width: calc(20%);
+                      margin-top: 27px !important;
+                      padding: 0;
+                    }
+                  }
+
+                  .phoneNoDiv {
+                    margin-top: 1px;
+
+                    > div {
+                      display: flex;
+                      flex-direction: row;
+                      gap: 8px;
+
+                      .GCInputComponent {
+                        margin-top: 0 !important;
+                        flex: 1;
+                      }
+                    }
+                  }
+
+                  .debtorNameDiv {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                  }
+
+                  .uploaderContainer,
+                  .actionBtns {
+                    width: 100%;
+                  }
+
+                  .sideBtnStyle {
+                    &.addBtn {
+                      margin: -8px 12px 32px 12px;
+                    }
+                  }
+
+                  .GCCheckBoxComponent {
+                    margin-bottom: 16px !important;
+                  }
+
+                  .uploaderContainer {
+                    margin-top: 16px;
+                  }
+
+                  .actionBtns {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 16px;
+
+                    @media screen and (max-width: 768px) {
+                      flex-direction: column;
+                    }
+
+                    .btnStyle,
+                    .BtnCancel {
+                      background-color: #2d51a3;
+                      color: #fff;
+                      font-size: 16px;
+                      line-height: 16px;
+                      font-weight: 400;
+                      cursor: pointer;
+                      border-radius: 6px;
+                      padding: 8px 40px 11px;
+                      user-select: none;
+                      font-family: "Cairo-Regular";
+                      height: 48px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+
+                      @media screen and (max-width: 768px) {
+                        width: 100%;
+                        text-align: center;
+                      }
+
+                      &:hover {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
+
+                      &._saveAndAdd {
+                        background-color: #f7941d;
+                        color: #fff;
+                        border-color: transparent;
+                      }
+                    }
+
+                    .BtnCancel {
+                      background-color: #fff;
+                      color: #000;
+                      border: 1px solid #d9d9d9;
+                      min-width: 158px;
+                    }
+
+                    .btnStyle {
+                      min-width: 120px;
+                    }
                   }
                 }
               }
@@ -1777,6 +2034,8 @@ body,
   padding: 24px 20px;
   border-radius: 8px;
   cursor: pointer;
+  margin: 8px 0;
+
   .dropzone {
     display: flex;
   }
@@ -1808,6 +2067,8 @@ body,
   border: 1px solid #ced4da;
   padding: 24px 20px;
   border-radius: 8px;
+  margin: 8px 0;
+
   > div {
     display: flex;
     width: 100%;
@@ -1825,7 +2086,8 @@ body,
       height: 22px;
       cursor: pointer;
     }
-    > div {
+
+    .details {
       width: 80%;
       p {
         font-size: 16px;
@@ -1840,6 +2102,31 @@ body,
       }
     }
   }
+
+  .p-dropdown {
+    background: none;
+    width: 100%;
+    color: #53565a;
+    outline: 0 !important;
+    padding: 0 12px 0 0;
+    border-radius: 2px;
+    border: 0.5px solid #d9d9d9;
+    height: 48px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 44px;
+    margin-top: 4px;
+  }
+}
+
+.p-multiselect,
+.p-inputtext,
+.p-dropdown-label {
+  height: 48px;
+}
+
+.p-multiselect-label {
+  padding-top: 0;
 }
 
 @import "./sdg_ar.scss";

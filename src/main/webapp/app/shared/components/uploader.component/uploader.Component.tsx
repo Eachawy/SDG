@@ -25,7 +25,7 @@ const UploaderCompnent = props => {
     }
     return (
         <>
-            <section className="uploaderComponent">
+            <section className={`uploaderComponent ${props.class}`}>
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
                     <div>
