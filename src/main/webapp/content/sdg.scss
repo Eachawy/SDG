@@ -22,7 +22,7 @@ body,
     margin: 0 2px;
     height: 30px;
 
-    +div {
+    + div {
       line-height: 30px;
     }
   }
@@ -127,7 +127,6 @@ body,
       height: fit-content;
       margin: 12px 0 10px 10px;
 
-
       &::before {
         position: absolute;
         content: "";
@@ -142,7 +141,8 @@ body,
         color: #ed0000;
 
         &::before {
-          background: url("../content/images/red_delete.svg") center / contain no-repeat;
+          background: url("../content/images/red_delete.svg") center / contain
+            no-repeat;
         }
       }
 
@@ -151,7 +151,8 @@ body,
         width: fit-content;
 
         &::before {
-          background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+          background: url("../content/images/blue_plus.svg") center / contain
+            no-repeat;
         }
       }
     }
@@ -224,7 +225,7 @@ body,
         }
       }
 
-      >div {
+      > div {
         display: flex;
         flex-direction: row;
         gap: 16px;
@@ -241,7 +242,8 @@ body,
           width: 34px;
           height: 34px;
           pointer-events: none;
-          background: url("../content/images/step-arrow.svg") center / contain no-repeat;
+          background: url("../content/images/step-arrow.svg") center / contain
+            no-repeat;
           transform: scaleX(-1);
           left: 296px;
           top: 13px;
@@ -279,7 +281,8 @@ body,
               width: 24px;
               height: 24px;
               pointer-events: none;
-              background: url("../content/images/check-sign.svg") center / contain no-repeat;
+              background: url("../content/images/check-sign.svg") center /
+                contain no-repeat;
               left: 12px;
               top: 12px;
             }
@@ -339,7 +342,7 @@ body,
           justify-content: flex-start;
           margin-bottom: 32px;
 
-          >div {
+          > div {
             .p-radiobutton {
               input {
                 border-color: #000;
@@ -368,7 +371,7 @@ body,
             flex-direction: column;
           }
 
-          >div {
+          > div {
             width: calc(50% - 14px);
             display: flex;
             flex-direction: column;
@@ -412,7 +415,7 @@ body,
               }
             }
 
-            >div {
+            > div {
               display: flex;
               flex-direction: row;
               gap: 8px;
@@ -461,8 +464,8 @@ body,
         }
 
         .uploaderContainer {
-          display: flex;
-          flex-direction: column gap 16px;
+          // display: flex;
+          // flex-direction: column gap 16px;
           margin-bottom: 32px;
 
           h4 {
@@ -480,7 +483,7 @@ body,
           margin-bottom: 32px;
           padding-bottom: 50px;
 
-          >div:first-of-type {
+          > div:first-of-type {
             background-color: #fafafb;
             padding: 20px;
             border-radius: 8px;
@@ -541,7 +544,7 @@ body,
                 flex-direction: column;
               }
 
-              >div {
+              > div {
                 display: flex;
                 flex-direction: column;
                 width: calc(50% - 12px);
@@ -626,7 +629,6 @@ body,
         }
 
         .lawsuits {
-
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -671,7 +673,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            >div {
+            > div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -694,7 +696,6 @@ body,
         }
 
         .urgentRequest {
-
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -739,7 +740,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            >div {
+            > div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -808,7 +809,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            >div {
+            > div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -833,12 +834,11 @@ body,
         .legalBonds {
           margin-bottom: 32px;
 
-          >div {
+          > div {
             .GCDropDownComponent {
               margin: 0;
             }
           }
-
 
           h4 {
             font-size: 18px;
@@ -878,7 +878,6 @@ body,
 
               @media screen and (max-width: 768px) {
                 margin-top: 16px;
-                ;
                 max-width: 95%;
               }
             }
@@ -928,8 +927,8 @@ body,
           }
 
           .popupView {
-            >.content {
-              >div {
+            > .content {
+              > div {
                 &.chequePopup {
                   padding: 32px;
 
@@ -1101,7 +1100,8 @@ body,
                         color: #ed0000;
 
                         &::before {
-                          background: url("../content/images/red_delete.svg") center / contain no-repeat;
+                          background: url("../content/images/red_delete.svg")
+                            center / contain no-repeat;
                         }
                       }
 
@@ -1109,7 +1109,8 @@ body,
                         color: #2563eb;
 
                         &::before {
-                          background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+                          background: url("../content/images/blue_plus.svg")
+                            center / contain no-repeat;
                         }
                       }
                     }
@@ -1145,7 +1146,7 @@ body,
                   .phoneNoDiv {
                     margin-top: 1px;
 
-                    >div {
+                    > div {
                       display: flex;
                       flex-direction: row;
                       gap: 8px;
@@ -1155,7 +1156,6 @@ body,
                         flex: 1;
                       }
                     }
-
                   }
 
                   .debtorNameDiv {
@@ -1185,7 +1185,6 @@ body,
                   .uploaderContainer {
                     margin-top: 16px;
                   }
-
 
                   .actionBtns {
                     display: flex;
@@ -1329,8 +1328,8 @@ body,
                 }
 
                 .p-datatable-thead {
-                  >tr {
-                    >th {
+                  > tr {
+                    > th {
                       background: #2d51a3;
                       color: #fff;
                       text-align: left;
@@ -1342,7 +1341,7 @@ body,
                 }
 
                 .p-datatable-tbody {
-                  >tr {
+                  > tr {
                     border-bottom: 1px solid #ddd;
 
                     &:nth-child(even) {
@@ -1353,7 +1352,7 @@ body,
                       background: #e0e0e0;
                     }
 
-                    >td {
+                    > td {
                       padding: 12px 10px;
                       text-align: left;
                       font-size: 13px;
@@ -1371,7 +1370,8 @@ body,
                         width: 24px;
                         height: 24px;
                         pointer-events: none;
-                        background: url("../content/images/threeDotsMenu.svg") center / contain no-repeat;
+                        background: url("../content/images/threeDotsMenu.svg")
+                          center / contain no-repeat;
                         left: 16px;
                         top: 16px;
                       }
@@ -1434,7 +1434,8 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center /
+              contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -1459,7 +1460,7 @@ body,
           flex-direction: column;
         }
 
-        >div {
+        > div {
           width: calc(50% - 14px);
           display: flex;
           flex-direction: column;
@@ -1503,7 +1504,7 @@ body,
             }
           }
 
-          >div {
+          > div {
             display: flex;
             flex-direction: row;
             gap: 8px;
@@ -1575,7 +1576,8 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center /
+              contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -1664,7 +1666,8 @@ body,
         display: flex;
 
         .navbar_toggler {
-          background: url("../content/images/navbar_toggler.svg") no-repeat 0 -11px;
+          background: url("../content/images/navbar_toggler.svg") no-repeat
+            0 -11px;
           width: 30px;
           height: 37px;
           cursor: pointer;
@@ -1736,7 +1739,8 @@ body,
       height: 100%;
       z-index: -1;
       pointer-events: none;
-      background: #2d51a3 url("../content/images/login_bg.svg") center / cover no-repeat;
+      background: #2d51a3 url("../content/images/login_bg.svg") center / cover
+        no-repeat;
     }
 
     .loginContainer {
@@ -1978,7 +1982,7 @@ body,
   justify-content: center;
   z-index: 999;
 
-  >.content {
+  > .content {
     background-color: #fff;
     padding: 8px;
     height: 600px;
@@ -1995,6 +1999,7 @@ body,
   padding: 24px 20px;
   border-radius: 8px;
   cursor: pointer;
+  margin: 8px 0;
 
   .dropzone {
     display: flex;
@@ -2013,7 +2018,7 @@ body,
     line-height: 21px;
   }
 
-  >div {
+  > div {
     &:before {
       content: "";
       background: url("../content/images/upload_icon.svg") no-repeat;
@@ -2021,7 +2026,7 @@ body,
       height: 48px;
     }
 
-    >div {
+    > div {
       padding: 0 12px;
     }
   }
@@ -2031,8 +2036,9 @@ body,
   border: 1px solid #ced4da;
   padding: 24px 20px;
   border-radius: 8px;
+  margin: 8px 0;
 
-  >div {
+  > div {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -2052,7 +2058,7 @@ body,
       cursor: pointer;
     }
 
-    >div {
+    .details {
       width: 80%;
 
       p {
@@ -2068,6 +2074,21 @@ body,
         line-height: 21px;
       }
     }
+  }
+
+  .p-dropdown {
+    background: none;
+    width: 100%;
+    color: #53565a;
+    outline: 0 !important;
+    padding: 0 12px 0 0;
+    border-radius: 2px;
+    border: 0.5px solid #d9d9d9;
+    height: 48px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 44px;
+    margin-top: 4px;
   }
 }
 
