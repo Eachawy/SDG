@@ -3,26 +3,13 @@ import {
   DropDownComponent,
   InputComponent,
 } from "@eachawy/frontend-library";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
-import { useForm } from "react-hook-form";
 
 const UrgentRequest = (props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-    getValues,
-  } = useForm({ mode: "onTouched" });
 
-  useEffect(() => {
-    setValue("inputForm", "urgentRequest");
-  }, [setValue]);
-
-  const lang = useAppSelector((state) => state.locale.currentLocale);
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
 
   const currencyList = [
     { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
@@ -70,28 +57,27 @@ const UrgentRequest = (props) => {
             type="text"
             name="amountToBeCollected"
             placeholder={translate("createNewProfile.exm") + "20,000"}
-            register={register}
-            errors={errors}
-            setValueMethod={setValue}
-            watch={watch}
+            register={props.register}
+            errors={props.errors}
+            setValueMethod={props.setValue}
+            watch={props.watch}
             onChange={(e) => {
               const numericValue = e.target.value.replace(/[^0-9]/g, "");
-              setValue("amountToBeCollected", numericValue);
+              props.setValue("amountToBeCollected", numericValue);
             }}
             label="المبلغ المراد تحصيله"
           />
           <DropDownComponent
             id="urgentRequestCurrencyList"
             name="currencyList"
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
+            register={props.register}
+            watch={props.watch}
+            setValueMethod={props.setValue}
             options={currencyList}
-            optionLabel={`name.${lang}`}
-            errors={errors}
-            onChange={(e) => setValue("currencyList", e.value as object)}
+            optionLabel={`name.${$lang}`}
+            errors={props.errors}
+            onChange={(e) => props.setValue("currencyList", e.value as object)}
             placeholder="دينار"
-            rules={{ required: "يجب اختيار العملة" }}
           />
         </div>
 
@@ -99,13 +85,13 @@ const UrgentRequest = (props) => {
           id="court"
           name="court"
           label="المحكمة"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
+          register={props.register}
+          watch={props.watch}
+          setValueMethod={props.setValue}
           options={courts}
-          optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("court", e.value as object)}
+          optionLabel={`name.${$lang}`}
+          errors={props.errors}
+          onChange={(e) => props.setValue("court", e.value as object)}
           placeholder="اختر المحكمة"
           rules={{ required: "يجب اختيار المحكمة" }}
           className="col-md-6 mb-4"
@@ -115,13 +101,13 @@ const UrgentRequest = (props) => {
           id="urgentRequestType"
           name="urgentRequestType"
           label="نوع الطلب"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
+          register={props.register}
+          watch={props.watch}
+          setValueMethod={props.setValue}
           options={urgentRequestType}
-          optionLabel={`name.${lang}`}
-          errors={errors}
-          onChange={(e) => setValue("urgentRequestType", e.value as object)}
+          optionLabel={`name.${$lang}`}
+          errors={props.errors}
+          onChange={(e) => props.setValue("urgentRequestType", e.value as object)}
           placeholder="اختر نوع الطلب"
           rules={{ required: "يجب اختيار نوع الطلب" }}
           className="col-md-6 flex-1 mb-4"
@@ -133,11 +119,11 @@ const UrgentRequest = (props) => {
           name="urgentRequestNo"
           label="رقم الطلب"
           placeholder="رقم الطلب"
-          register={register}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
-          onChange={(e) => setValue("urgentRequestNo", e.target.value)}
+          register={props.register}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("urgentRequestNo", e.target.value)}
           rules={{ required: "يجب ادخال رقم الطلب" }}
           className="col-md-6 flex-1 mb-4"
         />
@@ -148,13 +134,13 @@ const UrgentRequest = (props) => {
           name="Judge"
           label="القاضي"
           placeholder="ادخل اسم القاضي"
-          register={register}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
+          register={props.register}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
           onChange={(e) => {
             const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
-            setValue("Judge", letterValue);
+            props.setValue("Judge", letterValue);
           }}
           rules={{ required: "يجب ادخال اسم القاضي" }}
           className="col-md-6 flex-1 mb-4"
@@ -165,12 +151,12 @@ const UrgentRequest = (props) => {
           name="urgentRequestRecordDate"
           label={"تاريخ تسجيل الطلب"}
           placeholder={"DD/MM/YYYY"}
-          register={register}
+          register={props.register}
           rules={{ required: "You must select urgent request record date" }}
-          errors={errors}
-          setValueMethod={setValue}
-          watch={watch}
-          onChange={(e) => setValue("urgentRequestRecordDate", e.target.value)}
+          errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("urgentRequestRecordDate", e.target.value)}
           className="col-md-6 flex-1 mb-4"
         />
       </div>

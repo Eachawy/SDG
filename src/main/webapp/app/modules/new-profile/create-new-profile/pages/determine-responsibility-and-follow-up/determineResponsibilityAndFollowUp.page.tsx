@@ -1,27 +1,16 @@
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
-import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
-import { DropDownComponent, InputComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, DropDownComponent, InputComponent } from "@eachawy/frontend-library";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "app/config/store";
-
-interface Country {
-  name: string;
-  code: string;
-}
+import { countryCode } from "app/shared/util/date-utils";
 
 const DetermineResponsibilityAndFollowUpPage = () => {
-  const [selectedCountryCode, setSelectedCountryCode] = useState("");
-  const navigate = useNavigate();
 
-  const countryCode: Country[] = [
-    { name: "+962", code: "ORD" },
-    { name: "+20", code: "EGY" },
-  ];
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,35 +18,19 @@ const DetermineResponsibilityAndFollowUpPage = () => {
     formState: { errors },
     watch,
     setValue,
-    getValues,
-    trigger,
   } = useForm({ mode: "onTouched" });
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
 
-  useEffect(() => {
-    setValue("companyType", "corporateType");
-  }, []);
-
-  useEffect(() => {
-    if (countryCode?.length > 0) {
-      setValue("DRAFCountryCode", countryCode[0]);
-    }
-  }, []);
-
-  const handleValidationSuccess = (data: any) => {
-    // console.log(data);
-    navigate("/subfile-data-sent");
-  };
-
-  const nextFn = async () => {
-    const isValid = await trigger();
-    if (isValid) {
-      handleSubmit(handleValidationSuccess)();
+  const nextFn = (_data) => {
+    if (_data) {
+      navigate("/subfile-data-sent");
     }
   };
 
-  const saveAndCloseFn = () => { };
+  const saveAndCloseFn = () => {
+    navigate("/create-new-profile");
+  };
 
   const selectedCountryCodeTemplate = (option) => {
     if (option) {
@@ -106,30 +79,6 @@ const DetermineResponsibilityAndFollowUpPage = () => {
             onChange={(e) => setValue("email", e.target.value)}
             rules={{ required: 'يجب ادخال البريد الالكتروني' }}
           />
-          {/* <div>
-            <label>
-              {translate("createNewProfile.phoneNumber")}
-              <span>*</span>
-            </label>
-            <div>
-              <Dropdown
-                value={selectedCountryCode}
-                onChange={(e) => {
-                  setSelectedCountryCode(e.value);
-                  setValue("countryCode", e.value);
-                }}
-                options={countryCode}
-                optionLabel="name"
-                placeholder="+962"
-                className="countryCode"
-              />
-              <InputText
-                placeholder={translate("createNewProfile.exm") + "1234567"}
-                className="nationalNoInput"
-              />
-            </div>
-          </div> */}
-
           <div className="phoneNoDiv col-md-6">
             <label>رقم الهاتف <span>*</span></label>
             <div>
@@ -143,11 +92,10 @@ const DetermineResponsibilityAndFollowUpPage = () => {
                 optionLabel={`name.${lang}`}
                 errors={errors}
                 onChange={(e) => setValue("DRAFCountryCode", e.value)}
-                value={watch("DRAFCountryCode")}
+                setValue={countryCode[0]}
                 valueTemplate={selectedCountryCodeTemplate}
                 itemTemplate={countryCodeOptionTemplate}
               />
-
               <InputComponent
                 id="DRAFPhoneNo-id"
                 type="text"
@@ -166,14 +114,9 @@ const DetermineResponsibilityAndFollowUpPage = () => {
             </div>
           </div>
         </div>
-
         <div className="actionBtns">
-          <div onClick={saveAndCloseFn} className="BtnCancel">
-            {translate("createNewProfile.saveAndClose")}
-          </div>
-          <div onClick={nextFn} className="btnStyle">
-            {translate("assignResponsibilityAndFollowUp.sendToCompanyRepresentative")}
-          </div>
+          <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
+          <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(nextFn)}>{translate("assignResponsibilityAndFollowUp.sendToCompanyRepresentative")}</ButtonComponent>
         </div>
       </div>
     </div>

@@ -8,22 +8,31 @@ import Lawsuits from "./shared/lawsuits.component";
 import UrgentRequest from "./shared/urgentRequest.component";
 import Collection from "./shared/collection/collection.component";
 import LegalBonds from "./shared/collection/legalBonds/legalBonds.component";
+import { useForm } from "react-hook-form";
+import { ButtonComponent } from "@eachawy/frontend-library";
 
 const SelectFileTypePage = () => {
 
-    const [triggerHandleSubmit, setTriggerHandleSubmit] = useState(0)
-    const navigate = useNavigate();
-    const saveAndCloseFn = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        watch,
+        setValue,
+        getValues,
+    } = useForm({ mode: "onTouched" });
 
+
+    const navigate = useNavigate();
+
+    const saveAndCloseFn = (data) => {
+        console.log(data);
     }
 
-    const nextFn = () => {
-        setTriggerHandleSubmit(t => t + 1);
-        navigate("/determine-responsibility-and-follow-up");
-    };
-
-    const handleValidationResult = (_data) => {
-        console.log("Form submitted:", _data);
+    const nextFn = (data) => {
+        if (data !== null) {
+            navigate("/determine-responsibility-and-follow-up");
+        }
     };
 
     return (
@@ -32,16 +41,20 @@ const SelectFileTypePage = () => {
             <CreateNewProfileStepsComponent step={2} />
             <div className="sdg_page ">
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span></label>
-                <CompanySubFileData triggerHandleSubmit={triggerHandleSubmit} onValidationSuccess={handleValidationResult} />
-                {true && <Lawsuits />}
-                {true && <UrgentRequest />}
-                {true && <Collection />}
-                {true && <LegalBonds />}
+                <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+
+
+                {watch('fileType')?.code === "T1" &&
+                    (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC") &&
+                    <Lawsuits register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+                {watch('fileType')?.code === "T2" && <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+                {watch('fileType')?.code === "T3" && <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+                {watch('fileType')?.code === "T3" && <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
 
                 <div className="actionBtns">
-                    <div onClick={saveAndCloseFn} className="BtnCancel">{translate("createNewProfile.saveAndClose")}</div>
-                    <div onClick={() => { }} className="btnStyle _saveAndAdd">حفظ وإضافة</div>
-                    <div onClick={nextFn} className="btnStyle">{translate("createNewProfile.next")}</div>
+                    <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
+                    <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.addAndSave")}</ButtonComponent>
+                    <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(nextFn)}>{translate("createNewProfile.next")}</ButtonComponent>
                 </div>
             </div>
         </div>
