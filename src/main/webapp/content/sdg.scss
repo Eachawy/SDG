@@ -84,6 +84,7 @@ body,
         display: flex;
         align-items: center;
         justify-content: center;
+        min-width: 120px;
 
         @media screen and (max-width: 768px) {
           width: 100%;
@@ -108,10 +109,6 @@ body,
         color: #000;
         border: 1px solid #d9d9d9;
         min-width: 158px;
-      }
-
-      .btnStyle {
-        min-width: 120px;
       }
     }
 
@@ -414,58 +411,10 @@ body,
                 }
               }
             }
-
-            > div {
-              display: flex;
-              flex-direction: row;
-              gap: 8px;
-              justify-items: center;
-              width: 100%;
-
-              .countryCode {
-                width: 100px;
-                border-radius: 8px;
-                border: 1px solid #d9d9d9;
-                margin-bottom: 16px;
-                min-width: 100px;
-                padding: 8px 4px;
-
-                .p-dropdown-trigger {
-                  width: 27px;
-
-                  svg {
-                    width: 12px;
-                    height: 12px;
-                  }
-                }
-
-                ul.p-dropdown-items {
-                  padding: 0 !important;
-                }
-
-                span {
-                  margin: 0;
-                  display: flex;
-                  justify-content: flex-end;
-                }
-
-                &::placeholder {
-                  color: #52525b;
-                  font-size: 13px;
-                  line-height: 14px;
-                }
-              }
-            }
-          }
-
-          .GCDropDownComponent {
-            margin-top: 5px;
           }
         }
 
         .uploaderContainer {
-          // display: flex;
-          // flex-direction: column gap 16px;
           margin-bottom: 32px;
 
           h4 {
@@ -1410,8 +1359,8 @@ body,
         }
       }
     }
-
-    .DetermineResponsibilityAndFollowUpPage {
+    .DetermineResponsibilityAndFollowUpPage,
+    .subFileDataSentPage {
       .successMsg {
         background-color: #fafafb;
         padding: 24px;
@@ -1448,7 +1397,9 @@ body,
         font-weight: 700;
         margin-bottom: 32px;
       }
+    }
 
+    .DetermineResponsibilityAndFollowUpPage {
       .emailAndPhoneDiv {
         display: flex;
         flex-direction: row;
@@ -1547,50 +1498,13 @@ body,
           }
         }
 
-        .GCDropDownComponent {
-          margin-top: 5px;
-        }
+        // .GCDropDownComponent {
+        //   margin-top: 5px;
+        // }
       }
     }
 
     .subFileDataSentPage {
-      .successMsg {
-        background-color: #fafafb;
-        padding: 24px;
-        border-radius: 24px;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 40px;
-
-        h4 {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          font-size: 14px;
-          color: #000;
-          gap: 8px;
-          margin: 0;
-
-          &::before {
-            content: "";
-            width: 24px;
-            height: 24px;
-            pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center /
-              contain no-repeat;
-            left: 16px;
-            top: 16px;
-          }
-        }
-      }
-
-      h3 {
-        color: #000;
-        font-size: 16px;
-        font-weight: 700;
-        margin-bottom: 32px;
-      }
-
       .companyRepDataDiv {
         margin-bottom: 32px;
         display: flex;
@@ -1649,6 +1563,53 @@ body,
       .white_btnStyle {
         padding: 12px 30px 14px;
       }
+    }
+  }
+
+  .phoneNumber {
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      justify-items: center;
+      width: 100%;
+
+      .countryCode {
+        width: 100px;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        margin-bottom: 16px;
+        min-width: 100px;
+        padding: 8px 4px;
+
+        .p-dropdown-trigger {
+          width: 27px;
+
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+        }
+
+        ul.p-dropdown-items {
+          padding: 0 !important;
+        }
+
+        span {
+          margin: 0;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        &::placeholder {
+          color: #52525b;
+          font-size: 13px;
+          line-height: 14px;
+        }
+      }
+    }
+    .GCInputComponent {
+      width: 100%;
     }
   }
 
@@ -1831,142 +1792,20 @@ body,
     font-weight: 400;
   }
 
-  .p-inputtext {
-    width: 100%;
-    border-radius: 8px;
-    border-color: #d9d9d9;
-
-    &::placeholder {
-      color: #52525b;
-      font-size: 13px;
-      line-height: 14px;
-    }
-  }
-
   .GCInputComponent {
     margin-bottom: 24px;
-  }
+    .p-inputtext {
+      width: 100%;
+      border-radius: 8px;
+      border-color: #d9d9d9;
 
-  ._col {
-    width: calc(50% - 14px);
-  }
-}
-
-.p-dropdown-panel {
-  .p-dropdown-items-wrapper {
-    ul {
-      padding: 0;
-      margin: 0;
-
-      li {
-        padding: 8px 10px;
-        border-bottom: 1px solid #f1f1f1;
-
-        li:last-of-type {
-          border-bottom: none;
-        }
-
-        &:hover {
-          background-color: #f2f2f2;
-          font-weight: 700;
-        }
-
-        .p-dropdown-item-label {
-          font-size: 12px;
-        }
+      &::placeholder {
+        color: #52525b;
+        font-size: 13px;
+        line-height: 14px;
       }
     }
   }
-
-  .p-dropdown-header {
-    .p-dropdown-filter-container {
-      input {
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        margin: 12px 16px;
-        max-width: 94%;
-        font-size: 12px;
-        padding: 12px;
-      }
-
-      svg {
-        display: none;
-      }
-    }
-  }
-}
-
-.p-multiselect-panel {
-  .p-multiselect-header {
-    display: none;
-  }
-
-  .p-multiselect-items-wrapper {
-    .p-multiselect-items {
-      padding: 0;
-      margin: 0;
-
-      li:first-of-type {
-        background-color: #fafafb;
-        border-bottom: none;
-
-        .p-checkbox-box {
-          background-color: #d9d9d9;
-        }
-
-        .p-checkbox-icon {
-          color: #5a5a63;
-        }
-      }
-
-      li:last-of-type {
-        border-bottom: none;
-      }
-
-      li {
-        padding: 8px 10px;
-        border-bottom: 1px solid #f1f1f1;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #f2f2f2;
-          font-weight: 700;
-        }
-
-        .p-checkbox-box {
-          border: 1px solid #d1d5db;
-          width: 16px;
-          height: 16px;
-          border-radius: 4px;
-          top: 0;
-
-          svg {
-            zoom: 0.8;
-          }
-        }
-
-        span {
-          font-size: 12px;
-          font-weight: 400;
-          padding: 0 8px;
-        }
-      }
-    }
-  }
-}
-
-.p-dropdown {
-  line-height: 26px !important;
-  min-height: 48px !important;
-}
-
-.GCInputComponent,
-.GCDatePickerComponent {
-  margin-top: 5px !important;
-}
-
-.p-calendar {
-  min-height: 48px !important;
 }
 
 .popupView {
@@ -1992,114 +1831,6 @@ body,
     overflow-x: hidden;
     outline: 8px solid #fff;
   }
-}
-
-.uploaderComponent {
-  border: 1px dashed #ced4da;
-  padding: 24px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 8px 0;
-
-  .dropzone {
-    display: flex;
-  }
-
-  p {
-    font-size: 16px;
-    color: #6c757d;
-    margin-bottom: 4px;
-    line-height: 21px;
-  }
-
-  span {
-    font-size: 14px;
-    color: #6c757d;
-    line-height: 21px;
-  }
-
-  > div {
-    &:before {
-      content: "";
-      background: url("../content/images/upload_icon.svg") no-repeat;
-      width: 48px;
-      height: 48px;
-    }
-
-    > div {
-      padding: 0 12px;
-    }
-  }
-}
-
-.viewAttachment {
-  border: 1px solid #ced4da;
-  padding: 24px 20px;
-  border-radius: 8px;
-  margin: 8px 0;
-
-  > div {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-
-    .downloadIcon {
-      background: url("../content/images/download_icon.svg") no-repeat;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-    }
-
-    .deleteFile_icon {
-      background: url("../content/images/delete_icon.svg") no-repeat;
-      width: 22px;
-      height: 22px;
-      cursor: pointer;
-    }
-
-    .details {
-      width: 80%;
-
-      p {
-        font-size: 16px;
-        color: #2d51a3;
-        margin-bottom: 4px;
-        line-height: 21px;
-      }
-
-      span {
-        font-size: 14px;
-        color: #6c757d;
-        line-height: 21px;
-      }
-    }
-  }
-
-  .p-dropdown {
-    background: none;
-    width: 100%;
-    color: #53565a;
-    outline: 0 !important;
-    padding: 0 12px 0 0;
-    border-radius: 2px;
-    border: 0.5px solid #d9d9d9;
-    height: 48px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 44px;
-    margin-top: 4px;
-  }
-}
-
-.p-multiselect,
-.p-inputtext,
-.p-dropdown-label {
-  height: 48px;
-}
-
-.p-multiselect-label {
-  padding-top: 0;
 }
 
 @import "./sdg_ar.scss";

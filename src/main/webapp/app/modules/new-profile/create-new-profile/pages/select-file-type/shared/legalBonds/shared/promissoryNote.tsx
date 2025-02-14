@@ -8,17 +8,16 @@ import React, { useEffect } from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
 import {
-  FieldError,
   useFieldArray,
   useForm,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
 } from "react-hook-form";
 
 import { countryCode } from "app/shared/util/date-utils";
+import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 
 const PromissoryNote = (props) => {
+
+  const lang = useAppSelector((state) => state.locale.currentLocale);
 
   const { closepopUpFn } = props;
 
@@ -53,8 +52,8 @@ const PromissoryNote = (props) => {
     }
 
     // if (countryCode?.length > 0) {
-      setValue("debtors", [{ debtorName: "", phoneNumber: "", countryCode: countryCode[0] }]);
-      setValue("guarantors", [{ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: countryCode[0] }]);
+    setValue("debtors", [{ debtorName: "", phoneNumber: "", countryCode: countryCode[0] }]);
+    setValue("guarantors", [{ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: countryCode[0] }]);
     // }
   }, []);
 
@@ -62,12 +61,12 @@ const PromissoryNote = (props) => {
     appendDebtor({ debtorName: "", phoneNumber: "", countryCode: countryCode?.[0] || "+962" });
     const newIndex = debtors.length - 1;
     setValue(`debtors.${newIndex}.countryCode`, countryCode?.[0] || "+962");
-  
+
   };
-  
+
   const addNewGuarantor = () => {
     appendGuarantor({ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: countryCode?.[0] || "+962" });
-  
+
     const newIndex = guarantors.length - 1;
     setValue(`guarantors.${newIndex}.guarantorCountryCode`, countryCode?.[0] || "+962");
   };
@@ -80,7 +79,7 @@ const PromissoryNote = (props) => {
     }
   };
 
- const lang = useAppSelector((state) => state.locale.currentLocale);
+
 
   const currencyList = [
     { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
@@ -96,26 +95,6 @@ const PromissoryNote = (props) => {
     closepopUpFn(false)
     const formData = getValues();
     console.log("Cheque Form Data:", formData);
-  };
-
-  const selectedCountryCodeTemplate = (option) => {
-    if (option) {
-      return (
-        <div className="countryCodeTemplate">
-          <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
-          <div>{option.name}</div>
-        </div>
-      );
-    }
-  };
-
-  const countryCodeOptionTemplate = (option) => {
-    return (
-      <div className="countryCodeTemplate">
-        <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
-        <div>{option.name}</div>
-      </div>
-    );
   };
 
   return (
@@ -205,46 +184,15 @@ const PromissoryNote = (props) => {
                 className="col-md-6"
               />
 
-              <div className="phoneNoDiv col-md-6">
-                <label>رقم الهاتف <span>*</span></label>
-                <div>
-                  <DropDownComponent
-                    id={`promissoryNoteCountryCode_${field.id}`}
-                    name={`debtors.${index}.countryCode`}
-                    register={register}
-                    watch={watch}
-                    setValueMethod={setValue}
-                    options={countryCode}
-                    optionLabel={`name.${lang}`}
-                    errors={errors}
-                    onChange={(e) => setValue(`debtors.${index}.countryCode`, e.value)}
-                    setValue={countryCode[0]}
-                    valueTemplate={selectedCountryCodeTemplate}
-                    itemTemplate={countryCodeOptionTemplate}
-                  />
-                  <InputComponent
-                    id={`promissoryNotePhoneNumber_${field.id}`}
-                    type="text"
-                    name={`debtors.${index}.phoneNumber`}
-                    placeholder="مثال: 1234567"
-                    register={register}
-                    errors={errors?.debtors?.[index]?.phoneNumber}
-                    setValueMethod={setValue}
-                    watch={watch}
-                    onChange={(e) => {
-                      const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                      setValue(`debtors.${index}.phoneNumber`, numericValue);
-                    }}
-                    value={watch(`debtors.${index}.phoneNumber`)}
-                  />
-
-                  {index !== 0 && (
-                    <span onClick={() => removeRow(index, "debtor")} className="sideBtnStyle deleteBtn">
-                      حذف
-                    </span>
-                  )}
-                </div>
-              </div>
+              <PhoneNumberComponent
+                register={register}
+                errors={errors}
+                watch={watch}
+                setValue={setValue}
+                listName={`debtors.${index}.countryCode`}
+                name={`debtors.${index}.phoneNumber`}
+                class="col-md-6"
+              />
 
               {index === debtors.length - 1 && (
                 <span onClick={addNewDebtor} className="sideBtnStyle addBtn">
@@ -287,47 +235,15 @@ const PromissoryNote = (props) => {
                   className="col-md-6"
                 />
 
-                <div className="phoneNoDiv col-md-6">
-                  <label>رقم الهاتف <span>*</span></label>
-                  <div>
-                    <DropDownComponent
-                      id={`promissoryNoteCountryCodeGuarantor_${field.id}`}
-                      name={`guarantors.${index}.guarantorCountryCode`}
-                      register={register}
-                      watch={watch}
-                      setValueMethod={setValue}
-                      options={countryCode}
-                      optionLabel={`name.${lang}`}
-                      errors={errors}
-                      onChange={(e) => setValue(`guarantors.${index}.guarantorCountryCode`, e.value)}
-                      setValue={countryCode[0]}
-                      valueTemplate={selectedCountryCodeTemplate}
-                      itemTemplate={countryCodeOptionTemplate}
-                    />
-
-                    <InputComponent
-                      id={`promissoryNotePhoneNumberGuarantor_${field.id}`}
-                      type="text"
-                      name={`guarantors.${index}.guarantorPhoneNumber`}
-                      placeholder="مثال: 1234567"
-                      register={register}
-                      errors={errors?.guarantors?.[index]?.guarantorPhoneNumber}
-                      setValueMethod={setValue}
-                      watch={watch}
-                      onChange={(e) => {
-                        const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                        setValue(`guarantors.${index}.guarantorPhoneNumber`, numericValue);
-                      }}
-                      value={watch(`guarantors.${index}.guarantorPhoneNumber`)}
-                    />
-
-                    {index !== 0 && (
-                      <span onClick={() => removeRow(index, "guarantor")} className="sideBtnStyle deleteBtn">
-                        حذف
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <PhoneNumberComponent
+                  register={register}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                  listName={`guarantors.${index}.guarantorCountryCode`}
+                  name={`guarantors.${index}.guarantorPhoneNumber`}
+                  class="col-md-6"
+                />
 
                 {index === guarantors.length - 1 && (
                   <span onClick={addNewGuarantor} className="sideBtnStyle addBtn">

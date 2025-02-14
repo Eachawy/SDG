@@ -6,8 +6,8 @@ import CompanySubFileData from "./shared/companySubFileData.component";
 import { useNavigate } from "react-router";
 import Lawsuits from "./shared/lawsuits.component";
 import UrgentRequest from "./shared/urgentRequest.component";
-import Collection from "./shared/collection/collection.component";
-import LegalBonds from "./shared/collection/legalBonds/legalBonds.component";
+import Collection from "./shared/collection.component";
+import LegalBonds from "./shared/legalBonds/legalBonds.component";
 import { useForm } from "react-hook-form";
 import { ButtonComponent } from "@eachawy/frontend-library";
 
