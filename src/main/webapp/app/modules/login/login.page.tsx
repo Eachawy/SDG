@@ -29,6 +29,7 @@ const LoginPage = () => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("email", e.target.value)}
+            className="col-md-12 flex-1 mb-12"
           />
 
           <InputComponent
@@ -46,6 +47,7 @@ const LoginPage = () => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("password", e.target.value)}
+            className="col-md-12 flex-1 mb-12"
           />
 
           <div className="rememberAndForgetPassDiv">

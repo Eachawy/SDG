@@ -4,11 +4,9 @@ import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent, RadioButtonComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
 import { countryCode } from "app/shared/util/date-utils";
-import AttachmentMultiFileComponent from "app/shared/components/attachmentMultiFile.Component/attachmentMultiFile.Component";
-import AttachmentFileComponent from "app/shared/components/attachmentFIle.Component/attachmentFIle.Component";
 
 
 
@@ -155,7 +153,7 @@ const CreateNewProfilePage = () => {
                         onChange={(e) => setValue("address", e.target.value)}
                     />
 
-                    <div>
+                    <div className="phoneNumber">
                         <label>{translate("createNewProfile.phoneNumber")}<span>*</span></label>
                         <div>
                             <DropDownComponent
@@ -209,7 +207,7 @@ const CreateNewProfilePage = () => {
                     <h4>{translate("createNewProfile.attachments")}</h4>
 
                     <div className="row">
-                        <AttachmentMultiFileComponent
+                        <AttachmentMultiFilesComponent
                             attachList={e => console.log(e)}
                             fileTypeList={[
                                 { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
