@@ -4,9 +4,9 @@ import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { ButtonComponent, DatePickerComponent, DropDownComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
 import { useAppSelector } from "app/config/store";
-import { countryCode } from "app/shared/util/date-utils";
+import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 
 
 
@@ -30,26 +30,6 @@ const CreateNewProfilePage = () => {
         }
         console.log(_data);
         navigate("/select-file-type");
-    };
-
-    const selectedCountryCodeTemplate = (option) => {
-        if (option) {
-            return (
-                <div className="countryCodeTemplate">
-                    <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
-                    <div>{option.name}</div>
-                </div>
-            );
-        }
-    };
-
-    const countryCodeOptionTemplate = (option) => {
-        return (
-            <div className="countryCodeTemplate">
-                <span className={`flag-icon flag-icon-${option.code.toLowerCase()} `}></span>
-                <div>{option.name}</div>
-            </div>
-        );
     };
 
     return (
@@ -153,40 +133,7 @@ const CreateNewProfilePage = () => {
                         onChange={(e) => setValue("address", e.target.value)}
                     />
 
-                    <div className="phoneNumber">
-                        <label>{translate("createNewProfile.phoneNumber")}<span>*</span></label>
-                        <div>
-                            <DropDownComponent
-                                id="countryCode"
-                                name="countryCode"
-                                register={register}
-                                watch={watch}
-                                setValueMethod={setValue}
-                                options={countryCode}
-                                optionLabel={`name.${$lang}`}
-                                errors={errors}
-                                onChange={(e) => setValue("countryCode", e.value as object)}
-                                setValue={countryCode[0]}
-                                valueTemplate={selectedCountryCodeTemplate}
-                                itemTemplate={countryCodeOptionTemplate}
-                            />
-                            <InputComponent
-                                id="phoneNumber"
-                                type="text"
-                                name="phoneNumber"
-                                placeholder={translate("createNewProfile.exm") + "1234567"}
-                                register={register}
-                                errors={errors}
-                                setValueMethod={setValue}
-                                watch={watch}
-                                onChange={(e) => {
-                                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                                    setValue("phoneNumber", numericValue);
-                                }}
-
-                            />
-                        </div>
-                    </div>
+                    <PhoneNumberComponent register={register} errors={errors} watch={watch} setValue={setValue} />
 
                     <InputComponent
                         id="email"

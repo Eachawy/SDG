@@ -411,48 +411,6 @@ body,
                 }
               }
             }
-
-            > div {
-              display: flex;
-              flex-direction: row;
-              gap: 8px;
-              justify-items: center;
-              width: 100%;
-
-              .countryCode {
-                width: 100px;
-                border-radius: 8px;
-                border: 1px solid #d9d9d9;
-                margin-bottom: 16px;
-                min-width: 100px;
-                padding: 8px 4px;
-
-                .p-dropdown-trigger {
-                  width: 27px;
-
-                  svg {
-                    width: 12px;
-                    height: 12px;
-                  }
-                }
-
-                ul.p-dropdown-items {
-                  padding: 0 !important;
-                }
-
-                span {
-                  margin: 0;
-                  display: flex;
-                  justify-content: flex-end;
-                }
-
-                &::placeholder {
-                  color: #52525b;
-                  font-size: 13px;
-                  line-height: 14px;
-                }
-              }
-            }
           }
         }
 
@@ -1540,9 +1498,9 @@ body,
           }
         }
 
-        .GCDropDownComponent {
-          margin-top: 5px;
-        }
+        // .GCDropDownComponent {
+        //   margin-top: 5px;
+        // }
       }
     }
 
@@ -1606,11 +1564,52 @@ body,
         padding: 12px 30px 14px;
       }
     }
+  }
 
-    .phoneNumber {
-      .GCInputComponent {
-        width: 100%;
+  .phoneNumber {
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      justify-items: center;
+      width: 100%;
+
+      .countryCode {
+        width: 100px;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        margin-bottom: 16px;
+        min-width: 100px;
+        padding: 8px 4px;
+
+        .p-dropdown-trigger {
+          width: 27px;
+
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+        }
+
+        ul.p-dropdown-items {
+          padding: 0 !important;
+        }
+
+        span {
+          margin: 0;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        &::placeholder {
+          color: #52525b;
+          font-size: 13px;
+          line-height: 14px;
+        }
       }
+    }
+    .GCInputComponent {
+      width: 100%;
     }
   }
 
