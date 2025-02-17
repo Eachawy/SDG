@@ -58,7 +58,7 @@ const DefendantInfoComponent = (props) => {
         </div>
       </div>
 
-      <ChequeTableComponent />
+      {activeTab === "cheque" ? <ChequeTableComponent /> : null}
     </div>
   );
 };
