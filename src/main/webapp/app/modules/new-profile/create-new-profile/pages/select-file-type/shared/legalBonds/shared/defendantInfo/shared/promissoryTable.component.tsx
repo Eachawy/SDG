@@ -5,9 +5,9 @@ import { ButtonComponent } from "@eachawy/frontend-library";
 import { Paginator } from 'primereact/paginator';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from "primereact/utils";
+import { Button } from "primereact/button";
 
-
-const ChequeTableComponent = () => {
+const PromissoryTableComponent = () => {
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
   const [isActionList, setIsActionList] = useState(false);
@@ -20,7 +20,6 @@ const ChequeTableComponent = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(4);
   const [customChequeData, setCustomChequeData] = useState([]);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const chequeData = [
     {
@@ -381,19 +380,14 @@ const ChequeTableComponent = () => {
   ];
 
   const onPageChange = (event) => {
-
     setFirst(event.first);
     setRows(event.rows);
-
     setCustomChequeData(chequeData.slice(event.first, event.first + event.rows));
-
   }
-
 
   useEffect(() => {
     setCustomChequeData(chequeData.slice(first, first + rows));
   }, [first, rows]);
-
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -544,7 +538,6 @@ const ChequeTableComponent = () => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
               }}
             >
               حذف
@@ -554,6 +547,44 @@ const ChequeTableComponent = () => {
       </div>
     );
   };
+
+  // const template1 = {
+  //   layout: "PrevPageLink PageLinks NextPageLink",
+  //   PrevPageLink(options) {
+  //     return (
+  //       <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
+  //         <span className="p-3">السابق</span>
+  //         <Ripple />
+  //       </button>
+  //     );
+  //   },
+  //   NextPageLink(options) {
+  //     return (
+  //       <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
+  //         <span className="p-3">التالي</span>
+  //         <Ripple />
+  //       </button>
+  //     );
+  //   },
+  //   PageLinks(options) {
+  //     if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
+  //       const className = classNames(options.className, { 'p-disabled': true });
+
+  //       return (
+  //         <span className={className} style={{ userSelect: 'none' }}>
+  //           ...
+  //         </span>
+  //       );
+  //     }
+
+  //     return (
+  //       <button type="button" className={options.className} onClick={options.onClick}>
+  //         {options.page + 1}
+  //         <Ripple />
+  //       </button>
+  //     );
+  //   },
+  // };
 
   const paginatorTemplate = {
     layout: "PrevPageLink PageLinks NextPageLink",
@@ -585,11 +616,6 @@ const ChequeTableComponent = () => {
     ),
   };
 
-  const cancelActionFn = ()=>{
-    setShowDeletePopup(false)
-  }
-  const deleteFN = ()=>{}
-
   return (
     <div className="table-container">
       <DataTable
@@ -599,6 +625,13 @@ const ChequeTableComponent = () => {
         onSelectionChange={onChangeSelection}
         dataKey="id"
         className="custom-table"
+        // paginator={false}
+        // rows={5}
+        // paginator
+        // paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
+        // totalRecords={50}
+        // rowsPerPageOptions={[5, 10, 20]}
+        // currentPageReportTemplate="{first} to {last} of {totalRecords}"
       >
         <Column selectionMode="multiple" header="" className="checkBoxCol" />
         <Column field="bankName" header="اسم البنك" className="columnStyle" />
@@ -639,26 +672,11 @@ const ChequeTableComponent = () => {
 
         <Column body={actionBodyTemplate} className="columnStyle" />
       </DataTable>
+
       <Paginator template={paginatorTemplate} first={first} rows={rows} totalRecords={chequeData.length} onPageChange={onPageChange} />
-    
-      {showDeletePopup && (
-          <div className='deletePopupContainer'>
-            <div className='dialogBoxContent'>
-              <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-              <div className="actionRowBtns">
-                <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                  لا اريد الحذف
-                </ButtonComponent>
-                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                  نعم اريد الحذف
-                </ButtonComponent>
-              </div>
-            </div>
-          </div>
-        )}
+
     </div>
   );
 };
 
-export default ChequeTableComponent;
+export default PromissoryTableComponent;

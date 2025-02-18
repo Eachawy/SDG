@@ -86,9 +86,7 @@ const LegalBonds = (props) => {
       {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />}
 
-
-
-      {/* <DefendantInfoComponent /> */}
+      <DefendantInfoComponent />
     </div>
   );
 };

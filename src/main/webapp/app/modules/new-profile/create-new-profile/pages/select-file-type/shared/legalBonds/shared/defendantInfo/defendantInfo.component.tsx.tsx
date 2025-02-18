@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import ChequeTableComponent from "./shared/chequeTable.component";
+import PromissoryTableComponent from "./shared/promissoryTable.component";
 const DefendantInfoComponent = (props) => {
   const [activeTab, setActiveTab] = useState("cheque");
   return (
@@ -59,6 +60,7 @@ const DefendantInfoComponent = (props) => {
       </div>
 
       {activeTab === "cheque" ? <ChequeTableComponent /> : null}
+      {activeTab === "promissory" ? <PromissoryTableComponent /> : null}
     </div>
   );
 };

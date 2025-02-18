@@ -10,6 +10,8 @@ import Collection from "./shared/collection.component";
 import LegalBonds from "./shared/legalBonds/legalBonds.component";
 import { useForm } from "react-hook-form";
 import { ButtonComponent } from "@eachawy/frontend-library";
+import SearchByDefendant from "./shared/searchByDefendant.component";
+
 
 const SelectFileTypePage = () => {
 
@@ -42,7 +44,8 @@ const SelectFileTypePage = () => {
             <div className="sdg_page ">
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
-
+                    
+                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />   
 
                 {watch('fileType')?.code === "T1" &&
                     (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC") &&
@@ -50,6 +53,9 @@ const SelectFileTypePage = () => {
                 {watch('fileType')?.code === "T2" && <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
                 {watch('fileType')?.code === "T3" && <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
                 {watch('fileType')?.code === "T3" && <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+
+                      
+
 
                 <div className="actionBtns">
                     <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
