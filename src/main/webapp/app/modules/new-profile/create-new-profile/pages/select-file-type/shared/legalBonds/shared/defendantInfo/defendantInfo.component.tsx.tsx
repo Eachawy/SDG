@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
 import ChequeTableComponent from "./shared/chequeTable.component";
 import PromissoryTableComponent from "./shared/promissoryTable.component";
+import DeclarationTableComponent from "./shared/declarationTable.component";
+import MortgageTableComponent from "./shared/mortgageTable.component";
+import StatementTableComponent from "./shared/statementTable.component";
+import LeaseTableComponent from "./shared/leaseTable.component";
+import InvoiceTableComponent from "./shared/invoiceTable.component";
 const DefendantInfoComponent = (props) => {
   const [activeTab, setActiveTab] = useState("cheque");
   return (
@@ -60,7 +65,13 @@ const DefendantInfoComponent = (props) => {
       </div>
 
       {activeTab === "cheque" ? <ChequeTableComponent /> : null}
-      {activeTab === "promissory" ? <PromissoryTableComponent /> : null}
+      {activeTab === "promissory" ? <PromissoryTableComponent /> : null} 
+      {activeTab === "declaration" ? <DeclarationTableComponent /> : null} 
+      {activeTab === "mortgage" ? <MortgageTableComponent /> : null} 
+      {activeTab === "statement" ? <StatementTableComponent /> : null} 
+      {activeTab === "lease" ? <LeaseTableComponent /> : null}
+      {activeTab === "invoice" ? <InvoiceTableComponent /> : null}    
+
     </div>
   );
 };

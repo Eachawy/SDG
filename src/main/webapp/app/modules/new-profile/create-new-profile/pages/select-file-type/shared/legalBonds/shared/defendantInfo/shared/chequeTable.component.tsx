@@ -381,14 +381,10 @@ const ChequeTableComponent = () => {
   ];
 
   const onPageChange = (event) => {
-
     setFirst(event.first);
     setRows(event.rows);
-
     setCustomChequeData(chequeData.slice(event.first, event.first + event.rows));
-
   }
-
 
   useEffect(() => {
     setCustomChequeData(chequeData.slice(first, first + rows));
@@ -417,7 +413,6 @@ const ChequeTableComponent = () => {
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
-      console.log("Closing popup, previous state:", prev);
       return false;
     });
   };
@@ -634,7 +629,7 @@ const ChequeTableComponent = () => {
 
         <Column body={attachmentTemplate}
           header="الملاحظات"
-          className="columnStyle"
+          className="columnStyle attachmentCol"
         />
 
         <Column body={actionBodyTemplate} className="columnStyle" />

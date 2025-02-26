@@ -79,8 +79,6 @@ const PromissoryNote = (props) => {
     }
   };
 
-
-
   const currencyList = [
     { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
     { name: { ar: "دولار امريكي", en: "US Dollar" }, code: "USD" },
@@ -114,7 +112,7 @@ const PromissoryNote = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("issueDate", e.target.value)}
-            className="col-md-6 mb-4"
+            className="w-50-16px"
           />
 
           <DatePickerComponent
@@ -127,11 +125,11 @@ const PromissoryNote = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("promissoryNoteDueDate", e.target.value)}
-            className="col-md-6 mb-4"
+            className="w-50-16px"
             rules={{ required: "يجب اختيار تاريخ الاستحقاق" }}
           />
 
-          <div className="ammountDiv row col-md-6">
+          <div className="ammountDiv">
             <InputComponent
               id="promissoryNoteAmount-id"
               type="text"
@@ -165,7 +163,7 @@ const PromissoryNote = (props) => {
           </div>
 
           {debtors?.map((field, index) => (
-            <div key={field.id} className="debtorNameDiv row">
+            <div key={field.id} className="dynamicRow">
               <InputComponent
                 id={`promissoryNoteDebtorName_${field.id}`}
                 type="text"
@@ -181,18 +179,28 @@ const PromissoryNote = (props) => {
                 }}
                 value={watch(`debtors.${index}.debtorName`)}
                 label="اسم المدين"
-                className="col-md-6"
+                className="w-50-16px"
               />
 
-              <PhoneNumberComponent
-                register={register}
-                errors={errors}
-                watch={watch}
-                setValue={setValue}
-                listName={`debtors.${index}.countryCode`}
-                name={`debtors.${index}.phoneNumber`}
-                class="col-md-6"
-              />
+              <div className="amountDeleteDiv">
+
+                <PhoneNumberComponent
+                  register={register}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                  listName={`debtors.${index}.countryCode`}
+                  name={`debtors.${index}.phoneNumber`}
+                  class="w-50-16px"
+                />
+
+                {index !== 0 && (
+                  <span onClick={() => removeRow(index, "debtor")} className="sideBtnStyle deleteBtn">
+                    حذف
+                  </span>
+                )}
+              </div>
+
 
               {index === debtors.length - 1 && (
                 <span onClick={addNewDebtor} className="sideBtnStyle addBtn">
@@ -216,7 +224,7 @@ const PromissoryNote = (props) => {
 
           {watch("promissoryNoteGuarantorCheckBox") &&
             guarantors?.map((field, index) => (
-              <div key={field.id} className="debtorNameDiv row">
+              <div key={field.id} className="dynamicRow">
                 <InputComponent
                   id={`promissoryNoteGuarantorName_${field.id}`}
                   type="text"
@@ -232,18 +240,26 @@ const PromissoryNote = (props) => {
                   }}
                   value={watch(`guarantors.${index}.guarantorName`)}
                   label="اسم الكفيل"
-                  className="col-md-6"
+                  className="w-50-16px"
                 />
 
-                <PhoneNumberComponent
-                  register={register}
-                  errors={errors}
-                  watch={watch}
-                  setValue={setValue}
-                  listName={`guarantors.${index}.guarantorCountryCode`}
-                  name={`guarantors.${index}.guarantorPhoneNumber`}
-                  class="col-md-6"
-                />
+                <div className="amountDeleteDiv">
+                  <PhoneNumberComponent
+                    register={register}
+                    errors={errors}
+                    watch={watch}
+                    setValue={setValue}
+                    listName={`guarantors.${index}.guarantorCountryCode`}
+                    name={`guarantors.${index}.guarantorPhoneNumber`}
+                    class="w-50-16px"
+                  />
+
+                  {index !== 0 && (
+                    <span onClick={() => removeRow(index, "guarantor")} className="sideBtnStyle deleteBtn">
+                      حذف
+                    </span>
+                  )}
+                </div>
 
                 {index === guarantors.length - 1 && (
                   <span onClick={addNewGuarantor} className="sideBtnStyle addBtn">

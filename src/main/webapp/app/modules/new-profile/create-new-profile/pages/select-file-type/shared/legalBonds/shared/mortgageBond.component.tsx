@@ -63,7 +63,8 @@ const MortgageBond = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-      <div className="row promissoryNotePopup">
+      {/* row promissoryNotePopup */}
+      <div className="flex-row">
           <h4>إضافة بيانات سند رهن</h4>
 
           <DatePickerComponent
@@ -77,7 +78,7 @@ const MortgageBond = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("mortgageBondissueDate", e.target.value)}
-            className="col-md-6 mb-4"
+            className="w-50-16px"
           />
 
           <DatePickerComponent
@@ -90,12 +91,12 @@ const MortgageBond = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("mortgageBondDueDate", e.target.value)}
-            className="col-md-6 mb-4"
+            className="w-50-16px"
             rules={{ required: "يجب اختيار تاريخ الاستحقاق" }}
           />
 
-          <div className="p-0">
-            <div className="ammountDiv row col-md-6">
+          <div className="p-0 w-100">
+            <div className="ammountDiv w-50-16px">
               <InputComponent
                 id="mortgageBondAmount-id"
                 type="text"
@@ -144,7 +145,7 @@ const MortgageBond = (props) => {
                         }}
             value={watch("mortgagBondDebtorName")}
             label="اسم المدين"
-            className="col-md-6"
+            className="w-50-16px"
             rules={{ required: "يجب ادخال اسم المدين" }}
           />
 
@@ -163,7 +164,7 @@ const MortgageBond = (props) => {
             }}
             value={watch("mortgageBondNationalNo")}
             label="الرقم الوطني"
-            className="col-md-6"
+            className="w-50-16px"
             rules={{ required: "يجب ادخال الرقم الوطني" }}
           />
 

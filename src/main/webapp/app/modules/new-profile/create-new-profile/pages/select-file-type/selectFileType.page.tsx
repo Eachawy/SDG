@@ -45,7 +45,9 @@ const SelectFileTypePage = () => {
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
                     
-                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />   
+                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />  
+
+                <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} /> 
 
                 {watch('fileType')?.code === "T1" &&
                     (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC") &&

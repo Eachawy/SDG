@@ -6,7 +6,7 @@ import { Paginator } from 'primereact/paginator';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from "primereact/utils";
 
-const PromissoryTableComponent = () => {
+const DeclarationTableComponent = () => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
@@ -32,11 +32,12 @@ const PromissoryTableComponent = () => {
         { id: 401, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 402, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "29-9-2025",
       dueDate: "29-9-2025",
       totalAmount: "35,000",
-      guarantors: [
+      type: "سند امانة",
+      witness: [
         { id: 450, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
         { id: 451, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 452, name: "محمد رائد العقاد", phoneNo: "123456789" }
@@ -65,11 +66,12 @@ const PromissoryTableComponent = () => {
         { id: 404, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 405, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "30-9-2025",
       dueDate: "30-9-2025",
       totalAmount: "35,000",
-      guarantors: [],
+      type: "اقرار خطي",
+      witness: [],
       attachmentFileData: [
         {
           id: 502,
@@ -87,11 +89,12 @@ const PromissoryTableComponent = () => {
         { id: 407, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 408, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "01-10-2025",
       dueDate: "01-10-2025",
       totalAmount: "35,000",
-      guarantors: [
+      type: "سند امانة",
+      witness: [
         { id: 456, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
         { id: 457, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 458, name: "محمد رائد العقاد", phoneNo: "123456789" }
@@ -125,11 +128,12 @@ const PromissoryTableComponent = () => {
         { id: 410, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 411, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "02-10-2025",
       dueDate: "02-10-2025",
       totalAmount: "35,000",
-      guarantors: [
+      type: "سند امانة",
+      witness: [
         { id: 459, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
         { id: 460, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 461, name: "محمد رائد العقاد", phoneNo: "123456789" }
@@ -163,11 +167,12 @@ const PromissoryTableComponent = () => {
         { id: 413, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 414, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "03-10-2025",
       dueDate: "03-10-2025",
       totalAmount: "35,000",
-      guarantors: [
+      type: "سند امانة",
+      witness: [
         { id: 462, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
         { id: 463, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 464, name: "محمد رائد العقاد", phoneNo: "123456789" }
@@ -201,11 +206,12 @@ const PromissoryTableComponent = () => {
         { id: 416, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 417, name: "محمد رائد العقاد", phoneNo: "123456789" }
       ],
-      phoneNumber: 123456789,
+      nationalNumber: 123456789,
       dateOfIssue: "04-10-2025",
       dueDate: "04-10-2025",
       totalAmount: "35,000",
-      guarantors: [
+      type: "سند امانة",
+      witness: [
         { id: 465, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
         { id: 466, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
         { id: 467, name: "محمد رائد العقاد", phoneNo: "123456789" }
@@ -339,8 +345,6 @@ const PromissoryTableComponent = () => {
     )
   }
 
-
-
   const debtorNameTemplate = (rowData: any) => {
     return (
       <div className="action-column NFBList debtorNameList"
@@ -370,13 +374,13 @@ const PromissoryTableComponent = () => {
     )
   }
 
-  const guarantorsTemplateList = (rowData: any) => {
+  const witnessTemplateList = (rowData: any) => {
     return (
       <div className="action-column NFBList debtorNameList"
         onClick={(e) => {
           e.stopPropagation();
           setguarantorNameInfoListRowId(rowData.id);
-          if (rowData.guarantors.length > 0) {
+          if (rowData.witness.length > 0) {
             setIsGuarantorInfoList(true);
           }
           setIsDebtorInfoList(false)
@@ -384,14 +388,14 @@ const PromissoryTableComponent = () => {
         }}
       >
         <div className="tdinnerDiv">
-          <span className={`${!(rowData.guarantors.length > 0) && "hideIcon"}`} />
-          <p>{rowData.guarantors.length > 0 ? rowData.guarantors[0].name + "/" + rowData.guarantors[1].name : "لا يوجد كفيل"}</p>
+          <span className={`${!(rowData.witness.length > 0) && "hideIcon"}`} />
+          <p>{rowData.witness.length > 0 ? rowData.witness[0].name + "/" + rowData.witness[1].name : "لا يوجد كفيل"}</p>
         </div>
         {guarantorNameInfoListRowId === rowData.id && isGuarantorInfoList && (
           <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-            {rowData.guarantors.length > 0  && rowData.guarantors?.map((d) => (
+            {rowData.witness.length > 0 && rowData.witness?.map((d) => (
               <div key={d?.id}>
-                <p><label>اسم الكفيل</label>{d?.name}</p>
+                <p><label>اسم الشاهد</label>{d?.name}</p>
                 <p><label>رقم الهاتف</label>{d?.phoneNo}</p>
               </div>
             ))}
@@ -491,8 +495,8 @@ const PromissoryTableComponent = () => {
           className="columnStyle debtorNameList" />
 
         <Column
-          field="phoneNumber"
-          header="رقم الهاتف"
+          field="nationalNumber"
+          header="الرقم الوطني"
           className="columnStyle" />
 
         <Column
@@ -514,10 +518,16 @@ const PromissoryTableComponent = () => {
         />
 
         <Column
-          field="guarantors"
-          header="الكفلاء"
+          field="type"
+          header="النوع"
+          className="columnStyle"
+        />
+
+        <Column
+          field="witness"
+          header="اسم الشاهد"
           className="columnStyle debtorNameList"
-          body={guarantorsTemplateList}
+          body={witnessTemplateList}
         />
 
         <Column body={attachmentTemplate}
@@ -550,4 +560,4 @@ const PromissoryTableComponent = () => {
   );
 };
 
-export default PromissoryTableComponent;
+export default DeclarationTableComponent;
