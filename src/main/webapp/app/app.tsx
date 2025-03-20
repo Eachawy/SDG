@@ -20,7 +20,7 @@ export const App = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getSession());
+    // dispatch(getSession());
   }, []);
 
   const currentLocale = useAppSelector((state) => state.locale.currentLocale);

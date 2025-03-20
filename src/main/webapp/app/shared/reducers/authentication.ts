@@ -6,14 +6,19 @@ import { AppThunk } from "app/config/store";
 import { setLocale } from "app/shared/reducers/locale";
 import { serializeAxiosError } from "./reducer.utils";
 
-const AUTH_TOKEN_KEY = "jhi-authenticationToken";
+import {
+  AUTH_TOKEN_KEY,
+  authenticationURL,
+  profileURL
+} from 'app/config/constants';
+
 
 export const initialState = {
   loading: false,
   isAuthenticated: false,
   loginSuccess: false,
   loginError: false, // Errors returned from server side
-  showModalLogin: false,
+  // showModalLogin: false,
   account: {} as any,
   errorMessage: null as unknown as string, // Errors returned from server side
   redirectMessage: null as unknown as string,
@@ -37,7 +42,7 @@ export const getSession = (): AppThunk => async (dispatch, getState) => {
 
 export const getAccount = createAsyncThunk(
   "authentication/get_account",
-  async () => axios.get<any>("api/account"),
+  async () => axios.get<any>(profileURL),
   {
     serializeError: serializeAxiosError,
   },
@@ -51,7 +56,7 @@ interface IAuthParams {
 
 export const authenticate = createAsyncThunk(
   "authentication/login",
-  async (auth: IAuthParams) => axios.post<any>("api/authenticate", auth),
+  async (auth: IAuthParams) => axios.post<any>(authenticationURL, auth),
   {
     serializeError: serializeAxiosError,
   },
@@ -107,13 +112,13 @@ export const AuthenticationSlice = createSlice({
     logoutSession() {
       return {
         ...initialState,
-        showModalLogin: true,
+        // showModalLogin: true,
       };
     },
     authError(state, action) {
       return {
         ...state,
-        showModalLogin: true,
+        // showModalLogin: true,
         redirectMessage: action.payload,
       };
     },
@@ -121,7 +126,7 @@ export const AuthenticationSlice = createSlice({
       return {
         ...state,
         loading: false,
-        showModalLogin: true,
+        // showModalLogin: true,
         isAuthenticated: false,
       };
     },
@@ -131,14 +136,14 @@ export const AuthenticationSlice = createSlice({
       .addCase(authenticate.rejected, (state, action) => ({
         ...initialState,
         errorMessage: action.error.message,
-        showModalLogin: true,
+        // showModalLogin: true,
         loginError: true,
       }))
       .addCase(authenticate.fulfilled, (state) => ({
         ...state,
         loading: false,
         loginError: false,
-        showModalLogin: false,
+        // showModalLogin: false,
         loginSuccess: true,
       }))
       .addCase(getAccount.rejected, (state, action) => ({
@@ -146,7 +151,7 @@ export const AuthenticationSlice = createSlice({
         loading: false,
         isAuthenticated: false,
         sessionHasBeenFetched: true,
-        showModalLogin: true,
+        // showModalLogin: true,
         errorMessage: action.error.message,
       }))
       .addCase(getAccount.fulfilled, (state, action) => {

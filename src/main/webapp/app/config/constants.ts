@@ -13,3 +13,11 @@ export const APP_LOCAL_DATE_FORMAT = "DD/MM/YYYY";
 export const APP_LOCAL_DATETIME_FORMAT = "YYYY-MM-DDTHH:mm";
 export const APP_WHOLE_NUMBER_FORMAT = "0,0";
 export const APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT = "0,0.[00]";
+
+
+
+export const APP_PARAMETERS = 'param';
+export const AUTH_TOKEN_KEY = 'token';
+export const GATEWAY_SERVER_API_URL = 'http://172.24.16.50:8080/';
+export const authenticationURL = 'api/authenticate';
+export const profileURL = 'api/account';
