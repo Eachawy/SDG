@@ -11,6 +11,8 @@ import PromissoryNote from "./shared/promissoryNote";
 import MortgageBond from "./shared/mortgageBond.component";
 import AccountStatement from "./shared/accountStatement.component";
 import Invoice from "./shared/Invoice.component";
+import WrittenAcknowledgmentTrustBond from "./shared/writtenAcknowledgmentTrustBond.component";
+import LeaseContract from "./shared/leaseContractcomponent";
 
 const LegalBonds = (props) => {
   const {
@@ -82,13 +84,13 @@ const LegalBonds = (props) => {
 
       {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <PromissoryNote closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <LeaseContract closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />}
 
-
-
-      {/* <DefendantInfoComponent /> */}
+      <DefendantInfoComponent />
     </div>
   );
 };
