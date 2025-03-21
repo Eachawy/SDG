@@ -1,4 +1,5 @@
 import {
+  AttachmentFileComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -16,6 +17,8 @@ import {
 } from "react-hook-form";
 
 import { InputSwitch } from 'primereact/inputswitch';
+
+
 
 const Cheque = (props) => {
 
@@ -121,7 +124,7 @@ const Cheque = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-        <div className="row chequePopup">
+        <div className="row">
           <h4>إضافة بيانات الشيك</h4>
 
           <DropDownComponent
@@ -137,7 +140,6 @@ const Cheque = (props) => {
             placeholder="اختر اسم البنك"
             rules={{ required: "يجب اختيار اسم البنك" }}
             label="اسم البنك"
-            className="col-md-6 mb-4"
           />
 
           <InputComponent
@@ -153,10 +155,9 @@ const Cheque = (props) => {
             watch={watch}
             onChange={(e) => setValue("bankBranch", e.target.value)}
             label="الفرع"
-            className="col-md-6 mb-4"
           />
 
-          <div className="ammountDiv row col-md-6">
+          <div className="ammountDiv">
             <InputComponent
               id="legalBondchequeAmount"
               type="text"
@@ -209,7 +210,6 @@ const Cheque = (props) => {
             onChange={(e) => setValue("ChequeNo", e.target.value)}
             rules={{ required: "يجب ادخال رقم الشيك" }}
             label="رقم الشيك"
-            className="col-md-6 mb-4"
           />
 
           <div className="switchDiv col-md-12">
@@ -233,7 +233,6 @@ const Cheque = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("dueDate", e.target.value)}
-            className="col-md-6 mb-4"
           />
 
           {isChequeStamped && <DatePickerComponent
@@ -248,10 +247,9 @@ const Cheque = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("replayDate", e.target.value)}
-            className="col-md-6 mb-4"
           />}
 
-          <div className="firstBeneficiaryDiv g-4 row">
+          <div className="flex-row" >
             <DropDownComponent
               id="legalBondsFirstBeneficiary"
               name="firstBeneficiary"
@@ -269,7 +267,7 @@ const Cheque = (props) => {
               placeholder="اختر المستفيد"
               rules={{ required: "يجب اختيار المستفيد" }}
               label="مستفيد"
-              className="col-md-6 mb-4"
+              className="w-50-16px"
             />
 
             {watch("firstBeneficiary")?.code === "FB" && (
@@ -305,14 +303,14 @@ const Cheque = (props) => {
                     ? "اسم المستفيد الأول"
                     : "اسم المجيز"
                 }
-                className="col-md-6 mb-4"
+                className="w-50-16px"
               />
             )}
           </div>
 
           {watch("firstBeneficiary") &&
             fields.map((field, index) => (
-              <div key={field.id} className="drawerNameDiv row">
+              <div key={field.id} className="flex-row">
                 <InputComponent
                   id={`legalBondsDrawerName_${field.id}`}
                   type="text"
@@ -355,9 +353,8 @@ const Cheque = (props) => {
                       : "اسم المجيز"
                   }
                   value={watch(`rows.${index}.drawerName`)}
-                  className="col-md-6"
                 />
-                <div className="actionRowDiv col-md-6">
+                <div className="actionSideRowDiv">
                   {index !== 0 && (
                     <span onClick={() => removeRow(index)} className="deleteBtn">
                       حذف
@@ -376,6 +373,17 @@ const Cheque = (props) => {
 
           <div className="uploaderContainer">
             <h4>{translate("createNewProfile.attachments")}</h4>
+            <div className="w-50-16px">
+            <AttachmentFileComponent
+              attachList={e => console.log(e)}
+              fileTypeList={[
+                { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+              ]}
+              lang={lang}
+              fileTypePlaceHolder={'Select a File Type'}
+            />
+            </div>
           </div>
 
           <div className="actionBtns">

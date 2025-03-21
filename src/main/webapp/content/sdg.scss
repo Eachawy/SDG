@@ -22,7 +22,7 @@ body,
     margin: 0 2px;
     height: 30px;
 
-    + div {
+    +div {
       line-height: 30px;
     }
   }
@@ -56,6 +56,55 @@ body,
 
       .p-dropdown {
         line-height: 24px !important;
+      }
+    }
+
+    .radioButtonDiv {
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+
+      .GCRadioButtonComponent {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    .btnStyle {
+      background-color: #2d51a3;
+      color: #fff;
+      font-size: 16px;
+      line-height: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 8px 40px 11px;
+      user-select: none;
+      font-family: "Cairo-Regular";
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      margin-top: 0;
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        text-align: center;
+      }
+
+      &._saveAndAdd {
+        background-color: #f7941d;
+        color: #fff;
+        border-color: transparent;
+        margin: 0 12px;
+
+        @media screen and (max-width: 768px) {
+          margin-top: 16px;
+          max-width: 95%;
+        }
       }
     }
 
@@ -122,7 +171,7 @@ body,
       cursor: pointer;
       position: relative;
       height: fit-content;
-      margin: 12px 0 10px 10px;
+      margin: -6px 0 10px 0;
 
       &::before {
         position: absolute;
@@ -138,8 +187,7 @@ body,
         color: #ed0000;
 
         &::before {
-          background: url("../content/images/red_delete.svg") center / contain
-            no-repeat;
+          background: url("../content/images/red_delete.svg") center / contain no-repeat;
         }
       }
 
@@ -148,8 +196,7 @@ body,
         width: fit-content;
 
         &::before {
-          background: url("../content/images/blue_plus.svg") center / contain
-            no-repeat;
+          background: url("../content/images/blue_plus.svg") center / contain no-repeat;
         }
       }
     }
@@ -222,7 +269,7 @@ body,
         }
       }
 
-      > div {
+      >div {
         display: flex;
         flex-direction: row;
         gap: 16px;
@@ -239,8 +286,7 @@ body,
           width: 34px;
           height: 34px;
           pointer-events: none;
-          background: url("../content/images/step-arrow.svg") center / contain
-            no-repeat;
+          background: url("../content/images/step-arrow.svg") center / contain no-repeat;
           transform: scaleX(-1);
           left: 296px;
           top: 13px;
@@ -278,8 +324,7 @@ body,
               width: 24px;
               height: 24px;
               pointer-events: none;
-              background: url("../content/images/check-sign.svg") center /
-                contain no-repeat;
+              background: url("../content/images/check-sign.svg") center / contain no-repeat;
               left: 12px;
               top: 12px;
             }
@@ -339,7 +384,7 @@ body,
           justify-content: flex-start;
           margin-bottom: 32px;
 
-          > div {
+          >div {
             .p-radiobutton {
               input {
                 border-color: #000;
@@ -368,7 +413,7 @@ body,
             flex-direction: column;
           }
 
-          > div {
+          >div {
             width: calc(50% - 14px);
             display: flex;
             flex-direction: column;
@@ -419,8 +464,9 @@ body,
 
           h4 {
             color: #000;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
+            margin-bottom: 8px !important;
           }
         }
       }
@@ -430,9 +476,8 @@ body,
       .sdg_page {
         .companySubFileData {
           margin-bottom: 32px;
-          padding-bottom: 50px;
 
-          > div:first-of-type {
+          >div:first-of-type {
             background-color: #fafafb;
             padding: 20px;
             border-radius: 8px;
@@ -493,7 +538,7 @@ body,
                 flex-direction: column;
               }
 
-              > div {
+              >div {
                 display: flex;
                 flex-direction: column;
                 width: calc(50% - 12px);
@@ -577,7 +622,125 @@ body,
           }
         }
 
+        .searchByDefendant {
+          >div:first-child {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 57px;
+
+            .GCDropDownComponent {
+              width: calc(50% - 12px);
+              flex-direction: column;
+              gap: 0;
+              margin: 0;
+            }
+
+            button {
+              margin: 0;
+              align-self: flex-end;
+            }
+          }
+
+          .defendantData {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 57px;
+
+            .title {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              width: 100%;
+              padding-bottom: 20px;
+
+              h4 {
+                font-size: 16px;
+                color: #000;
+                font-weight: 700;
+                margin-bottom: 0;
+              }
+
+              span {
+                font-weight: 700;
+                font-size: 14px;
+                color: #2563EB;
+                position: relative;
+                padding-left: 34px;
+                cursor: pointer;
+
+                &::before {
+                  content: "";
+                  position: absolute;
+                  width: 20px;
+                  height: 20px;
+                  pointer-events: none;
+                  background: url("../content/images/edit_icon.svg") center / contain no-repeat;
+                  left: 0;
+                  top: 0;
+                }
+              }
+            }
+
+            >div {
+              border-bottom: 1px solid #ddd;
+              width: calc(50% - 12px);
+
+              p {
+                display: flex;
+                flex-direction: column;
+                font-weight: 600;
+                font-size: 14px;
+                color: #000;
+                margin-bottom: 12px;
+
+                label {
+                  font-size: 14px;
+                  color: #52525B;
+                }
+              }
+            }
+          }
+
+          .popupView {
+            .content {
+              .defendantDataPopup {
+                padding: 30px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 24px 32px;
+
+
+                >div {
+                  width: calc(50% - 16px);
+                  margin: 0;
+
+                  .GCDropDownComponent {
+                    max-height: 48px;
+                  }
+
+                  .GCInputComponent {
+                    margin: 0;
+                  }
+                }
+
+                .actionBtns {
+                  margin-top: 16px;
+                }
+              }
+            }
+          }
+
+        }
+
         .lawsuits {
+
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -622,7 +785,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -645,6 +808,7 @@ body,
         }
 
         .urgentRequest {
+
           .GCInputComponent,
           .GCDropDownComponent {
             margin: 0;
@@ -666,6 +830,7 @@ body,
               flex-wrap: nowrap;
 
               @media screen and (max-width: 768px) {
+
                 width: 95.4%;
               }
 
@@ -689,7 +854,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -758,7 +923,7 @@ body,
             flex-wrap: wrap;
             gap: 28px 32px;
 
-            > div {
+            >div {
               width: calc(50% - 16px);
 
               &.amountToCollect {
@@ -783,17 +948,10 @@ body,
         .legalBonds {
           margin-bottom: 32px;
 
-          > div {
+          >div {
             .GCDropDownComponent {
               margin: 0;
             }
-          }
-
-          h4 {
-            font-size: 18px;
-            color: #000;
-            font-weight: 700;
-            margin-bottom: 32px;
           }
 
           .btnStyle {
@@ -876,226 +1034,16 @@ body,
           }
 
           .popupView {
-            > .content {
-              > div {
-                &.chequePopup {
-                  padding: 32px;
-
-                  h4 {
-                    font-size: 18px;
-                    color: #000;
-                    font-weight: 700;
-                    margin-bottom: 32px;
-                    width: 100%;
-                  }
-
-                  .GCInputComponent,
-                  .GCDropDownComponent {
-                    margin: 0;
-                  }
-
-                  .ammountDiv {
-                    margin: 1px 0 32px 0px;
-                    padding: 0;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: nowrap;
-
-                    @media screen and (max-width: 768px) {
-                      width: 95.4%;
-                    }
-
-                    .GCInputComponent {
-                      width: calc(78%);
-                      margin-top: 4px !important;
-                    }
-
-                    .GCDropDownComponent {
-                      width: calc(20%);
-                      margin-top: 27px !important;
-                      padding: 0;
-                    }
-                  }
-
-                  .uploaderContainer,
-                  .actionBtns {
-                    width: 100%;
-                  }
-
-                  .actionBtns {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 16px;
-
-                    @media screen and (max-width: 768px) {
-                      flex-direction: column;
-                    }
-
-                    .btnStyle,
-                    .BtnCancel {
-                      background-color: #2d51a3;
-                      color: #fff;
-                      font-size: 16px;
-                      line-height: 16px;
-                      font-weight: 400;
-                      cursor: pointer;
-                      border-radius: 6px;
-                      padding: 8px 40px 11px;
-                      user-select: none;
-                      font-family: "Cairo-Regular";
-                      height: 48px;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-
-                      @media screen and (max-width: 768px) {
-                        width: 100%;
-                        text-align: center;
-                      }
-
-                      &:hover {
-                        background-color: #f7941d;
-                        color: #fff;
-                        border-color: transparent;
-                      }
-
-                      &._saveAndAdd {
-                        background-color: #f7941d;
-                        color: #fff;
-                        border-color: transparent;
-                      }
-                    }
-
-                    .BtnCancel {
-                      background-color: #fff;
-                      color: #000;
-                      border: 1px solid #d9d9d9;
-                      min-width: 158px;
-                    }
-
-                    .btnStyle {
-                      min-width: 120px;
-                    }
-                  }
-
-                  .switchDiv {
-                    width: 100%;
-                    display: flex;
-                    flex-wrap: nowrap;
-                    flex-direction: row;
-                    justify-content: flex-start;
-                    align-items: center;
-                    margin-bottom: 32px;
-
-                    label {
-                      cursor: pointer;
-                      padding: 0 8px;
-                      user-select: none;
-                      color: #000;
-                    }
-                  }
-
-                  .firstBeneficiaryDiv {
-                    padding-right: 0;
-
-                    .GCDropDownComponent {
-                      padding: 0 0 0 12px;
-                    }
-
-                    .GCInputComponent {
-                      padding: 0 0 0 24px;
-                    }
-                  }
-
-                  .drawerNameDiv {
-                    margin-bottom: 32px;
-
-                    .GCInputComponent {
-                      padding-right: 0;
-                    }
-                  }
-
-                  .actionRowDiv {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: nowrap;
-                    gap: 32px;
-                    align-items: center;
-                    padding-top: 24px;
-                    padding-left: 24px;
-
-                    span {
-                      display: flex;
-                      flex-direction: row;
-                      align-items: center;
-                      font-size: 12px;
-                      font-weight: 700;
-                      padding: 0 0 0 32px;
-                      cursor: pointer;
-                      position: relative;
-
-                      &::before {
-                        position: absolute;
-                        content: "";
-                        width: 20px;
-                        height: 20px;
-                        pointer-events: none;
-                        left: 0;
-                        top: 0;
-                        cursor: pointer;
-                      }
-
-                      &.deleteBtn {
-                        color: #ed0000;
-
-                        &::before {
-                          background: url("../content/images/red_delete.svg")
-                            center / contain no-repeat;
-                        }
-                      }
-
-                      &.addBtn {
-                        color: #2563eb;
-
-                        &::before {
-                          background: url("../content/images/blue_plus.svg")
-                            center / contain no-repeat;
-                        }
-                      }
-                    }
-                  }
-                }
+            >.content {
+              >div {
 
                 &.promissoryNotePopup {
                   padding: 32px;
 
-                  .ammountDiv {
-                    margin: 1px 0 0 0;
-                    padding: 0;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: nowrap;
-
-                    @media screen and (max-width: 768px) {
-                      width: 95.4%;
-                    }
-
-                    .GCInputComponent {
-                      width: calc(78%);
-                      margin-top: 4px !important;
-                    }
-
-                    .GCDropDownComponent {
-                      width: calc(20%);
-                      margin-top: 27px !important;
-                      padding: 0;
-                    }
-                  }
-
                   .phoneNoDiv {
                     margin-top: 1px;
 
-                    > div {
+                    >div {
                       display: flex;
                       flex-direction: row;
                       gap: 8px;
@@ -1119,12 +1067,6 @@ body,
                   .uploaderContainer,
                   .actionBtns {
                     width: 100%;
-                  }
-
-                  .sideBtnStyle {
-                    &.addBtn {
-                      margin: -8px 12px 32px 12px;
-                    }
                   }
 
                   .GCCheckBoxComponent {
@@ -1188,6 +1130,26 @@ body,
 
                     .btnStyle {
                       min-width: 120px;
+                    }
+                  }
+                }
+
+                &.leaseContract {
+                  >div:has(.radioButtonDiv) {
+                    margin-top: -8px;
+
+                    >label {
+                      font-size: 10px;
+                      font-weight: 600;
+                      color: #000;
+                      margin-bottom: 16px;
+                    }
+
+                    .radioButtonDiv {
+
+                      label {
+                        font-size: 12px !important;
+                      }
                     }
                   }
                 }
@@ -1262,13 +1224,15 @@ body,
               }
             }
 
-            .cheque-table-container {
+            .table-container {
               width: 100%;
-              border-radius: 8px;
 
               .p-datatable {
-                border-radius: 8px;
-                overflow: hidden;
+                overflow: visible !important;
+
+                .p-datatable-wrapper {
+                  overflow: visible !important;
+                }
 
                 .p-datatable-header {
                   background-color: #003366;
@@ -1276,9 +1240,24 @@ body,
                   font-weight: bold;
                 }
 
+                .debtorNameList {
+                  width: 182px;
+                }
+
                 .p-datatable-thead {
-                  > tr {
-                    > th {
+                  >tr {
+
+                    >th:first-child {
+                      border-top-left-radius: 8px;
+                      border-bottom-left-radius: 8px;
+                    }
+
+                    >th:last-child {
+                      border-top-right-radius: 8px;
+                      border-bottom-right-radius: 8px;
+                    }
+
+                    >th {
                       background: #2d51a3;
                       color: #fff;
                       text-align: left;
@@ -1290,21 +1269,87 @@ body,
                 }
 
                 .p-datatable-tbody {
-                  > tr {
+                  >tr {
                     border-bottom: 1px solid #ddd;
 
                     &:nth-child(even) {
-                      background-color: #f5f5f5;
+                      background-color: #fafafa;
+                    }
+
+                    &:nth-child(odd) {
+                      background-color: #fff;
                     }
 
                     &:hover {
                       background: #e0e0e0;
                     }
 
-                    > td {
-                      padding: 12px 10px;
+                    >td {
+                      padding: 10px;
                       text-align: left;
-                      font-size: 13px;
+                      font-size: 12px;
+
+                      &.actionCol {
+                        width: 50px;
+                      }
+
+                      &.attachmentCol {
+                        width: 70px;
+                      }
+
+                      &:has(.NFBList) {
+
+                        .tdinnerDiv {
+                          position: relative;
+
+                          span {
+                            width: 12px;
+                            height: 8px;
+                            background: url("../content/images/dropdown_arrow.svg") center / contain no-repeat;
+                            right: 0;
+                            top: 6px;
+                            position: absolute;
+                            cursor: pointer;
+
+                            &.hideIcon {
+                              display: none;
+                            }
+                          }
+
+                          p {
+                            margin-bottom: 0;
+                            text-align: start;
+                          }
+                        }
+
+                        &.debtorNameList {
+                          max-width: 200px !important;
+                        }
+                      }
+
+                      &:has(.attachmentTemplateDiv) {
+                        .attachmentTdinnerDiv {
+                          p {
+                            margin-bottom: 0;
+                            color: #2563EB;
+                            text-decoration: underline;
+                            position: relative;
+                            padding-left: 16px;
+                            text-align: left;
+
+                            &::before {
+                              content: "";
+                              width: 16px;
+                              height: 13px;
+                              background: url("../content/images/download-td-icon.svg") center / contain no-repeat;
+                              right: 40px;
+                              top: 3px;
+                              position: absolute;
+                              cursor: pointer;
+                            }
+                          }
+                        }
+                      }
 
                       .action-column {
                         position: relative;
@@ -1316,11 +1361,10 @@ body,
                         cursor: pointer;
                         font-size: 20px;
                         display: inline-block;
-                        width: 24px;
-                        height: 24px;
+                        width: 22px;
+                        height: 22px;
                         pointer-events: none;
-                        background: url("../content/images/threeDotsMenu.svg")
-                          center / contain no-repeat;
+                        background: url("../content/images/threeDotsMenu.svg") center / contain no-repeat;
                         left: 16px;
                         top: 16px;
                       }
@@ -1331,17 +1375,110 @@ body,
                         right: 0;
                         background: white;
                         border: 1px solid #ddd;
+                        border-radius: 8px;
                         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                        padding: 10px;
                         display: flex;
                         flex-direction: column;
-                        z-index: 100;
-                      }
+                        z-index: 10000;
+                        overflow: hidden;
 
-                      .actionList {
                         span {
-                          padding: 5px;
+                          padding: 8px 32px !important;
+                          border-bottom: 1px solid #ddd;
                           cursor: pointer;
+                        }
+
+                        span:last-child {
+                          border-bottom: none;
+                        }
+
+                        &._beneficiary {
+                          display: flex;
+                          flex-direction: column;
+                          justify-content: space-between;
+                          width: 240px;
+                          border-radius: 0;
+
+                          >div {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            border-bottom: 1px solid #ececec;
+                            cursor: auto;
+
+                            &:nth-child(even) {
+                              background-color: #fafafa;
+                            }
+
+                            &:nth-child(odd) {
+                              background-color: #fff;
+                            }
+
+                            p {
+                              margin: 0;
+                              padding: 12px 16px 8px 8px;
+                              display: flex;
+                              flex-direction: column;
+                              justify-content: space-between;
+                              align-items: flex-start;
+                              color: #52525B;
+                              font-size: 12px;
+                              font-weight: 600;
+
+                              label {
+                                color: #52525b;
+                                font-size: 12px;
+                              }
+                            }
+
+                            span {
+                              align-self: flex-end;
+                              padding: 8px 16px !important;
+                              color: #2563EB;
+                              font-size: 12px;
+                              font-weight: 600;
+                            }
+
+                            span:hover {
+                              background-color: transparent;
+                              cursor: auto;
+                            }
+                          }
+
+                          >div:last-child {
+                            border-bottom: none;
+                          }
+
+                          .fb {
+                            >p {
+                              color: #2563EB !important;
+                            }
+                          }
+
+                          span {
+                            padding: 0 !important;
+                          }
+                        }
+
+                        &._leaseNoOfPayments {
+
+                          >div {
+
+                            &:first-child{
+                              background-color: #2d51a3 !important;
+                              p, label{
+                                color: #fff;
+                              }
+                            }
+
+                            &:nth-child(odd) {
+                              background-color: #fafafa;
+                            }
+
+                            &:nth-child(even) {
+                              background-color: #fff;
+                            }
+                          }
                         }
                       }
 
@@ -1350,7 +1487,213 @@ body,
                           background: #f0f0f0;
                         }
                       }
+
+                      .action-column {
+                        padding: 0 !important;
+
+                        span {
+                          padding: 4px 8px;
+                        }
+                      }
+
+                      &.numberOfPayments {
+                        >div {
+                          >div {
+                            span {
+                              left: 8px;
+                            }
+                          }
+                        }
+                      }
+
+                      &.leaseAttachment {
+                        >div {
+                          >div {
+                            >p {
+                              &:before {
+                                right: 95px !important;
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
+                  }
+                }
+
+                .popupView {
+                  cursor: auto;
+
+                  .content {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 40px;
+                    width: 94%;
+                    overflow: hidden;
+
+                    >div {
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: space-between;
+                      gap: 24px;
+                      height: 90%;
+
+                      .fileViewSpace {
+                        height: 100%;
+                        width: calc(70% - 12px);
+                        border-radius: 8px;
+                        border: 1px solid #D9D9D9;
+                        background-color: #FAFAFB;
+                        overflow: hidden;
+                      }
+
+                      .fileCardList {
+                        height: 100%;
+                        width: calc(30% - 12px);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 32px;
+                        overflow-y: auto;
+                        outline: 8px solid #fff;
+                        padding: 4px 16px;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        scrollbar-gutter: stable both-edges;
+                        padding-left: 8px;
+                        margin-top: -2px;
+
+                        &::-webkit-scrollbar {
+                          width: 4px;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                          background: #f1f1f1;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                          background: #888;
+                          border-radius: 4px;
+                        }
+
+                        transform: scaleX(-1);
+
+                        &>* {
+                          transform: scaleX(-1);
+                        }
+
+
+                        >div {
+                          width: 100%;
+                          height: 138px;
+                          border-radius: 8px;
+                          padding: 20px 20px 20px 90px;
+                          display: flex;
+                          flex-direction: column;
+                          box-shadow: 0px 4px 10px #0000001A;
+                          cursor: pointer;
+
+                          &.active {
+                            outline: 2px solid #2563eb;
+                          }
+
+                          >p {
+                            position: relative;
+
+                            &::before {
+                              content: "";
+                              width: 64px;
+                              height: 64px;
+                              background: url("../content/images/jpg_file_icon.svg") center / contain no-repeat;
+                              right: 214px;
+                              top: -3px;
+                              position: absolute;
+                            }
+                          }
+
+                          &.pdfEx {
+                            >p {
+                              &::before {
+                                background: url("../content/images/pdf_file_icon.svg") center / contain no-repeat;
+                              }
+                            }
+                          }
+
+                          p {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            font-size: 11px;
+                            color: #2d51a3;
+                            font-weight: 600;
+
+                            label {
+                              color: #7d7d84;
+                              font-size: 12px;
+                            }
+                          }
+
+                          div {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 16px;
+                          }
+                        }
+                      }
+                    }
+
+                    .BtnCancel {
+                      width: 100px;
+                      min-height: 43px;
+                      border-radius: 8px;
+                      margin-top: 16px;
+                      align-self: flex-end;
+                      font-size: 20px;
+                      border-color: #D9D9D9;
+                      color: #000000;
+                      font-family: "Cairo-Regular";
+
+                      &:hover {
+                        color: #fff;
+                        border-color: transparent;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .p-paginator {
+                border: 1px solid #D9D9D9;
+                border-radius: 4px;
+                margin-top: 16px;
+                width: fit-content;
+                padding: 0;
+                margin-left: auto;
+                overflow: hidden;
+
+                .p-paginator-pages {
+                  border-right: 1px solid #D9D9D9;
+                  border-left: 1px solid #D9D9D9;
+                }
+
+                button:last-child {
+                  border-right: none;
+                }
+
+                button {
+                  border-right: 1px solid #D9D9D9;
+                  color: #2563EB;
+                  background-color: #fff;
+
+                  &:has(span) {
+                    border-right: none;
+                  }
+
+                  &:focus {
+                    background-color: #2563EB;
+                    color: #ffffff;
                   }
                 }
               }
@@ -1359,6 +1702,7 @@ body,
         }
       }
     }
+
     .DetermineResponsibilityAndFollowUpPage,
     .subFileDataSentPage {
       .successMsg {
@@ -1383,8 +1727,7 @@ body,
             width: 24px;
             height: 24px;
             pointer-events: none;
-            background: url("../content/images/successMsgIcon.svg") center /
-              contain no-repeat;
+            background: url("../content/images/successMsgIcon.svg") center / contain no-repeat;
             left: 16px;
             top: 16px;
           }
@@ -1411,7 +1754,7 @@ body,
           flex-direction: column;
         }
 
-        > div {
+        >div {
           width: calc(50% - 14px);
           display: flex;
           flex-direction: column;
@@ -1455,7 +1798,7 @@ body,
             }
           }
 
-          > div {
+          >div {
             display: flex;
             flex-direction: row;
             gap: 8px;
@@ -1497,10 +1840,6 @@ body,
             }
           }
         }
-
-        // .GCDropDownComponent {
-        //   margin-top: 5px;
-        // }
       }
     }
 
@@ -1567,7 +1906,7 @@ body,
   }
 
   .phoneNumber {
-    > div {
+    >div {
       display: flex;
       flex-direction: row;
       gap: 8px;
@@ -1608,6 +1947,7 @@ body,
         }
       }
     }
+
     .GCInputComponent {
       width: 100%;
     }
@@ -1627,8 +1967,7 @@ body,
         display: flex;
 
         .navbar_toggler {
-          background: url("../content/images/navbar_toggler.svg") no-repeat
-            0 -11px;
+          background: url("../content/images/navbar_toggler.svg") no-repeat 0 -11px;
           width: 30px;
           height: 37px;
           cursor: pointer;
@@ -1700,8 +2039,7 @@ body,
       height: 100%;
       z-index: -1;
       pointer-events: none;
-      background: #2d51a3 url("../content/images/login_bg.svg") center / cover
-        no-repeat;
+      background: #2d51a3 url("../content/images/login_bg.svg") center / cover no-repeat;
     }
 
     .loginContainer {
@@ -1794,6 +2132,7 @@ body,
 
   .GCInputComponent {
     margin-bottom: 24px;
+
     .p-inputtext {
       width: 100%;
       border-radius: 8px;
@@ -1808,6 +2147,53 @@ body,
   }
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100% !important;
+  padding: 0;
+  gap: 32px;
+
+  >div {
+    width: calc(50% - 16px);
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+
+    >* {
+      width: 100%;
+    }
+  }
+}
+
+.w-50-32px {
+  width: calc(50% - 32px);
+}
+
+.w-50-16px {
+  width: calc(50% - 16px) !important;
+
+  @media screen and (max-width: 768px) {
+    width: 100% !important;
+  }
+
+  .uploaderComponent {
+    width: 100% !important;
+  }
+
+  .viewAttachment {
+    width: 100% !important;
+  }
+}
+
+.pr-0 {
+  padding-right: 0;
+}
+
+
 .popupView {
   position: fixed;
   top: 0;
@@ -1821,16 +2207,364 @@ body,
   justify-content: center;
   z-index: 999;
 
-  > .content {
+  >.content {
     background-color: #fff;
-    padding: 8px;
     height: 600px;
     border-radius: 16px;
     width: 85%;
     overflow-y: auto;
     overflow-x: hidden;
     outline: 8px solid #fff;
+
+    >div {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 32px;
+      padding: 40px 28px 40px 40px !important;
+
+      h4 {
+        font-size: 14px;
+        color: #000;
+        font-weight: 700;
+        margin-bottom: 8px;
+        width: 100%;
+        padding: 0;
+      }
+
+      .switchDiv {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        label {
+          cursor: pointer;
+          padding: 0 8px;
+          user-select: none;
+          color: #000;
+        }
+      }
+
+
+      .actionSideRowDiv {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 32px;
+        align-items: center;
+        padding-top: 24px;
+
+        span {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: 12px;
+          font-weight: 700;
+          padding: 0 0 0 32px;
+          cursor: pointer;
+          position: relative;
+
+          &::before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            left: 0;
+            top: 0;
+            cursor: pointer;
+          }
+
+          &.deleteBtn {
+            color: #ed0000;
+
+            &::before {
+              background: url("../content/images/red_delete.svg") center / contain no-repeat;
+            }
+          }
+
+          &.addBtn {
+            color: #2563eb;
+
+            &::before {
+              background: url("../content/images/blue_plus.svg") center / contain no-repeat;
+            }
+          }
+        }
+      }
+
+      .GCInputComponent,
+      .GCDropDownComponent {
+        margin-bottom: 0;
+      }
+
+      .uploaderContainer,
+      .actionBtns {
+        width: 100%;
+      }
+
+      .GCDropDownComponent {
+        margin-top: -5px !important;
+      }
+
+      &.GCInputComponent,
+      .GCInputComponent,
+      &.GCCheckBoxComponent,
+      .GCCheckBoxComponent {
+        margin-bottom: 0;
+        padding: 0;
+      }
+
+      >div {
+        width: calc(50% - 16px);
+        padding: 0;
+        margin-bottom: 0;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
+
+        &.ammountDiv,
+        .ammountDiv {
+          width: calc(50% - 16px);
+          margin: 1px 0 0 0px;
+          padding: 0;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          gap: 8px;
+
+          @media screen and (max-width: 768px) {
+            width: 95.4%;
+          }
+
+          .GCInputComponent {
+            width: calc(80% - 4px);
+            margin-top: 4px !important;
+            margin-bottom: 0;
+            padding: 0;
+          }
+
+          .GCDropDownComponent {
+            width: calc(20% - 4px);
+            margin-top: 27px !important;
+            padding: 0;
+          }
+        }
+
+        &.radioButtonDiv {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          gap: 32px;
+
+          .GCRadioButtonComponent {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+          }
+        }
+
+        &.GCDatePickerComponent {
+          .p-calendar {
+            overflow: hidden;
+          }
+        }
+
+        &.dynamicRow,
+        .dynamicRow {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          width: 100%;
+          gap: 0 32px;
+
+          .sideBtnStyle {
+            margin-top: 16px;
+          }
+
+          >div {
+            width: calc(50% - 16px);
+          }
+
+          .phoneNumber {
+            margin-top: -5px;
+
+            .GCDropDownComponent {
+              .p-dropdown {
+                margin-top: 5px;
+              }
+            }
+          }
+
+          .row-withSideBtn {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+
+            span {
+              width: fit-content;
+              margin-top: 30px;
+            }
+
+            >div {
+              flex: 1;
+            }
+          }
+
+          .amountDeleteDiv {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 16px;
+
+            .ammountDiv {
+              width: 100%;
+              margin-top: -4px;
+            }
+
+            >span {
+              width: fit-content;
+              position: relative;
+              top: 21px;
+            }
+
+            >div {
+              flex: 1;
+            }
+          }
+        }
+      }
+
+      .actionBtns {
+        width: 100%;
+      }
+    }
   }
 }
+
+.deletePopupContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 25%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+
+  * {
+    font-family: "Cairo-regular" !important;
+  }
+
+
+  .dialogBoxContent {
+    background-color: #fff;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    max-width: 727px;
+    border-radius: 24px;
+
+    @media screen and (max-width: 1200px) {
+      width: 60%
+    }
+
+    @media screen and (max-width: 992px) {
+      width: 65%
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 80%
+    }
+
+    h4 {
+      display: flex;
+      flex-direction: column;
+      font: 22px / 24px 'RTA-bold';
+      color: #333;
+      padding: 0;
+
+      &::before {
+        content: '';
+        background: url("../content/images/trash_icon.svg") center / contain no-repeat;
+        width: 74px;
+        height: 74px;
+        margin: 0 0 16px -16px;
+        display: block;
+        position: relative;
+        top: -3px;
+      }
+    }
+
+    p {
+      font: 18px / 18px 'RTA';
+      color: #333;
+      margin-bottom: 64px;
+    }
+
+    .actionRowBtns {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+
+      @media screen and (max-width: 768px) {
+        flex-direction: column;
+      }
+
+      .BtnStyle {
+        font: 18px / 22px 'RTA-bold';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #D9D9D9;
+        border-radius: 8px;
+
+        &:hover {
+          background-color: #f7941d;
+          color: #fff;
+        }
+
+        @media screen and (max-width: 768px) {
+          width: 100%
+        }
+
+        &.BtnCancel {
+          background-color: #EE0000;
+          color: #fff;
+          border: none;
+
+          &:hover {
+            background-color: #EE0000;
+          }
+        }
+      }
+    }
+  }
+}
+
+.GCDatePickerComponent {
+  .p-calendar {
+    overflow: hidden;
+  }
+}
+
+// .GCDropDownComponent{
+//   margin-top: -5px !important;
+// }
+
 
 @import "./sdg_ar.scss";

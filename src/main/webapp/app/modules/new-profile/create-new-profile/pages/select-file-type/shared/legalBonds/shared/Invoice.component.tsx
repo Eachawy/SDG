@@ -77,7 +77,7 @@ const Invoice = (props) => {
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("invoiceIssueDate", e.target.value)}
-            className="col-md-6 mb-4"
+            className="col-md-6"
           />
 
           <div className="ammountDiv row col-md-6">
