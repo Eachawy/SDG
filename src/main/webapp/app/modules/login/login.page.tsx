@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { translate } from "react-jhipster";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, CheckBoxComponent, InputComponent } from "@eachawy/frontend-library";
 import { login } from "app/shared/reducers/authentication";
-import { useAppDispatch } from "app/config/store";
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({ mode: 'onTouched', });
+
+  const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
+
+
+  useEffect(() => {
+
+  },[isAuthenticated]);
+
+
+
   const forgetThePasswordFn = () => { };
+  
+  
+  
   const handleLogin = (data) => {
     dispatch(login(data.user,data.password));
-    console.log(data);
   };
+
+  if(isAuthenticated) {
+    navigate('/create-new-profile');
+  }
 
   return (
     <div className="loginPage">
