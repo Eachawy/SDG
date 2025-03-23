@@ -1,4 +1,5 @@
 import {
+  AttachmentFileComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -60,7 +61,7 @@ const AccountStatement = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-        <div className="row promissoryNotePopup">
+        <div className="row promissoryNotePopup _accountStatement">
           <h4>إضافة بيانات كشف حساب</h4>
 
           <InputComponent
@@ -115,8 +116,20 @@ const AccountStatement = (props) => {
             />
           </div>
 
-          <div className="uploaderContainer">
+          <div className="uploaderContainer w-100">
             <h4>تحميل كشف حساب <span className="text-danger">*</span></h4>
+
+            <div className="row">
+              <AttachmentFileComponent
+                attachList={e => console.log(e)}
+                fileTypeList={[
+                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                ]}
+                lang={lang}
+                fileTypePlaceHolder={'Select a File Type'}
+              />
+            </div>
           </div>
 
           <div className="actionBtns">

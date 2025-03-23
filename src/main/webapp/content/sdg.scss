@@ -1070,7 +1070,7 @@ body,
                   }
 
                   .GCCheckBoxComponent {
-                    margin-bottom: 16px !important;
+                    margin-bottom: -16px !important;
                   }
 
                   .uploaderContainer {
@@ -1131,6 +1131,19 @@ body,
                     .btnStyle {
                       min-width: 120px;
                     }
+                  }
+
+                  &._accountStatement {
+                      .ammountDiv{
+                        margin-top: -4px;
+
+                    }
+                  }
+
+                  &._invoice{
+                    .ammountDiv{
+                      margin-top: -4px;
+                  }
                   }
                 }
 
@@ -1464,9 +1477,11 @@ body,
 
                           >div {
 
-                            &:first-child{
+                            &:first-child {
                               background-color: #2d51a3 !important;
-                              p, label{
+
+                              p,
+                              label {
                                 color: #fff;
                               }
                             }

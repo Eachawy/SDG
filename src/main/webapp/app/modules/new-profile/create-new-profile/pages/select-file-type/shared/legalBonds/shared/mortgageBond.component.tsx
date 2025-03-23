@@ -1,4 +1,5 @@
 import {
+  AttachmentFileComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -63,8 +64,8 @@ const MortgageBond = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-      {/* row promissoryNotePopup */}
-      <div className="flex-row">
+        {/* row promissoryNotePopup */}
+        <div className="flex-row">
           <h4>إضافة بيانات سند رهن</h4>
 
           <DatePickerComponent
@@ -142,7 +143,7 @@ const MortgageBond = (props) => {
             onChange={(e) => {
               const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
               setValue("mortgagBondDebtorName", letterValue);
-                        }}
+            }}
             value={watch("mortgagBondDebtorName")}
             label="اسم المدين"
             className="w-50-16px"
@@ -170,6 +171,32 @@ const MortgageBond = (props) => {
 
           <div className="uploaderContainer">
             <h4>{translate("createNewProfile.attachments")}</h4>
+          </div>
+
+          <div className="uploaderContainer w-100">
+            <h4>تحميل اقرار الخطي / سند امانة</h4>
+
+            <div className="row">
+              <AttachmentFileComponent
+                attachList={e => console.log(e)}
+                fileTypeList={[
+                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                ]}
+                lang={lang}
+                fileTypePlaceHolder={'تحميل الواجهة الأمامية اقرار الخطي / سند امانة'}
+              />
+
+              <AttachmentFileComponent
+                attachList={e => console.log(e)}
+                fileTypeList={[
+                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                ]}
+                lang={lang}
+                fileTypePlaceHolder={'تحميل الجانب الخلفي اقرار الخطي / سند امانة'}
+              />
+            </div>
           </div>
 
           <div className="actionBtns">

@@ -1,4 +1,5 @@
 import {
+  AttachmentFileComponent,
   CheckBoxComponent,
   DatePickerComponent,
   DropDownComponent,
@@ -269,8 +270,21 @@ const PromissoryNote = (props) => {
               </div>
             ))}
 
-          <div className="uploaderContainer">
-            <h4>{translate("createNewProfile.attachments")}</h4>
+
+          <div className="uploaderContainer w-100">
+            <h4>تحميل الكمبيالة</h4>
+
+            <div className="row">
+              <AttachmentFileComponent
+                attachList={e => console.log(e)}
+                fileTypeList={[
+                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                ]}
+                lang={lang}
+                fileTypePlaceHolder={'تحميل الواجهة الأمامية للكمبيالة'}
+              />
+            </div>
           </div>
 
           <div className="actionBtns">

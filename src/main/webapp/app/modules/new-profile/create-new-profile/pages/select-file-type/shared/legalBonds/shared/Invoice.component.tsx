@@ -1,4 +1,5 @@
 import {
+  AttachmentFileComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -63,7 +64,7 @@ const Invoice = (props) => {
   return (
     <div className="popupView">
       <div className="content">
-        <div className="row promissoryNotePopup">
+        <div className="row promissoryNotePopup _invoice">
           <h4>إضافة بيانات فاتورة</h4>
 
           <DatePickerComponent
@@ -94,7 +95,7 @@ const Invoice = (props) => {
                 const numericValue = e.target.value.replace(/[^0-9]/g, "");
                 setValue("invoiceAmount", numericValue);
               }}
-              
+
               rules={{ required: "يجب ادخال قيمة الفاتورة" }}
               label="قيمة الفاتورة"
             />
@@ -133,8 +134,20 @@ const Invoice = (props) => {
             rules={{ required: "يجب ادخال رقم الفاتورة" }}
           />
 
-          <div className="uploaderContainer">
-            <h4>{translate("createNewProfile.attachments")}</h4>
+          <div className="uploaderContainer w-100">
+            <h4>تحميل الفاتورة<span className="text-danger">*</span></h4>
+
+            <div className="row">
+              <AttachmentFileComponent
+                attachList={e => console.log(e)}
+                fileTypeList={[
+                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
+                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
+                ]}
+                lang={lang}
+                fileTypePlaceHolder={'Select a File Type'}
+              />
+            </div>
           </div>
 
           <div className="actionBtns">
