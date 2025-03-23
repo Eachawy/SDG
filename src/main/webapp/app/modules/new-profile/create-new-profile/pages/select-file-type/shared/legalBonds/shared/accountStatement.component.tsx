@@ -120,15 +120,23 @@ const AccountStatement = (props) => {
             <h4>تحميل كشف حساب <span className="text-danger">*</span></h4>
 
             <div className="row">
-              <AttachmentFileComponent
-                attachList={e => console.log(e)}
+              {/* <AttachmentFileComponent
+                id="attach_1"
+                name="attach_1"
+                lang={$lang}
+                register={register}
+                watch={watch}
+                rules={{ required: 'يجب ادخال المىفقات' }}
+                errors={errors}
+                setValueMethod={setValue}
+                attachList={(e) => setValue("attach_1", e)}
                 fileTypeList={[
                   { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
                   { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
                 ]}
                 lang={lang}
                 fileTypePlaceHolder={'Select a File Type'}
-              />
+              /> */}
             </div>
           </div>
 
