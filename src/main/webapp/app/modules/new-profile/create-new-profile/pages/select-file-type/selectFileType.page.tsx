@@ -45,7 +45,7 @@ const SelectFileTypePage = () => {
             <BreadcrumbComponent />
             <CreateNewProfileStepsComponent step={2} />
             <div className="sdg_page ">
-                <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber}`}</span></label>
+                <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber} / ${$fileNumber?.id}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
                 <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
