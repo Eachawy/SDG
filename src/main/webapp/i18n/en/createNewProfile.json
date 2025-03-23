@@ -6,7 +6,7 @@
     "selectFileTypeDescription": "Select the file type (Cases / Urgent Request / Collection)",
     "assignResponsibility": "Assign Responsibility and Follow-up",
     "assignResponsibilityDescription": "Share data with the responsible person for follow-up",
-    "serialAndSubNumber": "Serial Number / Sub Number",
+    "serialAndSubNumber": "Serial Number",
     "serialNumber": "Serial Number",
     "companyTypeCorporate": "Corporate",
     "companyTypePersonal": "Personal",

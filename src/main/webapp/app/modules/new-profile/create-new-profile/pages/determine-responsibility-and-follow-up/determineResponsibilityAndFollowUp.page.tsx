@@ -24,12 +24,12 @@ const DetermineResponsibilityAndFollowUpPage = () => {
 
   const nextFn = (_data) => {
     if (_data) {
-      navigate("/subfile-data-sent");
+      navigate("/create-file/subfile-data-sent");
     }
   };
 
   const saveAndCloseFn = () => {
-    navigate("/create-new-profile");
+    navigate("/create-file/create-new-profile");
   };
 
   return (

@@ -5,32 +5,56 @@ import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileStep
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
-import { useAppSelector } from "app/config/store";
+import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
-
-
+import { CreateNewProfile } from "./createNewProfile.reducer";
 
 const CreateNewProfilePage = () => {
 
-    const $lang = useAppSelector(state => state.locale.currentLocale);
-
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const $lang = useAppSelector(state => state.locale.currentLocale);
+    const $fileNumber = useAppSelector(state => state.createProfile.fileNumber);
+
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
+
     useEffect(() => {
         setValue('companyType', 'corporateType');
-        console.log($lang);
     }, []);
 
-    const saveAndCloseFn = () => { };
-
-    const handleLogin = (data) => {
-        const _data = {
-            ...data,
-            phoneNumber: data.countryCode.name + data.phoneNumber
-        }
-        console.log(_data);
-        navigate("/select-file-type");
+    const saveAndCloseFn = (data) => {
+        restructureObject(data);
+        navigate("/dashoard");
     };
+
+    if ($fileNumber) {
+        console.log($fileNumber);
+    }
+
+    const createProfile = (data) => {
+        restructureObject(data);
+        navigate("/create-file/select-file-type");
+    };
+
+
+    const restructureObject = (data: any) => {
+        const _data = {
+            company: data.companyType === 'corporateType' ? true : false,
+            arabicName: data.NameAr,
+            englishName: data.NameEn,
+            ssn: data.nationalNumber,
+            address: data.address,
+            email: data.email,
+            mobileNumber: data.countryCode.name + data.phoneNumber,
+            attachments: [
+                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_1.name, "content": data.attach_1.base64, "mimeType": "PDF" },
+                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_2.name, "content": data.attach_2.base64, "mimeType": "PDF" },
+            ]
+        }
+        // Call API
+        dispatch(CreateNewProfile(_data));
+    }
 
     return (
         <div className="createNewProfilePage">
@@ -152,33 +176,36 @@ const CreateNewProfilePage = () => {
 
                 <div className="uploaderContainer">
                     <h4>{translate("createNewProfile.attachments")}</h4>
-
                     <div className="row">
-                        <AttachmentMultiFilesComponent
-                            attachList={e => console.log(e)}
-                            fileTypeList={[
-                                { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
-                                { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
-                            ]}
+                        <AttachmentFileComponent
+                            id="attach_1"
+                            name="attach_1"
                             lang={$lang}
-                            fileTypePlaceHolder={'Select a File Type'}
+                            register={register}
+                            watch={watch}
+                            rules={{ required: 'يجب ادخال المىفقات' }}
+                            errors={errors}
+                            setValueMethod={setValue}
+                            attachList={(e) => setValue("attach_1", e)}
                         />
                         <AttachmentFileComponent
-                            attachList={e => console.log(e)}
-                            fileTypeList={[
-                                { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
-                                { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
-                            ]}
+                            id="attach_2"
+                            name="attach_2"
                             lang={$lang}
-                            fileTypePlaceHolder={'Select a File Type'}
+                            register={register}
+                            watch={watch}
+                            rules={{ required: 'يجب ادخال المىفقات' }}
+                            errors={errors}
+                            setValueMethod={setValue}
+                            attachList={(e) => setValue("attach_2", e)}
                         />
                     </div>
 
                 </div>
 
                 <div className="actionBtns">
-                    <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
-                    <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(handleLogin)}>{translate("createNewProfile.next")}</ButtonComponent>
+                    <ButtonComponent Class={'BtnCancel'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
+                    <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(createProfile)}>{translate("createNewProfile.next")}</ButtonComponent>
                 </div>
 
 

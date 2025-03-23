@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { ButtonComponent } from "@eachawy/frontend-library";
+import React, { useEffect, useState } from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { ButtonComponent } from '@eachawy/frontend-library';
 import { Paginator } from 'primereact/paginator';
 import { Ripple } from 'primereact/ripple';
-import { classNames } from "primereact/utils";
+import { classNames } from 'primereact/utils';
 
 
 const ChequeTableComponent = () => {

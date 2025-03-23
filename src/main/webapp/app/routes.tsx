@@ -9,33 +9,66 @@ import LayoutSystemTemplete from "./shared/layout/layout-system/layoutSystem.tem
 import SelectFileType from "app/modules/new-profile/create-new-profile/pages/select-file-type/selectFileType.page";
 import DetermineResponsibilityAndFollowUp from "./modules/new-profile/create-new-profile/pages/determine-responsibility-and-follow-up/determineResponsibilityAndFollowUp.page";
 import SubfileDataSentPage from "./modules/new-profile/create-new-profile/pages/subfile-data-sent/subfileDataSent.page";
+import MainDashboardPage from "./modules/dashboard/main-dashboard/main-dashboard.page";
+import PrivateRoute from "./shared/auth/private-route";
+import { AUTHORITIES } from 'app/config/constants';
+import ErrorPage from "./shared/error/error.page";
 
 const AppRoutes = () => {
   return (
     <div>
       <ErrorBoundaryRoutes>
         <Route index element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
 
         <Route path="" element={<LayoutSystemTemplete />} >
-          <Route
-            path="/create-new-profile"
-            element={<CreateNewProfilePage />}
-          />
-          <Route
-            path="/select-file-type"
-            element={<SelectFileType />}
-          />
 
-          <Route
-            path="/determine-responsibility-and-follow-up"
-            element={<DetermineResponsibilityAndFollowUp />}
-          />
+          <Route path="dashoard" element={
+            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+              <MainDashboardPage />
+            </PrivateRoute>  
+            } />
 
-          <Route
-            path="/subfile-data-sent"
-            element={<SubfileDataSentPage />}
-          />
+
+
+          <Route path="create-file">
+            <Route
+              path="create-new-profile"
+              element={
+                <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                  <CreateNewProfilePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="select-file-type"
+              element={
+                <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                  <SelectFileType />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="determine-responsibility-and-follow-up"
+              element={
+                <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                  <DetermineResponsibilityAndFollowUp />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="subfile-data-sent"
+              element={
+                <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                  <SubfileDataSentPage />
+                </PrivateRoute>
+              }
+            />
+          </Route>
           <Route path="*" element={<PageNotFound />} />
+          <Route path="error" element={<ErrorPage />} />
         </Route>
 
       </ErrorBoundaryRoutes>

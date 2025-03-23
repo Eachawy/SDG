@@ -371,27 +371,26 @@ const Cheque = (props) => {
               </div>
             ))}
 
-          <div className="uploaderContainer w-100">
-            <h4>تحميل الشيك</h4>
-            <div className="row">
-              <AttachmentFileComponent
-                attachList={e => console.log(e)}
+          <div className="uploaderContainer">
+            <h4>{translate("createNewProfile.attachments")}</h4>
+            <div className="w-50-16px">
+              {/* <AttachmentFileComponent
+                id="attach_1"
+                name="attach_1"
+                lang={$lang}
+                register={register}
+                watch={watch}
+                rules={{ required: 'يجب ادخال المىفقات' }}
+                errors={errors}
+                setValueMethod={setValue}
+                attachList={(e) => setValue("attach_1", e)}
                 fileTypeList={[
                   { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
                   { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
                 ]}
                 lang={lang}
-                fileTypePlaceHolder={'تحميل الواجهة الامامية للشيك'}
-              />
-              <AttachmentFileComponent
-                attachList={e => console.log(e)}
-                fileTypeList={[
-                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
-                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
-                ]}
-                lang={lang}
-                fileTypePlaceHolder={'تحميل الجزء الخلفي للشيك'}
-              />
+                fileTypePlaceHolder={'Select a File Type'}
+              /> */}
             </div>
           </div>
 
