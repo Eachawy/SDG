@@ -10,12 +10,14 @@ import {
   isProblemWithMessage,
 } from "app/shared/jhipster/problem-details";
 import { getMessageFromHeaders } from "app/shared/jhipster/headers";
+import { authenticationURL, profileURL } from "./constants";
 
 type ToastMessage = {
   message?: string;
   key?: string;
   data?: any;
 };
+
 
 const addErrorAlert = (message: ToastMessage) => {
   toast.error(
@@ -65,8 +67,8 @@ export default () => (next) => (action) => {
       if (response.status === 401) {
         // Ignore, page will be redirected to login.
       } else if (
-        error.config?.url?.endsWith("api/account") ||
-        error.config?.url?.endsWith("api/authenticate")
+        error.config?.url?.endsWith(profileURL) ||
+        error.config?.url?.endsWith(authenticationURL)
       ) {
         // Ignore, authentication status check and authentication are treated differently.
       } else if (response.status === 0) {
@@ -110,7 +112,7 @@ export default () => (next) => (action) => {
         }
       }
     } else if (
-      error.config?.url?.endsWith("api/account") &&
+      error.config?.url?.endsWith(profileURL) &&
       error.config?.method === "get"
     ) {
       console.log(

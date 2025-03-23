@@ -12,12 +12,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({ mode: 'onTouched', });
 
-  const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
+  const $isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
 
-
-  useEffect(() => {
-
-  },[isAuthenticated]);
 
 
 
@@ -29,8 +25,17 @@ const LoginPage = () => {
     dispatch(login(data.user,data.password));
   };
 
-  if(isAuthenticated) {
-    navigate('/create-new-profile');
+  if($isAuthenticated) {
+    navigate('/dashoard');
+
+  //   <Navigate
+  //   to={{
+  //     pathname: "/login",
+  //     search: pageLocation.search,
+  //   }}
+  //   replace
+  //   state={{ from: pageLocation }}
+  // />
   }
 
   return (

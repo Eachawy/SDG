@@ -4,7 +4,7 @@ import "app/config/dayjs";
 
 import React, { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { getSession } from "app/shared/reducers/authentication";
 import ErrorBoundary from "app/shared/error/error-boundary";
@@ -20,7 +20,7 @@ export const App = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // dispatch(getSession());
+    dispatch(getSession());
   }, []);
 
   const currentLocale = useAppSelector((state) => state.locale.currentLocale);
@@ -33,9 +33,11 @@ export const App = () => {
     <BrowserRouter basename={baseHref}>
       <div className="sdg-container">
         <ToastContainer
-          position="top-left"
+          position="top-center"
           className="toastify-container"
-          toastClassName="toastify-toast"
+          toastClassName="toastify-toast toastifyMessage"
+          autoClose={false}
+          transition={Bounce}
         />
         <div>
           <ErrorBoundary>

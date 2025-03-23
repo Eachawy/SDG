@@ -1,6 +1,7 @@
 export const AUTHORITIES = {
   ADMIN: "ROLE_ADMIN",
   USER: "ROLE_USER",
+  SUPPER: "ROLE_SUPPER"
 };
 
 export const messages = {
@@ -21,3 +22,4 @@ export const AUTH_TOKEN_KEY = 'token';
 export const GATEWAY_SERVER_API_URL = 'http://172.24.16.50:8080/';
 export const authenticationURL = 'api/authenticate';
 export const profileURL = 'api/account';
+export const masterFilesAPI = 'api/master-files';

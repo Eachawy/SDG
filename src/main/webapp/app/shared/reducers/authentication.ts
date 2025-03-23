@@ -41,7 +41,7 @@ export const getSession = (): AppThunk => async (dispatch, getState) => {
 };
 
 export const getAccount = createAsyncThunk(
-  "authentication/get_account",
+  "ِAUTHENTICATION/GET_ACCOUNT",
   async () => axios.get<any>(profileURL),
   {
     serializeError: serializeAxiosError,
@@ -55,7 +55,7 @@ interface IAuthParams {
 }
 
 export const authenticate = createAsyncThunk(
-  "authentication/login",
+  "ِAUTHENTICATION/LOGIN",
   async (auth: IAuthParams) => axios.post<any>(authenticationURL, auth),
   {
     serializeError: serializeAxiosError,

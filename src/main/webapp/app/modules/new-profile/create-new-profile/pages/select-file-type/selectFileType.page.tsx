@@ -33,7 +33,7 @@ const SelectFileTypePage = () => {
 
     const nextFn = (data) => {
         if (data !== null) {
-            navigate("/determine-responsibility-and-follow-up");
+            navigate("/create-file/determine-responsibility-and-follow-up");
         }
     };
 

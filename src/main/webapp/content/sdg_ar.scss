@@ -9,7 +9,7 @@ html[dir="rtl"] {
                 div:first-of-type {
                     &::before {
                         left: 255px;
-                        
+
                         @media (min-width: 993px) and (max-width: 1200px) {
                             left: 229px;
                         }
@@ -37,6 +37,105 @@ html[dir="rtl"] {
                             top: 66px;
                         }
                     }
+                }
+            }
+        }
+    }
+
+
+    .Toastify__toast-container {
+        background: #00000014;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 99;
+        transform: none;
+        width: 100%;
+        flex-direction: row;
+        align-items: baseline;
+        padding-top: 60px;
+    }
+
+    .toastifyMessage {
+        margin: 0 20%;
+
+        .Toastify__close-button {
+            right: 15px;
+            left: auto;
+            opacity: 1;
+
+            svg {
+                fill: #ED0000;
+            }
+        }
+
+        h1 {
+            font: 18px/21px 'Cairo-Medium';
+        }
+
+        p {
+            font: 14px/21px 'Cairo-Medium';
+            margin: 0;
+        }
+
+
+        &.Toastify__toast--error {
+            border: 1.5px solid #ED0000;
+            background: #FFFBFB;
+
+            .messageContiner {
+                h1 {
+                    color: #ED0000;
+                }
+
+                p {
+                    color: #ED0000;
+                }
+            }
+
+            .Toastify__toast-icon {
+                svg {
+                    display: none;
+                }
+
+                &:before {
+                    content: '';
+                    background: url('../content/images/toastify/error.svg') no-repeat;
+                    background-size: contain;
+                    width: 22px;
+                    height: 22px;
+                }
+            }
+        }
+
+        &.Toastify__toast--success  {
+            border: 1.5px solid #1FB356;
+            background: #F7FFF5;
+
+
+            .messageContiner {
+                h1 {
+                    color: #1FB356;
+                }
+
+                p {
+                    color: #1FB356;
+                }
+            }
+
+            .Toastify__toast-icon {
+                svg {
+                    display: none;
+                }
+
+                &:before {
+                    content: '';
+                    background: url('../content/images/toastify/error.svg') no-repeat;
+                    background-size: contain;
+                    width: 22px;
+                    height: 22px;
                 }
             }
         }

@@ -9,7 +9,7 @@ const SubfileDataSentPage = () => {
   const navigate = useNavigate();
 
   const returnToMainMenuFn = () => {
-    navigate("/create-new-profile");
+    navigate("/dashoard");
   };
 
   return (
