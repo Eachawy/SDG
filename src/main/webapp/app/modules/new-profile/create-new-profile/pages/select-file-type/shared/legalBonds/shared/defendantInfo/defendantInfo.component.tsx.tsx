@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { translate } from "react-jhipster";
-import ChequeTableComponent from "./shared/chequeTable.component";
-import PromissoryTableComponent from "./shared/promissoryTable.component";
-import DeclarationTableComponent from "./shared/declarationTable.component";
-import MortgageTableComponent from "./shared/mortgageTable.component";
-import StatementTableComponent from "./shared/statementTable.component";
-import LeaseTableComponent from "./shared/leaseTable.component";
-import InvoiceTableComponent from "./shared/invoiceTable.component";
+import React, { useEffect, useState } from 'react';
+import { translate } from 'react-jhipster';
+import ChequeTableComponent from './shared/chequeTable.component';
+import PromissoryTableComponent from './shared/promissoryTable.component';
+import DeclarationTableComponent from './shared/declarationTable.component';
+import MortgageTableComponent from './shared/mortgageTable.component';
+import StatementTableComponent from './shared/statementTable.component';
+import LeaseTableComponent from './shared/leaseTable.component';
+import InvoiceTableComponent from './shared/invoiceTable.component';
 const DefendantInfoComponent = (props) => {
   const [activeTab, setActiveTab] = useState("cheque");
   return (

@@ -10,6 +10,8 @@ import {
   isProblemWithMessage,
 } from "app/shared/jhipster/problem-details";
 import { getMessageFromHeaders } from "app/shared/jhipster/headers";
+import { authenticationURL, profileURL } from "./constants";
+import NotificationsComponent from "./notifications.component";
 
 type ToastMessage = {
   message?: string;
@@ -17,11 +19,14 @@ type ToastMessage = {
   data?: any;
 };
 
+
 const addErrorAlert = (message: ToastMessage) => {
   toast.error(
-    message.key
-      ? (translate(message.key, message.data) ?? message.message)
-      : message.message,
+    NotificationsComponent('error',
+      message.key
+        ? (translate(message.key, message.data) ?? message.message)
+        : message.message,
+    )
   );
 };
 
@@ -55,7 +60,7 @@ export default () => (next) => (action) => {
   if (isFulfilledAction(action) && payload?.headers) {
     const { alert, param } = getMessageFromHeaders(payload.headers);
     if (alert) {
-      toast.success(translate(alert, { param }));
+      toast.success(NotificationsComponent('success', translate(alert, { param })));
     }
   }
 
@@ -65,8 +70,8 @@ export default () => (next) => (action) => {
       if (response.status === 401) {
         // Ignore, page will be redirected to login.
       } else if (
-        error.config?.url?.endsWith("api/account") ||
-        error.config?.url?.endsWith("api/authenticate")
+        error.config?.url?.endsWith(profileURL) ||
+        error.config?.url?.endsWith(authenticationURL)
       ) {
         // Ignore, authentication status check and authentication are treated differently.
       } else if (response.status === 0) {
@@ -100,17 +105,20 @@ export default () => (next) => (action) => {
             addErrorAlert({ message: data });
           } else {
             toast.error(
-              data?.detail ??
-              data?.message ??
-              data?.error ??
-              data?.title ??
-              "Unknown error!",
+              NotificationsComponent('error',
+                data?.detail ??
+                data?.message ??
+                data?.error ??
+                data?.title ??
+                "Unknown error!",
+              )
+
             );
           }
         }
       }
     } else if (
-      error.config?.url?.endsWith("api/account") &&
+      error.config?.url?.endsWith(profileURL) &&
       error.config?.method === "get"
     ) {
       console.log(

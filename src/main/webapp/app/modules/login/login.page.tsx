@@ -1,15 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { translate } from "react-jhipster";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, CheckBoxComponent, InputComponent } from "@eachawy/frontend-library";
+import { login } from "app/shared/reducers/authentication";
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({ mode: 'onTouched', });
+
+  const $isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
+
+
+
+
   const forgetThePasswordFn = () => { };
+  
+  
+  
   const handleLogin = (data) => {
-    console.log(data);
+    dispatch(login(data.user,data.password));
   };
+
+  if($isAuthenticated) {
+    navigate('/dashoard');
+
+  //   <Navigate
+  //   to={{
+  //     pathname: "/login",
+  //     search: pageLocation.search,
+  //   }}
+  //   replace
+  //   state={{ from: pageLocation }}
+  // />
+  }
 
   return (
     <div className="loginPage">
@@ -18,9 +45,9 @@ const LoginPage = () => {
           <p>{translate("loginPage.hello")}</p>
 
           <InputComponent
-            id="email"
-            type="email"
-            name="email"
+            id="user"
+            type="text"
+            name="user"
             label={translate("loginPage.email")}
             placeholder={translate("loginPage.emailPlaceholder")}
             register={register}
@@ -28,7 +55,7 @@ const LoginPage = () => {
             errors={errors}
             setValueMethod={setValue}
             watch={watch}
-            onChange={(e) => setValue("email", e.target.value)}
+            onChange={(e) => setValue("user", e.target.value)}
             className="col-md-12 flex-1 mb-12"
           />
 
