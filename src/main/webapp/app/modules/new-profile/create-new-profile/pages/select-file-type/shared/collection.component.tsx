@@ -16,7 +16,6 @@ const Collection = (props) => {
   return (
     <div className="collection container p-0">
       <h4>بيانات طلب التحصيل</h4>
-      {/* del=> collectionInputFormDiv */}
       <div className="row g-4 gy-4 d-flex mb-4">
         <div className="amountToCollect row p-0 col-md-6 mb-5 ">
           <InputComponent
