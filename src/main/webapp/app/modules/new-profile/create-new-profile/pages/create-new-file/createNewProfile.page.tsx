@@ -8,9 +8,6 @@ import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiF
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CreateNewProfile } from "./createNewProfile.reducer";
-import { toast } from "react-toastify";
-
-
 
 const CreateNewProfilePage = () => {
 
@@ -24,24 +21,11 @@ const CreateNewProfilePage = () => {
 
     useEffect(() => {
         setValue('companyType', 'corporateType');
-        // toast.error(
-        //     <div className="messageContiner">
-        //         <h1>خطأ نأسف للازعاج!</h1>
-        //         <p>يرجي مراجعة جميع البيانات لاتمام العملية بنجاح</p>
-        //     </div>
-        // );
-
-        toast.success(
-            <div className="messageContiner">
-                <h1>خطأ نأسف للازعاج!</h1>
-                <p>يرجي مراجعة جميع البيانات لاتمام العملية بنجاح</p>
-            </div>
-        );
     }, []);
 
     const saveAndCloseFn = (data) => {
         restructureObject(data);
-        // navigate("/dashoard");
+        navigate("/dashoard");
     };
 
     if ($fileNumber) {
@@ -63,7 +47,10 @@ const CreateNewProfilePage = () => {
             address: data.address,
             email: data.email,
             mobileNumber: data.countryCode.name + data.phoneNumber,
-            attachments: []
+            attachments: [
+                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_1.name, "content": data.attach_1.base64, "mimeType": "PDF" },
+                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_2.name, "content": data.attach_2.base64, "mimeType": "PDF" },
+            ]
         }
         // Call API
         dispatch(CreateNewProfile(_data));
@@ -189,10 +176,29 @@ const CreateNewProfilePage = () => {
 
                 <div className="uploaderContainer">
                     <h4>{translate("createNewProfile.attachments")}</h4>
-
                     <div className="row">
-                        <AttachmentFileComponent attachList={e => console.log(e)} lang={$lang} />
-                        <AttachmentFileComponent attachList={e => console.log(e)} lang={$lang} />
+                        <AttachmentFileComponent
+                            id="attach_1"
+                            name="attach_1"
+                            lang={$lang}
+                            register={register}
+                            watch={watch}
+                            rules={{ required: 'يجب ادخال المىفقات' }}
+                            errors={errors}
+                            setValueMethod={setValue}
+                            attachList={(e) => setValue("attach_1", e)}
+                        />
+                        <AttachmentFileComponent
+                            id="attach_2"
+                            name="attach_2"
+                            lang={$lang}
+                            register={register}
+                            watch={watch}
+                            rules={{ required: 'يجب ادخال المىفقات' }}
+                            errors={errors}
+                            setValueMethod={setValue}
+                            attachList={(e) => setValue("attach_2", e)}
+                        />
                     </div>
 
                 </div>

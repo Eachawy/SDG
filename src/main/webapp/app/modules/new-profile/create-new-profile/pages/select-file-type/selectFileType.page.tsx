@@ -11,6 +11,7 @@ import LegalBonds from "./shared/legalBonds/legalBonds.component";
 import { useForm } from "react-hook-form";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import SearchByDefendant from "./shared/searchByDefendant.component";
+import { useAppSelector } from "app/config/store";
 
 
 const SelectFileTypePage = () => {
@@ -23,6 +24,8 @@ const SelectFileTypePage = () => {
         setValue,
         getValues,
     } = useForm({ mode: "onTouched" });
+
+    const $fileNumber = useAppSelector(state => state.createProfile.fileNumber);
 
 
     const navigate = useNavigate();
@@ -42,12 +45,12 @@ const SelectFileTypePage = () => {
             <BreadcrumbComponent />
             <CreateNewProfileStepsComponent step={2} />
             <div className="sdg_page ">
-                <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span></label>
+                <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
-                    
-                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />  
 
-                <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} /> 
+                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+
+                <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
                 {watch('fileType')?.code === "T1" &&
                     (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC") &&
@@ -56,7 +59,7 @@ const SelectFileTypePage = () => {
                 {watch('fileType')?.code === "T3" && <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
                 {watch('fileType')?.code === "T3" && <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
 
-                      
+
 
 
                 <div className="actionBtns">

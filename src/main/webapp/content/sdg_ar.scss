@@ -65,10 +65,6 @@ html[dir="rtl"] {
             right: 15px;
             left: auto;
             opacity: 1;
-
-            svg {
-                fill: #ED0000;
-            }
         }
 
         h1 {
@@ -78,6 +74,18 @@ html[dir="rtl"] {
         p {
             font: 14px/21px 'Cairo-Medium';
             margin: 0;
+        }
+
+        .Toastify__toast-icon {
+            svg {
+                display: none;
+            }
+
+            &:before {
+                content: '';
+                width: 22px;
+                height: 22px;
+            }
         }
 
 
@@ -96,16 +104,15 @@ html[dir="rtl"] {
             }
 
             .Toastify__toast-icon {
-                svg {
-                    display: none;
-                }
-
                 &:before {
-                    content: '';
                     background: url('../content/images/toastify/error.svg') no-repeat;
                     background-size: contain;
-                    width: 22px;
-                    height: 22px;
+                }
+            }
+
+            .Toastify__close-button {
+                svg {
+                    fill: #ED0000;
                 }
             }
         }
@@ -113,7 +120,6 @@ html[dir="rtl"] {
         &.Toastify__toast--success  {
             border: 1.5px solid #1FB356;
             background: #F7FFF5;
-
 
             .messageContiner {
                 h1 {
@@ -126,16 +132,71 @@ html[dir="rtl"] {
             }
 
             .Toastify__toast-icon {
+                &:before {
+                    background: url('../content/images/toastify/success.svg') no-repeat;
+                    background-size: contain;
+                }
+            }
+
+            .Toastify__close-button {
                 svg {
-                    display: none;
+                    fill: #1FB356;
+                }
+            }
+        }
+
+        &.Toastify__toast--info  {
+            border: 1.5px solid #2D51A3;
+            background: #F8FAFF;
+
+            .messageContiner {
+                h1 {
+                    color: #2D51A3;
                 }
 
+                p {
+                    color: #2D51A3;
+                }
+            }
+
+            .Toastify__toast-icon {
                 &:before {
-                    content: '';
-                    background: url('../content/images/toastify/error.svg') no-repeat;
+                    background: url('../content/images/toastify/info.svg') no-repeat;
                     background-size: contain;
-                    width: 22px;
-                    height: 22px;
+                }
+            }
+            
+            .Toastify__close-button {
+                svg {
+                    fill: #2D51A3;
+                }
+            }
+        }
+
+        &.Toastify__toast--warning  {
+            border: 1.5px solid #F7941D;
+            background: #FFFDF6;
+
+            .messageContiner {
+                h1 {
+                    color: #F7941D;
+                }
+
+                p {
+                    color: #F7941D;
+                }
+            }
+
+            .Toastify__toast-icon {
+                &:before {
+                    background: url('../content/images/toastify/warning.svg') no-repeat;
+                    background-size: contain;
+                }
+            }
+
+            .Toastify__close-button {
+                svg {
+                    fill: #F7941D;
                 }
             }
         }
