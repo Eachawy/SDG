@@ -28,7 +28,10 @@ const PhoneNumberComponent = props => {
 
     return (
         <div className={`phoneNumber ${props.class}`}>
-            <label>{translate("createNewProfile.phoneNumber")}<span>*</span></label>
+            <label>
+                {translate("createNewProfile.phoneNumber")}
+                {props.error && <span>*</span>}
+            </label>
             <div>
                 <DropDownComponent
                     id="countryCode"
@@ -38,7 +41,8 @@ const PhoneNumberComponent = props => {
                     setValueMethod={props.setValue}
                     options={countryCode}
                     optionLabel={`name.${props.lang}`}
-                    errors={props.errors[props.listName ? props.listName : "countryCode"]}
+                    errors={props.errors}
+                    rules={props.rules}
                     onChange={(e) => props.setValue(props.listName ? props.listName : "countryCode", e.value as object)}
                     setValue={countryCode[0]}
                     valueTemplate={selectedCountryCodeTemplate}
@@ -50,7 +54,8 @@ const PhoneNumberComponent = props => {
                     name={props.name ? props.name : "phoneNumber"}
                     placeholder={translate("createNewProfile.exm") + "1234567"}
                     register={props.register}
-                    errors={props.errors[props.name ? props.name : "phoneNumber"]}
+                    errors={props.errors}
+                    rules={props.rules}
                     setValueMethod={props.setValue}
                     watch={props.watch}
                     onChange={(e) => {

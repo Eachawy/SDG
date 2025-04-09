@@ -21,20 +21,19 @@ const CreateNewProfilePage = () => {
 
     useEffect(() => {
         setValue('companyType', 'corporateType');
-    }, []);
+    }, [$fileNumber]);
 
     const saveAndCloseFn = (data) => {
         restructureObject(data);
         navigate("/dashoard");
     };
 
-    if ($fileNumber) {
-        console.log($fileNumber);
+    if($fileNumber){
+        navigate("/create-file/select-file-type");
     }
 
     const createProfile = (data) => {
         restructureObject(data);
-        navigate("/create-file/select-file-type");
     };
 
 
@@ -48,8 +47,18 @@ const CreateNewProfilePage = () => {
             email: data.email,
             mobileNumber: data.countryCode.name + data.phoneNumber,
             attachments: [
-                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_1.name, "content": data.attach_1.base64, "mimeType": "PDF" },
-                { "attachmentType": "MASTER_FILE_ATTACHMENT", "name": data.attach_2.name, "content": data.attach_2.base64, "mimeType": "PDF" },
+                {
+                    "attachmentType": "MASTER_FILE_ATTACHMENT",
+                    "name": data.attach_1?.name,
+                    "content": data.attach_1?.base64,
+                    "mimeType": "PDF"
+                },
+                {
+                    "attachmentType": "MASTER_FILE_ATTACHMENT",
+                    "name": data.attach_2?.name,
+                    "content": data.attach_2?.base64,
+                    "mimeType": "PDF"
+                },
             ]
         }
         // Call API
@@ -134,8 +143,8 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.nationalNumber")}
                         placeholder={translate("createNewProfile.exm") + "1234567"}
                         register={register}
-                        rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                        errors={errors}
+                        // rules={{ required: 'يجب ادخال الرقم الوطني' }}
+                        // errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
                         onChange={(e) => {
@@ -150,14 +159,20 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.address")}
                         placeholder={translate("createNewProfile.enterTheAddress")}
                         register={register}
-                        rules={{ required: 'يجب ادخال العنوان' }}
-                        errors={errors}
+                        // rules={{ required: 'يجب ادخال العنوان' }}
+                        // errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
                         onChange={(e) => setValue("address", e.target.value)}
                     />
 
-                    <PhoneNumberComponent register={register} errors={errors} watch={watch} setValue={setValue} />
+                    <PhoneNumberComponent
+                        register={register}
+                        // errors={errors} 
+                        // rules={{ required: 'يجب ادخال رقم الهاتف' }}
+                        watch={watch}
+                        setValue={setValue}
+                    />
 
                     <InputComponent
                         id="email"
@@ -166,8 +181,8 @@ const CreateNewProfilePage = () => {
                         label={translate("createNewProfile.email")}
                         placeholder={translate("loginPage.emailPlaceholder")}
                         register={register}
-                        rules={{ required: 'يجب ادخال البريد الالكتروني' }}
-                        errors={errors}
+                        // rules={{ required: 'يجب ادخال البريد الالكتروني' }}
+                        // errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
                         onChange={(e) => setValue("email", e.target.value)}
@@ -183,8 +198,8 @@ const CreateNewProfilePage = () => {
                             lang={$lang}
                             register={register}
                             watch={watch}
-                            rules={{ required: 'يجب ادخال المىفقات' }}
-                            errors={errors}
+                            // rules={{ required: 'يجب ادخال المىفقات' }}
+                            // errors={errors}
                             setValueMethod={setValue}
                             attachList={(e) => setValue("attach_1", e)}
                         />
@@ -194,8 +209,8 @@ const CreateNewProfilePage = () => {
                             lang={$lang}
                             register={register}
                             watch={watch}
-                            rules={{ required: 'يجب ادخال المىفقات' }}
-                            errors={errors}
+                            // rules={{ required: 'يجب ادخال المىفقات' }}
+                            // errors={errors}
                             setValueMethod={setValue}
                             attachList={(e) => setValue("attach_2", e)}
                         />

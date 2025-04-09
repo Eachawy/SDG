@@ -13,6 +13,7 @@ import MainDashboardPage from "./modules/dashboard/main-dashboard/main-dashboard
 import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
+import LegalBondsPage from "./modules/new-profile/create-new-profile/pages/Legal-bonds/LegalBonds.page";
 
 const AppRoutes = () => {
   return (
@@ -45,6 +46,15 @@ const AppRoutes = () => {
               element={
                 <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
                   <SelectFileType />
+                </PrivateRoute>
+              }
+            />
+
+          <Route
+              path="legal-bonds"
+              element={
+                <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                  <LegalBondsPage />
                 </PrivateRoute>
               }
             />
