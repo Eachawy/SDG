@@ -45,15 +45,15 @@ const SearchByDefendant = (props) => {
         <div className="searchByDefendant">
             <div>
                 <DropDownComponent
-                    id="selectedDelegatedPerson"
-                    name="selectedDelegatedPerson"
+                    id="selectedPerson"
+                    name="selectedPerson"
                     register={props.register}
                     watch={props.watch}
                     setValueMethod={props.setValue}
                     options={delegatedPeopleNames}
                     optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
                     errors={props.errors}
-                    onChange={(e) => props.setValue("selectedDelegatedPerson", e.value as object)}
+                    onChange={(e) => props.setValue("selectedPerson", e.value as object)}
                     placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
                     rules={{ required: "You must select the Delegated Person." }}
                     filter

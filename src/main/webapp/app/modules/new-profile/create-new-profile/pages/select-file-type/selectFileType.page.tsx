@@ -36,7 +36,11 @@ const SelectFileTypePage = () => {
 
     const nextFn = (data) => {
         if (data !== null) {
-            navigate("/create-file/determine-responsibility-and-follow-up");
+            if(watch('fileType')?.code === "T3") {
+                navigate("/create-file/legal-bonds");
+            }else {
+                navigate("/create-file/determine-responsibility-and-follow-up");
+            }
         }
     };
 
@@ -48,19 +52,23 @@ const SelectFileTypePage = () => {
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber} / ${$fileNumber?.id}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
-                <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                {((watch('fileType')?.code === "T1" &&
+                    (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC"))
+                    ||
+                    watch('fileType')?.code === "T2" || watch('fileType')?.code === "T3")
+                    &&
+                    <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                }
 
-                <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
                 {watch('fileType')?.code === "T1" &&
                     (watch('selectedLegalStatusOfTheParty')?.code === "DE" || watch('selectedLegalStatusOfTheParty')?.code === "AC") &&
-                    <Lawsuits register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
-                {watch('fileType')?.code === "T2" && <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+                    <Lawsuits register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                }
+                {watch('fileType')?.code === "T2" &&
+                    <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                }
                 {watch('fileType')?.code === "T3" && <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
-                {watch('fileType')?.code === "T3" && <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
-
-
-
 
                 <div className="actionBtns">
                     <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
