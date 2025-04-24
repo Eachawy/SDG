@@ -49,6 +49,7 @@ const Lawsuits = (props) => {
   ];
 
   return (
+    <>
     <div className="lawsuits container p-0">
       <h4>بيانات قضايا</h4>
       <div className="row g-4 gy-4 d-flex mb-4">
@@ -211,6 +212,7 @@ const Lawsuits = (props) => {
         <h4>{translate("createNewProfile.attachments")}</h4>
       </div>
     </div>
+    </>
   );
 };
 
