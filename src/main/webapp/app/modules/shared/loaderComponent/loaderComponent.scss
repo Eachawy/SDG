@@ -1,0 +1,34 @@
+.loaderHolder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  display: none;
+
+  &.show {
+    display: flex;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 20px;
+  }
+}
+
+@keyframes l13 {
+  100% {
+    transform: rotate(1turn);
+  }
+}

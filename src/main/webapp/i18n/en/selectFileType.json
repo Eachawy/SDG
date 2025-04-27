@@ -1,7 +1,9 @@
 {
     "selectFileType": {
         "companySubFileData": "Company Sub-File Data",
+        "individualSubFileData": "Individual Sub-File Data",
         "companyName": "Company Name",
+        "individualName": "Individual Name",
         "fileOpenDate": "File Opening Date",
         "fileTypeSelection": "Select File Type",
         "fileTypePlaceholder": "Choose File Type",

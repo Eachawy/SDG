@@ -23,3 +23,13 @@ export const GATEWAY_SERVER_API_URL = 'http://172.24.16.50:8080/';
 export const authenticationURL = 'api/authenticate';
 export const profileURL = 'api/account';
 export const masterFilesAPI = 'api/master-files';
+export const addEditPersonAPI = 'api/persons';
+export const createFileAPI = 'api/files/create';
+
+// Lookups
+export const getAllEmployeesAPI = 'api/employees?name=&size=';
+export const getAllPersonsAPI = 'api/persons?name=&size=';
+export const getAllCourtsAPI = 'api/courts/active';
+export const getAllJudgesAPI = 'api/judges/active';
+export const getAllCaseTypesAPI = 'api/case-types/active/case';
+export const getAllRequestTypesAPI = 'api/case-types/active/request'

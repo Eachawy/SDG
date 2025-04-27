@@ -8,11 +8,14 @@ import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiF
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CreateNewProfile } from "./createNewProfile.reducer";
+import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import { Storage } from "react-jhipster";
 
 const CreateNewProfilePage = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const [showLoader, setShowLoader] = useState(false);
 
     const $lang = useAppSelector(state => state.locale.currentLocale);
     const $fileNumber = useAppSelector(state => state.createProfile.fileNumber);
@@ -28,7 +31,8 @@ const CreateNewProfilePage = () => {
         navigate("/dashoard");
     };
 
-    if($fileNumber){
+    if ($fileNumber) {
+        Storage.session.set("fileNumber", $fileNumber);
         navigate("/create-file/select-file-type");
     }
 
@@ -37,7 +41,8 @@ const CreateNewProfilePage = () => {
     };
 
 
-    const restructureObject = (data: any) => {
+    const restructureObject = async (data: any) => {
+        setShowLoader(true);
         const _data = {
             company: data.companyType === 'corporateType' ? true : false,
             arabicName: data.NameAr,
@@ -61,16 +66,22 @@ const CreateNewProfilePage = () => {
                 },
             ]
         }
+
+        Storage.session.set("isCompany", data.companyType === 'corporateType' ? true : false);
+        Storage.session.set("applicantName", { en: data.NameEn, ar: data.NameAr });
+
         // Call API
-        dispatch(CreateNewProfile(_data));
+        await dispatch(CreateNewProfile(_data));
+        setShowLoader(false);
     }
 
     return (
         <div className="createNewProfilePage">
             <BreadcrumbComponent />
+            <LoaderComponent show={showLoader} />
             <CreateNewProfileStepsComponent step={1} />
             <div className="sdg_page">
-                <label className="serialNo">{translate("createNewProfile.serialNumber")}<span>1256543</span></label>
+                {/* <label className="serialNo">{translate("createNewProfile.serialNumber")}<span>1256543</span></label> */}
 
                 <div className="radioButtonDiv">
                     <RadioButtonComponent

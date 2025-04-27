@@ -4,56 +4,118 @@ import {
     DropDownComponent,
     InputComponent,
 } from "@eachawy/frontend-library";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { translate } from "react-jhipster";
-import { useAppSelector } from "app/config/store";
+import { useAppSelector, useAppDispatch } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { useForm } from "react-hook-form";
+import { getAllPersons } from "../newProfileLookups.reducer";
+import _ from 'lodash';
+import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import { AddEditPerson } from "../select-file-type.reducer";
 
 const SearchByDefendant = (props) => {
+    const dispatch = useAppDispatch();
+    const [showLoader, setShowLoader] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [showDefendantPopup, setShowDefendantPopup] = useState(false);
+    const [allPersons, setAllPersons] = useState([]);
+    const [selectedPerson, setSelectedPerson] = useState(null);
 
-    const [showDefendantPopup, setShowDefendantPopup] = useState(false)
     const $lang = useAppSelector((state) => state.locale.currentLocale);
+    const $persons = useAppSelector((state) => state.createProfileLookups.personsList);
 
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
 
-    const delegatedPeopleNames = [
-        { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
-        { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-        { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" }
-    ];
+    useEffect(() => {
+        getAllLookups();
+    }, []);
+
+    useEffect(() => {
+        if ($persons?.length > 0) {
+            const arr = $persons.map(item => {
+                return {
+                    name: {
+                        en: item?.nameEnglish,
+                        ar: item?.nameArabic
+                    },
+                    code: item?.id
+                }
+            })
+            setAllPersons(arr);
+        }
+    }, [$persons]);
+
+    const getAllLookups = async () => {
+        await dispatch(getAllPersons());
+    }
+
+    const personsDDLChange = (e) => {
+        props.setValue("personId", e.value as object);
+        const filteredPerson = _.find($persons, (person) => person.id === e.value?.code);
+        setSelectedPerson(filteredPerson);
+    }
 
     const addNewDefendantFn = () => {
+        setEditMode(false);
         setShowDefendantPopup(true)
     }
 
     const editFn = () => {
-        setShowDefendantPopup(true)
+        setEditMode(true);
+        setValue('personNameEN', selectedPerson?.nameEnglish);
+        setValue('personNameAR', selectedPerson?.nameArabic);
+        setValue('personNationlId', selectedPerson?.nationalId);
+        setValue('personAddress1', selectedPerson?.addressOne);
+        setValue('personAddress2', selectedPerson?.addressTwo);
+        setValue('personEmail', selectedPerson?.email);
+        setShowDefendantPopup(true);
     }
 
     const cancelBtnFn = () => {
-        setShowDefendantPopup(false)
-    }
-    const saveAndAddBtnFn = () => {
+        setEditMode(false);
         setShowDefendantPopup(false)
     }
 
+    const saveAndAddBtnFn = async (data) => {
+        await addEditPerson(data);
+        await dispatch(getAllPersons());
+        setShowDefendantPopup(false);
+    }
 
+    const addEditPerson = async (data) => {
+        setShowLoader(true);
+        const _data = {
+            nameArabic: data.personNameAR,
+            nameEnglish: data.personNameEN,
+            nationalId: Number(data.personNationlId),
+            addressOne: data.personAddress1,
+            addressTwo: data.personAddress2,
+            mobileOne: Number(data.personCode1?.name + data.personPhone1),
+            mobileTwo: Number(data.personCode2?.name + data.personPhone2),
+            mobileThree: Number(data.personCode3?.name + data.personPhone3),
+            email: data.personEmail
+        }
+
+        // Call API
+        await dispatch(AddEditPerson(_data));
+        setShowLoader(false);
+    }
 
 
     return (
         <div className="searchByDefendant">
             <div>
                 <DropDownComponent
-                    id="selectedPerson"
-                    name="selectedPerson"
+                    id="personId"
+                    name="personId"
                     register={props.register}
                     watch={props.watch}
                     setValueMethod={props.setValue}
-                    options={delegatedPeopleNames}
+                    options={allPersons}
                     optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
                     errors={props.errors}
-                    onChange={(e) => props.setValue("selectedPerson", e.value as object)}
+                    onChange={(e) => personsDDLChange(e)}
                     placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
                     rules={{ required: "You must select the Delegated Person." }}
                     filter
@@ -61,125 +123,176 @@ const SearchByDefendant = (props) => {
                 />
                 <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={addNewDefendantFn}>إضافة مدعى عليه جديد</ButtonComponent>
             </div>
-            <div className='defendantData'>
-                <div className="title">
-                    <h4>بيانات المدعى عليه</h4>
-                    <span onClick={editFn}>تعديل</span>
-                </div>
-
-                <div>
-                    <p><label>اسم الشخص</label> محمد عبدالله رشوان</p>
-                </div>
-                <div>
-                    <p><label>الرقم الوطني</label> 123456789</p>
-                </div>
-                <div>
-                    <p><label>العنوان 1</label> شارع محمد عبد الحميد زغلول بلوك 789</p>
-                </div>
-                <div>
-                    <p><label>العنوان 2</label> شارع محمد عبد الحميد زغلول بلوك 789</p>
-                </div>
-                <div>
-                    <p><label>رقم الهاتف 1</label> 54368956435</p>
-                </div>
-                <div>
-                    <p><label>رقم الهاتف 2</label> 6544543434</p>
-                </div>
-                <div>
-                    <p><label>رقم الهاتف 3</label> 55675544545</p>
-                </div>
-                <div>
-                    <p><label>البريد الإلكتروني</label> info@gmail.com</p>
-                </div>
-            </div>
-
-            {showDefendantPopup && <div className="popupView">
-                <div className="content">
-                    <div className="defendantDataPopup">
-
+            
+            {selectedPerson && (
+                <div className='defendantData'>
+                    <div className="title">
                         <h4>بيانات المدعى عليه</h4>
+                        <span onClick={editFn}>تعديل</span>
+                    </div>
 
-                        <InputComponent
-                            id="defendantDataPopupPersonName-id"
-                            type="text"
-                            name="personName"
-                            label="اسم الشخص"
-                            placeholder={translate("createNewProfile.enterTheAddress")}
-                            register={register}
-                            rules={{ required: 'يجب ادخال اسم الشخص' }}
-                            errors={errors}
-                            setValueMethod={setValue}
-                            watch={watch}
-                            onChange={(e) => setValue("personName", e.target.value)}
-                        />
+                    <div>
+                        <p><label>اسم الشخص</label> {$lang === 'en' ? selectedPerson?.nameEnglish : selectedPerson?.nameArabic}</p>
+                    </div>
+                    <div>
+                        <p><label>الرقم الوطني</label> {selectedPerson?.nationalId}</p>
+                    </div>
+                    <div>
+                        <p><label>العنوان 1</label> {selectedPerson?.addressOne}</p>
+                    </div>
+                    <div>
+                        <p><label>العنوان 2</label> {selectedPerson?.addressTwo}</p>
+                    </div>
+                    <div>
+                        <p><label>رقم الهاتف 1</label> {selectedPerson?.mobileOne}</p>
+                    </div>
+                    <div>
+                        <p><label>رقم الهاتف 2</label> {selectedPerson?.mobileTwo}</p>
+                    </div>
+                    <div>
+                        <p><label>رقم الهاتف 3</label> {selectedPerson?.mobileThree}</p>
+                    </div>
+                    <div>
+                        <p><label>البريد الإلكتروني</label> {selectedPerson?.email}</p>
+                    </div>
+                </div>
+            )}
 
-                        <InputComponent
-                            id="defendantDataPopupNationalNumber-id"
-                            type="text"
-                            name="nationalNumber"
-                            label={translate("createNewProfile.nationalNumber")}
-                            placeholder={translate("createNewProfile.exm") + "1234567"}
-                            register={register}
-                            rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                            errors={errors}
-                            setValueMethod={setValue}
-                            watch={watch}
-                            onChange={(e) => {
-                                const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                                setValue("nationalNumber", numericValue);
-                            }}
-                        />
-                        <InputComponent
-                            id="defendantDataPopupAddress1"
-                            type="text"
-                            name="address1"
-                            label={translate("createNewProfile.address")}
-                            placeholder={translate("createNewProfile.enterTheAddress")}
-                            register={register}
-                            rules={{ required: 'يجب ادخال العنوان' }}
-                            errors={errors}
-                            setValueMethod={setValue}
-                            watch={watch}
-                            onChange={(e) => setValue("address1", e.target.value)}
-                        />
+            {showDefendantPopup && (
+                <div className="popupView">
+                    <div className="content">
+                        <div className="defendantDataPopup">
 
-                        <InputComponent
-                            id="defendantDataPopupAddress2"
-                            type="text"
-                            name="address2"
-                            label={translate("createNewProfile.address")}
-                            placeholder={translate("createNewProfile.enterTheAddress")}
-                            register={register}
-                            errors={errors}
-                            setValueMethod={setValue}
-                            watch={watch}
-                            onChange={(e) => setValue("address2", e.target.value)}
-                        />
+                            <h4>بيانات المدعى عليه</h4>
 
-                        <PhoneNumberComponent register={register} errors={errors} watch={watch} setValue={setValue} />
-                        <PhoneNumberComponent register={register} errors={errors} watch={watch} setValue={setValue} />
-                        <PhoneNumberComponent register={register} errors={errors} watch={watch} setValue={setValue} />
+                            <InputComponent
+                                id="personNameEN"
+                                type="text"
+                                name="personNameEN"
+                                label="اسم الشخص باللغة الإنجليزية"
+                                placeholder={"ادخل اسم الشخص"}
+                                register={register}
+                                rules={{ required: 'يجب ادخال اسم الشخص' }}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => {
+                                    const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                                    setValue("personNameEN", englishOnly);
+                                }}
+                            />
 
-                        <InputComponent
-                            id="defendantDataPopupEmail"
-                            type="email"
-                            name="email"
-                            label={translate("createNewProfile.email")}
-                            placeholder={translate("loginPage.emailPlaceholder")}
-                            register={register}
-                            errors={errors}
-                            setValueMethod={setValue}
-                            watch={watch}
-                            onChange={(e) => setValue("email", e.target.value)}
-                        />
+                            <InputComponent
+                                id="personNameAR"
+                                type="text"
+                                name="personNameAR"
+                                label="اسم الشخص باللغة العربية"
+                                placeholder={"ادخل اسم الشخص"}
+                                register={register}
+                                rules={{ required: 'يجب ادخال اسم الشخص' }}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => {
+                                    const arabicOnly = e.target.value.replace(/[^\u0600-\u06FF\s]/g, "");
+                                    setValue("personNameAR", arabicOnly);
+                                }}
+                            />
 
-                        <div className="actionBtns">
-                            <ButtonComponent Class={'BtnCancel'} onClick={cancelBtnFn}>إلغاء</ButtonComponent>
-                            <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveAndAddBtnFn)}>حفظ وإضافة</ButtonComponent>
+                            <InputComponent
+                                id="personNationlId"
+                                type="text"
+                                name="personNationlId"
+                                label={translate("createNewProfile.nationalNumber")}
+                                placeholder={translate("createNewProfile.exm") + "1234567"}
+                                register={register}
+                                rules={{ required: 'يجب ادخال الرقم الوطني' }}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => {
+                                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                                    setValue("personNationlId", numericValue);
+                                }}
+                            />
+
+                            <InputComponent
+                                id="personAddress1"
+                                type="text"
+                                name="personAddress1"
+                                label={translate("createNewProfile.address")}
+                                placeholder={translate("createNewProfile.enterTheAddress")}
+                                register={register}
+                                rules={{ required: 'يجب ادخال العنوان' }}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => setValue("personAddress1", e.target.value)}
+                            />
+
+                            <InputComponent
+                                id="personAddress2"
+                                type="text"
+                                name="personAddress2"
+                                label={translate("createNewProfile.address")}
+                                placeholder={translate("createNewProfile.enterTheAddress")}
+                                register={register}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => setValue("personAddress2", e.target.value)}
+                            />
+
+                            <PhoneNumberComponent
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                name="personPhone1"
+                                listName="personCode1"
+                            />
+
+                            <PhoneNumberComponent
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                name="personPhone2"
+                                listName="personCode2"
+                            />
+
+                            <PhoneNumberComponent
+                                register={register}
+                                errors={errors}
+                                watch={watch}
+                                setValue={setValue}
+                                name="personPhone3"
+                                listName="personCode3"
+                            />
+
+                            <InputComponent
+                                id="personEmail"
+                                type="email"
+                                name="personEmail"
+                                label={translate("createNewProfile.email")}
+                                placeholder={translate("loginPage.emailPlaceholder")}
+                                register={register}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => setValue("personEmail", e.target.value)}
+                            />
+
+                            <div className="actionBtns">
+                                <ButtonComponent Class={'BtnCancel'} onClick={cancelBtnFn}>إلغاء</ButtonComponent>
+                                <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveAndAddBtnFn)}>حفظ وإضافة</ButtonComponent>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>}
+            )}
+
+            <LoaderComponent show={showLoader} />
         </div>
     )
 

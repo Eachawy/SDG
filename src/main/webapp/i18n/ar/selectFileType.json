@@ -1,7 +1,9 @@
 {
     "selectFileType": {
         "companySubFileData": "بيانات الملف الفرعي للشركة",
+        "individualSubFileData": "بيانات الملف الفرعي للفرد",
         "companyName": "اسم الشركة",
+        "individualName": "اسم الفرد",
         "fileOpenDate": "تاريخ فتح الملف",
         "fileTypeSelection": "اختيار نوع الملف",
         "fileTypePlaceholder": "اختر نوع الملف",

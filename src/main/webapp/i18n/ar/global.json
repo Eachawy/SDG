@@ -85,7 +85,8 @@
     "ribbon": {
       "dev": "تطوير"
     },
-    "item-count": "يعرض {{first}} - {{second}} من {{total}} البيانات."
+    "item-count": "يعرض {{first}} - {{second}} من {{total}} البيانات.",
+    "loadingContent":"جاري تحميل البيانات ..."
   },
   "entity": {
     "action": {
