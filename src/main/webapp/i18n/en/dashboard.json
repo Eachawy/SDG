@@ -1,0 +1,12 @@
+{
+    "dashboardTitle": {
+      "title": "Dashboard",
+      "createNewFileTitle": "Create New File",
+      "createNewFileDescription": "Create a new file (Company / Individual)",
+      "createNewFileButton": "Enter",
+      "followUpsTitle": "Follow-ups",
+      "followUpsDescription": "Create follow-ups and track their status",
+      "followUpsButton": "Enter"
+    }
+  }
+  

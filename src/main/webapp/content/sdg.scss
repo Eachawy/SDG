@@ -1134,16 +1134,16 @@ body,
                   }
 
                   &._accountStatement {
-                      .ammountDiv{
-                        margin-top: -4px;
+                    .ammountDiv {
+                      margin-top: -4px;
 
                     }
                   }
 
-                  &._invoice{
-                    .ammountDiv{
+                  &._invoice {
+                    .ammountDiv {
                       margin-top: -4px;
-                  }
+                    }
                   }
                 }
 
@@ -2570,6 +2570,79 @@ body,
     }
   }
 }
+
+.mainDashboardPage {
+  >h3 {
+    margin-bottom: 32px;
+    color: #000;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .card-wrapper {
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+    padding: 40px;
+    background: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .createNewFile,
+  .followUps {
+    margin-bottom: 40px;
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 74px;
+      height: 74px;
+      margin-bottom: 16px;
+      position: absolute;
+    }
+
+    &.createNewFile {
+      margin-left: 84px;
+
+      &:before {
+        background: url("../content/images/file.svg") center/contain no-repeat;
+        left: -93px;
+      }
+    }
+
+    &.followUps {
+      margin-left: 90px;
+
+      &:before {
+        background: url("../content/images/bell.svg") center/contain no-repeat;
+        left: -94px;
+      }
+    }
+
+    h3 {
+      color: #2D51A3;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    p {
+      color: #52525B;
+      font-size: 20px;
+    }
+  }
+
+  .BtnStyle {
+    width: 100%;
+    font-family: "Cairo-Regular";
+    border-radius: 6px;
+    padding: 4px 0;
+    height: 57px;
+    margin-top: auto;
+  }
+}
+
 
 .GCDatePickerComponent {
   .p-calendar {

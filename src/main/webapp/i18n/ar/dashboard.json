@@ -1,0 +1,11 @@
+{
+    "dashboardTitle": {
+        "title": "لوحة التحكم",
+        "createNewFileTitle": "انشاء ملف جديد",
+        "createNewFileDescription": "قم بانشاء ملف جديد (شركة / أفراد)",
+        "createNewFileButton": "دخول",
+        "followUpsTitle": "المتابعات",
+        "followUpsDescription": "قم بانشاء المتابعات ومتابعة حالتها",
+        "followUpsButton": "دخول"
+    }
+}
