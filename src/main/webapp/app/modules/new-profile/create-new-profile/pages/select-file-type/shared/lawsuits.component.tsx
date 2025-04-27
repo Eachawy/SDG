@@ -80,15 +80,15 @@ const Lawsuits = (props) => {
         <h4>بيانات قضايا</h4>
         <div className="row g-4 gy-4 d-flex mb-4">
           <DropDownComponent
-            id="judgeType"
-            name="judgeType"
+            id="caseType"
+            name="caseType"
             label="نوع القاضية"
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
             options={allCaseTypes}
             optionLabel={`name.${$lang}`}
-            onChange={(e) => props.setValue("judgeType", e.value as object)}
+            onChange={(e) => props.setValue("caseType", e.value as object)}
             placeholder="اختر نوع القاضية"
             errors={props.errors}
             rules={{ required: "يجب اختيار نوع القاضية" }}
@@ -96,15 +96,15 @@ const Lawsuits = (props) => {
           />
 
           <DropDownComponent
-            id="courtLocation"
-            name="courtLocation"
+            id="court"
+            name="court"
             label="موقع المحكمة"
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
             options={allCourts}
             optionLabel={`name.${$lang}`}
-            onChange={(e) => props.setValue("courtLocation", e.value as object)}
+            onChange={(e) => props.setValue("court", e.value as object)}
             placeholder="اختر موقع المحكمة"
             // errors={props.errors}
             // rules={{ required: "يجب اختيار موقع المحكمة" }}
@@ -128,15 +128,15 @@ const Lawsuits = (props) => {
           />
 
           <InputComponent
-            id="lawsuitsNo"
+            id="caseNumber"
             type="text"
-            name="lawsuitsNo"
+            name="caseNumber"
             label="رقم القضية"
             placeholder="رقم القضية"
             register={props.register}
             setValueMethod={props.setValue}
             watch={props.watch}
-            onChange={(e) => props.setValue("lawsuitsNo", e.target.value)}
+            onChange={(e) => props.setValue("caseNumber", e.target.value)}
             // errors={props.errors}
             // rules={{ required: "يجب ادخال رقم القضية" }}
             className="col-md-6 flex-1 mb-4"
@@ -174,16 +174,17 @@ const Lawsuits = (props) => {
               label="المبلغ المراد تحصيله"
             />
             <DropDownComponent
-              id="urgentRequestCurrencyList"
-              name="currencyList"
+              id="amountCurrency"
+              name="amountCurrency"
               register={props.register}
               watch={props.watch}
               setValueMethod={props.setValue}
               options={CurrencyList}
               optionLabel={`name.${$lang}`}
               errors={props.errors}
-              onChange={(e) => props.setValue("currencyList", e.value as object)}
+              onChange={(e) => props.setValue("amountCurrency", e.value as object)}
               placeholder="دينار"
+              setValue={CurrencyList[0]}
             />
           </div>
 
@@ -192,26 +193,26 @@ const Lawsuits = (props) => {
             <h4>{translate("createNewProfile.attachments")}</h4>
             <div className="row">
               <AttachmentFileComponent
-                id="attach_1"
-                name="attach_1"
+                id="selectFileAttach_1"
+                name="selectFileAttach_1"
                 lang={$lang}
                 register={props.register}
                 watch={props.watch}
                 // rules={{ required: 'يجب ادخال المىفقات' }}
                 // errors={props.errors}
                 setValueMethod={props.setValue}
-                attachList={(e) => props.setValue("attach_1", e)}
+                attachList={(e) => props.setValue("selectFileAttach_1", e)}
               />
               <AttachmentFileComponent
-                id="attach_2"
-                name="attach_2"
+                id="selectFileAttach_2"
+                name="selectFileAttach_2"
                 lang={$lang}
                 register={props.register}
                 watch={props.watch}
                 // rules={{ required: 'يجب ادخال المىفقات' }}
                 // errors={errors}
                 setValueMethod={props.setValue}
-                attachList={(e) => props.setValue("attach_2", e)}
+                attachList={(e) => props.setValue("selectFileAttach_2", e)}
               />
             </div>
 

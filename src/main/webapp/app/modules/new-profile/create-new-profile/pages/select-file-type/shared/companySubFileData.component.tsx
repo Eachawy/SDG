@@ -120,15 +120,15 @@ const CompanySubFileData = (props) => {
           />
         </div>
         <CheckBoxComponent
-          id="privateFileCheckBox"
-          name="privateFileCheckBox"
+          id="vip"
+          name="vip"
           label={translate("selectFileType.privateFile")}
           className="col-12 mb-2"
           register={props.register}
           errors={props.errors}
           setValueMethod={props.setValue}
           watch={props.watch}
-          onChange={(e) => props.setValue("privateFileCheckBox", e.value)}
+          onChange={(e) => props.setValue("vip", e.value)}
         />
         {props.watch("privateFileCheckBox") && (
           <div className="row g-4 mb-4">

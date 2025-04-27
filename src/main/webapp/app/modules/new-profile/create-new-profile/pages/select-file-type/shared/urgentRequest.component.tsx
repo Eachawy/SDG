@@ -80,8 +80,8 @@ const UrgentRequest = (props) => {
       <h4>بيانات طلب مستعجل</h4>
       <div className="row g-4 gy-4 d-flex mb-4">
         <DropDownComponent
-          id="urgentRequestType"
-          name="urgentRequestType"
+          id="requestType"
+          name="requestType"
           label="نوع الطلب"
           register={props.register}
           watch={props.watch}
@@ -89,7 +89,7 @@ const UrgentRequest = (props) => {
           options={allRequestTypes}
           optionLabel={`name.${$lang}`}
           errors={props.errors}
-          onChange={(e) => props.setValue("urgentRequestType", e.value as object)}
+          onChange={(e) => props.setValue("requestType", e.value as object)}
           placeholder="اختر نوع الطلب"
           rules={{ required: "يجب اختيار نوع الطلب" }}
           className="col-md-6 flex-1 mb-4"
@@ -128,17 +128,31 @@ const UrgentRequest = (props) => {
         />
 
         <InputComponent
-          id="urgentRequestNo"
+          id="requestNumber"
           type="text"
-          name="urgentRequestNo"
+          name="requestNumber"
           label="رقم الطلب"
           placeholder="رقم الطلب"
           register={props.register}
           setValueMethod={props.setValue}
           watch={props.watch}
-          onChange={(e) => props.setValue("urgentRequestNo", e.target.value)}
+          onChange={(e) => props.setValue("requestNumber", e.target.value)}
           // errors={props.errors}
           // rules={{ required: "يجب ادخال رقم الطلب" }}
+          className="col-md-6 flex-1 mb-4"
+        />
+
+        <DatePickerComponent
+          id="urgentRequestRecordDate"
+          name="urgentRequestRecordDate"
+          label={"تاريخ تسجيل الطلب"}
+          placeholder={"DD/MM/YYYY"}
+          register={props.register}
+          // rules={{ required: "You must select urgent request record date" }}
+          // errors={props.errors}
+          setValueMethod={props.setValue}
+          watch={props.watch}
+          onChange={(e) => props.setValue("urgentRequestRecordDate", e.target.value)}
           className="col-md-6 flex-1 mb-4"
         />
 
@@ -159,57 +173,46 @@ const UrgentRequest = (props) => {
             label="المبلغ المراد تحصيله"
           />
           <DropDownComponent
-            id="urgentRequestCurrencyList"
-            name="currencyList"
+            id="amountCurrency"
+            name="amountCurrency"
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
             options={CurrencyList}
             optionLabel={`name.${$lang}`}
             errors={props.errors}
-            onChange={(e) => props.setValue("currencyList", e.value as object)}
+            onChange={(e) => props.setValue("amountCurrency", e.value as object)}
             placeholder="دينار"
+            setValue={CurrencyList[0]}
           />
         </div>
 
-        <DatePickerComponent
-          id="urgentRequestRecordDate"
-          name="urgentRequestRecordDate"
-          label={"تاريخ تسجيل الطلب"}
-          placeholder={"DD/MM/YYYY"}
-          register={props.register}
-          // rules={{ required: "You must select urgent request record date" }}
-          // errors={props.errors}
-          setValueMethod={props.setValue}
-          watch={props.watch}
-          onChange={(e) => props.setValue("urgentRequestRecordDate", e.target.value)}
-          className="col-md-6 flex-1 mb-4"
-        />
+
 
         <div className="uploaderContainer">
           <h4>{translate("createNewProfile.attachments")}</h4>
           <div className="row">
             <AttachmentFileComponent
-              id="attach_1"
-              name="attach_1"
+              id="selectFileAttach_1"
+              name="selectFileAttach_1"
               lang={$lang}
               register={props.register}
               watch={props.watch}
               // rules={{ required: 'يجب ادخال المىفقات' }}
               // errors={props.errors}
               setValueMethod={props.setValue}
-              attachList={(e) => props.setValue("attach_1", e)}
+              attachList={(e) => props.setValue("selectFileAttach_1", e)}
             />
             <AttachmentFileComponent
-              id="attach_2"
-              name="attach_2"
+              id="selectFileAttach_2"
+              name="selectFileAttach_2"
               lang={$lang}
               register={props.register}
               watch={props.watch}
               // rules={{ required: 'يجب ادخال المىفقات' }}
               // errors={errors}
               setValueMethod={props.setValue}
-              attachList={(e) => props.setValue("attach_2", e)}
+              attachList={(e) => props.setValue("selectFileAttach_2", e)}
             />
           </div>
 
