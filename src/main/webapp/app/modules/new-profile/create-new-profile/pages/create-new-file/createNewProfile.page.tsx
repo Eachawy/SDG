@@ -10,12 +10,14 @@ import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/ph
 import { CreateNewProfile } from "./createNewProfile.reducer";
 import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
 import { Storage } from "react-jhipster";
+import { reset } from "../select-file-type/select-file-type.reducer";
 
 const CreateNewProfilePage = () => {
+    const [showLoader, setShowLoader] = useState(false);
+    const [isSaveClose, setIsSaveClose] = useState(false);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [showLoader, setShowLoader] = useState(false);
 
     const $lang = useAppSelector(state => state.locale.currentLocale);
     const $fileNumber = useAppSelector(state => state.createProfile.fileNumber);
@@ -23,20 +25,31 @@ const CreateNewProfilePage = () => {
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
 
     useEffect(() => {
+      dispatch(reset());
+    }, [])
+    
+    
+    useEffect(() => {
         setValue('companyType', 'corporateType');
+
+        if ($fileNumber) {
+            if (isSaveClose) {
+                navigate("/dashoard");
+            } else {
+                Storage.session.set("fileNumber", $fileNumber);
+                navigate("/create-file/select-file-type");
+            }
+        }
     }, [$fileNumber]);
 
     const saveAndCloseFn = (data) => {
+        setIsSaveClose(true);
         restructureObject(data);
-        navigate("/dashoard");
+
     };
 
-    if ($fileNumber) {
-        Storage.session.set("fileNumber", $fileNumber);
-        navigate("/create-file/select-file-type");
-    }
-
     const createProfile = (data) => {
+        setIsSaveClose(false);
         restructureObject(data);
     };
 

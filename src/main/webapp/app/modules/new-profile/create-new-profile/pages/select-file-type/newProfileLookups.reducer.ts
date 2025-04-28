@@ -11,7 +11,7 @@ import {
 }
     from 'app/config/constants';
 
-const initialState = {
+const initialState:any = {
     errorMessage: null,
     loading: false,
     employeesList: null,
@@ -62,6 +62,12 @@ export const CreateProfileLookups = createSlice({
         reset() {
             return initialState;
         },
+        resetAllPersons (){
+            return {
+                ...initialState,
+                personsList: null
+            };
+        }
     },
     extraReducers(builder) {
         builder
@@ -105,7 +111,7 @@ export const CreateProfileLookups = createSlice({
     },
 });
 
-export const { reset } = CreateProfileLookups.actions;
+export const { reset,resetAllPersons } = CreateProfileLookups.actions;
 
 // Reducer
 export default CreateProfileLookups.reducer;

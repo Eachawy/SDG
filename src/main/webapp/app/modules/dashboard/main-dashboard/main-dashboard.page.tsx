@@ -1,11 +1,19 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { translate } from 'react-jhipster';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from "app/config/store";
+import { reset } from 'app/modules/new-profile/create-new-profile/pages/create-new-file/createNewProfile.reducer';
 
 const MainDashboardPage = () => {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(reset());
+    }, [])
+
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
     }

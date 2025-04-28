@@ -17,6 +17,7 @@ const CompanySubFileData = (props) => {
   const dispatch = useAppDispatch();
   const [date, setDate] = useState(Date);
   const [allEmployees, setAllEmployees] = useState([]);
+  const [allPrivateEmployees, setAllPrivateEmployees] = useState([]);
   const [isCompany, setIsCompany] = useState(null);
   const [applicantName, setApplicantName] = useState(null);
 
@@ -55,20 +56,13 @@ const CompanySubFileData = (props) => {
     await dispatch(getAllEmployees());
   }
 
-
-  const privateFileList = [
-    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
-    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" },
-    { name: { ar: "الدميري منصور عبد الرحمن", en: "Mansour Abd El Rahman El Demiry" }, code: "PF4" }
-  ];
-
-  const handleSelectionChange = (e: MultiSelectChangeEvent) => {
-    const selectedValues = e.value.filter(
-      (item) => item.code !== privateFileList[0].code,
-    );
-    props.setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
-  };
+  const handleSelectEmployee = e => {
+    props.setValue("selectedDelegatedPerson", e.value as object);
+    const arr = allEmployees.filter((item: any) => {
+      return item.code !== e.value.code
+    });
+    setAllPrivateEmployees(arr);
+  }
 
 
   return (
@@ -111,7 +105,7 @@ const CompanySubFileData = (props) => {
             options={allEmployees}
             optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
             errors={props.errors}
-            onChange={(e) => props.setValue("selectedDelegatedPerson", e.value as object)}
+            onChange={(e) => handleSelectEmployee(e)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
@@ -119,37 +113,42 @@ const CompanySubFileData = (props) => {
             className="col-md-6 flex-1"
           />
         </div>
-        <CheckBoxComponent
-          id="vip"
-          name="vip"
-          label={translate("selectFileType.privateFile")}
-          className="col-12 mb-2"
-          register={props.register}
-          errors={props.errors}
-          setValueMethod={props.setValue}
-          watch={props.watch}
-          onChange={(e) => props.setValue("vip", e.value)}
-        />
-        {props.watch("privateFileCheckBox") && (
+        {props.watch("selectedDelegatedPerson") && (
+          <CheckBoxComponent
+            id="vip"
+            name="vip"
+            label={translate("selectFileType.privateFile")}
+            className="col-12 mb-2"
+            register={props.register}
+            errors={props.errors}
+            setValueMethod={props.setValue}
+            watch={props.watch}
+            onChange={(e) => props.setValue("vip", e.value)}
+          />
+        )}
+
+        {props.watch("vip") && (
           <div className="row g-4 mb-4">
             <DropDownMultiComponent
-              name="privateFileSelection"
+              id="privateEmployees"
+              name="privateEmployees"
               label={translate("selectFileType.delegatedPersonName")}
               register={props.register}
               watch={props.watch}
               setValueMethod={props.setValue}
-              options={allEmployees}
+              options={allPrivateEmployees}
               optionLabel={`name.${$lang}`}
-              onChange={handleSelectionChange}
+              onChange={(e) => props.setValue("privateEmployees", e.value as object)}
               placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
-              rules={{ required: "You must select the Delegated Person." }}
-              setValue={props.watch('selectedDelegatedPerson') && [props.watch('selectedDelegatedPerson')]}
+              rules={{ required: "You must select the private persons." }}
+              errors={props.errors}
               className="col-md-6"
             />
           </div>
         )}
       </div>
       {(props.watch("fileType")?.code === "URGENT_REQUEST" || props.watch("fileType")?.code === "COURT_CASE") &&
+        props.watch("selectedDelegatedPerson") &&
         <div className="row g-4">
           <DropDownComponent
             id="opponentCategory"
