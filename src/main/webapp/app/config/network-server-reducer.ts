@@ -3,8 +3,8 @@ import { Storage } from 'react-jhipster';
 import { IsJsonString } from 'app/shared/util/utils';
 import { APP_PARAMETERS } from 'app/config/constants';
 
-export const getVerifiedRequest = async (url, data) => {
-  const response = await axios.get(url, data);
+export const getVerifiedRequest = async (url) => {
+  const response = await axios.get(url);
   return response;
 }
 
@@ -32,5 +32,13 @@ export const postVerifiedRequest = async (url, data) => {
 //     }
 //   } else {
 //     return null;
+//   }
+// }
+
+// export function setSessionStorage(key, data) {
+//   if (data) {
+//     Storage.session.set(key, data);
+//   } else {
+//     Storage.session.set(key, {});
 //   }
 // }

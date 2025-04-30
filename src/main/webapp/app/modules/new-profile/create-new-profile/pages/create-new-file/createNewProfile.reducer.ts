@@ -2,7 +2,6 @@ import { postVerifiedRequest } from 'app/config/network-server-reducer';
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { masterFilesAPI } from 'app/config/constants';
-import axios from 'axios';
 
 const initialState = {
     errorMessage: null,

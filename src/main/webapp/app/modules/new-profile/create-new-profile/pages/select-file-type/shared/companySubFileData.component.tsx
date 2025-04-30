@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { translate } from "react-jhipster";
 import { MultiSelectChangeEvent } from "primereact/multiselect";
 import {
@@ -6,57 +6,76 @@ import {
   DropDownComponent,
   DropDownMultiComponent,
 } from "@eachawy/frontend-library";
-import { useAppSelector } from "app/config/store";
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import { FileTypes, OpponentCategories } from "app/modules/shared/constants";
+import { getAllEmployees } from "../newProfileLookups.reducer";
+import dayjs from "dayjs";
+import { Storage } from "react-jhipster";
+
 
 const CompanySubFileData = (props) => {
+  const dispatch = useAppDispatch();
+  const [date, setDate] = useState(Date);
+  const [allEmployees, setAllEmployees] = useState([]);
+  const [allPrivateEmployees, setAllPrivateEmployees] = useState([]);
+  const [isCompany, setIsCompany] = useState(null);
+  const [applicantName, setApplicantName] = useState(null);
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
+  const $employees = useAppSelector((state) => state.createProfileLookups.employeesList);
 
-  const fileTypes = [
-    { name: { ar: "قضايا", en: "Lawsuits" }, code: "T1" },
-    { name: { ar: "طلب مستعجل", en: "Urgent Request" }, code: "T2" },
-    { name: { ar: "تحصيل", en: "Collection" }, code: "T3" },
-  ];
+  useEffect(() => {
+    getAllLookups();
+  }, []);
 
-  const delegatedPeopleNames = [
-    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
-    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" }
-  ];
 
-  const legalStatusOfTheParty = [
-    {
-      name: { ar: "مدعى عليه", en: "Defendant" },
-      code: "DE",
-    },
-    { name: { ar: "مشتكى عليه", en: "Accused" }, code: "AC" },
-  ];
+  useEffect(() => {
+    if ($employees?.length > 0) {
+      const arr = $employees.map(item => {
+        return {
+          name: {
+            en: item?.nameEnglish,
+            ar: item?.nameArabic
+          },
+          code: item?.id
+        }
+      })
+      setAllEmployees(arr);
+    }
 
-  const privateFileList = [
-    { name: { ar: "محمد عبد الله رشوان", en: "Mohamed Abd Allah Rashwan" }, code: "PF1" },
-    { name: { ar: "محمد أحمد على", en: "Mohamed Ahmed Ali" }, code: "PF2" },
-    { name: { ar: "زكريا محمد محسن", en: "Zakaria Mohamed Mohsin" }, code: "PF3" },
-    { name: { ar: "الدميري منصور عبد الرحمن", en: "Mansour Abd El Rahman El Demiry" }, code: "PF4" }
-  ];
+    if (!isCompany) {
+      setIsCompany(Storage.session.get('isCompany'));
+    }
+    if (!applicantName) {
+      setApplicantName(Storage.session.get('applicantName'));
+    }
 
-  const handleSelectionChange = (e: MultiSelectChangeEvent) => {
-    const selectedValues = e.value.filter(
-      (item) => item.code !== privateFileList[0].code,
-    );
-    props.setValue('privateFileSelection', [privateFileList[0], ...selectedValues]);
-  };
+  }, [$employees, isCompany, applicantName]);
+
+  const getAllLookups = async () => {
+    await dispatch(getAllEmployees());
+  }
+
+  const handleSelectEmployee = e => {
+    props.setValue("selectedDelegatedPerson", e.value as object);
+    const arr = allEmployees.filter((item: any) => {
+      return item.code !== e.value.code
+    });
+    setAllPrivateEmployees(arr);
+  }
+
 
   return (
     <div className="companySubFileData">
       <div>
-        <h3>{translate("selectFileType.companySubFileData")}</h3>
+        <h3>{isCompany ? translate("selectFileType.companySubFileData") : translate("selectFileType.individualSubFileData")}</h3>
         <div>
           <p>
-            <label>{translate("selectFileType.companyName")}</label>شركة النور
-            للتحصيل والمحاماة
+            <label>{isCompany ? translate("selectFileType.companyName") : translate("selectFileType.individualName")}</label>
+            {$lang === "en" ? applicantName?.en : applicantName?.ar}
           </p>
           <p>
-            <label>{translate("selectFileType.fileOpenDate")}</label>02-12-2024
+            <label>{translate("selectFileType.fileOpenDate")}</label>{dayjs(date).format('DD-MM-YYYY')}
           </p>
         </div>
       </div>
@@ -68,7 +87,7 @@ const CompanySubFileData = (props) => {
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
-            options={fileTypes}
+            options={FileTypes}
             optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
             errors={props.errors}
             onChange={e => props.setValue("fileType", e.value as object)}
@@ -83,10 +102,10 @@ const CompanySubFileData = (props) => {
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
-            options={delegatedPeopleNames}
+            options={allEmployees}
             optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
             errors={props.errors}
-            onChange={(e) => props.setValue("selectedDelegatedPerson", e.value as object)}
+            onChange={(e) => handleSelectEmployee(e)}
             placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
             rules={{ required: "You must select the Delegated Person." }}
             filter
@@ -94,50 +113,55 @@ const CompanySubFileData = (props) => {
             className="col-md-6 flex-1"
           />
         </div>
-        <CheckBoxComponent
-          id="privateFileCheckBox"
-          name="privateFileCheckBox"
-          label={translate("selectFileType.privateFile")}
-          className="col-12 mb-2"
-          register={props.register}
-          errors={props.errors}
-          setValueMethod={props.setValue}
-          watch={props.watch}
-          onChange={(e) => props.setValue("privateFileCheckBox", e.value)}
-        />
-        {props.watch("privateFileCheckBox") && (
+        {props.watch("selectedDelegatedPerson") && (
+          <CheckBoxComponent
+            id="vip"
+            name="vip"
+            label={translate("selectFileType.privateFile")}
+            className="col-12 mb-2"
+            register={props.register}
+            errors={props.errors}
+            setValueMethod={props.setValue}
+            watch={props.watch}
+            onChange={(e) => props.setValue("vip", e.value)}
+          />
+        )}
+
+        {props.watch("vip") && (
           <div className="row g-4 mb-4">
             <DropDownMultiComponent
-              name="privateFileSelection"
+              id="privateEmployees"
+              name="privateEmployees"
               label={translate("selectFileType.delegatedPersonName")}
               register={props.register}
               watch={props.watch}
               setValueMethod={props.setValue}
-              options={privateFileList}
+              options={allPrivateEmployees}
               optionLabel={`name.${$lang}`}
-              onChange={handleSelectionChange}
+              onChange={(e) => props.setValue("privateEmployees", e.value as object)}
               placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
-              rules={{ required: "You must select the Delegated Person." }}
-              setValue={props.watch('selectedDelegatedPerson') && [props.watch('selectedDelegatedPerson')]}
+              rules={{ required: "You must select the private persons." }}
+              errors={props.errors}
               className="col-md-6"
             />
           </div>
         )}
       </div>
-      {props.watch("fileType")?.code === "T1" &&
+      {(props.watch("fileType")?.code === "COURT_CASE") &&
+        props.watch("selectedDelegatedPerson") &&
         <div className="row g-4">
           <DropDownComponent
-            id="selectedLegalStatusOfTheParty"
-            name="selectedLegalStatusOfTheParty"
+            id="opponentCategory"
+            name="opponentCategory"
             label="صفة الخصم"
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
-            options={legalStatusOfTheParty}
+            options={OpponentCategories}
             optionLabel={`name.${$lang}`}
             errors={props.errors}
             onChange={(e) =>
-              props.setValue("selectedLegalStatusOfTheParty", e.value as object)
+              props.setValue("opponentCategory", e.value as object)
             }
             placeholder="اختر صفة الخصم"
             rules={{ required: "You must select the legal status of the party" }}
@@ -150,3 +174,4 @@ const CompanySubFileData = (props) => {
 };
 
 export default CompanySubFileData;
+

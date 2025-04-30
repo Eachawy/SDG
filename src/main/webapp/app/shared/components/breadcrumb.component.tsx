@@ -1,14 +1,26 @@
 import React from "react";
 import "./breadcrumb.Component.scss";
+import { useNavigate } from "react-router";
+import { useAppSelector } from "app/config/store";
 
 const BreadcrumbComponent = props => {
+    const navigate = useNavigate();
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
+
     return (
         <div className="breadcrumbComponent">
             <ul>
-                <li><span className="home" /></li>
-                <li><a href="#">اضافة شركة</a></li>
-                <li><a href="#">اضافة شركة</a></li>
-                <li>اضافة شركة</li>
+                <li onClick={() => navigate("/dashoard")}><span className="home" /></li>
+                {props.links.map((link: any) => (
+                    <li key={link.id}>
+                        {/* {link.url ?
+                            <a href="" onClick={() => navigate(link.url)}>{link.name[$lang]}</a>
+                            :
+                        } */}
+                        {link.name[$lang]}
+
+                    </li>
+                ))}
             </ul>
         </div>
     );

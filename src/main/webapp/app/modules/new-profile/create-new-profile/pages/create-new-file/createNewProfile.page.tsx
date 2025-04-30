@@ -8,8 +8,13 @@ import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiF
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CreateNewProfile } from "./createNewProfile.reducer";
+import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import { Storage } from "react-jhipster";
+import { reset } from "../select-file-type/select-file-type.reducer";
 
 const CreateNewProfilePage = () => {
+    const [showLoader, setShowLoader] = useState(false);
+    const [isSaveClose, setIsSaveClose] = useState(false);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -20,24 +25,37 @@ const CreateNewProfilePage = () => {
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
 
     useEffect(() => {
+        dispatch(reset());
+    }, [])
+
+
+    useEffect(() => {
         setValue('companyType', 'corporateType');
+
+        if ($fileNumber) {
+            if (isSaveClose) {
+                navigate("/dashoard");
+            } else {
+                Storage.session.set("fileNumber", $fileNumber);
+                navigate("/create-file/select-file-type");
+            }
+        }
     }, [$fileNumber]);
 
     const saveAndCloseFn = (data) => {
+        setIsSaveClose(true);
         restructureObject(data);
-        navigate("/dashoard");
-    };
 
-    if($fileNumber){
-        navigate("/create-file/select-file-type");
-    }
+    };
 
     const createProfile = (data) => {
+        setIsSaveClose(false);
         restructureObject(data);
     };
 
 
-    const restructureObject = (data: any) => {
+    const restructureObject = async (data: any) => {
+        setShowLoader(true);
         const _data = {
             company: data.companyType === 'corporateType' ? true : false,
             arabicName: data.NameAr,
@@ -61,16 +79,32 @@ const CreateNewProfilePage = () => {
                 },
             ]
         }
+
+        Storage.session.set("isCompany", data.companyType === 'corporateType' ? true : false);
+        Storage.session.set("applicantName", { en: data.NameEn, ar: data.NameAr });
+
         // Call API
-        dispatch(CreateNewProfile(_data));
+        await dispatch(CreateNewProfile(_data));
+        setShowLoader(false);
     }
 
     return (
         <div className="createNewProfilePage">
-            <BreadcrumbComponent />
+            <BreadcrumbComponent
+                links={[
+                    {
+                        id: 'PAGE1',
+                        name: {
+                            en: 'Add Company or Individual',
+                            ar: 'اضافة شركة أو شخص',
+                        },
+                    }
+                ]}
+            />
+            <LoaderComponent show={showLoader} />
             <CreateNewProfileStepsComponent step={1} />
             <div className="sdg_page">
-                <label className="serialNo">{translate("createNewProfile.serialNumber")}<span>1256543</span></label>
+                {/* <label className="serialNo">{translate("createNewProfile.serialNumber")}<span>1256543</span></label> */}
 
                 <div className="radioButtonDiv">
                     <RadioButtonComponent
