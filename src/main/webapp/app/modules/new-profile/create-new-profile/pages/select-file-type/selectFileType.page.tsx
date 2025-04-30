@@ -71,7 +71,7 @@ const SelectFileTypePage = () => {
     }
 
     const restructureUrgentRequestObj = (data: any) => {
-        const arr = data.privateEmployees;
+        const arr = data.privateEmployees || [];
         const privateEmployees = arr.map((item: any) => {
             return {
                 followupEmployee: false,
