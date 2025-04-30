@@ -72,7 +72,7 @@ const SelectFileTypePage = () => {
 
     const restructureUrgentRequestObj = (data: any) => {
         const arr = data.privateEmployees;
-        const privateEmployees = arr.map((item:any) => {
+        const privateEmployees = arr.map((item: any) => {
             return {
                 followupEmployee: false,
                 employee: {
@@ -89,7 +89,7 @@ const SelectFileTypePage = () => {
                 registrationDate: dayjs(data.urgentRequestRecordDate).format('YYYY-MM-DD'),
                 requiredAmount: Number(data.urgentRequestAmount),
                 currency: data.urgentRequestCurrency?.code,
-                opponentCategory: data.opponentCategory?.code,
+                opponentCategory: 'NONE',
                 court: {
                     id: Number(data.court?.code)
                 },
@@ -102,13 +102,13 @@ const SelectFileTypePage = () => {
                 caseNumber: data.requestNumber,
                 attachments: [
                     {
-                        attachmentType: data.opponentCategory?.code,
+                        attachmentType: data.fileType?.code,
                         name: data.urgentCaseAttach_1?.name,
                         content: data.urgentCaseAttach_1?.base64,
                         mimeType: "PDF"
                     },
                     {
-                        attachmentType: data.opponentCategory?.code,
+                        attachmentType: data.fileType?.code,
                         name: data.urgentCaseAttach_2?.name,
                         content: data.urgentCaseAttach_2?.base64,
                         mimeType: "PDF"
@@ -130,7 +130,7 @@ const SelectFileTypePage = () => {
 
     const restructureCourtCaseObj = (data: any) => {
         const arr = data.privateEmployees;
-        const privateEmployees = arr.map((item:any) => {
+        const privateEmployees = arr.map((item: any) => {
             return {
                 followupEmployee: false,
                 employee: {
@@ -138,7 +138,7 @@ const SelectFileTypePage = () => {
                 }
             }
         });
-        
+
         return {
             masterFileId: $fileNumber?.id,
             fileType: data.fileType?.code,
@@ -189,7 +189,24 @@ const SelectFileTypePage = () => {
 
     return (
         <div className="SelectFileTypePage">
-            <BreadcrumbComponent />
+            <BreadcrumbComponent
+                links={[
+                    {
+                        id: 'PAGE1',
+                        name: {
+                            en: 'Add Company or Individual',
+                            ar: 'اضافة شركة أو شخص',
+                        },
+                    },
+                    {
+                        id: 'PAGE2',
+                        name: {
+                            en: 'Select file type',
+                            ar: 'اختيار نوع الملف',
+                        },
+                    }
+                ]}
+            />
             <LoaderComponent show={showLoader} />
             <CreateNewProfileStepsComponent step={2} />
 
@@ -197,9 +214,9 @@ const SelectFileTypePage = () => {
                 <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber} / ${$fileNumber?.id}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
-                {(watch('fileType')?.code === "URGENT_REQUEST" || watch('fileType')?.code === "COURT_CASE") &&
-                    (watch('opponentCategory')?.code === "RESPONDENT" || watch('opponentCategory')?.code === "ACCUSED") &&
-                    <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                {(watch('fileType')?.code === "URGENT_REQUEST" || (watch('fileType')?.code === "COURT_CASE" && watch('opponentCategory'))) &&
+                    watch('selectedDelegatedPerson') &&
+                    <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} opponentCategory={watch('opponentCategory')} fileType={watch('fileType')} />
                 }
 
                 {watch('fileType')?.code === "COURT_CASE" &&
@@ -210,7 +227,6 @@ const SelectFileTypePage = () => {
 
                 {watch('fileType')?.code === "URGENT_REQUEST" &&
                     watch('personId') &&
-                    (watch('opponentCategory')?.code === "RESPONDENT" || watch('opponentCategory')?.code === "ACCUSED") &&
                     <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
                 }
 

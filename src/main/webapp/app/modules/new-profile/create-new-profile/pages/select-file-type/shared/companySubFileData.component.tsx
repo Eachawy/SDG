@@ -147,7 +147,7 @@ const CompanySubFileData = (props) => {
           </div>
         )}
       </div>
-      {(props.watch("fileType")?.code === "URGENT_REQUEST" || props.watch("fileType")?.code === "COURT_CASE") &&
+      {(props.watch("fileType")?.code === "COURT_CASE") &&
         props.watch("selectedDelegatedPerson") &&
         <div className="row g-4">
           <DropDownComponent

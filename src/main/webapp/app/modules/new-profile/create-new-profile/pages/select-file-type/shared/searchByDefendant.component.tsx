@@ -164,19 +164,23 @@ const SearchByDefendant = (props) => {
                     placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
                     rules={{ required: "You must select the Delegated Person." }}
                     filter
-                    label="البحث بأسم المدعى عليه"
-                    // label={getValues().opponentCategory?.code === "RESPONDENT" ? 'البحث بأسم المدعى عليه' : 'البحث بأسم المشتكي عليه'}
+                    label={props.fileType?.code === "URGENT_REQUEST" ? 'البحث بأسم المستدعي ضده' :
+                        props.opponentCategory?.code === "RESPONDENT" ? 'البحث بأسم المدعى عليه' : 'البحث بأسم المشتكي عليه'}
                 />
                 <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={addNewDefendantFn}>
-                    {/* {getValues().opponentCategory?.code === "RESPONDENT" ? 'إضافة مدعى عليه جديد' : 'إضافة مشتكي عليه جديد'} */}
-                    إضافة مدعى عليه جديد
+                    {props.fileType?.code === "URGENT_REQUEST" ? 'إضافة مستدعي ضده جديد' :
+                        props.opponentCategory?.code === "RESPONDENT" ? 'إضافة مدعى عليه جديد' : 'إضافة مشتكي عليه جديد'}
+
                 </ButtonComponent>
             </div>
 
             {selectedPerson && (
                 <div className='defendantData'>
                     <div className="title">
-                        <h4>بيانات المدعى عليه</h4>
+                        <h4>
+                            {props.fileType?.code === "URGENT_REQUEST" ? 'بيانات المستدعي ضده' :
+                                props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
+                        </h4>
                         <span onClick={editFn}>تعديل</span>
                     </div>
 
@@ -213,8 +217,8 @@ const SearchByDefendant = (props) => {
                         <div className="defendantDataPopup">
 
                             <h4>
-                                {/* {getValues().opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'} */}
-                                بيانات المدعى عليه
+                                {props.fileType?.code === "URGENT_REQUEST" ? 'بيانات المستدعي ضده' :
+                                    props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
                             </h4>
 
                             <InputComponent

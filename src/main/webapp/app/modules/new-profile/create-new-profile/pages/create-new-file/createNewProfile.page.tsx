@@ -25,10 +25,10 @@ const CreateNewProfilePage = () => {
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
 
     useEffect(() => {
-      dispatch(reset());
+        dispatch(reset());
     }, [])
-    
-    
+
+
     useEffect(() => {
         setValue('companyType', 'corporateType');
 
@@ -90,7 +90,17 @@ const CreateNewProfilePage = () => {
 
     return (
         <div className="createNewProfilePage">
-            <BreadcrumbComponent />
+            <BreadcrumbComponent
+                links={[
+                    {
+                        id: 'PAGE1',
+                        name: {
+                            en: 'Add Company or Individual',
+                            ar: 'اضافة شركة أو شخص',
+                        },
+                    }
+                ]}
+            />
             <LoaderComponent show={showLoader} />
             <CreateNewProfileStepsComponent step={1} />
             <div className="sdg_page">

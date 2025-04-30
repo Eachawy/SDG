@@ -7,10 +7,10 @@ export const FileTypes = [
         name: { en: 'Law Suits', ar: 'قضايا' },
         code: 'COURT_CASE'
     },
-    {
-        name: { en: 'Collection', ar: 'تحصيل' },
-        code: 'COLLECTION'
-    }
+    // {
+    //     name: { en: 'Collection', ar: 'تحصيل' },
+    //     code: 'COLLECTION'
+    // }
 ]
 
 export const OpponentCategories = [
