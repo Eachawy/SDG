@@ -5,6 +5,9 @@ import { ButtonComponent, CheckBoxComponent, InputComponent } from "@eachawy/fro
 import { login } from "app/shared/reducers/authentication";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { useNavigate } from "react-router";
+import { Storage } from "react-jhipster";
+import { setLocale } from "app/shared/reducers/locale";
+import { setTextDirection } from "app/config/translation";
 
 const LoginPage = () => {
 
@@ -14,16 +17,17 @@ const LoginPage = () => {
 
   const $isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
 
-
-
-
   const forgetThePasswordFn = () => { };
-  
-  
   
   const handleLogin = (data) => {
     dispatch(login(data.user,data.password));
   };
+
+  React.useEffect(() => {
+        Storage.session.set("locale", 'ar');
+        dispatch(setLocale('ar'));
+        setTextDirection('ar');
+  },[]);
 
   if($isAuthenticated) {
     navigate('/dashoard');
