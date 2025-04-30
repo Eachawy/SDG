@@ -45,7 +45,7 @@ const Header = (props: IHeaderProps) => {
           </div>
         </div>
         <div className="part_3">
-          <span onClick={handleLocaleChange}>Change Lang</span>
+          {/* <span onClick={handleLocaleChange}>Change Lang</span> */}
           {/* {props.currentLocale} */}
         </div>
       </div>
