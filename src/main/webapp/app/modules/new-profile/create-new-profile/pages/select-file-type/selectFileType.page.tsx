@@ -129,7 +129,7 @@ const SelectFileTypePage = () => {
     }
 
     const restructureCourtCaseObj = (data: any) => {
-        const arr = data.privateEmployees;
+        const arr = data.privateEmployees || [];
         const privateEmployees = arr.map((item: any) => {
             return {
                 followupEmployee: false,

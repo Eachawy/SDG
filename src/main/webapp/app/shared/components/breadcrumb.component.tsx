@@ -11,7 +11,7 @@ const BreadcrumbComponent = props => {
         <div className="breadcrumbComponent">
             <ul>
                 <li onClick={() => navigate("/dashoard")}><span className="home" /></li>
-                {props.links.map((link: any) => (
+                {props.links && props.links.map((link: any) => (
                     <li key={link.id}>
                         {/* {link.url ?
                             <a href="" onClick={() => navigate(link.url)}>{link.name[$lang]}</a>
