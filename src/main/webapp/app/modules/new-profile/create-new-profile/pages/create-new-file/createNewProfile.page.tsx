@@ -218,6 +218,7 @@ const CreateNewProfilePage = () => {
                             watch={watch}
                             setValueMethod={setValue}
                             fileTypePlaceHolder={'Select a File Type'}
+                            Class="col-md-12 col-lg-6"
                         />
                     </div>
 

@@ -202,6 +202,7 @@ const Lawsuits = (props) => {
                 // errors={props.errors}
                 setValueMethod={props.setValue}
                 attachList={(e) => props.setValue("lawsuitsAttach_1", e)}
+                Class="col-md-12 col-lg-6"
               />
               <AttachmentFileComponent
                 id="lawsuitsAttach_2"
@@ -213,6 +214,7 @@ const Lawsuits = (props) => {
                 // errors={errors}
                 setValueMethod={props.setValue}
                 attachList={(e) => props.setValue("lawsuitsAttach_2", e)}
+                Class="col-md-12 col-lg-6"
               />
             </div>
 

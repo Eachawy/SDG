@@ -202,6 +202,7 @@ const UrgentRequest = (props) => {
               // errors={props.errors}
               setValueMethod={props.setValue}
               attachList={(e) => props.setValue("urgentCaseAttach_1", e)}
+              Class="col-md-12 col-lg-6"
             />
             <AttachmentFileComponent
               id="urgentCaseAttach_2"
@@ -213,6 +214,7 @@ const UrgentRequest = (props) => {
               // errors={errors}
               setValueMethod={props.setValue}
               attachList={(e) => props.setValue("urgentCaseAttach_2", e)}
+              Class="col-md-12 col-lg-6"
             />
           </div>
 

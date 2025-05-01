@@ -103,7 +103,7 @@ body,
 
         @media screen and (max-width: 768px) {
           margin-top: 16px;
-          max-width: 95%;
+          max-width: 100%;
         }
       }
     }
@@ -635,11 +635,18 @@ body,
               flex-direction: column;
               gap: 0;
               margin: 0;
+              @media screen and (max-width: 768px) {
+                width: 100%;
+              }
             }
 
             button {
               margin: 0;
               align-self: flex-end;
+            }
+
+            @media screen and (max-width: 768px) {
+              flex-direction: column;
             }
           }
 
@@ -704,6 +711,10 @@ body,
                   color: #52525B;
                 }
               }
+
+              @media screen and (max-width: 768px) {
+                width: 100%;
+              }
             }
           }
 
@@ -718,7 +729,7 @@ body,
 
 
                 >div {
-                  width: calc(50% - 16px);
+                  // width: calc(50% - 16px);
                   margin: 0;
 
                   .GCDropDownComponent {
@@ -1927,6 +1938,7 @@ body,
       gap: 8px;
       justify-items: center;
       width: 100%;
+      align-items: flex-end;
 
       .countryCode {
         width: 100px;
@@ -2146,8 +2158,6 @@ body,
   }
 
   .GCInputComponent {
-    margin-bottom: 24px;
-
     .p-inputtext {
       width: 100%;
       border-radius: 8px;
