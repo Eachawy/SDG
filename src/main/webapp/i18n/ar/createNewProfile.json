@@ -6,6 +6,7 @@
     "selectFileTypeDescription": "تحديد نوع الملف (قضايا / طلب مستعجل / تحصيل)",
     "assignResponsibility": "تحديد المسؤولية والمتابعة",
     "assignResponsibilityDescription": "شارك البيانات مع الشخص المسؤول للمتابعة",
+    "serial": "الرقم التسلسلي",
     "serialAndSubNumber": "الرقم التسلسلي  /  الرقم الفرعي",
     "serialNumber": "الرقم التسلسلي",
     "companyTypeCorporate": "شركة",

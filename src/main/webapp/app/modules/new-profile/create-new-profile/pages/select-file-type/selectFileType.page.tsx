@@ -211,7 +211,7 @@ const SelectFileTypePage = () => {
             <CreateNewProfileStepsComponent step={2} />
 
             <div className="sdg_page">
-                <label className="serialNoSubNo">{translate("createNewProfile.serialAndSubNumber")} <span>{`${$fileNumber?.fileNumber} / ${$fileNumber?.id}`}</span></label>
+                <label className="serialNoSubNo">{translate("createNewProfile.serial")} <span>{`${$fileNumber?.fileNumber}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
                 {(watch('fileType')?.code === "URGENT_REQUEST" || (watch('fileType')?.code === "COURT_CASE" && watch('opponentCategory'))) &&
