@@ -11,6 +11,7 @@ import { CreateNewProfile } from "./createNewProfile.reducer";
 import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
 import { Storage } from "react-jhipster";
 import { reset } from "../select-file-type/select-file-type.reducer";
+import { attachmentDTO, IsMobileNumberUndefined, IsUndefined } from "app/shared/util/utils";
 
 const CreateNewProfilePage = () => {
     const [showLoader, setShowLoader] = useState(false);
@@ -53,33 +54,18 @@ const CreateNewProfilePage = () => {
         restructureObject(data);
     };
 
-
     const restructureObject = async (data: any) => {
         setShowLoader(true);
         const _data = {
             company: data.companyType === 'corporateType' ? true : false,
             arabicName: data.NameAr,
             englishName: data.NameEn,
-            ssn: data.nationalNumber,
-            address: data.address,
-            email: data.email,
-            mobileNumber: data.countryCode.name + data.phoneNumber,
-            attachments: [
-                {
-                    "attachmentType": "MASTER_FILE_ATTACHMENT",
-                    "name": data.attach_1?.name,
-                    "content": data.attach_1?.base64,
-                    "mimeType": "PDF"
-                },
-                {
-                    "attachmentType": "MASTER_FILE_ATTACHMENT",
-                    "name": data.attach_2?.name,
-                    "content": data.attach_2?.base64,
-                    "mimeType": "PDF"
-                },
-            ]
+            ssn: IsUndefined(data.nationalNumber),
+            address: IsUndefined(data.address),
+            email: IsUndefined(data.email),
+            mobileNumber: IsMobileNumberUndefined(data.countryCode.name, data.phoneNumber),
+            attachments: attachmentDTO(data.attach, "MASTER_FILE_ATTACHMENT"),
         }
-
         Storage.session.set("isCompany", data.companyType === 'corporateType' ? true : false);
         Storage.session.set("applicantName", { en: data.NameEn, ar: data.NameAr });
 
@@ -104,8 +90,6 @@ const CreateNewProfilePage = () => {
             <LoaderComponent show={showLoader} />
             <CreateNewProfileStepsComponent step={1} />
             <div className="sdg_page">
-                {/* <label className="serialNo">{translate("createNewProfile.serialNumber")}<span>1256543</span></label> */}
-
                 <div className="radioButtonDiv">
                     <RadioButtonComponent
                         name="companyType"
@@ -161,7 +145,7 @@ const CreateNewProfilePage = () => {
                             (getValues().companyType === 'corporateType') ?
                                 translate("createNewProfile.companyNameEn") : translate("createNewProfile.personNameEn")}
                         register={register}
-                        rules={{ required: 'يجب ادخال الاسم باللغة الإنجليزية' }}
+                        // rules={{ required: 'يجب ادخال الاسم باللغة الإنجليزية' }}
                         errors={errors}
                         setValueMethod={setValue}
                         watch={watch}
@@ -226,27 +210,14 @@ const CreateNewProfilePage = () => {
                 <div className="uploaderContainer">
                     <h4>{translate("createNewProfile.attachments")}</h4>
                     <div className="row">
-                        <AttachmentFileComponent
-                            id="attach_1"
-                            name="attach_1"
+                        <AttachmentMultiFilesComponent
+                            name={"attach"}
+                            attachList={(e) => setValue("attach", e)}
                             lang={$lang}
                             register={register}
                             watch={watch}
-                            // rules={{ required: 'يجب ادخال المىفقات' }}
-                            // errors={errors}
                             setValueMethod={setValue}
-                            attachList={(e) => setValue("attach_1", e)}
-                        />
-                        <AttachmentFileComponent
-                            id="attach_2"
-                            name="attach_2"
-                            lang={$lang}
-                            register={register}
-                            watch={watch}
-                            // rules={{ required: 'يجب ادخال المىفقات' }}
-                            // errors={errors}
-                            setValueMethod={setValue}
-                            attachList={(e) => setValue("attach_2", e)}
+                            fileTypePlaceHolder={'Select a File Type'}
                         />
                     </div>
 
