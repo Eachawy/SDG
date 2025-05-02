@@ -1,5 +1,6 @@
 import {
   AttachmentFileComponent,
+  AttachmentMultiFilesComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -192,7 +193,7 @@ const Lawsuits = (props) => {
           <div className="uploaderContainer">
             <h4>{translate("createNewProfile.attachments")}</h4>
             <div className="row">
-              <AttachmentFileComponent
+              {/* <AttachmentFileComponent
                 id="lawsuitsAttach_1"
                 name="lawsuitsAttach_1"
                 lang={$lang}
@@ -214,6 +215,16 @@ const Lawsuits = (props) => {
                 // errors={errors}
                 setValueMethod={props.setValue}
                 attachList={(e) => props.setValue("lawsuitsAttach_2", e)}
+                Class="col-md-12 col-lg-6"
+              /> */}
+              <AttachmentMultiFilesComponent
+                name={"lawsuitsAttach"}
+                attachList={(e) => props.setValue("lawsuitsAttach", e)}
+                lang={$lang}
+                register={props.register}
+                watch={props.watch}
+                setValueMethod={props.setValue}
+                fileTypePlaceHolder={'Select a File Type'}
                 Class="col-md-12 col-lg-6"
               />
             </div>

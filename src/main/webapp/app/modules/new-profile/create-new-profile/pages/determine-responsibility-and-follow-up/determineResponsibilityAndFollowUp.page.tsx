@@ -34,11 +34,35 @@ const DetermineResponsibilityAndFollowUpPage = () => {
 
   return (
     <div className="DetermineResponsibilityAndFollowUpPage">
-      <BreadcrumbComponent />
+      <BreadcrumbComponent
+        links={[
+          {
+              id: 'PAGE1',
+              name: {
+                  en: 'Add Company or Individual',
+                  ar: 'اضافة شركة أو شخص',
+              },
+          },
+          {
+              id: 'PAGE2',
+              name: {
+                  en: 'Select File Type',
+                  ar: 'اختيار نوع الملف',
+              },
+          },
+          {
+            id: 'PAGE3',
+            name: {
+                en: 'Determine Responsibility and followup',
+                ar: 'تحديد المسؤولية والمتابعة',
+            },
+        }
+      ]} 
+      />
       <CreateNewProfileStepsComponent step={3} />
       <div className="sdg_page">
         <label className="serialNoSubNo">
-          {translate("createNewProfile.serialAndSubNumber")} <span>1256543 / 10</span>
+          {translate("createNewProfile.serial")} <span>1256543</span>
         </label>
         <div className="successMsg">
           <h4>{translate("assignResponsibilityAndFollowUp.completionMessage")}</h4>
