@@ -88,10 +88,8 @@ const Cheque = (props) => {
   };
   // End Array Configuration
 
-  const { closepopUpFn } = props;
-
   const cancelFn = () => {
-    closepopUpFn(false)
+    props.closepopUpFn(false)
   };
 
   const addChequeFn = async (data: any) => {

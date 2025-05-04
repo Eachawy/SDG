@@ -80,10 +80,8 @@ const Draft = (props) => {
   };
   // End Array
 
-  const { closepopUpFn } = props;
-
   const cancelFn = () => {
-    closepopUpFn(false)
+    props.closepopUpFn(false)
   };
 
   const addDraftFn = async (data: any) => {
