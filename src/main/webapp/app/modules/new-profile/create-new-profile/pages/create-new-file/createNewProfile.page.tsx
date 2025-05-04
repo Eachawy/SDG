@@ -21,7 +21,7 @@ const CreateNewProfilePage = () => {
     const navigate = useNavigate();
 
     const $lang = useAppSelector(state => state.locale.currentLocale);
-    const $fileNumber = useAppSelector(state => state.createProfile.fileNumber);
+    const $masterFile = useAppSelector(state => state.createProfile.masterFile);
 
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
 
@@ -33,15 +33,15 @@ const CreateNewProfilePage = () => {
     useEffect(() => {
         setValue('companyType', 'corporateType');
 
-        if ($fileNumber) {
+        if ($masterFile) {
             if (isSaveClose) {
                 navigate("/dashoard");
             } else {
-                Storage.session.set("fileNumber", $fileNumber);
+                Storage.session.set("masterFile", $masterFile);
                 navigate("/create-file/select-file-type");
             }
         }
-    }, [$fileNumber]);
+    }, [$masterFile]);
 
     const saveAndCloseFn = (data) => {
         setIsSaveClose(true);

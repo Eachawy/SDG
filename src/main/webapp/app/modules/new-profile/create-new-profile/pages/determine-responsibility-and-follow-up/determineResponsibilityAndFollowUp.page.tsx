@@ -1,6 +1,6 @@
 import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
 import React from "react";
-import { translate } from "react-jhipster";
+import { Storage,translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { ButtonComponent, DropDownComponent, InputComponent } from "@eachawy/frontend-library";
@@ -21,6 +21,8 @@ const DetermineResponsibilityAndFollowUpPage = () => {
   } = useForm({ mode: "onTouched" });
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
+  const $masterFile = useAppSelector(state => state.createProfile.masterFile) ?? Storage.session.get('masterFile');
+  
 
   const nextFn = (_data) => {
     if (_data) {
@@ -62,7 +64,7 @@ const DetermineResponsibilityAndFollowUpPage = () => {
       <CreateNewProfileStepsComponent step={3} />
       <div className="sdg_page">
         <label className="serialNoSubNo">
-          {translate("createNewProfile.serial")} <span>1256543</span>
+          {translate("createNewProfile.serial")} <span>{`${$masterFile?.fileNumber}`}</span>
         </label>
         <div className="successMsg">
           <h4>{translate("assignResponsibilityAndFollowUp.completionMessage")}</h4>

@@ -2,61 +2,65 @@ import {
   DropDownComponent,
 } from "@eachawy/frontend-library";
 import React, { useEffect, useState } from "react";
-import { translate } from "react-jhipster";
-import { useAppSelector } from "app/config/store";
 import { useForm } from "react-hook-form";
 import Cheque from "./shared/cheque";
 import DefendantInfoComponent from "./shared/defendantInfo/defendantInfo.component.tsx";
-import PromissoryNote from "./shared/promissoryNote";
+import Draft from "./shared/draft";
 import MortgageBond from "./shared/mortgageBond.component";
 import AccountStatement from "./shared/accountStatement.component";
 import Invoice from "./shared/Invoice.component";
 import WrittenAcknowledgmentTrustBond from "./shared/writtenAcknowledgmentTrustBond.component";
 import LeaseContract from "./shared/leaseContractcomponent";
+import { BondTypes } from "app/modules/shared/constants";
+import { Storage } from "react-jhipster";
+import { getFileDetails } from './legalBonds.reducer';
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
 
 const LegalBonds = (props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-    getValues,
-  } = useForm({ mode: "onTouched" });
+
+  const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
+  const [fileResponse, setFileResonse] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
+  const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
+  const $fileId = $createFileResponse?.id ?? Storage.session.get('selectFileId');
+  const $fileDetailsResponse = useAppSelector(state => state.legalBonds.fileDetailsResponse);
+
+  const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: "onTouched" });
+
+  useEffect(() => {
+    getFileDetailsFn();
+  }, []);
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
-  }, [setValue]);
-
-  const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
+    if ($fileDetailsResponse) {
+      setFileResonse($fileDetailsResponse);
+    }
+  }, [setValue, $fileDetailsResponse]);
 
   const closepopUpFn = (e) => {
-    setShowlegalBondPopup(e)
+    setShowlegalBondPopup(e);
+    if (!e) {
+      getFileDetailsFn();
+    }
   }
-
-  const lang = useAppSelector((state) => state.locale.currentLocale);
-
-  const bondTypes = [
-    { name: { ar: "شيك", en: "Cheque" }, code: "CHQ" },
-    { name: { ar: "كمبيالة", en: "Promissory Note" }, code: "PN" },
-    {
-      name: {
-        ar: "اقرار خطي/ سند امانة",
-        en: "Written Acknowledgment / Trust Bond",
-      },
-      code: "WTB",
-    },
-    { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
-    { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
-    { name: { ar: "عقد ايجار", en: "Lease Contract" }, code: "LC" },
-    { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
-  ];
 
   const legalBondFn = () => {
     if ((watch("legalBondsList")?.code)) {
       setShowlegalBondPopup(true);
     }
   };
+
+  const getFileDetailsFn = async () => {
+    setShowLoader(true);
+    await dispatch(getFileDetails($fileId));
+    setShowLoader(false);
+  }
 
   return (
     <div className="legalBonds">
@@ -69,8 +73,8 @@ const LegalBonds = (props) => {
           register={register}
           watch={watch}
           setValueMethod={setValue}
-          options={bondTypes}
-          optionLabel={`name.${lang}`}
+          options={BondTypes}
+          optionLabel={`name.${$lang}`}
           errors={errors}
           onChange={(e) => setValue("legalBondsList", e.value as object)}
           placeholder="اختر السند القانوني"
@@ -83,14 +87,15 @@ const LegalBonds = (props) => {
       </div>
 
       {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <PromissoryNote closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <Draft closepopUpFn={closepopUpFn} />}
+      {/* {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <LeaseContract closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={closepopUpFn} />}
       {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />} */}
 
-      <DefendantInfoComponent />
+      <DefendantInfoComponent fileResponse={fileResponse} />
+      <LoaderComponent show={showLoader} />
     </div>
   );
 };

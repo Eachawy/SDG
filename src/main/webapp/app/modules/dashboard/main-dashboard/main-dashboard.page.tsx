@@ -1,6 +1,6 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
 import React, { useEffect } from 'react';
-import { translate } from 'react-jhipster';
+import { Storage, translate } from "react-jhipster";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from "app/config/store";
 import { reset } from 'app/modules/new-profile/create-new-profile/pages/create-new-file/createNewProfile.reducer';
@@ -12,6 +12,11 @@ const MainDashboardPage = () => {
 
     useEffect(() => {
         dispatch(reset());
+        Storage.session.remove('masterFile');
+        Storage.session.remove('selectFileId');
+        Storage.session.remove('collectionFileId');
+        Storage.session.remove('applicantName');
+        Storage.session.remove('isCompany');
     }, [])
 
     const createNewFileFn = () => {

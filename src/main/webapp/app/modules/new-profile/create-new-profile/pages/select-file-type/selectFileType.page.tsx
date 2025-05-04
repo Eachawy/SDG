@@ -24,7 +24,7 @@ const SelectFileTypePage = () => {
 
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: "onTouched" });
 
-    const $fileNumber = useAppSelector(state => state.createProfile.fileNumber) ?? Storage.session.get('fileNumber');
+    const $masterFile = useAppSelector(state => state.createProfile.masterFile) ?? Storage.session.get('masterFile');
     const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
 
     const navigate = useNavigate();
@@ -35,7 +35,13 @@ const SelectFileTypePage = () => {
             if (isSaveClose) {
                 navigate("/dashoard");
             } else {
-                navigate("/create-file/determine-responsibility-and-follow-up");
+                Storage.session.set("selectFileId", $createFileResponse?.id);
+                if ($createFileResponse?.fileType === "COLLECTION" && $createFileResponse?.collectionFile?.id) {
+                    Storage.session.set("collectionFileId", $createFileResponse?.collectionFile?.id);
+                    navigate("/create-file/legal-bonds");
+                }else{
+                    navigate("/create-file/determine-responsibility-and-follow-up");
+                }
             }
         }
     }, [$createFileResponse])
@@ -61,7 +67,9 @@ const SelectFileTypePage = () => {
             case 'URGENT_REQUEST':
                 obj = restructureUrgentRequestObj(data);
                 break;
-
+            case 'COLLECTION':
+                obj = restructureCollectionObj(data);
+                break;
             default:
                 break;
         }
@@ -82,7 +90,7 @@ const SelectFileTypePage = () => {
             }
         });
         return {
-            masterFileId: $fileNumber?.id,
+            masterFileId: $masterFile?.id,
             fileType: data.fileType?.code,
             vip: data.vip ?? false,
             issueDate: dayjs(date).format('YYYY-MM-DD'),
@@ -122,7 +130,7 @@ const SelectFileTypePage = () => {
         });
 
         return {
-            masterFileId: $fileNumber?.id,
+            masterFileId: $masterFile?.id,
             fileType: data.fileType?.code,
             vip: data.vip ?? false,
             issueDate: dayjs(date).format('YYYY-MM-DD'),
@@ -136,6 +144,40 @@ const SelectFileTypePage = () => {
                 judge: data.judge?.code ? { id: Number(data.judge?.code) } : {},
                 caseNumber: IsUndefined(data.caseNumber),
                 attachments: attachmentDTO(data.lawsuitsAttach, data.opponentCategory?.code)
+            },
+            personId: data.personId?.code,
+            employees: [
+                {
+                    followupEmployee: true,
+                    employee: {
+                        id: data.selectedDelegatedPerson?.code
+                    }
+                },
+                ...privateEmployees
+            ]
+        }
+    }
+
+    const restructureCollectionObj = (data: any) => {
+        const arr = data.privateEmployees || [];
+        const privateEmployees = arr.map((item: any) => {
+            return {
+                followupEmployee: false,
+                employee: {
+                    id: item.code
+                }
+            }
+        });
+
+        return {
+            masterFileId: $masterFile?.id,
+            fileType: data.fileType?.code,
+            vip: data.vip ?? false,
+            issueDate: dayjs(date).format('YYYY-MM-DD'),
+            collectionFile: {
+                totalAmount: data.collectionAmount ? Number(data.collectionAmount) : null,
+                currency: data.collectionAmount ? IsUndefined(data.collectionCurrency?.code) : null,
+                requiredCollectionAmount: data.requiredCollectionAmount
             },
             personId: data.personId?.code,
             employees: [
@@ -174,10 +216,13 @@ const SelectFileTypePage = () => {
             <CreateNewProfileStepsComponent step={2} />
 
             <div className="sdg_page">
-                <label className="serialNoSubNo">{translate("createNewProfile.serial")} <span>{`${$fileNumber?.fileNumber}`}</span></label>
+                <label className="serialNoSubNo">{translate("createNewProfile.serial")} <span>{`${$masterFile?.fileNumber}`}</span></label>
                 <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
 
-                {(watch('fileType')?.code === "URGENT_REQUEST" || (watch('fileType')?.code === "COURT_CASE" && watch('opponentCategory'))) &&
+                {(watch('fileType')?.code === "URGENT_REQUEST" ||
+                    (watch('fileType')?.code === "COURT_CASE" && watch('opponentCategory')) ||
+                    (watch('fileType')?.code === "COLLECTION")
+                ) &&
                     watch('selectedDelegatedPerson') &&
                     <SearchByDefendant register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} opponentCategory={watch('opponentCategory')} fileType={watch('fileType')} />
                 }
@@ -193,7 +238,9 @@ const SelectFileTypePage = () => {
                     <UrgentRequest register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
                 }
 
-                {watch('fileType')?.code === "COLLECTION" && <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />}
+                {watch('fileType')?.code === "COLLECTION" && watch('personId') && (
+                    <Collection register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                )}
 
                 <div className="actionBtns">
                     <ButtonComponent Class={'BtnCancel'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>

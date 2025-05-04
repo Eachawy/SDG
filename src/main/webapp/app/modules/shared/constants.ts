@@ -7,10 +7,10 @@ export const FileTypes = [
         name: { en: 'Law Suits', ar: 'قضايا' },
         code: 'COURT_CASE'
     },
-    // {
-    //     name: { en: 'Collection', ar: 'تحصيل' },
-    //     code: 'COLLECTION'
-    // }
+    {
+        name: { en: 'Collection', ar: 'تحصيل' },
+        code: 'COLLECTION'
+    }
 ]
 
 export const OpponentCategories = [
@@ -25,7 +25,28 @@ export const OpponentCategories = [
 ]
 
 export const CurrencyList = [
-    { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
+    { name: { ar: "دينار اردني", en: "Jordanian Dinar" }, code: "JOD" },
     { name: { ar: "دولار امريكي", en: "US Dollar" }, code: "USD" },
     { name: { ar: "درهم امراتي", en: "UAE Dirham" }, code: "AED" },
 ]
+
+export const BondTypes = [
+    { name: { ar: "شيك", en: "Cheque" }, code: "CHQ" },
+    { name: { ar: "كمبيالة", en: "Promissory Note" }, code: "PN" },
+    // {
+    //     name: {
+    //         ar: "اقرار خطي/ سند امانة",
+    //         en: "Written Acknowledgment / Trust Bond",
+    //     },
+    //     code: "WTB",
+    // },
+    // { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
+    // { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
+    // { name: { ar: "عقد ايجار", en: "Lease Contract" }, code: "LC" },
+    // { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
+];
+
+export const ChequeBeneficiaryList = [
+    { name: { ar: "مستفيد اول", en: "First Beneficiary" }, code: "FB" },
+    { name: { ar: "مجير له", en: "Authorized Party" }, code: "AP" },
+];

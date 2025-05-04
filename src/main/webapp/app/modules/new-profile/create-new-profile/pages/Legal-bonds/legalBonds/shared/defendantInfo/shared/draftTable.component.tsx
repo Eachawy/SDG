@@ -5,8 +5,9 @@ import { ButtonComponent } from "@eachawy/frontend-library";
 import { Paginator } from 'primereact/paginator';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from "primereact/utils";
+import { getFileSize, getFileType } from "app/shared/util/utils";
 
-const PromissoryTableComponent = () => {
+const DraftTableComponent = (props) => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
@@ -58,180 +59,6 @@ const PromissoryTableComponent = () => {
         }
       ]
     },
-    {
-      id: 2,
-      debtorNameList: [
-        { id: 403, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 404, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 405, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      phoneNumber: 123456789,
-      dateOfIssue: "30-9-2025",
-      dueDate: "30-9-2025",
-      totalAmount: "35,000",
-      guarantors: [],
-      attachmentFileData: [
-        {
-          id: 502,
-          fileName: "صورة الشيك",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        }
-      ]
-    },
-    {
-      id: 3,
-      debtorNameList: [
-        { id: 406, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 407, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 408, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      phoneNumber: 123456789,
-      dateOfIssue: "01-10-2025",
-      dueDate: "01-10-2025",
-      totalAmount: "35,000",
-      guarantors: [
-        { id: 456, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 457, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 458, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      attachmentFileData: [{
-        id: 503,
-        fileName: "شيك حال الأداء",
-        fileType: "شيك مصرفي",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-      },
-      {
-        id: 504,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-      },
-      {
-        id: 505,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/915451034/photo/businesswoman-giving-cheque-to-her-colleague.jpg?s=1024x1024&w=is&k=20&c=TtQB9NSARdiK2pNGIAfx0ZohugmOI11tQ4GQyqtsxbE="
-      },]
-    },
-    {
-      id: 4,
-      debtorNameList: [
-        { id: 409, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 410, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 411, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      phoneNumber: 123456789,
-      dateOfIssue: "02-10-2025",
-      dueDate: "02-10-2025",
-      totalAmount: "35,000",
-      guarantors: [
-        { id: 459, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 460, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 461, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      attachmentFileData: [{
-        id: 506,
-        fileName: "شيك حال الأداء",
-        fileType: "شيك مصرفي",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-      },
-      {
-        id: 507,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-      },
-      {
-        id: 508,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/915451034/photo/businesswoman-giving-cheque-to-her-colleague.jpg?s=1024x1024&w=is&k=20&c=TtQB9NSARdiK2pNGIAfx0ZohugmOI11tQ4GQyqtsxbE="
-      },]
-    },
-    {
-      id: 5,
-      debtorNameList: [
-        { id: 412, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 413, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 414, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      phoneNumber: 123456789,
-      dateOfIssue: "03-10-2025",
-      dueDate: "03-10-2025",
-      totalAmount: "35,000",
-      guarantors: [
-        { id: 462, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 463, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 464, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      attachmentFileData: [{
-        id: 509,
-        fileName: "شيك حال الأداء",
-        fileType: "شيك مصرفي",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-      },
-      {
-        id: 510,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-      },
-      {
-        id: 511,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/915451034/photo/businesswoman-giving-cheque-to-her-colleague.jpg?s=1024x1024&w=is&k=20&c=TtQB9NSARdiK2pNGIAfx0ZohugmOI11tQ4GQyqtsxbE="
-      },]
-    },
-    {
-      id: 6,
-      debtorNameList: [
-        { id: 415, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 416, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 417, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      phoneNumber: 123456789,
-      dateOfIssue: "04-10-2025",
-      dueDate: "04-10-2025",
-      totalAmount: "35,000",
-      guarantors: [
-        { id: 465, name: "محمد عبد الله رشوان", phoneNo: "123456789" },
-        { id: 466, name: "اسماعيل العقاد عبد الله", phoneNo: "123456789" },
-        { id: 467, name: "محمد رائد العقاد", phoneNo: "123456789" }
-      ],
-      attachmentFileData: [{
-        id: 512,
-        fileName: "شيك حال الأداء",
-        fileType: "شيك مصرفي",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-      },
-      {
-        id: 513,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-      },
-      {
-        id: 514,
-        fileName: "صورة الشيك المرتد",
-        fileType: "شيك مقبول الدفع",
-        fileSize: "250KB",
-        filePath: "https://media.istockphoto.com/id/915451034/photo/businesswoman-giving-cheque-to-her-colleague.jpg?s=1024x1024&w=is&k=20&c=TtQB9NSARdiK2pNGIAfx0ZohugmOI11tQ4GQyqtsxbE="
-      },]
-    }
   ];
 
   const onPageChange = (event) => {
@@ -282,9 +109,10 @@ const PromissoryTableComponent = () => {
             setAttachmentTamplateListRowId(rowData.id);
             setIsAttachmentTamplateList(true);
             setIsDebtorInfoList(false);
+            setIsGuarantorInfoList(false);
             setIsActionList(false);
             setSelectedAttachmentCard(0)
-            setSelectedAttachmentFilePath(rowData.attachmentFileData[0].filePath)
+            setSelectedAttachmentFilePath(rowData.attachments[0].content)
 
           }
         }}
@@ -301,23 +129,23 @@ const PromissoryTableComponent = () => {
                 <div>
                   <div className="fileCardList">
 
-                    {rowData.attachmentFileData.length > 0 && rowData.attachmentFileData.map((i, index) => (
+                    {rowData.attachments.length > 0 && rowData.attachments.map((i, index) => (
                       <div key={index} onClick={() => {
                         setSelectedAttachmentCard(index)
-                        setSelectedAttachmentFilePath(i.filePath)
-                      }} className={`${i.filePath.includes('bank') && 'pdfEx'} ${selectedAttachmentCard === index && 'active'}`}>
+                        setSelectedAttachmentFilePath(i.content)
+                      }} className={`${selectedAttachmentCard === index && 'active'}`}>
                         <p>
                           <label>اسم الملف</label>
-                          {i.fileName}
+                          {i.name}
                         </p>
                         <div>
                           <p>
                             <label>نوع الملف</label>
-                            {i.fileType}
+                            {getFileType(i.content)}
                           </p>
                           <p>
                             <label>حجم الملف</label>
-                            {i.fileSize}
+                            {getFileSize(i.content)}
                           </p>
                         </div>
                       </div>
@@ -327,7 +155,7 @@ const PromissoryTableComponent = () => {
                   <div className="fileViewSpace">
                     <object width={"100%"} height={"100%"}
                       data={`${selectedAttachmentFilePath}`}
-                      type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
+                    // type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
                     />
                   </div>
                 </div>
@@ -339,9 +167,8 @@ const PromissoryTableComponent = () => {
     )
   }
 
-
-
   const debtorNameTemplate = (rowData: any) => {
+    const debtorsList = rowData.legalBondParticipant.filter((item: any) => item.type === "DEBTOR_NAME");
     return (
       <div className="action-column NFBList debtorNameList"
         onClick={(e) => {
@@ -354,14 +181,14 @@ const PromissoryTableComponent = () => {
       >
         <div className="tdinnerDiv">
           <span />
-          <p>{rowData.debtorNameList[0].name + "/" + rowData.debtorNameList[1].name}</p>
+          <p>{debtorsList[0].name + (debtorsList.length > 1 ? "/" + debtorsList[1].name : '')}</p>
         </div>
         {debtorNameInfoListRowId === rowData.id && isDebtorInfoList && (
           <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-            {rowData.debtorNameList.map((d) => (
+            {debtorsList.map((d) => (
               <div key={d.id}>
                 <p><label>اسم المدين</label>{d.name}</p>
-                <p><label>رقم الهاتف</label>{d.phoneNo}</p>
+                <p><label>رقم الهاتف</label>{d.mobileNumber}</p>
               </div>
             ))}
           </div>
@@ -371,12 +198,13 @@ const PromissoryTableComponent = () => {
   }
 
   const guarantorsTemplateList = (rowData: any) => {
+    const guarantorsList = rowData.legalBondParticipant.filter((item: any) => item.type === "DRAFT_GUARANTOR");
     return (
       <div className="action-column NFBList debtorNameList"
         onClick={(e) => {
           e.stopPropagation();
           setguarantorNameInfoListRowId(rowData.id);
-          if (rowData.guarantors.length > 0) {
+          if (guarantorsList.length > 0) {
             setIsGuarantorInfoList(true);
           }
           setIsDebtorInfoList(false)
@@ -384,15 +212,15 @@ const PromissoryTableComponent = () => {
         }}
       >
         <div className="tdinnerDiv">
-          <span className={`${!(rowData.guarantors.length > 0) && "hideIcon"}`} />
-          <p>{rowData.guarantors.length > 0 ? rowData.guarantors[0].name + "/" + rowData.guarantors[1].name : "لا يوجد كفيل"}</p>
+          <span className={`${!(guarantorsList.length > 0) && "hideIcon"}`} />
+          <p>{guarantorsList.length > 0 ? guarantorsList[0].name +  (guarantorsList.length > 1 ? "/" + guarantorsList[1].name : '') : "لا يوجد كفيل"}</p>
         </div>
         {guarantorNameInfoListRowId === rowData.id && isGuarantorInfoList && (
           <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-            {rowData.guarantors.length > 0  && rowData.guarantors?.map((d) => (
+            {guarantorsList.length > 0 && guarantorsList?.map((d) => (
               <div key={d?.id}>
                 <p><label>اسم الكفيل</label>{d?.name}</p>
-                <p><label>رقم الهاتف</label>{d?.phoneNo}</p>
+                <p><label>رقم الهاتف</label>{d?.mobileNumber}</p>
               </div>
             ))}
           </div>
@@ -476,7 +304,7 @@ const PromissoryTableComponent = () => {
   return (
     <div className="table-container">
       <DataTable
-        value={customChequeData}
+        value={props.draftsList}
         selectionMode="multiple"
         selection={selectedCheques}
         onSelectionChange={onChangeSelection}
@@ -491,12 +319,7 @@ const PromissoryTableComponent = () => {
           className="columnStyle debtorNameList" />
 
         <Column
-          field="phoneNumber"
-          header="رقم الهاتف"
-          className="columnStyle" />
-
-        <Column
-          field="dateOfIssue"
+          field="issueDate"
           header="تاريخ التحرير"
           className="columnStyle"
         />
@@ -550,4 +373,4 @@ const PromissoryTableComponent = () => {
   );
 };
 
-export default PromissoryTableComponent;
+export default DraftTableComponent;

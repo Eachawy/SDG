@@ -1,0 +1,74 @@
+import { getVerifiedRequest, postVerifiedRequest } from 'app/config/network-server-reducer';
+import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
+import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { addEditPersonAPI, addLegalBondAPI, createFileAPI, getAllBanksAPI, getFileDetailsAPI, masterFilesAPI } from 'app/config/constants';
+import { add } from 'lodash';
+
+const initialState = {
+    errorMessage: null,
+    loading: false,
+    fileDetailsResponse: null,
+    addLegalBondResponse: null,
+    banksList: null,
+};
+
+export type ILegalBondsSliceState = Readonly<typeof initialState>;
+
+// Actions
+
+export const getFileDetails = createAsyncThunk('LEGAL_BONDS/GET_FILE_DETAILS',
+    async (id: any) => getVerifiedRequest(getFileDetailsAPI + id), {
+    serializeError: serializeAxiosError,
+});
+
+export const addLegalBond = createAsyncThunk('SELECT_FILE_TYPE/ADD_LEGAL_BOND',
+    async (data: any) => postVerifiedRequest(addLegalBondAPI, data), {
+    serializeError: serializeAxiosError,
+});
+
+export const getAllBanks = createAsyncThunk('LOOKUPS/GET_ALL_BANKS',
+    async () => getVerifiedRequest(getAllBanksAPI), {
+    serializeError: serializeAxiosError,
+});
+
+
+export const LegalBonds = createSlice({
+    name: 'legalBonds',
+    initialState: initialState as ILegalBondsSliceState,
+    reducers: {
+        reset() {
+            return initialState;
+        },
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(getFileDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.fileDetailsResponse = action.payload.data;
+            })
+            .addCase(addLegalBond.fulfilled, (state, action) => {
+                state.loading = false;
+                state.addLegalBondResponse = action.payload.data;
+            })
+            .addCase(getAllBanks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.banksList = action.payload.data;
+            })
+            .addMatcher(isPending(getFileDetails, addLegalBond, getAllBanks), state => {
+                state.loading = true;
+                state.errorMessage = null;
+            })
+            .addMatcher(
+                isRejected(getFileDetails, addLegalBond, getAllBanks),
+                (state, action) => {
+                    state.loading = false;
+                    state.errorMessage = action.error.message;
+                },
+            );
+    },
+});
+
+export const { reset } = LegalBonds.actions;
+
+// Reducer
+export default LegalBonds.reducer;

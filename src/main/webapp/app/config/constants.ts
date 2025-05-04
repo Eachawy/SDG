@@ -32,4 +32,9 @@ export const getAllPersonsAPI = 'api/persons?name=&size=';
 export const getAllCourtsAPI = 'api/courts/active';
 export const getAllJudgesAPI = 'api/judges/active';
 export const getAllCaseTypesAPI = 'api/case-types/active/case';
-export const getAllRequestTypesAPI = 'api/case-types/active/request'
+export const getAllRequestTypesAPI = 'api/case-types/active/request';
+export const getAllBanksAPI = 'api/banks?name=&size=';
+
+// Legal Bonds
+export const getFileDetailsAPI = 'api/files/';
+export const addLegalBondAPI = 'api/collection-files/legal-bonds';

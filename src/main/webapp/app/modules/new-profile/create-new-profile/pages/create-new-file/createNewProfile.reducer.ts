@@ -6,7 +6,7 @@ import { masterFilesAPI } from 'app/config/constants';
 const initialState = {
     errorMessage: null,
     loading: false,
-    fileNumber: null
+    masterFile: null
 };
 
 export type ICreateProfileState = Readonly<typeof initialState>;
@@ -30,7 +30,7 @@ export const CreateProfileSlice = createSlice({
         builder
             .addCase(CreateNewProfile.fulfilled, (state, action) => {
                 state.loading = false;
-                state.fileNumber = action.payload.data;
+                state.masterFile = action.payload.data;
             })
             .addMatcher(isPending(CreateNewProfile), state => {
                 state.loading = true;

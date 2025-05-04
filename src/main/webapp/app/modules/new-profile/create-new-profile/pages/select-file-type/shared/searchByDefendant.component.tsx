@@ -164,12 +164,15 @@ const SearchByDefendant = (props) => {
                     placeholder={translate("selectFileType.delegatedPersonPlaceholder")}
                     rules={{ required: "You must select the Delegated Person." }}
                     filter
-                    label={props.fileType?.code === "URGENT_REQUEST" ? 'البحث بأسم المستدعي ضده' :
-                        props.opponentCategory?.code === "RESPONDENT" ? 'البحث بأسم المدعى عليه' : 'البحث بأسم المشتكي عليه'}
+                    label={
+                        props.fileType?.code === "URGENT_REQUEST" ? 'البحث بأسم المستدعي ضده' :
+                            props.fileType?.code === "COLLECTION" ? 'البحث بأسم المدعى عليه' :
+                                props.opponentCategory?.code === "RESPONDENT" ? 'البحث بأسم المدعى عليه' : 'البحث بأسم المشتكي عليه'}
                 />
                 <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={addNewDefendantFn}>
                     {props.fileType?.code === "URGENT_REQUEST" ? 'إضافة مستدعي ضده جديد' :
-                        props.opponentCategory?.code === "RESPONDENT" ? 'إضافة مدعى عليه جديد' : 'إضافة مشتكي عليه جديد'}
+                        props.fileType?.code === "COLLECTION" ? 'إضافة مدعى عليه جديد' :
+                            props.opponentCategory?.code === "RESPONDENT" ? 'إضافة مدعى عليه جديد' : 'إضافة مشتكي عليه جديد'}
 
                 </ButtonComponent>
             </div>
@@ -179,7 +182,8 @@ const SearchByDefendant = (props) => {
                     <div className="title">
                         <h4>
                             {props.fileType?.code === "URGENT_REQUEST" ? 'بيانات المستدعي ضده' :
-                                props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
+                                props.fileType?.code === "COLLECTION" ? 'بيانات المدعى عليه' :
+                                    props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
                         </h4>
                         <span onClick={editFn}>تعديل</span>
                     </div>
@@ -218,7 +222,8 @@ const SearchByDefendant = (props) => {
 
                             <h4>
                                 {props.fileType?.code === "URGENT_REQUEST" ? 'بيانات المستدعي ضده' :
-                                    props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
+                                    props.fileType?.code === "COLLECTION" ? 'بيانات المدعى عليه' :
+                                        props.opponentCategory?.code === "RESPONDENT" ? 'بيانات المدعى عليه' : 'بيانات المشتكي عليه'}
                             </h4>
 
                             <InputComponent

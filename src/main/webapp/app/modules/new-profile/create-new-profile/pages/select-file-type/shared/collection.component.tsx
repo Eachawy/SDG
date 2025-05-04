@@ -2,16 +2,12 @@ import { DropDownComponent, InputComponent } from "@eachawy/frontend-library";
 import React from "react";
 import { translate } from "react-jhipster";
 import { useAppSelector } from "app/config/store";
+import { CurrencyList } from "app/modules/shared/constants";
 
 const Collection = (props) => {
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
 
-  const currencyList = [
-    { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
-    { name: { ar: "دولار امريكي", en: "US Dollar" }, code: "USD" },
-    { name: { ar: "درهم امراتي", en: "UAE Dirham" }, code: "AED" },
-  ];
 
   return (
     <div className="collection container p-0">
@@ -19,20 +15,20 @@ const Collection = (props) => {
       <div className="row g-4 gy-4 d-flex mb-4">
         <div className="amountToCollect row p-0 col-md-6 mb-5 ">
           <InputComponent
-            id="amountToBeCollected"
+            id="collectionAmount"
             type="text"
-            name="originalOfTheConscience"
+            name="collectionAmount"
             placeholder={translate("createNewProfile.exm") + "20,000"}
             register={props.register}
-            errors={props.errors}
+            // errors={props.errors}
             setValueMethod={props.setValue}
             watch={props.watch}
             onChange={(e) => {
               const numericValue = e.target.value.replace(/[^0-9]/g, "");
-              props.setValue("originalOfTheConscience", numericValue);
+              props.setValue("collectionAmount", numericValue);
             }}
             label="اصل الذمة"
-            rules={{ required: "يجب ادخال اصل الذمة" }}
+            // rules={{ required: "يجب ادخال اصل الذمة" }}
           />
           <DropDownComponent
             id="collectionCurrencyList"
@@ -40,18 +36,19 @@ const Collection = (props) => {
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
-            options={currencyList}
+            options={CurrencyList}
             optionLabel={`name.${$lang}`}
-            errors={props.errors}
+            // errors={props.errors}
             onChange={(e) => props.setValue("currencyList", e.value as object)}
             placeholder="دينار"
+            setValue={CurrencyList[0]}
           />
         </div>
 
         <InputComponent
-          id="amountToBeCollected"
+          id="requiredCollectionAmount"
           type="text"
-          name="amountToBeCollected"
+          name="requiredCollectionAmount"
           placeholder={translate("createNewProfile.exm") + "20,000"}
           register={props.register}
           errors={props.errors}
@@ -59,7 +56,7 @@ const Collection = (props) => {
           watch={props.watch}
           onChange={(e) => {
             const numericValue = e.target.value.replace(/[^0-9]/g, "");
-            props.setValue("amountToBeCollected", numericValue);
+            props.setValue("requiredCollectionAmount", numericValue);
           }}
           label="المبلغ المراد تحصيله"
           rules={{ required: "يجب ادخال المبلغ المراد تحصيله" }}
