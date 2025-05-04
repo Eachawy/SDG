@@ -1,5 +1,6 @@
 import {
   AttachmentFileComponent,
+  AttachmentMultiFilesComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
@@ -104,10 +105,10 @@ const UrgentRequest = (props) => {
           setValueMethod={props.setValue}
           options={allCourts}
           optionLabel={`name.${$lang}`}
-          errors={props.errors}
+          // errors={props.errors}
           onChange={(e) => props.setValue("court", e.value as object)}
           placeholder="اختر موقع المحكمة"
-          rules={{ required: "يجب اختيار موقع المحكمة" }}
+          // rules={{ required: "يجب اختيار موقع المحكمة" }}
           className="col-md-6 mb-4"
         />
 
@@ -192,7 +193,7 @@ const UrgentRequest = (props) => {
         <div className="uploaderContainer">
           <h4>{translate("createNewProfile.attachments")}</h4>
           <div className="row">
-            <AttachmentFileComponent
+            {/* <AttachmentFileComponent
               id="urgentCaseAttach_1"
               name="urgentCaseAttach_1"
               lang={$lang}
@@ -214,6 +215,16 @@ const UrgentRequest = (props) => {
               // errors={errors}
               setValueMethod={props.setValue}
               attachList={(e) => props.setValue("urgentCaseAttach_2", e)}
+              Class="col-md-12 col-lg-6"
+            /> */}
+            <AttachmentMultiFilesComponent
+              name={"urgentCaseAttach"}
+              attachList={(e) => props.setValue("urgentCaseAttach", e)}
+              lang={$lang}
+              register={props.register}
+              watch={props.watch}
+              setValueMethod={props.setValue}
+              fileTypePlaceHolder={'Select a File Type'}
               Class="col-md-12 col-lg-6"
             />
           </div>

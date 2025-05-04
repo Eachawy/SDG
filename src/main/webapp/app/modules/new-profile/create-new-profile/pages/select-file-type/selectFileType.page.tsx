@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "app/config/store";
 import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
 import { CreateFile } from "./select-file-type.reducer";
 import dayjs from "dayjs";
+import { attachmentDTO, IsUndefined } from "app/shared/util/utils";
 
 
 const SelectFileTypePage = () => {
@@ -86,34 +87,15 @@ const SelectFileTypePage = () => {
             vip: data.vip ?? false,
             issueDate: dayjs(date).format('YYYY-MM-DD'),
             courtCaseFile: {
-                registrationDate: dayjs(data.urgentRequestRecordDate).format('YYYY-MM-DD'),
-                requiredAmount: Number(data.urgentRequestAmount),
-                currency: data.urgentRequestCurrency?.code,
+                registrationDate: data.urgentRequestRecordDate ? dayjs(data.urgentRequestRecordDate).format('YYYY-MM-DD') : null,
+                requiredAmount: data.urgentRequestAmount ? IsUndefined(Number(data.urgentRequestAmount)) : null,
+                currency: data.urgentRequestAmount ? IsUndefined(data.urgentRequestCurrency?.code) : null,
                 opponentCategory: 'NONE',
-                court: {
-                    id: Number(data.court?.code)
-                },
-                caseType: {
-                    id: data.requestType?.code
-                },
-                judge: {
-                    id: Number(data.judge?.code)
-                },
-                caseNumber: data.requestNumber,
-                attachments: [
-                    {
-                        attachmentType: data.fileType?.code,
-                        name: data.urgentCaseAttach_1?.name,
-                        content: data.urgentCaseAttach_1?.base64,
-                        mimeType: "PDF"
-                    },
-                    {
-                        attachmentType: data.fileType?.code,
-                        name: data.urgentCaseAttach_2?.name,
-                        content: data.urgentCaseAttach_2?.base64,
-                        mimeType: "PDF"
-                    }
-                ]
+                court: data.court?.code ? { id: Number(data.court?.code) } : {},
+                caseType: { id: data.requestType?.code },
+                judge: data.judge?.code ? { id: Number(data.judge?.code) } : {},
+                caseNumber: IsUndefined(data.requestNumber),
+                attachments: attachmentDTO(data.urgentCaseAttach, data.fileType?.code)
             },
             personId: data.personId?.code,
             employees: [
@@ -145,34 +127,15 @@ const SelectFileTypePage = () => {
             vip: data.vip ?? false,
             issueDate: dayjs(date).format('YYYY-MM-DD'),
             courtCaseFile: {
-                registrationDate: dayjs(data.lawsuitsRecordDate).format('YYYY-MM-DD'),
-                requiredAmount: Number(data.lawsuitsAmount),
-                currency: data.lawsuitsCurrency?.code,
+                registrationDate: data.lawsuitsRecordDate ? dayjs(data.lawsuitsRecordDate).format('YYYY-MM-DD') : null,
+                requiredAmount: data.lawsuitsAmount ? Number(data.lawsuitsAmount) : null,
+                currency: data.lawsuitsAmount ? IsUndefined(data.lawsuitsCurrency?.code) : null,
                 opponentCategory: data.opponentCategory?.code,
-                court: {
-                    id: Number(data.court?.code)
-                },
-                caseType: {
-                    id: data.caseType?.code
-                },
-                judge: {
-                    id: Number(data.judge?.code)
-                },
-                caseNumber: data.caseNumber,
-                attachments: [
-                    {
-                        attachmentType: data.opponentCategory?.code,
-                        name: data.lawsuitsAttach_1?.name,
-                        content: data.lawsuitsAttach_1?.base64,
-                        mimeType: "PDF"
-                    },
-                    {
-                        attachmentType: data.opponentCategory?.code,
-                        name: data.lawsuitsAttach_2?.name,
-                        content: data.lawsuitsAttach_2?.base64,
-                        mimeType: "PDF"
-                    }
-                ]
+                court: data.court?.code ? { id: Number(data.court?.code) } : {},
+                caseType: { id: data.caseType?.code },
+                judge: data.judge?.code ? { id: Number(data.judge?.code) } : {},
+                caseNumber: IsUndefined(data.caseNumber),
+                attachments: attachmentDTO(data.lawsuitsAttach, data.opponentCategory?.code)
             },
             personId: data.personId?.code,
             employees: [
@@ -201,7 +164,7 @@ const SelectFileTypePage = () => {
                     {
                         id: 'PAGE2',
                         name: {
-                            en: 'Select file type',
+                            en: 'Select File Type',
                             ar: 'اختيار نوع الملف',
                         },
                     }
