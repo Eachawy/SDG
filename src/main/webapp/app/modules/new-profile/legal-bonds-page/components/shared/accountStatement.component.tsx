@@ -5,7 +5,7 @@ import {
   InputComponent,
 } from "@eachawy/frontend-library";
 import React, { useEffect, useState } from "react";
-import { translate, Storage } from "react-jhipster";
+import { Storage } from "react-jhipster";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import {
   useForm,

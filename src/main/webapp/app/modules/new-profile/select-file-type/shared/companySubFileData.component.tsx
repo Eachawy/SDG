@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { translate } from "react-jhipster";
-import { MultiSelectChangeEvent } from "primereact/multiselect";
 import {
   CheckBoxComponent,
   DropDownComponent,

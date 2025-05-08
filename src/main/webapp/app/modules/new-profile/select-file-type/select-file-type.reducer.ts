@@ -1,7 +1,7 @@
 import { postVerifiedRequest } from 'app/config/network-server-reducer';
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { addEditPersonAPI, createFileAPI, masterFilesAPI } from 'app/config/constants';
+import { addEditPersonAPI, createFileAPI } from 'app/config/constants';
 
 const initialState = {
     errorMessage: null,

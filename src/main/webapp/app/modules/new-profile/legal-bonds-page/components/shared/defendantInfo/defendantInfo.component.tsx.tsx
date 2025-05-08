@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 import React, { useEffect, useState } from 'react';
-import { translate } from 'react-jhipster';
 import ChequeTableComponent from './shared/chequeTable.component';
 import DraftTableComponent from './shared/draftTable.component';
 import DeclarationTableComponent from './shared/declarationTable.component';

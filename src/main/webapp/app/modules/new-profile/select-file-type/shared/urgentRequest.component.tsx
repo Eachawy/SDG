@@ -1,5 +1,4 @@
 import {
-  AttachmentFileComponent,
   AttachmentMultiFilesComponent,
   DatePickerComponent,
   DropDownComponent,

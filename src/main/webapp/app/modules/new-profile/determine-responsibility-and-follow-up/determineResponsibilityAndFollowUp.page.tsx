@@ -3,7 +3,7 @@ import React from "react";
 import { Storage,translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "app/modules/new-profile/createNewProfileStepsComponent/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
-import { ButtonComponent, DropDownComponent, InputComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, InputComponent } from "@eachawy/frontend-library";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
