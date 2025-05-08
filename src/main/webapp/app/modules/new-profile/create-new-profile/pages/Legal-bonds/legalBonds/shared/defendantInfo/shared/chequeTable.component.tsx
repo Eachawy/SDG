@@ -18,53 +18,7 @@ const ChequeTableComponent = (props) => {
   const [isAttachmentTamplateList, setIsAttachmentTamplateList] = useState(false)
   const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(4);
-  const [customChequeData, setCustomChequeData] = useState([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-
-  const chequeData = [
-    {
-      id: 1,
-      bankName: "بنك المشرق",
-      branch: "الشارقة",
-      chequeNumber: "12345678912345",
-      chequeValue: "35,000",
-      dueDate: "29-09-2025",
-      returnDate: "29-09-2025",
-      beneficiary: "مستفيد أول",
-      drawer: "خالد العتيبي فهد",
-      bfList: [
-        { id: 300, name: "أحمد يوسف", isBF: false },
-        { id: 301, name: "خالد العتيبي", isBF: false },
-        { id: 302, name: "سامي السعد", isBF: true }
-      ],
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    }
-  ];
-
-  const onPageChange = (event) => {
-    setFirst(event.first);
-    setRows(event.rows);
-    setCustomChequeData(chequeData.slice(event.first, event.first + event.rows));
-  }
-
-  useEffect(() => {
-    setCustomChequeData(chequeData.slice(first, first + rows));
-  }, [first, rows]);
 
 
   const onChangeSelection = (e) => {
@@ -162,8 +116,6 @@ const ChequeTableComponent = (props) => {
     )
   }
 
-  
-
   const beneficiaryInfoTemplateList = (rowData: any) => {
     return (
       <div className="action-column NFBList"
@@ -229,36 +181,6 @@ const ChequeTableComponent = (props) => {
     );
   };
 
-  const paginatorTemplate = {
-    layout: "PrevPageLink PageLinks NextPageLink",
-    PrevPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">السابق</span>
-        <Ripple />
-      </button>
-    ),
-
-    PageLinks(options) {
-      if ((options.view.startPage === options.page && options.view.startPage !== 0) ||
-        (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
-        return <span className={classNames(options.className, "p-disabled")} style={{ userSelect: "none" }}>...</span>;
-      }
-      return (
-        <button type="button" className={options.className} onClick={options.onClick}>
-          {options.page + 1}
-          <Ripple />
-        </button>
-      );
-    },
-
-    NextPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">التالي</span>
-        <Ripple />
-      </button>
-    ),
-  };
-
   const cancelActionFn = () => {
     setShowDeletePopup(false)
   }
@@ -274,6 +196,8 @@ const ChequeTableComponent = (props) => {
         onSelectionChange={onChangeSelection}
         dataKey="id"
         className="custom-table"
+        paginator
+        rows={5}
       >
         <Column selectionMode="multiple" header="" className="checkBoxCol" />
         <Column field="bank" header="اسم البنك" className="columnStyle" />
@@ -313,7 +237,6 @@ const ChequeTableComponent = (props) => {
 
         <Column body={actionBodyTemplate} className="columnStyle" />
       </DataTable>
-      <Paginator template={paginatorTemplate} first={first} rows={rows} totalRecords={chequeData.length} onPageChange={onPageChange} />
 
       {showDeletePopup && (
         <div className='deletePopupContainer'>

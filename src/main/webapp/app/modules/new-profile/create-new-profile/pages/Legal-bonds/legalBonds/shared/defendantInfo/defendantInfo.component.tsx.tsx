@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { useEffect, useState } from 'react';
 import { translate } from 'react-jhipster';
 import ChequeTableComponent from './shared/chequeTable.component';
@@ -14,8 +15,18 @@ const DefendantInfoComponent = (props) => {
     setCollectionFile(props.fileResponse?.collectionFile);
     if (collectionFile?.cheques?.length > 0) {
       setActiveTab("cheques");
-    } else if (collectionFile?.drafts?.length > 0) {
+    } 
+    else if (collectionFile?.drafts?.length > 0) {
       setActiveTab("drafts");
+    }
+    else if (collectionFile?.invoices?.length > 0) {
+      setActiveTab("invoice");
+    }
+    else if (collectionFile?.accountStatements?.length > 0) {
+      setActiveTab("statement");
+    }
+    else if (collectionFile?.bonds.filter(item => item.category === 'NON_SCHEDULED').length > 0) {
+      setActiveTab("mortgage");
     }
   }, [props.fileResponse, collectionFile]);
 
@@ -31,20 +42,28 @@ const DefendantInfoComponent = (props) => {
                 <span>حذف الكل</span>
               </div>
               <div className="tabsRowDiv">
-                {props.fileResponse?.collectionFile?.cheques?.length > 0 && (
+                {collectionFile?.cheques?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "cheques" ? "_active" : ""}`}
                     onClick={() => setActiveTab("cheques")}
                   >
-                    شيك ({props.fileResponse?.collectionFile?.cheques?.length})
+                    شيك ({collectionFile?.cheques?.length})
                   </div>
                 )}
-                {props.fileResponse?.collectionFile?.drafts?.length > 0 && (
+                {collectionFile?.drafts?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "drafts" ? "_active" : ""}`}
                     onClick={() => setActiveTab("drafts")}
                   >
-                    كمبيالة ({props.fileResponse?.collectionFile?.drafts?.length})
+                    كمبيالة ({collectionFile?.drafts?.length})
+                  </div>
+                )}
+                {collectionFile?.bonds.filter(item => item.category === 'NON_SCHEDULED').length > 0 && (
+                  <div
+                    className={`tab ${activeTab === "mortgage" ? "_active" : ""}`}
+                    onClick={() => setActiveTab("mortgage")}
+                  >
+                    سند رهن ({collectionFile?.bonds.filter(item => item.category === 'NON_SCHEDULED').length})
                   </div>
                 )}
                 {/* <div
@@ -53,30 +72,30 @@ const DefendantInfoComponent = (props) => {
           >
             اقرار خطي/ سند امانة (20)
           </div>
-          <div
-            className={`tab ${activeTab === "mortgage" ? "_active" : ""}`}
-            onClick={() => setActiveTab("mortgage")}
-          >
-            سند رهن (30)
-          </div>
-          <div
-            className={`tab ${activeTab === "statement" ? "_active" : ""}`}
-            onClick={() => setActiveTab("statement")}
-          >
-            كشف حساب (30)
-          </div>
+          
+          
           <div
             className={`tab ${activeTab === "lease" ? "_active" : ""}`}
             onClick={() => setActiveTab("lease")}
           >
             عقد ايجار (20)
-          </div>
-          <div
-            className={`tab ${activeTab === "invoice" ? "_active" : ""}`}
-            onClick={() => setActiveTab("invoice")}
-          >
-            فاتوره (20)
-          </div> */}
+          </div>*/}
+                {collectionFile?.accountStatements?.length > 0 && (
+                  <div
+                    className={`tab ${activeTab === "statement" ? "_active" : ""}`}
+                    onClick={() => setActiveTab("statement")}
+                  >
+                    كشف حساب ({collectionFile?.accountStatements?.length})
+                  </div>
+                )}
+                {collectionFile?.invoices?.length > 0 && (
+                  <div
+                    className={`tab ${activeTab === "invoice" ? "_active" : ""}`}
+                    onClick={() => setActiveTab("invoice")}
+                  >
+                    فاتوره ({collectionFile?.invoices?.length})
+                  </div>
+                )}
               </div>
             </div>
           </>
@@ -84,11 +103,11 @@ const DefendantInfoComponent = (props) => {
 
       {activeTab === "cheques" ? <ChequeTableComponent chequesList={collectionFile?.cheques} /> : null}
       {activeTab === "drafts" ? <DraftTableComponent draftsList={collectionFile?.drafts} /> : null}
-      {/* {activeTab === "declaration" ? <DeclarationTableComponent /> : null} 
-      {activeTab === "mortgage" ? <MortgageTableComponent /> : null} 
-      {activeTab === "statement" ? <StatementTableComponent /> : null} 
-      {activeTab === "lease" ? <LeaseTableComponent /> : null}
-      {activeTab === "invoice" ? <InvoiceTableComponent /> : null}     */}
+      {/* {activeTab === "declaration" ? <DeclarationTableComponent /> : null} */}
+      {activeTab === "mortgage" ? <MortgageTableComponent mortageBondsList={collectionFile?.bonds.filter(item => item.category === 'NON_SCHEDULED')} /> : null}
+      {/* {activeTab === "lease" ? <LeaseTableComponent /> : null}*/}
+      {activeTab === "statement" ? <StatementTableComponent accountStatementsList={collectionFile?.accountStatements} /> : null}
+      {activeTab === "invoice" ? <InvoiceTableComponent invoicesList={collectionFile?.invoices} /> : null}
 
     </div>
   );

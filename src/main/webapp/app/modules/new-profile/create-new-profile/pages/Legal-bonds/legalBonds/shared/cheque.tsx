@@ -426,8 +426,8 @@ const Cheque = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>حفظ وإضافة</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>إضافة شيك</ButtonComponent>
             </div>
           </div>
         </div>

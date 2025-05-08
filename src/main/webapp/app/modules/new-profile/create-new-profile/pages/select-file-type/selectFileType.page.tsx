@@ -177,7 +177,7 @@ const SelectFileTypePage = () => {
             collectionFile: {
                 totalAmount: data.collectionAmount ? Number(data.collectionAmount) : null,
                 currency: data.collectionAmount ? IsUndefined(data.collectionCurrency?.code) : null,
-                requiredCollectionAmount: data.requiredCollectionAmount
+                requiredCollectionAmount: Number(data.requiredCollectionAmount)
             },
             personId: data.personId?.code,
             employees: [

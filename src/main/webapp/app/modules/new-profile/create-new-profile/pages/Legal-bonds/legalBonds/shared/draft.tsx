@@ -377,7 +377,7 @@ const Draft = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addDraftFn)}>حفظ وإضافة</ButtonComponent>
             </div>
           </div>

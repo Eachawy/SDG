@@ -32,14 +32,14 @@ const Collection = (props) => {
           />
           <DropDownComponent
             id="collectionCurrencyList"
-            name="currencyList"
+            name="collectionCurrency"
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
             options={CurrencyList}
             optionLabel={`name.${$lang}`}
             // errors={props.errors}
-            onChange={(e) => props.setValue("currencyList", e.value as object)}
+            onChange={(e) => props.setValue("collectionCurrency", e.value as object)}
             placeholder="دينار"
             setValue={CurrencyList[0]}
           />

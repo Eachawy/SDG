@@ -39,6 +39,12 @@ export const LegalBonds = createSlice({
         reset() {
             return initialState;
         },
+        resetAddLegalBond() {
+            return {
+                ...initialState,
+                addLegalBondResponse: null
+            };
+        }
     },
     extraReducers(builder) {
         builder
@@ -68,7 +74,7 @@ export const LegalBonds = createSlice({
     },
 });
 
-export const { reset } = LegalBonds.actions;
+export const { reset, resetAddLegalBond } = LegalBonds.actions;
 
 // Reducer
 export default LegalBonds.reducer;

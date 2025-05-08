@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
-import { Paginator } from 'primereact/paginator';
-import { Ripple } from 'primereact/ripple';
-import { classNames } from "primereact/utils";
+import { getFileSize, getFileType } from "app/shared/util/utils";
 
-const InvoiceTableComponent = () => {
+const InvoiceTableComponent = (props) => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
@@ -15,119 +13,8 @@ const InvoiceTableComponent = () => {
   const [isAttachmentTamplateList, setIsAttachmentTamplateList] = useState(false)
   const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(4);
-  const [customChequeData, setCustomChequeData] = useState([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
-  const chequeData = [
-    {
-      id: 1,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 2,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 3,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 4,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 5,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 6,
-      invoiceNo: 123456789,
-      invoiceDate: "24/8/2025",
-      invoiceAmount: "5,000",
-      attachmentFileData: [
-        {
-          fileName: "صورة الشيك",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          fileName: "صورة الشيك المرتد",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-  ];
-
-  const onPageChange = (event) => {
-    setFirst(event.first);
-    setRows(event.rows);
-    setCustomChequeData(chequeData.slice(event.first, event.first + event.rows));
-  }
-
-  useEffect(() => {
-    setCustomChequeData(chequeData.slice(first, first + rows));
-  }, [first, rows]);
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -164,7 +51,7 @@ const InvoiceTableComponent = () => {
             setIsAttachmentTamplateList(true);
             setIsActionList(false);
             setSelectedAttachmentCard(0)
-            setSelectedAttachmentFilePath(rowData.attachmentFileData[0].filePath)
+            setSelectedAttachmentFilePath(rowData.attachments[0].content)
 
           }
         }}
@@ -181,23 +68,23 @@ const InvoiceTableComponent = () => {
                 <div>
                   <div className="fileCardList">
 
-                    {rowData.attachmentFileData.length > 0 && rowData.attachmentFileData.map((i, index) => (
+                    {rowData.attachments.length > 0 && rowData.attachments.map((i, index) => (
                       <div key={index} onClick={() => {
                         setSelectedAttachmentCard(index)
-                        setSelectedAttachmentFilePath(i.filePath)
-                      }} className={`${i.filePath.includes('bank') && 'pdfEx'} ${selectedAttachmentCard === index && 'active'}`}>
+                        setSelectedAttachmentFilePath(i.content)
+                      }} className={`${selectedAttachmentCard === index && 'active'}`}>
                         <p>
                           <label>اسم الملف</label>
-                          {i.fileName}
+                          {i.name}
                         </p>
                         <div>
                           <p>
                             <label>نوع الملف</label>
-                            {i.fileType}
+                            {getFileType(i.content)}
                           </p>
                           <p>
                             <label>حجم الملف</label>
-                            {i.fileSize}
+                            {getFileSize(i.content)}
                           </p>
                         </div>
                       </div>
@@ -207,7 +94,7 @@ const InvoiceTableComponent = () => {
                   <div className="fileViewSpace">
                     <object width={"100%"} height={"100%"}
                       data={`${selectedAttachmentFilePath}`}
-                      type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
+                    // type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
                     />
                   </div>
                 </div>
@@ -253,55 +140,28 @@ const InvoiceTableComponent = () => {
     );
   };
 
-  const paginatorTemplate = {
-    layout: "PrevPageLink PageLinks NextPageLink",
-    PrevPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">السابق</span>
-        <Ripple />
-      </button>
-    ),
-
-    PageLinks(options) {
-      if ((options.view.startPage === options.page && options.view.startPage !== 0) ||
-        (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
-        return <span className={classNames(options.className, "p-disabled")} style={{ userSelect: "none" }}>...</span>;
-      }
-      return (
-        <button type="button" className={options.className} onClick={options.onClick}>
-          {options.page + 1}
-          <Ripple />
-        </button>
-      );
-    },
-
-    NextPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">التالي</span>
-        <Ripple />
-      </button>
-    ),
-  };
-
   const cancelActionFn = () => {
     setShowDeletePopup(false)
   }
+
   const deleteFN = () => { }
 
   return (
     <div className="table-container">
       <DataTable
-        value={customChequeData}
+        value={props.invoicesList}
         selectionMode="multiple"
         selection={selectedCheques}
         onSelectionChange={onChangeSelection}
         dataKey="id"
         className="custom-table"
+        paginator
+        rows={5}
       >
         <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
         <Column
-          field="invoiceNo"
+          field="invoiceNumber"
           header="رقم الفاتورة"
           className="columnStyle" />
 
@@ -311,7 +171,7 @@ const InvoiceTableComponent = () => {
           className="columnStyle" />
 
         <Column
-          field="invoiceAmount"
+          field="totalAmount"
           header="قيمة الفاتورة"
           className="columnStyle"
         />
@@ -324,7 +184,6 @@ const InvoiceTableComponent = () => {
         <Column body={actionBodyTemplate} className="columnStyle actionCol" />
       </DataTable>
 
-      <Paginator template={paginatorTemplate} first={first} rows={rows} totalRecords={chequeData.length} onPageChange={onPageChange} />
 
       {showDeletePopup && (
         <div className='deletePopupContainer'>

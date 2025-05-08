@@ -32,7 +32,7 @@ export const CurrencyList = [
 
 export const BondTypes = [
     { name: { ar: "شيك", en: "Cheque" }, code: "CHQ" },
-    { name: { ar: "كمبيالة", en: "Promissory Note" }, code: "PN" },
+    { name: { ar: "كمبيالة", en: "Draft" }, code: "PN" },
     // {
     //     name: {
     //         ar: "اقرار خطي/ سند امانة",
@@ -40,10 +40,10 @@ export const BondTypes = [
     //     },
     //     code: "WTB",
     // },
-    // { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
-    // { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
-    // { name: { ar: "عقد ايجار", en: "Lease Contract" }, code: "LC" },
-    // { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
+    { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
+    { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
+    // { name: { ar: "عقد ايجار", en: "Rent Contract" }, code: "LC" },
+    { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
 ];
 
 export const ChequeBeneficiaryList = [

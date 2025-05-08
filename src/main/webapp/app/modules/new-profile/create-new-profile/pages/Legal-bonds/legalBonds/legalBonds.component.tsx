@@ -13,7 +13,7 @@ import WrittenAcknowledgmentTrustBond from "./shared/writtenAcknowledgmentTrustB
 import LeaseContract from "./shared/leaseContractcomponent";
 import { BondTypes } from "app/modules/shared/constants";
 import { Storage } from "react-jhipster";
-import { getFileDetails } from './legalBonds.reducer';
+import { getFileDetails, reset, resetAddLegalBond } from './legalBonds.reducer';
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
 
@@ -31,6 +31,10 @@ const LegalBonds = (props) => {
   const $fileDetailsResponse = useAppSelector(state => state.legalBonds.fileDetailsResponse);
 
   const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: "onTouched" });
+
+  useEffect(() => {
+    dispatch(resetAddLegalBond());
+  }, [$fileDetailsResponse])
 
   useEffect(() => {
     getFileDetailsFn();
@@ -81,18 +85,20 @@ const LegalBonds = (props) => {
           rules={{ required: "يجب اختيار السند القانوني" }}
           className="col-md-6"
         />
-        <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
-          إضافة
-        </div>
+        {(watch("legalBondsList")?.code) && (
+          <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
+            إضافة
+          </div>
+        )}
       </div>
 
-      {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <Draft closepopUpFn={closepopUpFn} />}
+      {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={(e) => closepopUpFn(e)} />}
+      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <Draft closepopUpFn={(e) => closepopUpFn(e)} />}
       {/* {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <LeaseContract closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={closepopUpFn} />} */}
+      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <LeaseContract closepopUpFn={closepopUpFn} />}*/}
+      {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={(e) => closepopUpFn(e)} />}
+      {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={(e) => closepopUpFn(e)} />}
+      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={(e) => closepopUpFn(e)} />}
 
       <DefendantInfoComponent fileResponse={fileResponse} />
       <LoaderComponent show={showLoader} />
