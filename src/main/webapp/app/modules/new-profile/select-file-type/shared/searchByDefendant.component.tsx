@@ -10,7 +10,7 @@ import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/ph
 import { useForm } from "react-hook-form";
 import { getAllPersons, resetAllPersons } from "../newProfileLookups.reducer";
 import _ from 'lodash';
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { AddEditPerson } from "../select-file-type.reducer";
 import { countryCode } from "app/shared/util/date-utils";
 

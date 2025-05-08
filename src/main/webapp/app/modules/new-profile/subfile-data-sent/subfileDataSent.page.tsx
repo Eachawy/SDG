@@ -1,7 +1,7 @@
-import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
+import BreadcrumbComponent from "app/shared/components/breadcrumbs.Component/breadcrumb.component";
 import React from "react";
 import { translate } from "react-jhipster";
-import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/createNewProfileSteps.component";
+import CreateNewProfileStepsComponent from "app/modules/new-profile/createNewProfileStepsComponent/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 
 const SubfileDataSentPage = () => {

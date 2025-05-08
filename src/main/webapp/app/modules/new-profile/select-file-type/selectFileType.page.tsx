@@ -1,7 +1,7 @@
-import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
+import BreadcrumbComponent from "app/shared/components/breadcrumbs.Component/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { Storage, translate } from "react-jhipster";
-import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileSteps.component";
+import CreateNewProfileStepsComponent from "../createNewProfileStepsComponent/createNewProfileSteps.component";
 import CompanySubFileData from "./shared/companySubFileData.component";
 import { useNavigate } from "react-router";
 import Lawsuits from "./shared/lawsuits.component";
@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import SearchByDefendant from "./shared/searchByDefendant.component";
 import { useAppDispatch, useAppSelector } from "app/config/store";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { CreateFile } from "./select-file-type.reducer";
 import dayjs from "dayjs";
 import { attachmentDTO, IsUndefined } from "app/shared/util/utils";

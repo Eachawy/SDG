@@ -10,12 +10,12 @@ import MortgageBond from "./shared/mortgageBond.component";
 import AccountStatement from "./shared/accountStatement.component";
 import Invoice from "./shared/Invoice.component";
 import WrittenAcknowledgmentTrustBond from "./shared/writtenAcknowledgmentTrustBond.component";
-import LeaseContract from "./shared/leaseContractcomponent";
+import RentContract from "./shared/rentContractcomponent";
 import { BondTypes } from "app/modules/shared/constants";
 import { Storage } from "react-jhipster";
-import { getFileDetails, reset, resetAddLegalBond } from './legalBonds.reducer';
+import { getFileDetails, resetAddLegalBond } from './legalBonds.reducer';
 import { useAppDispatch, useAppSelector } from "app/config/store";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 
 const LegalBonds = (props) => {
 
@@ -95,7 +95,7 @@ const LegalBonds = (props) => {
       {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={(e) => closepopUpFn(e)} />}
       {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <Draft closepopUpFn={(e) => closepopUpFn(e)} />}
       {/* {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <LeaseContract closepopUpFn={closepopUpFn} />}*/}
+      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <RentContract closepopUpFn={closepopUpFn} />}*/}
       {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={(e) => closepopUpFn(e)} />}
       {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={(e) => closepopUpFn(e)} />}
       {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={(e) => closepopUpFn(e)} />}

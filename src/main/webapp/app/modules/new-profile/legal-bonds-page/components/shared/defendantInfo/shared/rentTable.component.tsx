@@ -6,7 +6,7 @@ import { Paginator } from 'primereact/paginator';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from "primereact/utils";
 
-const LeaseTableTableComponent = () => {
+const RentTableComponent = () => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
@@ -590,4 +590,4 @@ const LeaseTableTableComponent = () => {
   );
 };
 
-export default LeaseTableTableComponent;
+export default RentTableComponent;

@@ -6,7 +6,7 @@ import DraftTableComponent from './shared/draftTable.component';
 import DeclarationTableComponent from './shared/declarationTable.component';
 import MortgageTableComponent from './shared/mortgageTable.component';
 import StatementTableComponent from './shared/statementTable.component';
-import LeaseTableComponent from './shared/leaseTable.component';
+import RentTableComponent from './shared/rentTable.component';
 import InvoiceTableComponent from './shared/invoiceTable.component';
 const DefendantInfoComponent = (props) => {
   const [activeTab, setActiveTab] = useState("");
@@ -105,7 +105,7 @@ const DefendantInfoComponent = (props) => {
       {activeTab === "drafts" ? <DraftTableComponent draftsList={collectionFile?.drafts} /> : null}
       {/* {activeTab === "declaration" ? <DeclarationTableComponent /> : null} */}
       {activeTab === "mortgage" ? <MortgageTableComponent mortageBondsList={collectionFile?.bonds.filter(item => item.category === 'NON_SCHEDULED')} /> : null}
-      {/* {activeTab === "lease" ? <LeaseTableComponent /> : null}*/}
+      {/* {activeTab === "lease" ? <RentTableComponent /> : null}*/}
       {activeTab === "statement" ? <StatementTableComponent accountStatementsList={collectionFile?.accountStatements} /> : null}
       {activeTab === "invoice" ? <InvoiceTableComponent invoicesList={collectionFile?.invoices} /> : null}
 

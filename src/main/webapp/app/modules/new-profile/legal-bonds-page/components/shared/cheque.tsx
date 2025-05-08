@@ -19,7 +19,7 @@ import {
 import { InputSwitch } from 'primereact/inputswitch';
 import { ChequeBeneficiaryList, CurrencyList } from "app/modules/shared/constants";
 import { addLegalBond, getAllBanks } from "../legalBonds.reducer";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 
 

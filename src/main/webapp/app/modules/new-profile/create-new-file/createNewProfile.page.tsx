@@ -1,14 +1,14 @@
-import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
+import BreadcrumbComponent from "app/shared/components/breadcrumbs.Component/breadcrumb.component";
 import React, { useEffect, useState } from "react";
 import { translate } from "react-jhipster";
-import CreateNewProfileStepsComponent from "../../../Shared/createNewProfileSteps.component";
+import CreateNewProfileStepsComponent from "../createNewProfileStepsComponent/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CreateNewProfile } from "./createNewProfile.reducer";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { Storage } from "react-jhipster";
 import { reset } from "../select-file-type/select-file-type.reducer";
 import { attachmentDTO, IsMobileNumberUndefined, IsUndefined } from "app/shared/util/utils";

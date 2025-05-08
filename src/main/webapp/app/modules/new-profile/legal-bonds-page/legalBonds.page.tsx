@@ -1,10 +1,10 @@
-import CreateNewProfileStepsComponent from "app/modules/new-profile/Shared/createNewProfileSteps.component";
-import BreadcrumbComponent from "app/shared/components/breadcrumb.component";
+import CreateNewProfileStepsComponent from "app/modules/new-profile/createNewProfileStepsComponent/createNewProfileSteps.component";
+import BreadcrumbComponent from "app/shared/components/breadcrumbs.Component/breadcrumb.component";
 import React from "react";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { useForm } from "react-hook-form";
 import { Storage, translate } from "react-jhipster";
-import LegalBonds from "./legalBonds/legalBonds.component";
+import LegalBonds from "./components/legalBonds.component";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "app/config/store";
 

@@ -13,7 +13,7 @@ import {
   useForm,
 } from "react-hook-form";
 
-const LeaseContract = (props) => {
+const RentContract = (props) => {
 
   const lang = useAppSelector((state) => state.locale.currentLocale);
 
@@ -425,4 +425,4 @@ const LeaseContract = (props) => {
   );
 };
 
-export default LeaseContract;
+export default RentContract;

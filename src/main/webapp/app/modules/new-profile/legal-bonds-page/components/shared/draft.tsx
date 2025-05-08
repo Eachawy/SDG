@@ -20,7 +20,7 @@ import {
 import { countryCode } from "app/shared/util/date-utils";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CurrencyList } from "app/modules/shared/constants";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { addLegalBond } from "../legalBonds.reducer";
 import dayjs from "dayjs";
 

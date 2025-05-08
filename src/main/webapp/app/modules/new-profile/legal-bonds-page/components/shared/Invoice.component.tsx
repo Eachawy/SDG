@@ -12,7 +12,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { CurrencyList } from "app/modules/shared/constants";
-import LoaderComponent from "app/modules/shared/loaderComponent/loaderComponent";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import { addLegalBond } from "../legalBonds.reducer";
 
