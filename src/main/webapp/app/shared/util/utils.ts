@@ -28,3 +28,22 @@ export const attachmentDTO = (obj: any, type: string) => {
 export const IsUndefined = (value: any) => value === undefined ? null : value;
 
 export const IsMobileNumberUndefined = (code: any, number: any) => number === undefined ? null : code + number;
+
+export const getFileSize = (content: any) => {
+  const base64Data = content.split(',')[1] || content;
+  const padding = (base64Data.match(/=*$/) || [''])[0].length;
+  let sizeInBytes = (base64Data.length * 3) / 4 - padding;
+  const units = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  let i = 0;
+  while (sizeInBytes >= 1024 && i < units.length - 1) {
+    sizeInBytes /= 1024;
+    i++;
+  }
+  return `${sizeInBytes.toFixed(2)} ${units[i]}`;
+
+}
+
+export const getFileType = (base64String) => {
+  const match = base64String.match(/^data:(.+?);base64,/);
+  return match ? match[1] : 'Unknown';
+};

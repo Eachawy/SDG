@@ -4,16 +4,16 @@ import { Route } from "react-router";
 import LoginPage from "app/modules/login/login.page";
 import ErrorBoundaryRoutes from "app/shared/error/error-boundary-routes";
 import PageNotFound from "app/shared/error/page-not-found";
-import CreateNewProfilePage from "app/modules/new-profile/create-new-profile/pages/create-new-file/createNewProfile.page";
+import MainDashboardPage from "./modules/dashboard/main-dashboard.page";
+import CreateNewProfilePage from "app/modules/new-profile/create-new-file/createNewProfile.page";
 import LayoutSystemTemplete from "./shared/layout/layout-system/layoutSystem.templete";
-import SelectFileType from "app/modules/new-profile/create-new-profile/pages/select-file-type/selectFileType.page";
-import DetermineResponsibilityAndFollowUp from "./modules/new-profile/create-new-profile/pages/determine-responsibility-and-follow-up/determineResponsibilityAndFollowUp.page";
-import SubfileDataSentPage from "./modules/new-profile/create-new-profile/pages/subfile-data-sent/subfileDataSent.page";
-import MainDashboardPage from "./modules/dashboard/main-dashboard/main-dashboard.page";
+import SelectFileType from "app/modules/new-profile/select-file-type/selectFileType.page";
+import LegalBondsPage from "./modules/new-profile/legal-bonds-page/legalBonds.page";
+import DetermineResponsibilityAndFollowUp from "./modules/new-profile/determine-responsibility-and-follow-up/determineResponsibilityAndFollowUp.page";
+import SubfileDataSentPage from "./modules/new-profile/subfile-data-sent/subfileDataSent.page";
 import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
-import LegalBondsPage from "./modules/new-profile/create-new-profile/pages/Legal-bonds/LegalBonds.page";
 
 const AppRoutes = () => {
   return (

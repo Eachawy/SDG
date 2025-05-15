@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { translate } from "react-jhipster";
 import { useForm } from "react-hook-form";
 import { ButtonComponent, CheckBoxComponent, InputComponent } from "@eachawy/frontend-library";
