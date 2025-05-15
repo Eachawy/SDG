@@ -27,7 +27,7 @@ const NotificationsComponent = (type, message) => {
         <>
             <div className="messageContiner">
                 <h1>{notificationTitle(type)}</h1>
-                <p>{message}</p>
+                {/* <p>{message}</p> */}
             </div>
         </>
     )
