@@ -28,7 +28,7 @@ export const addLegalBond = createAsyncThunk('SELECT_FILE_TYPE/ADD_LEGAL_BOND',
 });
 
 export const deleteLegalBond = createAsyncThunk('SELECT_FILE_TYPE/DELETE_LEGAL_BOND',
-    async (obj: any) => deleteVerifiedRequest(deleteLegalBondAPI, obj), {
+    async (obj: any) => await deleteVerifiedRequest(deleteLegalBondAPI, obj), {
     serializeError: serializeAxiosError,
 });
 
