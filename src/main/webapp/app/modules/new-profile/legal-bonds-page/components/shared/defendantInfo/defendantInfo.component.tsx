@@ -230,7 +230,9 @@ const DefendantInfoComponent = (props) => {
       {activeTab === "cheques" ? collectionFile?.cheques.length > 0 &&
         <ChequeTableComponent
           chequesList={collectionFile?.cheques}
-          deleteIdDoneFn={() => props.deleteIsDone()} />
+          deleteIdDoneFn={() => props.deleteIsDone()}
+          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+        />
         : null}
 
       {activeTab === "drafts" ? collectionFile?.drafts.length > 0 &&
@@ -243,7 +245,12 @@ const DefendantInfoComponent = (props) => {
 
       {activeTab === "writtenTrustBonds" ?
         (collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
-        && <WrittenTrustBondTableComponent writtenTrustBondsList={writtenTrustBonds} deleteIdDoneFn={() => props.deleteIsDone()} /> : null}
+        && <WrittenTrustBondTableComponent 
+              writtenTrustBondsList={writtenTrustBonds} 
+              deleteIdDoneFn={() => props.deleteIsDone()} 
+              editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+            /> 
+        : null}
 
       {activeTab === "mortgage" ?
         collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0

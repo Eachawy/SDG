@@ -21,7 +21,7 @@ import { CurrencyList, TrustWrittenList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import { addLegalBond } from "../legalBonds.reducer";
-import { IsUndefined } from "app/shared/util/utils";
+import _ from 'lodash'
 
 const WrittenAcknowledgmentTrustBond = (props) => {
   const dispatch = useAppDispatch();
@@ -34,6 +34,50 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      console.log(props.rowDataEdit);
+      setValue('WATB', _.find(TrustWrittenList, (item) => item.code === props.rowDataEdit?.bondType))
+      setValue('issueDate', new Date(props.rowDataEdit?.issueDate));
+      setValue('claimType', props.rowDataEdit?.category);
+      setTimeout(() => {
+        setValue('WATBdueDate', new Date(props.rowDataEdit?.dueDate));
+        setValue('WATBAmount', props.rowDataEdit?.totalAmount);
+        setValue('WATBCurrencyList', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
+        setValue('debtorsName', props.rowDataEdit?.deborName);
+        setValue('WATBNationalNumber', props.rowDataEdit?.deborSsn);
+
+        if (props.rowDataEdit?.witnesses.length > 0) {
+          setValue('WATBCheckBoxWitnesses', true);
+          for (let i = 0; i < props.rowDataEdit?.witnesses.length; i++) {
+            const x = props.rowDataEdit?.witnesses[i];
+            if (i !== 0) {
+              addNewWitness()
+            }
+            setTimeout(() => {
+              setValue(`witnesses[${i}].witnessName`, x?.name);
+              setValue(`witnesses[${i}].witnessesNationalNumber`, x?.ssn);
+            }, 100);
+          }
+        }
+
+        if(props.rowDataEdit?.paymentSchedules.length > 0){
+          for (let i = 0; i < props.rowDataEdit?.paymentSchedules.length; i++) {
+            const x = props.rowDataEdit?.paymentSchedules[i];
+            if (i !== 0) {
+              addingScheduled()
+            }
+            setTimeout(() => {
+              setValue(`scheduling[${i}].addingDate`, new Date(x?.paymentDate));
+              setValue(`scheduling[${i}].totalAmount`, x?.amount);
+              setValue(`scheduling[${i}].currency`, _.find(CurrencyList, (item) => item.code === x?.currency));
+            }, 100);
+          }
+        }
+      }, 100);
+
+    }
+  }, [props.rowDataEdit, setValue]);
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
@@ -135,6 +179,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     return {
       collectionFileId: $collectionFileId,
       bond: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,
         issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
         category: "UPON_REQUEST",
@@ -181,6 +226,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     return {
       collectionFileId: $collectionFileId,
       bond: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,
         issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
         category: "SCHEDULED",
@@ -219,6 +265,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     return {
       collectionFileId: $collectionFileId,
       bond: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,
         issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
         category: "NON_SCHEDULED",
@@ -561,13 +608,13 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                         <InputComponent
                           id={`WATBWitnessesName_${field.id}`}
                           type="text"
-                          name={`witnesses.${index}.witnessName`}
+                          name={`witnesses.[${index}].witnessName`}
                           placeholder="ادخل اسم الشاهد"
                           onChange={(e) => {
                             const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
-                            setValue(`witnesses.${index}.witnessName`, letterValue);
+                            setValue(`witnesses.[${index}].witnessName`, letterValue);
                           }}
-                          value={watch(`witnesses.${index}.witnessName`)}
+                          value={watch(`witnesses.[${index}].witnessName`)}
                           label="اسم الشاهد"
                           register={register as unknown as UseFormRegister<Record<string, unknown>>}
                           control={control}
@@ -595,30 +642,31 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                           <InputComponent
                             id={`WATBWitnessesNationalNumber-_${field.id}`}
                             type="text"
-                            name={`witnesses.${index}.witnessesNationalNumber`}
-                            label={translate("createNewProfile.nationalNumber")}
+                            name={`witnesses[${index}].witnessesNationalNumber`}
                             placeholder={translate("createNewProfile.exm") + "1234567"}
+                            value={watch(`witnesses.[${index}].witnessesNationalNumber`)}
                             onChange={(e) => {
                               const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                              setValue(`witnesses.${index}.witnessesNationalNumber`, numericValue);
+                              setValue(`witnesses.[${index}].witnessesNationalNumber`, numericValue);
                             }}
+                            rules={{ required: "يجب ادخال الرقم الوطني" }}
+                            label={translate("createNewProfile.nationalNumber")}
                             register={register as unknown as UseFormRegister<Record<string, unknown>>}
                             control={control}
                             errors={
                               errors?.witnesses?.[index]?.witnessesNationalNumber
                                 ? {
                                   [`WATBWitnessesNationalNumber-_${field.id}`]:
-                                    errors.witnesses[index].witnessesNationalNumber,
+                                    errors?.witnesses?.[index]?.witnessesNationalNumber,
                                 }
-                                : undefined
+                                : undefined 
                             }
                             setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
                             watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
-                            rules={{ required: "يجب اختيار الرقم الوطني" }}
                           />
                           {errors.witnesses?.[index]?.witnessesNationalNumber &&
                             <span className="errorMsg">
-                              يجب اختيار الرقم الوطني
+                              يجب ادخال الرقم الوطني
                             </span>
                           }
                         </div>
@@ -675,7 +723,10 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>حفظ وإضافة</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>
+                
+                {props.rowDataEdit?.id ? 'تعديل سند امانة / اقرار خطي' : 'إضافة سند امانة / اقرار خطي'}
+              </ButtonComponent>
             </div>
           </div>
         </div>

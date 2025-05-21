@@ -177,6 +177,7 @@ const WrittenTrustBondTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('WTB',rowData);
               }}
             >
               تعديل

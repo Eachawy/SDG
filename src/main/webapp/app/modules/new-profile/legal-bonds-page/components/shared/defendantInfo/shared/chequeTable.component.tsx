@@ -224,6 +224,7 @@ const ChequeTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('CHQ',rowData);
               }}
             >
               تعديل
