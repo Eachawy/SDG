@@ -3,6 +3,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { getFileSize, getFileType } from "app/shared/util/utils";
+import { deleteLegalBond } from "../../../legalBonds.reducer";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import { useAppDispatch, useAppSelector } from "app/config/store";
 
 const InvoiceTableComponent = (props) => {
 
@@ -15,7 +18,21 @@ const InvoiceTableComponent = (props) => {
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
+  const [deleteID, setDeleteID] = useState<number | null>(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useAppDispatch();
+  const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
+  
+  useEffect(() => {
+    if($deleteLegalBondResponse?.status === 204){
+      setDeleteID(null);
+      setShowDeletePopup(false);
+      props.deleteIdDoneFn();
+    }
 
+  }, [$deleteLegalBondResponse])
+  
+  
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
   };
@@ -122,6 +139,7 @@ const InvoiceTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('INV',rowData);
               }}
             >
               تعديل
@@ -129,7 +147,8 @@ const InvoiceTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
+                setShowDeletePopup(true);
+                setDeleteID(rowData.id)
               }}
             >
               حذف
@@ -140,68 +159,75 @@ const InvoiceTableComponent = (props) => {
     );
   };
 
-  const cancelActionFn = () => {
-    setShowDeletePopup(false)
+  const deleteFN = async () => {
+    setShowLoader(true);
+    const obj = {
+      type: "INVOICE",
+      ids:[deleteID]
+    }
+    await dispatch(deleteLegalBond(obj));
+    setShowLoader(false);
   }
 
-  const deleteFN = () => { }
-
   return (
-    <div className="table-container">
-      <DataTable
-        value={props.invoicesList}
-        selectionMode="multiple"
-        selection={selectedCheques}
-        onSelectionChange={onChangeSelection}
-        dataKey="id"
-        className="custom-table"
-        paginator
-        rows={5}
-      >
-        <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="table-container">
+        <DataTable
+          value={props.invoicesList}
+          selectionMode="multiple"
+          selection={selectedCheques}
+          onSelectionChange={onChangeSelection}
+          dataKey="id"
+          className="custom-table"
+          paginator
+          rows={5}
+        >
+          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
-        <Column
-          field="invoiceNumber"
-          header="رقم الفاتورة"
-          className="columnStyle" />
+          <Column
+            field="invoiceNumber"
+            header="رقم الفاتورة"
+            className="columnStyle" />
 
-        <Column
-          field="invoiceDate"
-          header="تاريخ الفاتورة"
-          className="columnStyle" />
+          <Column
+            field="invoiceDate"
+            header="تاريخ الفاتورة"
+            className="columnStyle" />
 
-        <Column
-          field="totalAmount"
-          header="قيمة الفاتورة"
-          className="columnStyle"
-        />
+          <Column
+            field="totalAmount"
+            header="قيمة الفاتورة"
+            className="columnStyle"
+          />
 
-        <Column body={attachmentTemplate}
-          header="المرفقات"
-          className="columnStyle attachmentCol"
-        />
+          <Column body={attachmentTemplate}
+            header="المرفقات"
+            className="columnStyle attachmentCol"
+          />
 
-        <Column body={actionBodyTemplate} className="columnStyle actionCol" />
-      </DataTable>
+          <Column body={actionBodyTemplate} className="columnStyle actionCol" />
+        </DataTable>
 
 
-      {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
+        {showDeletePopup && (
+          <div className='deletePopupContainer'>
+            <div className='dialogBoxContent'>
+              <h4>هل أنت متأكد أنك تريد حذف بيانات الفاتورة</h4>
+              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الفاتورة ولا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="actionRowBtns">
+                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
+                  لا اريد الحذف
+                </ButtonComponent>
+                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
+                  نعم اريد الحذف
+                </ButtonComponent>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

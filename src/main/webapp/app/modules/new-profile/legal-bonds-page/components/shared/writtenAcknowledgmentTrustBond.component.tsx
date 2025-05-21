@@ -1,40 +1,46 @@
 import {
+  AttachmentFileComponent,
+  ButtonComponent,
   CheckBoxComponent,
   DatePickerComponent,
   DropDownComponent,
   InputComponent,
   RadioButtonComponent,
 } from "@eachawy/frontend-library";
-import React, { useEffect } from "react";
-import { translate } from "react-jhipster";
-import { useAppSelector } from "app/config/store";
+import React, { useEffect, useState } from "react";
+import { translate, Storage } from "react-jhipster";
+import { useAppDispatch, useAppSelector } from "app/config/store";
 import {
   useFieldArray,
   useForm,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
-
-import { countryCode } from "app/shared/util/date-utils";
-import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
+import { CurrencyList, TrustWrittenList } from "app/modules/shared/constants";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import dayjs from "dayjs";
+import { addLegalBond } from "../legalBonds.reducer";
+import { IsUndefined } from "app/shared/util/utils";
 
 const WrittenAcknowledgmentTrustBond = (props) => {
+  const dispatch = useAppDispatch();
+  const [showLoader, setShowLoader] = useState(false);
+  const [showRequestTypeError, setShowRequestTypeError] = useState(false);
+  const { register, handleSubmit, control, formState: { errors }, getValues, setValue, watch, } = useForm({ mode: "onTouched" });
 
-  const lang = useAppSelector((state) => state.locale.currentLocale);
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
+  const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
+  const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
+  const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
-  const { closepopUpFn } = props;
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    getValues,
-    setValue,
-    watch,
-  } = useForm({ mode: "onTouched" });
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
-  }, [setValue]);
+    if ($addLegalBondResponse?.id) {
+      props.closepopUpFn(false);
+    }
+  }, [setValue, $addLegalBondResponse]);
 
   const { fields: witnesses, append: appendWitness, remove: removeWitness } = useFieldArray({
     control,
@@ -48,23 +54,24 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
 
   useEffect(() => {
-    if (currencyList?.length > 0) {
-      setValue("WATBCurrencyList", currencyList[0]);
-      setValue(`addingScheduledCurrencyList0`, currencyList[0])
-    }
-
-    if (!watch("witnesses") || watch("witnesses").length === 0) {
-      setValue("witnesses", [{ witnessName: "", witnessesNationalNumber: "" }]);
-    }
+    // if (!watch("witnesses") || watch("witnesses").length === 0) {
+    //   setValue("witnesses", [{ witnessName: "", witnessesNationalNumber: "" }]);
+    // }
 
     if (!watch("scheduling") || watch("scheduling").length === 0) {
-      setValue("scheduling", [{ addingDate: "", totalAmount: "" }]);
+      setValue("scheduling", [{ addingDate: "", totalAmount: "", currency: "" }]);
     }
-  }, [setValue, watch("scheduling")]);
+
+    if (watch("WATBCheckBoxWitnesses")) {
+      addNewWitness();
+    } else {
+      removeWitness();
+    }
+  }, [setValue, watch("scheduling"), watch("WATBCheckBoxWitnesses")]);
 
 
   const addNewWitness = () => {
-    appendWitness({ witnessName: "", WitnessesNationalNumber: "" });
+    appendWitness({ witnessName: "", witnessesNationalNumber: "" });
   };
 
   const removeWitnessRow = (index) => {
@@ -72,7 +79,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   };
 
   const addingScheduled = () => {
-    addingScheduledRow({ addingDate: "", totalAmount: "" });
+    addingScheduledRow({ addingDate: "", totalAmount: "", currency: "" });
   }
 
   const removeScheduled = (index) => {
@@ -81,98 +88,199 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     }
   };
 
-
-
-  const currencyList = [
-    { name: { ar: "دينا اردني", en: "Jordanian Dinar" }, code: "JOD" },
-    { name: { ar: "دولار امريكي", en: "US Dollar" }, code: "USD" },
-    { name: { ar: "درهم امراتي", en: "UAE Dirham" }, code: "AED" },
-  ];
-
-  const bankNames = [
-    { name: { ar: "بنك ابو ظبي الاول", en: "FAB" }, code: "FAB" },
-    { name: { ar: "بنك الاهلى القطري", en: "QNB" }, code: "QNB" },
-  ];
-
-  const durationList = [
-    { name: { ar: "شهري", en: "Monthly", code: "MO" } },
-    { name: { ar: "ربع سنوي", en: "Quarterly", code: "QU" } },
-    { name: { ar: "نصف سنوي", en: "Semi-Annually", code: "SA" } },
-    { name: { ar: "سنوي", en: "Annually", code: "AN" } }
-  ];
-
   const cancelFn = () => {
-    closepopUpFn(false)
+    props.closepopUpFn(false)
   };
 
-  const addChequeFn = () => {
-    closepopUpFn(false)
-    const formData = getValues();
-    console.log("Cheque Form Data:", formData);
+  const addChequeFn = async (data: any) => {
+    if (!watch("claimType")) {
+      setShowRequestTypeError(true);
+      return
+    } else {
+      setShowRequestTypeError(false);
+    }
+
+    setShowLoader(true);
+    let obj = {}
+    console.log(data.claimType);
+
+    switch (data.claimType) {
+      case 'UPON_REQUEST':
+        obj = restructureUponRequest(data);
+        break;
+      case 'SCHEDULED':
+        obj = restructureScheduled(data);
+        break;
+      case 'NON_SCHEDULED':
+        obj = restructureNonScheduled(data);
+        break;
+      default:
+        break;
+    }
+
+
+    // Call API
+    await dispatch(addLegalBond(obj));
+    setShowLoader(false);
   };
+
+  const restructureUponRequest = (data) => {
+    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+      return {
+        name: item.witnessName,
+        ssn: Number(item.witnessesNationalNumber),
+      }
+    });
+
+    return {
+      collectionFileId: $collectionFileId,
+      bond: {
+        bondType: data.WATB?.code,
+        issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
+        category: "UPON_REQUEST",
+        totalAmount: data.WATBAmount,
+        currency: data.WATBCurrencyList?.code,
+        deborName: data.debtorsName,
+        deborSsn: Number(data.WATBNationalNumber),
+        witnesses: witnessesList.length > 0 ? witnessesList : [],
+        attachments: [
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach1?.name,
+            content: data.WTAttach1?.base64,
+            mimeType: "PDF"
+          },
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach2?.name,
+            content: data.WTAttach2?.base64,
+            mimeType: "PDF"
+          }
+        ]
+      }
+    }
+  }
+
+  const restructureScheduled = (data) => {
+    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+      return {
+        name: item.witnessName,
+        ssn: Number(item.witnessesNationalNumber),
+      }
+    });
+
+    const paymentSchedulesList: [] = data.scheduling.length > 0 && data.scheduling.map((item: any) => {
+      return {
+        paymentDate: dayjs(item.addingDate).format('YYYY-MM-DD'),
+        amount: Number(item.totalAmount),
+        currency: item?.currency?.code
+      }
+    });
+    const totalAmount = data.scheduling.reduce((sum, payment) => sum + Number(payment?.totalAmount), 0)
+
+    return {
+      collectionFileId: $collectionFileId,
+      bond: {
+        bondType: data.WATB?.code,
+        issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
+        category: "SCHEDULED",
+        totalAmount,
+        currency: data.scheduling[0]?.currency?.code,
+        deborName: data.debtorsName,
+        deborSsn: Number(data.WATBNationalNumber),
+        witnesses: witnessesList.length > 0 ? witnessesList : [],
+        paymentSchedules: paymentSchedulesList.length > 0 ? paymentSchedulesList : [],
+        attachments: [
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach1?.name,
+            content: data.WTAttach1?.base64,
+            mimeType: "PDF"
+          },
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach2?.name,
+            content: data.WTAttach2?.base64,
+            mimeType: "PDF"
+          }
+        ]
+      }
+    }
+  }
+
+  const restructureNonScheduled = (data) => {
+    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+      return {
+        name: item.witnessName,
+        ssn: Number(item.witnessesNationalNumber),
+      }
+    });
+
+    return {
+      collectionFileId: $collectionFileId,
+      bond: {
+        bondType: data.WATB?.code,
+        issueDate: data.issueDate ? dayjs(data.issueDate).format('YYYY-MM-DD') : null,
+        category: "NON_SCHEDULED",
+        totalAmount: data.WATBAmount,
+        currency: data.WATBCurrencyList?.code,
+        deborName: data.debtorsName,
+        deborSsn: Number(data.WATBNationalNumber),
+        witnesses: witnessesList.length > 0 ? witnessesList : [],
+        dueDate: data.WATBdueDate ? dayjs(data.WATBdueDate).format('YYYY-MM-DD') : null,
+        attachments: [
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach1?.name,
+            content: data.WTAttach1?.base64,
+            mimeType: "PDF"
+          },
+          {
+            attachmentType: data.WATB?.code,
+            name: data.WTAttach2?.name,
+            content: data.WTAttach2?.base64,
+            mimeType: "PDF"
+          }
+        ]
+      }
+    }
+  }
 
   return (
-    <div className="popupView">
-      <div className="content">
-        <div className="writtenAcknowledgmentTrustBond row">
-          <h4>اضافة بيانات كمبيالة</h4>
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="popupView">
+        <div className="content">
+          <div className="writtenAcknowledgmentTrustBond row">
+            <h4>اضافة بيانات سند الأمانة / اقرار خطي</h4>
 
-          {/* <div className="w-50-16px">
-            <label>
-              طريقة السداد
-            </label>
+            <DropDownComponent
+              id="WATBList"
+              name="WATB"
+              register={register}
+              watch={watch}
+              setValueMethod={setValue}
+              options={TrustWrittenList}
+              optionLabel={`name.${$lang}`}
+              errors={errors}
+              onChange={(e) => setValue("WATB", e.value)}
+              placeholder="اختر اسم من قائمة الخيارات"
+              rules={{ required: " يجب اختيار نوع السند" }}
+              label="اقرار خطي / سند امانة"
+            />
 
-            <div className="radioButtonDiv">
-              <RadioButtonComponent
-                name="schedulingType"
-                label="شهري"
-                register={register}
-                errors={errors}
-                value={'monthly'}
-                watch={watch}
-                onChange={(e) => { setValue("schedulingType", e.value === 'monthly' && 'monthly'); }}
-                checked={getValues().schedulingType === 'monthly'}
-              />
-
-              <RadioButtonComponent
-                name="schedulingType"
-                label="ربع سنوي"
-                register={register}
-                errors={errors}
-                value={'quarterly'}
-                watch={watch}
-                onChange={(e) => { setValue("schedulingType", e.value === 'quarterly' && 'quarterly'); }}
-                checked={getValues().schedulingType === 'quarterly'}
-              />
-
-              <RadioButtonComponent
-                name="schedulingType"
-                label="بدون جدولة"
-                register={register}
-                errors={errors}
-                value={'semiAnnual'}
-                watch={watch}
-                onChange={(e) => { setValue("schedulingType", e.value === 'semiAnnual' && 'semiAnnual'); }}
-                checked={getValues().schedulingType === 'semiAnnual'}
-              />
-
-              <RadioButtonComponent
-                name="schedulingType"
-                label="بدون جدولة"
-                register={register}
-                errors={errors}
-                value={'annual'}
-                watch={watch}
-                onChange={(e) => { setValue("schedulingType", e.value === 'annual' && 'annual'); }}
-                checked={getValues().schedulingType === 'annual'}
-              />
-            </div>
-          </div>
-
-          <div className="w-50-16px">
-            <label>
-              طريقة الجدولة
-            </label>
+            <DatePickerComponent
+              id="WATBIssueDate-id"
+              name="issueDate"
+              label={"تاريخ التحرير"}
+              placeholder={"DD/MM/YYYY"}
+              register={register}
+              errors={errors}
+              setValueMethod={setValue}
+              watch={watch}
+              onChange={(e) => setValue("issueDate", e.target.value)}
+              dateFormat="dd/mm/yy"
+            />
 
             <div className="radioButtonDiv">
               <RadioButtonComponent
@@ -180,10 +288,13 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                 label="غب الطلب"
                 register={register}
                 errors={errors}
-                value={'onDemand'}
+                value={'UPON_REQUEST'}
                 watch={watch}
-                onChange={(e) => { setValue("claimType", e.value === 'onDemand' && 'onDemand'); }}
-                checked={getValues().claimType === 'onDemand'}
+                onChange={(e) => {
+                  setValue("claimType", e.value === 'UPON_REQUEST' && 'UPON_REQUEST');
+                  setShowRequestTypeError(false);
+                }}
+                checked={getValues().claimType === 'UPON_REQUEST'}
               />
 
               <RadioButtonComponent
@@ -191,10 +302,13 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                 label="جدولة"
                 register={register}
                 errors={errors}
-                value={'scheduling'}
+                value={'SCHEDULED'}
                 watch={watch}
-                onChange={(e) => { setValue("claimType", e.value === 'scheduling' && 'scheduling'); }}
-                checked={getValues().claimType === 'scheduling'}
+                onChange={(e) => {
+                  setValue("claimType", e.value === 'SCHEDULED' && 'SCHEDULED');
+                  setShowRequestTypeError(false);
+                }}
+                checked={getValues().claimType === 'SCHEDULED'}
               />
 
               <RadioButtonComponent
@@ -202,221 +316,48 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                 label="بدون جدولة"
                 register={register}
                 errors={errors}
-                value={'noScheduling'}
+                value={'NON_SCHEDULED'}
                 watch={watch}
-                onChange={(e) => { setValue("claimType", e.value === 'noScheduling' && 'noScheduling'); }}
-                checked={getValues().claimType === 'noScheduling'}
+                onChange={(e) => {
+                  setValue("claimType", e.value === 'NON_SCHEDULED' && 'NON_SCHEDULED');
+                  setShowRequestTypeError(false);
+                }}
+                checked={getValues().claimType === 'NON_SCHEDULED'}
               />
             </div>
-          </div> */}
+            {showRequestTypeError &&
+              <span className="errorMsg">
+                يجب اختيار نوع الطلب
+              </span>
+            }
 
-          <DropDownComponent
-            id="WATBList"
-            name="WATB"
-            register={register}
-            watch={watch}
-            setValueMethod={setValue}
-            options={bankNames}
-            optionLabel={`name.${lang}`}
-            errors={errors?.bankName ? { bankName: errors.bankName } : undefined}
-            onChange={(e) => setValue("WATB", e.value)}
-            placeholder="اختر اسم من قائمة الخيارات"
-            rules={{ required: " يجب اختيار نوع السند" }}
-            label="اقرار خطي / سند امانة"
-          />
+            {watch('claimType') === 'NON_SCHEDULED' && (
 
-          <DatePickerComponent
-            id="WATBIssueDate-id"
-            name="issueDate"
-            label={"تاريخ التحرير"}
-            placeholder={"DD/MM/YYYY"}
-            register={register}
-            // rules={{ required: "يجب اختيار تاريخ تحرير" }}
-            errors={errors}
-            setValueMethod={setValue}
-            watch={watch}
-            onChange={(e) => setValue("issueDate", e.target.value)}
-          />
-
-          <div className="radioButtonDiv">
-            <RadioButtonComponent
-              name="claimType"
-              label="غب الطلب"
-              register={register}
-              errors={errors}
-              value={'onDemand'}
-              watch={watch}
-              onChange={(e) => { setValue("claimType", e.value === 'onDemand' && 'onDemand'); }}
-              checked={getValues().claimType === 'onDemand'}
-            />
-
-            <RadioButtonComponent
-              name="claimType"
-              label="جدولة"
-              register={register}
-              errors={errors}
-              value={'scheduling'}
-              watch={watch}
-              onChange={(e) => { setValue("claimType", e.value === 'scheduling' && 'scheduling'); }}
-              checked={getValues().claimType === 'scheduling'}
-            />
-
-            <RadioButtonComponent
-              name="claimType"
-              label="بدون جدولة"
-              register={register}
-              errors={errors}
-              value={'noScheduling'}
-              watch={watch}
-              onChange={(e) => { setValue("claimType", e.value === 'noScheduling' && 'noScheduling'); }}
-              checked={getValues().claimType === 'noScheduling'}
-            />
-          </div>
-
-          {watch('claimType') === 'onDemand' && (
-
-            <>
-              <div className="w-100">
-                <div className="ammountDiv row">
-                  <InputComponent
-                    id="WATBAmount-id"
-                    type="text"
-                    name="WATBAmount"
-                    placeholder="المبلغ"
-                    register={register}
-                    errors={errors}
-                    setValueMethod={setValue}
-                    watch={watch}
-                    onChange={(e) => {
-                      const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                      setValue("WATBAmount", numericValue);
-                    }}
-                    rules={{ required: "يجب ادخال قيمة الكمبيالة" }}
-                    label="اجمالي المبلغ"
-                  />
-
-                  <DropDownComponent
-                    id="WATBCurrencyList-id"
-                    name="WATBCurrencyList"
-                    register={register}
-                    watch={watch}
-                    setValueMethod={setValue}
-                    options={currencyList}
-                    optionLabel={`name.${lang}`}
-                    errors={errors}
-                    onChange={(e) => setValue("WATBCurrencyList", e.value)}
-                    placeholder="دينار"
-                    rules={{ required: "يجب اختيار العملة" }}
-                  />
-                </div>
-              </div>
-
-              <InputComponent
-                id="WATBdebtorsName-id"
-                type="text"
-                name="debtorsName"
-                label="اسم المدين"
-                placeholder="اسم المدين"
+              <DatePickerComponent
+                id="WATBlegalBondsDueDate"
+                name="WATBdueDate"
+                label={"تاريخ الاستحقاق"}
+                placeholder={"DD/MM/YYYY"}
                 register={register}
-                rules={{ required: 'يجب ادخال اسم المدين' }}
-                errors={errors}
+                rules={{ required: "يجب اختيار تاريخ الاستحقاق" }}
+                errors={errors?.WATBdueDate ? { WATBdueDate: errors.WATBdueDate } : undefined}
                 setValueMethod={setValue}
                 watch={watch}
-                onChange={(e) => setValue("debtorsName", e.target.value)}
+                onChange={(e) => setValue("WATBdueDate", e.target.value)}
+                className="col-md-6 mb-4"
+                dateFormat="dd/mm/yy"
               />
+            )}
 
-              <InputComponent
-                id="WATBNationalNumber-id"
-                type="text"
-                name="WATBNationalNumber"
-                label={translate("createNewProfile.nationalNumber")}
-                placeholder={translate("createNewProfile.exm") + "1234567"}
-                register={register}
-                rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                errors={errors}
-                setValueMethod={setValue}
-                watch={watch}
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                  setValue("WATBNationalNumber", numericValue);
-                }}
-              />
-            </>
-          )}
-
-          {watch('claimType') === 'scheduling' && (
-            <>
-              <InputComponent
-                id="WATBdebtorsName-id"
-                type="text"
-                name="debtorsName"
-                label="اسم المدين"
-                placeholder="اسم المدين"
-                register={register}
-                rules={{ required: 'يجب ادخال اسم المدين' }}
-                errors={errors}
-                setValueMethod={setValue}
-                watch={watch}
-                onChange={(e) => setValue("debtorsName", e.target.value)}
-              />
-
-              <InputComponent
-                id="WATBNationalNumber-id"
-                type="text"
-                name="WATBNationalNumber"
-                label={translate("createNewProfile.nationalNumber")}
-                placeholder={translate("createNewProfile.exm") + "1234567"}
-                register={register}
-                rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                errors={errors}
-                setValueMethod={setValue}
-                watch={watch}
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                  setValue("WATBNationalNumber", numericValue);
-                }}
-              />
-
-              <div className="w-100">
-                <DropDownComponent
-                  id="durationSelectionList-id"
-                  name="durationSelectionList"
-                  register={register}
-                  watch={watch}
-                  setValueMethod={setValue}
-                  options={durationList}
-                  optionLabel={`name.${lang}`}
-                  errors={errors?.durationList ? { durationList: errors.durationList } : undefined}
-                  onChange={(e) => setValue("durationSelectionList", e.value)}
-                  placeholder="اختر المدة"
-                  rules={{ required: " يجب تحديد المدة" }}
-                  label="تحديد المدة"
-                  className='w-50-16px'
-                />
-              </div>
-
-              {scheduling?.map((field, index) => (
-                <div key={field.id} className="dynamicRow">
-
-                  <DatePickerComponent
-                    id={`addingScheduledDate${field.id}id`}
-                    name={`scheduling[${index}].addingDate`}
-                    label={"اضافة التاريخ"}
-                    placeholder={"DD/MM/YYYY"}
-                    register={register}
-                    // rules={{ required: "يجب اختيار تاريخ تحرير" }}
-                    errors={errors?.scheduling?.[index]?.addingDate}
-                    setValueMethod={setValue}
-                    watch={watch}
-                    onChange={(e) => setValue(`scheduling[${index}].addingDate`, e.target.value)}
-                  />
-
-                  <div className="amountDeleteDiv">
-                    <div className="ammountDiv">
+            {watch('claimType') && (
+              <>
+                {(watch('claimType') === 'UPON_REQUEST' || watch('claimType') === 'NON_SCHEDULED') && (
+                  <div className="w-100">
+                    <div className="ammountDiv row">
                       <InputComponent
-                        id={`addingScheduledAmount${field.id}id`}
+                        id="WATBAmount-id"
                         type="text"
-                        name={`scheduling[${index}].totalAmount`}
+                        name="WATBAmount"
                         placeholder="المبلغ"
                         register={register}
                         errors={errors}
@@ -424,180 +365,322 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                         watch={watch}
                         onChange={(e) => {
                           const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                          setValue(`scheduling[${index}].totalAmount`, numericValue);
+                          setValue("WATBAmount", numericValue);
                         }}
-                        // rules={{ required: "يجب ادخال قيمة الكمبيالة" }}
+                        rules={{ required: "يجب ادخال القيمة" }}
                         label="اجمالي المبلغ"
                       />
 
                       <DropDownComponent
-                        id={`addingScheduledCurrencyList${index}-id`}
-                        name={`scheduling[${index}].currency`}
+                        id="WATBCurrencyList-id"
+                        name="WATBCurrencyList"
                         register={register}
                         watch={watch}
                         setValueMethod={setValue}
-                        options={currencyList}
-                        optionLabel={`name.${lang}`}
+                        options={CurrencyList}
+                        setValue={CurrencyList[0]}
+                        optionLabel={`name.${$lang}`}
                         errors={errors}
-                        onChange={(e) => setValue(`scheduling[${index}].currency`, e.value)}
+                        onChange={(e) => setValue("WATBCurrencyList", e.value)}
                         placeholder="دينار"
                         rules={{ required: "يجب اختيار العملة" }}
                       />
                     </div>
+                  </div>
+                )}
 
-                    {index !== 0 && (
-                      <span onClick={() => removeScheduled(index)} className="sideBtnStyle deleteBtn">
-                        حذف
+                <InputComponent
+                  id="WATBdebtorsName-id"
+                  type="text"
+                  name="debtorsName"
+                  label="اسم المدين"
+                  placeholder="اسم المدين"
+                  register={register}
+                  rules={{ required: 'يجب ادخال اسم المدين' }}
+                  errors={errors}
+                  setValueMethod={setValue}
+                  watch={watch}
+                  onChange={(e) => {
+                    const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
+                    setValue(`debtorsName`, letterValue);
+                  }}
+                />
+
+                <InputComponent
+                  id="WATBNationalNumber-id"
+                  type="text"
+                  name="WATBNationalNumber"
+                  label={translate("createNewProfile.nationalNumber")}
+                  placeholder={translate("createNewProfile.exm") + "1234567"}
+                  register={register}
+                  rules={{ required: 'يجب ادخال الرقم الوطني' }}
+                  errors={errors}
+                  setValueMethod={setValue}
+                  watch={watch}
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                    setValue("WATBNationalNumber", numericValue);
+                  }}
+                />
+              </>
+            )}
+
+            {watch('claimType') === 'SCHEDULED' && (
+              <>
+                {scheduling?.map((field, index) => (
+                  <div key={field.id} className="dynamicRow">
+                    <div>
+                      <DatePickerComponent
+                        id={`addingScheduledDate${field.id}id`}
+                        name={`scheduling[${index}].addingDate`}
+                        label={"اضافة التاريخ"}
+                        placeholder={"DD/MM/YYYY"}
+                        onChange={(e) => setValue(`scheduling[${index}].addingDate`, e.target.value)}
+                        register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                        control={control}
+                        errors={
+                          errors?.scheduling?.[index]?.addingDate
+                            ? {
+                              [`addingScheduledDate${field.id}id`]:
+                                errors.scheduling[index].addingDate,
+                            }
+                            : undefined
+                        }
+                        setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                        watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                        dateFormat="dd/mm/yy"
+                        rules={{ required: "يجب اضافة التاريخ" }}
+                      />
+                      {errors.scheduling?.[index]?.addingDate &&
+                        <span className="errorMsg">
+                          يجب اضافة التاريخ
+                        </span>
+                      }
+                    </div>
+
+                    <div className="amountDeleteDiv">
+                      <div className="ammountDiv">
+                        <div className="customEightWidthDiv">
+                          <InputComponent
+                            id={`addingScheduledAmount${field.id}id`}
+                            type="text"
+                            name={`scheduling[${index}].totalAmount`}
+                            placeholder="المبلغ"
+                            onChange={(e) => {
+                              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                              setValue(`scheduling[${index}].totalAmount`, numericValue);
+                            }}
+                            label="اجمالي المبلغ"
+                            register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                            control={control}
+                            errors={
+                              errors?.scheduling?.[index]?.totalAmount
+                                ? {
+                                  [`addingScheduledAmount${field.id}id`]:
+                                    errors.scheduling[index].totalAmount,
+                                }
+                                : undefined
+                            }
+                            setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                            watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                            rules={{ required: "يجب اضافة اجمالي المبلغ" }}
+                          />
+                          {errors.scheduling?.[index]?.totalAmount &&
+                            <span className="errorMsg">
+                              يجب اضافة اجمالي المبلغ
+                            </span>
+                          }
+                        </div>
+                        <div className="customTwentyWidthDiv">
+                          <DropDownComponent
+                            id={`addingScheduledCurrencyList${index}-id`}
+                            name={`scheduling[${index}].currency`}
+                            options={CurrencyList}
+                            setValue={CurrencyList[0]}
+                            optionLabel={`name.${$lang}`}
+                            onChange={(e) => setValue(`scheduling[${index}].currency`, e.value)}
+                            placeholder="دينار"
+                            rules={{ required: "يجب اختيار العملة" }}
+                            register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                            control={control}
+                            errors={
+                              errors?.scheduling?.[index]?.currency
+                                ? {
+                                  [`addingScheduledCurrencyList${index}-id`]:
+                                    errors.scheduling[index].currency,
+                                }
+                                : undefined
+                            }
+                            setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                            watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                          // rules={{ required: "يجب اختيار اسم الشاهد" }}
+                          />
+                          {errors.scheduling?.[index]?.currency &&
+                            <span className="errorMsg">
+                              يجب اختيار العملة
+                            </span>
+                          }
+                        </div>
+                      </div>
+
+                      {index !== 0 && (
+                        <span onClick={() => removeScheduled(index)} className="sideBtnStyle deleteBtn">
+                          حذف
+                        </span>
+                      )}
+
+                    </div>
+
+                    {index === scheduling.length - 1 && (
+                      <span onClick={addingScheduled} className="w-100 sideBtnStyle addBtn">
+                        اضافة جدولة
                       </span>
                     )}
-
                   </div>
+                ))}
+              </>
+            )}
 
-                  {index === scheduling.length - 1 && (
-                    <span onClick={addingScheduled} className="w-100 sideBtnStyle addBtn">
-                      اضافة جدولة
-                    </span>
-                  )}
-                </div>
-              ))}
-            </>
-          )}
+            {(watch('claimType')) &&
+              <>
+                <CheckBoxComponent
+                  id="WATBCheckBoxWitnesses-id"
+                  name="WATBCheckBoxWitnesses"
+                  label="يوجد شهود"
+                  register={register}
+                  errors={errors}
+                  setValueMethod={setValue}
+                  watch={watch}
+                  onChange={(e) => setValue("WATBCheckBoxWitnesses", e.value)}
+                />
 
-          {watch('claimType') === 'noScheduling' && (
+                {watch("WATBCheckBoxWitnesses") &&
+                  witnesses?.map((field, index) => (
+                    <div key={field.id} className="dynamicRow">
+                      <div>
+                        <InputComponent
+                          id={`WATBWitnessesName_${field.id}`}
+                          type="text"
+                          name={`witnesses.${index}.witnessName`}
+                          placeholder="ادخل اسم الشاهد"
+                          onChange={(e) => {
+                            const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
+                            setValue(`witnesses.${index}.witnessName`, letterValue);
+                          }}
+                          value={watch(`witnesses.${index}.witnessName`)}
+                          label="اسم الشاهد"
+                          register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                          control={control}
+                          errors={
+                            errors?.witnesses?.[index]?.witnessName
+                              ? {
+                                [`WATBWitnessesName_${field.id}`]:
+                                  errors.witnesses[index].witnessName,
+                              }
+                              : undefined
+                          }
+                          setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                          watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                          rules={{ required: "يجب اختيار اسم الشاهد" }}
+                        />
+                        {errors.witnesses?.[index]?.witnessName &&
+                          <span className="errorMsg">
+                            يجب اختيار اسم الشاهد
+                          </span>
+                        }
+                      </div>
 
-            <DatePickerComponent
-              id="WATBlegalBondsDueDate"
-              name="WATBdueDate"
-              label={"تاريخ الاستحقاق"}
-              placeholder={"DD/MM/YYYY"}
-              register={register}
-              rules={{ required: "يجب اختيار تاريخ الاستحقاق" }}
-              errors={errors?.dueDate ? { dueDate: errors.dueDate } : undefined}
-              setValueMethod={setValue}
-              watch={watch}
-              onChange={(e) => setValue("WATBdueDate", e.target.value)}
-              className="col-md-6 mb-4"
-            />
-          )}
+                      <div className="row-withSideBtn">
+                        <div>
+                          <InputComponent
+                            id={`WATBWitnessesNationalNumber-_${field.id}`}
+                            type="text"
+                            name={`witnesses.${index}.witnessesNationalNumber`}
+                            label={translate("createNewProfile.nationalNumber")}
+                            placeholder={translate("createNewProfile.exm") + "1234567"}
+                            onChange={(e) => {
+                              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                              setValue(`witnesses.${index}.witnessesNationalNumber`, numericValue);
+                            }}
+                            register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                            control={control}
+                            errors={
+                              errors?.witnesses?.[index]?.witnessesNationalNumber
+                                ? {
+                                  [`WATBWitnessesNationalNumber-_${field.id}`]:
+                                    errors.witnesses[index].witnessesNationalNumber,
+                                }
+                                : undefined
+                            }
+                            setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                            watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                            rules={{ required: "يجب اختيار الرقم الوطني" }}
+                          />
+                          {errors.witnesses?.[index]?.witnessesNationalNumber &&
+                            <span className="errorMsg">
+                              يجب اختيار الرقم الوطني
+                            </span>
+                          }
+                        </div>
 
-          {(watch('claimType') && watch('claimType') !== 'noScheduling') &&
-            <>
-              <CheckBoxComponent
-                id="WATBCheckBoxWitnesses-id"
-                name="WATBCheckBoxWitnesses"
-                label="يوجد شهود"
-                register={register}
-                errors={errors}
-                setValueMethod={setValue}
-                watch={watch}
-                onChange={(e) => setValue("WATBCheckBoxWitnesses", e.value)}
-              />
+                        {index !== 0 && (
+                          <span onClick={() => removeWitnessRow(index)} className="sideBtnStyle deleteBtn">
+                            حذف
+                          </span>
+                        )}
+                      </div>
 
-              {watch("WATBCheckBoxWitnesses") && witnesses?.map((field, index) => (
-                <div key={field.id} className="dynamicRow">
-                  <InputComponent
-                    id={`WATBWitnessesName_${field.id}`}
-                    type="text"
-                    name={`witnesses.${index}.witnessName`}
-                    placeholder="ادخل اسم الشاهد"
-                    register={register}
-                    errors={errors?.witnesses?.[index]?.debtorName}
-                    setValueMethod={setValue}
-                    watch={watch}
-                    onChange={(e) => {
-                      const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
-                      setValue(`witnesses.${index}.witnessName`, letterValue);
-                    }}
-                    value={watch(`witnesses.${index}.witnessName`)}
-                    label="اسم الشاهد"
-                  />
+                      {index === witnesses.length - 1 && (
+                        <span onClick={addNewWitness} className="w-100 sideBtnStyle addBtn">
+                          اضافة شاهد
+                        </span>
+                      )}
+                    </div>
+                  ))}
+              </>
+            }
 
-                  <div className="row-withSideBtn">
-                    <InputComponent
-                      id={`WATBWitnessesNationalNumber-_${field.id}`}
-                      type="text"
-                      name={`witnesses.${index}.WitnessesNationalNumber`}
-                      label={translate("createNewProfile.nationalNumber")}
-                      placeholder={translate("createNewProfile.exm") + "1234567"}
-                      register={register}
-                      rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                      errors={errors}
-                      setValueMethod={setValue}
-                      watch={watch}
-                      onChange={(e) => {
-                        const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                        setValue(`witnesses.${index}.WitnessesNationalNumber`, numericValue);
-                      }}
-                    />
+            <div className="uploaderContainer w-100">
+              <h4>تحميل اقرار خطي/ سند امانة</h4>
 
-                    {index !== 0 && (
-                      <span onClick={() => removeWitnessRow(index)} className="sideBtnStyle deleteBtn">
-                        حذف
-                      </span>
-                    )}
-                  </div>
-
-                  {index === witnesses.length - 1 && (
-                    <span onClick={addNewWitness} className="w-100 sideBtnStyle addBtn">
-                      اضافة شاهد
-                    </span>
-                  )}
-                </div>
-              ))}
-            </>}
-
-          <div className="uploaderContainer w-100">
-            <h4>تحميل اقرار خطي/ سند امانة</h4>
-
-            <div className="row">
-              {/* <AttachmentMultiFilesComponent
-                id="attach_1"
-                name="attach_1"
-                lang={$lang}
-                register={register}
-                watch={watch}
-                rules={{ required: 'يجب ادخال المىفقات' }}
-                errors={errors}
-                setValueMethod={setValue}
-                attachList={(e) => setValue("attach_1", e)}
-                fileTypeList={[
-                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
-                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
-                ]}
-                lang={lang}
-                fileTypePlaceHolder={'Select a File Type'}
-              />
-              <AttachmentFileComponent
-                id="attach_1"
-                name="attach_1"
-                lang={$lang}
-                register={register}
-                watch={watch}
-                rules={{ required: 'يجب ادخال المىفقات' }}
-                errors={errors}
-                setValueMethod={setValue}
-                attachList={(e) => setValue("attach_1", e)}
-                fileTypeList={[
-                  { name: { en: 'file Type one', ar: 'نوع الملف الاول' }, code: 'one' },
-                  { name: { en: 'file Type two', ar: 'نوع الملف الثاني' }, code: 'two' }
-                ]}
-                lang={lang}
-                fileTypePlaceHolder={'Select a File Type'}
-              /> */}
+              <div className="row">
+                <AttachmentFileComponent
+                  id="WTAttach1"
+                  name="WTAttach1"
+                  lang={$lang}
+                  register={register}
+                  watch={watch}
+                  rules={{ required: 'يجب ادخال الواجهة الأمامية اقرار خطي/ سند امانة' }}
+                  errors={errors}
+                  setValueMethod={setValue}
+                  attachList={(e) => setValue("WTAttach1", e)}
+                  Class="col-md-12 col-lg-6"
+                />
+              </div>
+              <div className="row">
+                <AttachmentFileComponent
+                  id="WTAttach2"
+                  name="WTAttach2"
+                  lang={$lang}
+                  register={register}
+                  watch={watch}
+                  rules={{ required: 'يجب ادخال الواجهة الخلفية اقرار خطي/ سند امانة' }}
+                  errors={errors}
+                  setValueMethod={setValue}
+                  attachList={(e) => setValue("WTAttach2", e)}
+                  Class="col-md-12 col-lg-6"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="actionBtns">
-            <div onClick={cancelFn} className="BtnCancel">
-              إلغاء
-            </div>
-            <div onClick={handleSubmit(addChequeFn)} className="btnStyle">
-              إضافة كمبيالة
+            <div className="actionBtns">
+              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>حفظ وإضافة</ButtonComponent>
             </div>
           </div>
         </div>
-      </div>
-    </div >
+      </div >
+    </>
   );
 };
 

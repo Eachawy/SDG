@@ -4,7 +4,7 @@ import {
   CheckBoxComponent,
   DatePickerComponent,
   DropDownComponent,
-  InputComponent,
+  InputComponent
 } from "@eachawy/frontend-library";
 import React, { useEffect, useState } from "react";
 import { translate, Storage } from "react-jhipster";
@@ -23,6 +23,8 @@ import { CurrencyList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { addLegalBond } from "../legalBonds.reducer";
 import dayjs from "dayjs";
+import _ from 'lodash'
+import { getCountryCodeObj, removeCountryCode } from "app/shared/util/utils";
 
 const Draft = (props) => {
   const dispatch = useAppDispatch();
@@ -55,20 +57,18 @@ const Draft = (props) => {
   });
 
   useEffect(() => {
-    setValue("debtors", [{ debtorName: "", phoneNumber: "", countryCode: countryCode[0] }]);
-    setValue("guarantors", [{ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: countryCode[0] }]);
-  }, [setValue]);
+    if (!props.rowDataEdit?.id) {
+      setValue("debtors", [{ debtorName: "", phoneNumber: "", countryCode: "" }]);
+      setValue("guarantors", [{ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: "" }]);
+    }
+  }, [props, setValue]);
 
   const addNewDebtor = () => {
-    appendDebtor({ debtorName: "", phoneNumber: "", countryCode: countryCode?.[0] });
-    const newIndex = debtors.length;
-    setValue(`debtors.${newIndex}.countryCode`, countryCode?.[0]);
+    appendDebtor({ debtorName: "", phoneNumber: "", countryCode: "" });
   };
 
   const addNewGuarantor = () => {
-    appendGuarantor({ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: countryCode?.[0] });
-    const newIndex = guarantors.length;
-    setValue(`guarantors.${newIndex}.guarantorCountryCode`, countryCode?.[0]);
+    appendGuarantor({ guarantorName: "", guarantorPhoneNumber: "", guarantorCountryCode: "" });
   };
 
   const removeRow = (index: number, type: "debtor" | "guarantor") => {
@@ -79,6 +79,38 @@ const Draft = (props) => {
     }
   };
   // End Array
+
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      console.log(props.rowDataEdit);
+      setValue('draftIssueDate', new Date(props.rowDataEdit?.issueDate));
+      setValue('draftDueDate', new Date(props.rowDataEdit?.dueDate))
+      setValue('draftAmount', props.rowDataEdit?.totalAmount);
+      setValue('draftCurrencyList', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
+      const debotersList = props.rowDataEdit?.legalBondParticipant.filter(item => item.type === 'DEBTOR_NAME');
+      const guarantorsList = props.rowDataEdit?.legalBondParticipant.filter(item => item.type === 'DRAFT_GUARANTOR');
+
+      const mappedDebtors = debotersList.map(x => ({
+        debtorName: x?.name || "",
+        phoneNumber: removeCountryCode(x?.mobileNumber),
+        countryCode: getCountryCodeObj(x?.mobileNumber)
+      }));
+
+      if (guarantorsList.length > 0) {
+        setValue('promissoryNoteGuarantorCheckBox', true)
+      }
+
+      const mappedGuarantors = guarantorsList.map(x => ({
+        guarantorName: x?.name || "",
+        guarantorPhoneNumber: removeCountryCode(x?.mobileNumber),
+        guarantorCountryCode: getCountryCodeObj(x?.mobileNumber)
+      }));
+
+      if (mappedDebtors.length > 0) appendDebtor(mappedDebtors);
+      if (mappedGuarantors.length > 0) appendGuarantor(mappedGuarantors);
+
+    }
+  }, [props, setValue]);
 
   const cancelFn = () => {
     props.closepopUpFn(false)
@@ -98,7 +130,7 @@ const Draft = (props) => {
     const guarantorsList = watch("promissoryNoteGuarantorCheckBox") ? data.guarantors.map((item: any) => {
       return {
         name: item.guarantorName,
-        mobileNumber:  Number(item.guarantorCountryCode?.name + item.guarantorPhoneNumber),
+        mobileNumber: Number(item.guarantorCountryCode?.name + item.guarantorPhoneNumber),
         type: "DRAFT_GUARANTOR"
       }
     }) : [];
@@ -106,6 +138,7 @@ const Draft = (props) => {
     const obj = {
       collectionFileId: $collectionFileId,
       draft: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         issueDate: data.draftIssueDate ? dayjs(data.draftIssueDate).format('YYYY-MM-DD') : null,
         dueDate: dayjs(data.draftDueDate).format('YYYY-MM-DD'),
         totalAmount: Number(data.draftAmount),
@@ -141,8 +174,6 @@ const Draft = (props) => {
               label={"تاريخ التحرير"}
               placeholder={"DD/MM/YYYY"}
               register={register}
-              // rules={{ required: "يجب اختيار تاريخ تحرير" }}
-              // errors={errors}
               setValueMethod={setValue}
               watch={watch}
               onChange={(e) => setValue("draftIssueDate", e.target.value)}
@@ -222,7 +253,7 @@ const Draft = (props) => {
                     watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
                     rules={{ required: true }}
                     onChange={(e) => {
-                      const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                      const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
                       setValue(`debtors.${index}.debtorName`, letterValue);
                     }}
                     value={watch(`debtors.${index}.debtorName`)}
@@ -235,7 +266,7 @@ const Draft = (props) => {
 
                 <div className="amountDeleteDiv">
                   <div>
-                    <PhoneNumberComponent
+                    {/* <PhoneNumberComponent
                       listName={`debtors.${index}.countryCode`}
                       name={`debtors.${index}.phoneNumber`}
                       register={register as unknown as UseFormRegister<Record<string, unknown>>}
@@ -254,7 +285,66 @@ const Draft = (props) => {
                     />
                     {errors.debtors?.[index]?.phoneNumber &&
                       <span className="errorMsg"> يجب ادخال رقم الهاتف</span>
-                    }
+                    } */}
+                    <div className={`phoneNumber`}>
+                      <label>
+                        {translate("createNewProfile.phoneNumber")}
+                        {props.error && <span>*</span>}
+                      </label>
+                      <div>
+                        <DropDownComponent
+                          id={`debtorsCountryCode${field.id}`}
+                          name={`debtors.${index}.countryCode`}
+                          options={countryCode}
+                          optionLabel={`name`}
+                          control={control}
+                          setValue={countryCode[0]}
+                          onChange={(e) => {
+                            setValue(`debtors.${index}.countryCode`, e.value as object);
+                          }}
+                          register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                          errors={
+                            errors?.debtors?.[index]?.countryCode
+                              ? {
+                                [`debtorsCountryCode${field.id}`]:
+                                  errors.debtors[index].countryCode,
+                              }
+                              : undefined
+                          }
+                          setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                          watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                          rules={{ required: true }}
+                        />
+                        <div className="customEightWidthDiv">
+                          <InputComponent
+                            id={`debtorsPhoneNumber${field.id}`}
+                            type="text"
+                            name={`debtors.${index}.phoneNumber`}
+                            placeholder={translate("createNewProfile.exm") + "1234567"}
+                            onChange={(e) => {
+                              const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                              setValue(`debtors.${index}.phoneNumber`, numericValue);
+                            }}
+                            register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                            control={control}
+                            errors={
+                              errors?.debtors?.[index]?.phoneNumber
+                                ? {
+                                  [`debtorsPhoneNumber${field.id}`]:
+                                    errors.debtors[index].phoneNumber,
+                                }
+                                : undefined
+                            }
+                            setValue={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                            watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                            rules={{ required: true }}
+                          />
+                          {errors.debtors?.[index]?.phoneNumber &&
+                            <span className="errorMsg"> يجب ادخال رقم الهاتف</span>
+                          }
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {index !== 0 && (
@@ -308,7 +398,7 @@ const Draft = (props) => {
                       watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
                       rules={{ required: true }}
                       onChange={(e) => {
-                        const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                        const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
                         setValue(`guarantors.${index}.guarantorName`, letterValue);
                       }}
                       value={watch(`guarantors.${index}.guarantorName`)}
@@ -320,7 +410,7 @@ const Draft = (props) => {
                   </div>
                   <div className="amountDeleteDiv">
                     <div>
-                      <PhoneNumberComponent
+                      {/* <PhoneNumberComponent
                         listName={`guarantors.${index}.guarantorCountryCode`}
                         name={`guarantors.${index}.guarantorPhoneNumber`}
                         register={register as unknown as UseFormRegister<Record<string, unknown>>}
@@ -336,10 +426,66 @@ const Draft = (props) => {
                         setValue={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
                         watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
                         rules={{ required: true }}
-                      />
-                      {errors.guarantors?.[index]?.guarantorPhoneNumber &&
-                        <span className="errorMsg"> يجب ادخال رقم الهاتف</span>
-                      }
+                      /> */}
+                      <div className={`phoneNumber`}>
+                        <label>
+                          {translate("createNewProfile.phoneNumber")}
+                          {props.error && <span>*</span>}
+                        </label>
+                        <div>
+                          <DropDownComponent
+                            id={`guarantorCountryCode${field.id}`}
+                            name={`guarantors.${index}.guarantorCountryCode`}
+                            options={countryCode}
+                            optionLabel={`name`}
+                            control={control}
+                            setValue={countryCode[0]}
+                            onChange={(e) => {
+                              setValue(`guarantors.${index}.guarantorCountryCode`, e.value as object);
+                            }}
+                            register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                            errors={
+                              errors?.guarantors?.[index]?.guarantorCountryCode
+                                ? {
+                                  [`guarantorCountryCode${field.id}`]:
+                                    errors.guarantors[index].guarantorCountryCode,
+                                }
+                                : undefined
+                            }
+                            setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                            watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                            rules={{ required: true }}
+                          />
+                          <div className="customEightWidthDiv">
+                            <InputComponent
+                              id={`guarantorPhoneNumber${field.id}`}
+                              type="text"
+                              name={`guarantors.${index}.guarantorPhoneNumber`}
+                              placeholder={translate("createNewProfile.exm") + "1234567"}
+                              onChange={(e) => {
+                                const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                                setValue(`guarantors.${index}.guarantorPhoneNumber`, numericValue);
+                              }}
+                              register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                              control={control}
+                              errors={
+                                errors?.guarantors?.[index]?.guarantorPhoneNumber
+                                  ? {
+                                    [`guarantorPhoneNumber${field.id}`]:
+                                      errors.guarantors[index].guarantorPhoneNumber,
+                                  }
+                                  : undefined
+                              }
+                              setValue={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                              watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
+                              rules={{ required: true }}
+                            />
+                            {errors.guarantors?.[index]?.guarantorPhoneNumber &&
+                              <span className="errorMsg"> يجب ادخال رقم الهاتف</span>
+                            }
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     {index !== 0 && (
@@ -378,7 +524,9 @@ const Draft = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addDraftFn)}>حفظ وإضافة</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addDraftFn)}>
+                {props.rowDataEdit?.id ? 'تعديل كمبيالة' : 'إضافة كمبيالة'}
+              </ButtonComponent>
             </div>
           </div>
         </div>

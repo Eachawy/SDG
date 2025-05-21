@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
-import { Paginator } from 'primereact/paginator';
-import { Ripple } from 'primereact/ripple';
-import { classNames } from "primereact/utils";
+import { getFileSize, getFileType } from "app/shared/util/utils";
+import { PaymentTypesObj } from "app/modules/shared/constants";
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import { deleteLegalBond } from "../../../legalBonds.reducer";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 
-const RentTableComponent = () => {
+const RentTableComponent = (props) => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
@@ -17,329 +19,22 @@ const RentTableComponent = () => {
   const [isAttachmentTamplateList, setIsAttachmentTamplateList] = useState(false)
   const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(4);
-  const [customChequeData, setCustomChequeData] = useState([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
-  const chequeData = [
-    {
-      id: 1,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 2,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 3,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 4,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 5,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    },
-    {
-      id: 6,
-      startDate: "1-01-2025",
-      originalDebt: "20,000",
-      paymentMethod: "شهري",
-      collectionAmount: "5,000",
-      numberOfPayments: [
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-        {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        }, {
-          id: 200,
-          dueDate: "1/01/2025",
-          amount: 900
-        },
-      ],
-      attachmentFileData: [
-        {
-          id: 503,
-          fileName: "شيك حال الأداء",
-          fileType: "شيك مصرفي",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/92871728/photo/close-up-of-blank-bank-check-sample-against-white-background.jpg?s=1024x1024&w=is&k=20&c=f2kFrTB91YH-kQsHO9_QSBjoArRl3fR7wDyJ_-RpZCc="
-        },
-        {
-          id: 504,
-          fileName: "صورة الشيك المرتد",
-          fileType: "شيك مقبول الدفع",
-          fileSize: "250KB",
-          filePath: "https://media.istockphoto.com/id/142557946/photo/prepare-writing-check.jpg?s=1024x1024&w=is&k=20&c=FQ832NUle8sysLoLAr0Mf2gj71lfq3Yxxy_45_4jp5E="
-        }
-      ]
-    }
-  ];
-
-  const onPageChange = (event) => {
-    setFirst(event.first);
-    setRows(event.rows);
-    setCustomChequeData(chequeData.slice(event.first, event.first + event.rows));
-  }
+  const [deleteID, setDeleteID] = useState<number | null>(null);
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useAppDispatch();
+  const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
 
   useEffect(() => {
-    setCustomChequeData(chequeData.slice(first, first + rows));
-  }, [first, rows]);
+    if ($deleteLegalBondResponse?.status === 204) {
+      setDeleteID(null);
+      setShowDeletePopup(false);
+      props.deleteIdDoneFn();
+    }
+
+  }, [$deleteLegalBondResponse])
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -361,82 +56,25 @@ const RentTableComponent = () => {
     };
   }, []);
 
-  const closeAttachmentPopupFn = () => {
-    setIsAttachmentTamplateList((prev) => {
-      console.log("Closing popup, previous state:", prev);
-      return false;
-    });
-  };
+  const totalAmountBody = () => {
+    return <span>{props.rentContractList?.totalAmount}</span>
+  }
 
-  const attachmentTemplate = (rowData: any) => {
-    return (
-      <div className="action-column attachmentTemplateDiv"
-        onClick={(e) => {
-          e.stopPropagation();
-          if (attachmentTamplateListRowId !== rowData.id || !isAttachmentTamplateList) {
-            setAttachmentTamplateListRowId(rowData.id);
-            setIsAttachmentTamplateList(true);
-            setIsDebtorInfoList(false);
-            setIsActionList(false);
-            setSelectedAttachmentCard(0)
-            setSelectedAttachmentFilePath(rowData.attachmentFileData[0].filePath)
+  const totalCollectedAmountBody = () => {
+    return <span>{props.rentContractList?.requiredCollectionAmount}</span>
+  }
 
-          }
-        }}
-      >
-        <div className="attachmentTdinnerDiv">
-          <p>عرض</p>
-        </div>
+  const rentStartDateBody = rowData => {
+    return <span>{rowData.paymentSchedules[0]?.paymentDate}</span>
+  }
 
-        {(
-          attachmentTamplateListRowId === rowData.id &&
-          isAttachmentTamplateList) && (
-            <div className="popupView">
-              <div className="content">
-                <div>
-                  <div className="fileCardList">
-
-                    {rowData.attachmentFileData.length > 0 && rowData.attachmentFileData.map((i, index) => (
-                      <div key={index} onClick={() => {
-                        setSelectedAttachmentCard(index)
-                        setSelectedAttachmentFilePath(i.filePath)
-                      }} className={`${i.filePath.includes('bank') && 'pdfEx'} ${selectedAttachmentCard === index && 'active'}`}>
-                        <p>
-                          <label>اسم الملف</label>
-                          {i.fileName}
-                        </p>
-                        <div>
-                          <p>
-                            <label>نوع الملف</label>
-                            {i.fileType}
-                          </p>
-                          <p>
-                            <label>حجم الملف</label>
-                            {i.fileSize}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                    }
-                  </div>
-                  <div className="fileViewSpace">
-                    <object width={"100%"} height={"100%"}
-                      data={`${selectedAttachmentFilePath}`}
-                      type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
-                    />
-                  </div>
-                </div>
-                <ButtonComponent Class={'BtnCancel'} onClick={closeAttachmentPopupFn}>إغلاق</ButtonComponent>
-              </div>
-            </div>
-          )}
-      </div>
-    )
+  const paymentMethodBody = rowData => {
+    return <span>{PaymentTypesObj[rowData.paymentPeriod].name[$lang]}</span>
   }
 
   const renderPayments = (rowData) => {
-    const numberOfPayments = rowData.numberOfPayments.length;
-    const totalAmount = rowData.numberOfPayments.reduce((sum, payment) => sum + payment.amount, 0);
+    const numberOfPayments = rowData.paymentSchedules.length;
+    const totalAmount = rowData.paymentSchedules.reduce((sum, payment) => sum + payment.amount, 0);
     return (
       <div className="action-column NFBList"
         onClick={(e) => {
@@ -456,9 +94,9 @@ const RentTableComponent = () => {
               <p><label>عدد الدفعات</label>{numberOfPayments}</p>
               <p><label>المبلغ المراد تحصيلة</label>{totalAmount}</p>
             </div>
-            {rowData.numberOfPayments.map((d) => (
+            {rowData.paymentSchedules.map((d) => (
               <div key={d.id}>
-                <p><label>تاريخ الاستحقاق</label>{d.dueDate}</p>
+                <p><label>تاريخ الاستحقاق</label>{d.paymentDate}</p>
                 <p><label>المبلغ المستحق</label>{d.amount}</p>
               </div>
             ))}
@@ -467,6 +105,79 @@ const RentTableComponent = () => {
       </div>
     )
   }
+
+  const attachmentTemplate = (rowData: any) => {
+    return (
+      <div className="action-column attachmentTemplateDiv"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (attachmentTamplateListRowId !== rowData.id || !isAttachmentTamplateList) {
+            setAttachmentTamplateListRowId(rowData.id);
+            setIsAttachmentTamplateList(true);
+            setIsDebtorInfoList(false);
+            setIsActionList(false);
+            setSelectedAttachmentCard(0)
+            setSelectedAttachmentFilePath(rowData.attachments[0].content)
+
+          }
+        }}
+      >
+        <div className="attachmentTdinnerDiv">
+          <p>عرض</p>
+        </div>
+
+        {(
+          attachmentTamplateListRowId === rowData.id &&
+          isAttachmentTamplateList) && (
+            <div className="popupView">
+              <div className="content">
+                <div>
+                  <div className="fileCardList">
+
+                    {rowData.attachments.length > 0 && rowData.attachments.map((i, index) => (
+                      <div key={index} onClick={() => {
+                        setSelectedAttachmentCard(index)
+                        setSelectedAttachmentFilePath(i.content)
+                      }} className={`${selectedAttachmentCard === index && 'active'}`}>
+                        <p>
+                          <label>اسم الملف</label>
+                          {i.name}
+                        </p>
+                        <div>
+                          <p>
+                            <label>نوع الملف</label>
+                            {getFileType(i.content)}
+                          </p>
+                          <p>
+                            <label>حجم الملف</label>
+                            {getFileSize(i.content)}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                    }
+                  </div>
+                  <div className="fileViewSpace">
+                    <object width={"100%"} height={"100%"}
+                      data={`${selectedAttachmentFilePath}`}
+                    // type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
+                    />
+                  </div>
+                </div>
+                <ButtonComponent Class={'BtnCancel'} onClick={closeAttachmentPopupFn}>إغلاق</ButtonComponent>
+              </div>
+            </div>
+          )}
+      </div>
+    )
+  }
+
+  const closeAttachmentPopupFn = () => {
+    setIsAttachmentTamplateList((prev) => {
+      console.log("Closing popup, previous state:", prev);
+      return false;
+    });
+  };
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -485,6 +196,7 @@ const RentTableComponent = () => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('RC',rowData);
               }}
             >
               تعديل
@@ -492,7 +204,8 @@ const RentTableComponent = () => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
+                setShowDeletePopup(true);
+                setDeleteID(rowData.id);
               }}
             >
               حذف
@@ -503,90 +216,68 @@ const RentTableComponent = () => {
     );
   };
 
-  const paginatorTemplate = {
-    layout: "PrevPageLink PageLinks NextPageLink",
-    PrevPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">السابق</span>
-        <Ripple />
-      </button>
-    ),
-
-    PageLinks(options) {
-      if ((options.view.startPage === options.page && options.view.startPage !== 0) ||
-        (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
-        return <span className={classNames(options.className, "p-disabled")} style={{ userSelect: "none" }}>...</span>;
-      }
-      return (
-        <button type="button" className={options.className} onClick={options.onClick}>
-          {options.page + 1}
-          <Ripple />
-        </button>
-      );
-    },
-
-    NextPageLink: (options) => (
-      <button type="button" className={`${options.className} border-round`} onClick={options.onClick} disabled={options.disabled}>
-        <span className="p-3">التالي</span>
-        <Ripple />
-      </button>
-    ),
-  };
-
-  const cancelActionFn = () => {
-    setShowDeletePopup(false)
+  const deleteFN = async () => {
+    setShowLoader(true);
+    const obj = {
+      type: "RENT_CONTRACT",
+      ids: [deleteID]
+    }
+    await dispatch(deleteLegalBond(obj));
+    setShowLoader(false);
   }
-  const deleteFN = () => { }
 
   return (
-    <div className="table-container">
-      <DataTable
-        value={customChequeData}
-        selectionMode="multiple"
-        selection={selectedCheques}
-        onSelectionChange={onChangeSelection}
-        dataKey="id"
-        className="custom-table"
-      >
-        <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="table-container">
+        <DataTable
+          value={props.rentContractList?.rentContracts}
+          selectionMode="multiple"
+          selection={selectedCheques}
+          onSelectionChange={onChangeSelection}
+          dataKey="id"
+          className="custom-table"
+          paginator
+          rows={5}
+        >
+          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
-        <Column field="startDate" header="تاريخ بدء الإيجار" className="columnStyle" />
+          <Column field="startDate" header="تاريخ بدء الإيجار" className="columnStyle" body={rentStartDateBody} />
 
-        <Column field="originalDebt" header="اصل الدين" className="columnStyle" />
+          <Column field="totalAmount" header="اصل الدين" className="columnStyle" body={totalAmountBody} />
 
-        <Column field="paymentMethod" header="طريقة السداد" className="columnStyle" />
+          <Column field="paymentPeriod" header="طريقة السداد" className="columnStyle" body={paymentMethodBody} />
 
-        <Column field="collectionAmount" header="المبلغ المراد تحصيله" className="columnStyle" />
+          <Column field="requiredCollectionAmount" header="المبلغ المراد تحصيله" className="columnStyle" body={totalCollectedAmountBody} />
 
-        <Column body={renderPayments} header="عدد الدفعات" className="columnStyle numberOfPayments" />
+          <Column body={renderPayments} header="عدد الدفعات" className="columnStyle numberOfPayments" />
 
-        <Column body={attachmentTemplate}
-          header="المرفقات"
-          className="columnStyle attachmentCol"
-        />
+          <Column body={attachmentTemplate}
+            header="المرفقات"
+            className="columnStyle attachmentCol"
+          />
 
-        <Column body={actionBodyTemplate} className="columnStyle actionCol" />
-      </DataTable>
+          <Column body={actionBodyTemplate} className="columnStyle actionCol" />
+        </DataTable>
 
-      <Paginator template={paginatorTemplate} first={first} rows={rows} totalRecords={chequeData.length} onPageChange={onPageChange} />
-
-      {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
+        {showDeletePopup && (
+          <div className='deletePopupContainer'>
+            <div className='dialogBoxContent'>
+              <h4>هل أنت متأكد أنك تريد حذف بيانات عقد الإيجار</h4>
+              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات عقد الإيجار ولا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="actionRowBtns">
+                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
+                  لا اريد الحذف
+                </ButtonComponent>
+                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
+                  نعم اريد الحذف
+                </ButtonComponent>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -83,7 +83,7 @@ const Cheque = (props) => {
   };
 
   const handleRowChange = (index, value) => {
-    const letterValue = value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+    const letterValue = value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
     setValue(`rows.${index}.drawerName`, letterValue);
   };
   // End Array Configuration
@@ -310,7 +310,7 @@ const Cheque = (props) => {
                   setValueMethod={setValue}
                   watch={watch}
                   onChange={(e) => {
-                    const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                    const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
                     setValue("firstBeneficiaryName", letterValue);
                   }}
                   rules={{

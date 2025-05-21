@@ -1,7 +1,7 @@
-import { getVerifiedRequest, postVerifiedRequest } from 'app/config/network-server-reducer';
+import { deleteVerifiedRequest, getVerifiedRequest, postVerifiedRequest } from 'app/config/network-server-reducer';
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { addEditPersonAPI, addLegalBondAPI, createFileAPI, getAllBanksAPI, getFileDetailsAPI, masterFilesAPI } from 'app/config/constants';
+import { addEditPersonAPI, addLegalBondAPI, createFileAPI, deleteLegalBondAPI, getAllBanksAPI, getFileDetailsAPI, masterFilesAPI } from 'app/config/constants';
 import { add } from 'lodash';
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
     loading: false,
     fileDetailsResponse: null,
     addLegalBondResponse: null,
+    deleteLegalBondResponse: null,
     banksList: null,
 };
 
@@ -23,6 +24,11 @@ export const getFileDetails = createAsyncThunk('LEGAL_BONDS/GET_FILE_DETAILS',
 
 export const addLegalBond = createAsyncThunk('SELECT_FILE_TYPE/ADD_LEGAL_BOND',
     async (data: any) => postVerifiedRequest(addLegalBondAPI, data), {
+    serializeError: serializeAxiosError,
+});
+
+export const deleteLegalBond = createAsyncThunk('SELECT_FILE_TYPE/DELETE_LEGAL_BOND',
+    async (obj: any) => deleteVerifiedRequest(deleteLegalBondAPI, obj), {
     serializeError: serializeAxiosError,
 });
 
@@ -56,16 +62,20 @@ export const LegalBonds = createSlice({
                 state.loading = false;
                 state.addLegalBondResponse = action.payload.data;
             })
+            .addCase(deleteLegalBond.fulfilled, (state, action) => {
+                state.loading = false;
+                state.deleteLegalBondResponse = action.payload;
+            })
             .addCase(getAllBanks.fulfilled, (state, action) => {
                 state.loading = false;
                 state.banksList = action.payload.data;
             })
-            .addMatcher(isPending(getFileDetails, addLegalBond, getAllBanks), state => {
+            .addMatcher(isPending(getFileDetails, addLegalBond, getAllBanks,deleteLegalBond), state => {
                 state.loading = true;
                 state.errorMessage = null;
             })
             .addMatcher(
-                isRejected(getFileDetails, addLegalBond, getAllBanks),
+                isRejected(getFileDetails, addLegalBond, getAllBanks,deleteLegalBond),
                 (state, action) => {
                     state.loading = false;
                     state.errorMessage = action.error.message;
