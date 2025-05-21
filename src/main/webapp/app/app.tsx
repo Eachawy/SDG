@@ -36,7 +36,7 @@ export const App = () => {
           position="top-center"
           className="toastify-container"
           toastClassName="toastify-toast toastifyMessage"
-          autoClose={15000}
+          autoClose={1000}
           transition={Bounce}
         />
         <div>

@@ -11,6 +11,16 @@
         "delegatedPersonPlaceholder": "Select Person",
         "searchPlaceholder": "Enter Search Keyword",
         "privateFile": "Private File",
-        "privateFileSelection": "Select People"
+        "privateFileSelection": "Select People",
+        "opponentAttribute": "The opponent's attribute",
+        "chooseOpponentAttribute": "Choose the opponent's attribute",
+        "personName": "Person's name",
+        "nationalID": "National ID",
+        "address_1": "Address 1",
+        "address_2": "Address 2",
+        "phoneNumber_1": "Phone Number 1",
+        "phoneNumber_2": "Phone Number 2",
+        "phoneNumber_3": "Phone Number 3",
+        "emailAddress": "Email"
     }
 }

@@ -11,6 +11,16 @@
         "delegatedPersonPlaceholder": "اختر الشخص",
         "searchPlaceholder": "ادخل كلمة البحث",
         "privateFile": "ملف خاص",
-        "privateFileSelection": "اختر الاشخاص"
+        "privateFileSelection": "اختر الاشخاص",
+        "opponentAttribute": "صفة الخصم",
+        "chooseOpponentAttribute": "اختر صفة الخصم",
+        "personName": "اسم الشخص",
+        "nationalID": "الرقم الوطني",
+        "address_1": "العنوان 1",
+        "address_2": "العنوان 2",
+        "phoneNumber_1": "رقم الهاتف 1",
+        "phoneNumber_2": "رقم الهاتف 2",
+        "phoneNumber_3": "رقم الهاتف 3",
+        "emailAddress":"البريد الإلكتروني"
     }
 }

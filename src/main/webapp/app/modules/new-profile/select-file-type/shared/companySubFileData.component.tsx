@@ -152,7 +152,7 @@ const CompanySubFileData = (props) => {
           <DropDownComponent
             id="opponentCategory"
             name="opponentCategory"
-            label="صفة الخصم"
+            label={translate("selectFileType.opponentAttribute")}
             register={props.register}
             watch={props.watch}
             setValueMethod={props.setValue}
@@ -162,7 +162,7 @@ const CompanySubFileData = (props) => {
             onChange={(e) =>
               props.setValue("opponentCategory", e.value as object)
             }
-            placeholder="اختر صفة الخصم"
+            placeholder={translate("selectFileType.chooseOpponentAttribute")}
             rules={{ required: "You must select the legal status of the party" }}
             className="col-md-6"
           />

@@ -189,28 +189,28 @@ const SearchByDefendant = (props) => {
                     </div>
 
                     <div>
-                        <p><label>اسم الشخص</label> {$lang === 'en' ? selectedPerson?.nameEnglish : selectedPerson?.nameArabic}</p>
+                        <p><label>{translate("selectFileType.personName")}</label> {$lang === 'en' ? selectedPerson?.nameEnglish : selectedPerson?.nameArabic}</p>
                     </div>
                     <div>
-                        <p><label>الرقم الوطني</label> {selectedPerson?.nationalId}</p>
+                        <p><label>{translate("selectFileType.nationalID")}</label> {selectedPerson?.nationalId}</p>
                     </div>
                     <div>
-                        <p><label>العنوان 1</label> {selectedPerson?.addressOne}</p>
+                        <p><label>{translate("selectFileType.address_1")}</label> {selectedPerson?.addressOne}</p>
                     </div>
                     <div>
-                        <p><label>العنوان 2</label> {selectedPerson?.addressTwo}</p>
+                        <p><label>{translate("selectFileType.address_2")}</label> {selectedPerson?.addressTwo}</p>
                     </div>
                     <div>
-                        <p><label>رقم الهاتف 1</label> {selectedPerson?.mobileOne}</p>
+                        <p><label>{translate("selectFileType.phoneNumber_1")}</label> {selectedPerson?.mobileOne}</p>
                     </div>
                     <div>
-                        <p><label>رقم الهاتف 2</label> {selectedPerson?.mobileTwo}</p>
+                        <p><label>{translate("selectFileType.phoneNumber_2")}</label> {selectedPerson?.mobileTwo}</p>
                     </div>
                     <div>
-                        <p><label>رقم الهاتف 3</label> {selectedPerson?.mobileThree}</p>
+                        <p><label>{translate("selectFileType.phoneNumber_3")}</label> {selectedPerson?.mobileThree}</p>
                     </div>
                     <div>
-                        <p><label>البريد الإلكتروني</label> {selectedPerson?.email}</p>
+                        <p><label>{translate("selectFileType.emailAddress")}</label> {selectedPerson?.email}</p>
                     </div>
                 </div>
             )}
