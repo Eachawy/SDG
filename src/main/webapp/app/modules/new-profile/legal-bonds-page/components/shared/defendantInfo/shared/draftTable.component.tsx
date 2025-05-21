@@ -60,7 +60,6 @@ const DraftTableComponent = (props) => {
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
-      console.log("Closing popup, previous state:", prev);
       return false;
     });
   };

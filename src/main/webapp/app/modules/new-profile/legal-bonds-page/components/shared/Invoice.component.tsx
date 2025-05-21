@@ -39,7 +39,6 @@ const Invoice = (props) => {
 
   useEffect(() => {
     if (props.rowDataEdit?.id) {
-      console.log(props.rowDataEdit);
       setValue('invoiceAmount', props.rowDataEdit?.totalAmount);
       setValue('invoiceNo', props.rowDataEdit?.invoiceNumber);
       setValue('invoiceIssueDate', new Date(props.rowDataEdit?.invoiceDate));

@@ -36,7 +36,6 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
   useEffect(() => {
     if (props.rowDataEdit?.id) {
-      console.log(props.rowDataEdit);
       setValue('WATB', _.find(TrustWrittenList, (item) => item.code === props.rowDataEdit?.bondType))
       setValue('issueDate', new Date(props.rowDataEdit?.issueDate));
       setValue('claimType', props.rowDataEdit?.category);
@@ -146,7 +145,6 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
     setShowLoader(true);
     let obj = {}
-    console.log(data.claimType);
 
     switch (data.claimType) {
       case 'UPON_REQUEST':

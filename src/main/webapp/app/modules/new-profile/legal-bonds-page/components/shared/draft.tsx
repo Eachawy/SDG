@@ -46,7 +46,6 @@ const Draft = (props) => {
 
   useEffect(() => {
     if (props.rowDataEdit?.id) {
-      console.log(props.rowDataEdit);
       setValue('draftIssueDate', new Date(props.rowDataEdit?.issueDate));
       setValue('draftDueDate', new Date(props.rowDataEdit?.dueDate))
       setValue('draftAmount', props.rowDataEdit?.totalAmount);

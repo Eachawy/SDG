@@ -72,7 +72,6 @@ const Cheque = (props) => {
 
   useEffect(() => {
     if (props.rowDataEdit?.id) {
-      console.log(props.rowDataEdit);
       if ($banksList?.length > 0) {
         setValue('cheuqeBank', {
           name: {

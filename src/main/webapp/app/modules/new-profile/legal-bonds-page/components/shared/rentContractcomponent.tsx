@@ -44,7 +44,6 @@ const RentContract = (props) => {
 
   useEffect(() => {
     if (props.rowDataEdit?.id) {
-      console.log(props.rowDataEdit)
       setValue('schedulingType', 'manualScheduling');
       setValue('paymentType', props.rowDataEdit?.paymentPeriod);
       for (let i = 0; i < props.rowDataEdit.paymentSchedules.length; i++) {
