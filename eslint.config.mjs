@@ -82,6 +82,7 @@ export default tseslint.config(
       "prettier/prettier": "off",
       "no-unused-vars": "off",
       "no-constant-binary-expression": "off",
+      "react/no-unescaped-entities":"off",
 
       "no-new-wrappers": "error",
       "no-eval": "error",
