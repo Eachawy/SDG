@@ -14,6 +14,7 @@ import { CurrencyList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { addLegalBond } from "../legalBonds.reducer";
 import _ from 'lodash';
+import { setInitAttachFile } from "app/shared/util/utils";
 
 const AccountStatement = (props) => {
 
@@ -151,6 +152,7 @@ const AccountStatement = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("accountStatAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[0])}
                 />
               </div>
             </div>

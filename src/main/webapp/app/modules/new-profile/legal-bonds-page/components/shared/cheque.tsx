@@ -22,6 +22,7 @@ import { addLegalBond, getAllBanks } from "../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import _ from 'lodash'
+import { setInitAttachFile } from "app/shared/util/utils";
 
 const Cheque = (props) => {
   const dispatch = useAppDispatch();
@@ -71,6 +72,10 @@ const Cheque = (props) => {
   }
 
   useEffect(() => {
+    handelEditMode();
+  }, [props.rowDataEdit, setValue, $banksList]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       if ($banksList?.length > 0) {
         setValue('cheuqeBank', {
@@ -95,7 +100,7 @@ const Cheque = (props) => {
       if (props.rowDataEdit?.legalBondParticipant?.length > 0) {
         setValue('firstBeneficiary', { name: { ar: "مستفيد اول", en: "First Beneficiary" }, code: "FB" });
         setValue('firstBeneficiaryName', props.rowDataEdit.chequeBeneficiaries[0]?.name);
-        for (let i = 0; i < props.rowDataEdit.legalBondParticipant.length; i++) {
+        for (let i = 0; i < props.rowDataEdit.legalBondParticipant?.length; i++) {
           const x = props.rowDataEdit.legalBondParticipant[i];
           if (i !== 0) {
             addNewRow()
@@ -106,7 +111,7 @@ const Cheque = (props) => {
         }
       } else {
         setValue('firstBeneficiary', { name: { ar: "مجير له", en: "Authorized Party" }, code: "AP" });
-        for (let i = 0; i < props.rowDataEdit.chequeBeneficiaries.length; i++) {
+        for (let i = 0; i < props.rowDataEdit.chequeBeneficiaries?.length; i++) {
           const x = props.rowDataEdit.chequeBeneficiaries[i];
           if (i !== 0) {
             addNewRow()
@@ -117,7 +122,7 @@ const Cheque = (props) => {
         }
       }
     }
-  }, [props.rowDataEdit, setValue, $banksList]);
+  }
 
   // Array of rows on Extra Participants
   const { fields, append, remove } = useFieldArray({
@@ -132,12 +137,7 @@ const Cheque = (props) => {
   const removeRow = (index) => {
     remove(index);
   };
-
   // End Array Configuration
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
-  };
 
   const addChequeFn = async (data: any) => {
     setShowLoader(true);
@@ -298,7 +298,8 @@ const Cheque = (props) => {
                 inputId="isChequeStamped-id"
                 checked={isChequeStamped}
                 onChange={(e) => {
-                  setIsChequeStamped(e.value)}
+                  setIsChequeStamped(e.value)
+                }
                 }
               />
 
@@ -459,6 +460,7 @@ const Cheque = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("chequeFrontAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[0])}
                 />
               </div>
               <div className="row">
@@ -473,12 +475,13 @@ const Cheque = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("chequeBackAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[1])}
                 />
               </div>
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>
                 {props.rowDataEdit?.id ? 'تعديل الشيك' : 'إضافة شيك'}
               </ButtonComponent>

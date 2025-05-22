@@ -24,7 +24,7 @@ const DefendantInfoComponent = (props) => {
 
   useEffect(() => {
     setCollectionFile(props.fileResponse?.collectionFile);
-    if (props.fileResponse?.collectionFile?.bonds.length > 0) {
+    if (props.fileResponse?.collectionFile?.bonds?.length > 0) {
       const writtenTrustBondsList = props.fileResponse?.collectionFile?.bonds.filter(item => {
         return (item.bondType === 'WRITTEN_CONSENT' || item.bondType === 'TRUST_BOND')
       })
@@ -69,7 +69,7 @@ const DefendantInfoComponent = (props) => {
     let obj: any = {}
     switch (activeTab) {
       case 'cheques':
-        if (collectionFile?.cheques.length > 0) {
+        if (collectionFile?.cheques?.length > 0) {
           obj = {
             type: "CHEQUE",
             ids: collectionFile?.cheques.map(item => item.id)
@@ -77,7 +77,7 @@ const DefendantInfoComponent = (props) => {
         }
         break;
       case 'drafts':
-        if (collectionFile?.drafts.length > 0) {
+        if (collectionFile?.drafts?.length > 0) {
           obj = {
             type: "DRAFT",
             ids: collectionFile?.drafts.map(item => item.id)
@@ -85,7 +85,7 @@ const DefendantInfoComponent = (props) => {
         }
         break;
       case 'invoice':
-        if (collectionFile?.invoices.length > 0) {
+        if (collectionFile?.invoices?.length > 0) {
           obj = {
             type: "INVOICE",
             ids: collectionFile?.invoices.map(item => item.id)
@@ -93,7 +93,7 @@ const DefendantInfoComponent = (props) => {
         }
         break;
       case 'statement':
-        if (collectionFile?.accountStatements.length > 0) {
+        if (collectionFile?.accountStatements?.length > 0) {
           obj = {
             type: "ACCOUNT_STATEMENT",
             ids: collectionFile?.accountStatements.map(item => item.id)
@@ -101,7 +101,7 @@ const DefendantInfoComponent = (props) => {
         }
         break;
       case 'rentContract':
-        if (collectionFile?.rentContracts.length > 0) {
+        if (collectionFile?.rentContracts?.length > 0) {
           obj = {
             type: "RENT_CONTRACT",
             ids: collectionFile?.rentContracts.map(item => item.id)
@@ -109,7 +109,7 @@ const DefendantInfoComponent = (props) => {
         }
         break;
       case 'mortgage':
-        if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0) {
+        if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND')?.length > 0) {
           obj = {
             type: "MORTGAGE_BOND",
             ids: collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').map(item => item.id)
@@ -132,7 +132,7 @@ const DefendantInfoComponent = (props) => {
     const trustBondsList = collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND');
     const writtenConsentList = collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT');
 
-    if (trustBondsList.length > 0) {
+    if (trustBondsList?.length > 0) {
       const obj = {
         type: "TRUST_BOND",
         ids: trustBondsList.map(item => item.id)
@@ -140,14 +140,14 @@ const DefendantInfoComponent = (props) => {
       await dispatch(deleteLegalBond(obj));
     }
 
-    if (writtenConsentList.length > 0) {
+    if (writtenConsentList?.length > 0) {
       const obj = {
         type: "WRITTEN_CONSENT",
         ids: writtenConsentList.map(item => item.id)
       }
       setTimeout(async () => {
         await dispatch(deleteLegalBond(obj));
-      }, 100);
+      }, 500);
     }
 
     setShowLoader(false);
@@ -245,11 +245,11 @@ const DefendantInfoComponent = (props) => {
 
       {activeTab === "writtenTrustBonds" ?
         (collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
-        && <WrittenTrustBondTableComponent 
-              writtenTrustBondsList={writtenTrustBonds} 
-              deleteIdDoneFn={() => props.deleteIsDone()} 
-              editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
-            /> 
+        && <WrittenTrustBondTableComponent
+          writtenTrustBondsList={writtenTrustBonds}
+          deleteIdDoneFn={() => props.deleteIsDone()}
+          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+        />
         : null}
 
       {activeTab === "mortgage" ?

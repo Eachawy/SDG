@@ -73,7 +73,7 @@ const RentTableComponent = (props) => {
   }
 
   const renderPayments = (rowData) => {
-    const numberOfPayments = rowData.paymentSchedules.length;
+    const numberOfPayments = rowData.paymentSchedules?.length;
     const totalAmount = rowData.paymentSchedules.reduce((sum, payment) => sum + payment.amount, 0);
     return (
       <div className="action-column NFBList"
@@ -134,7 +134,7 @@ const RentTableComponent = (props) => {
                 <div>
                   <div className="fileCardList">
 
-                    {rowData.attachments.length > 0 && rowData.attachments.map((i, index) => (
+                    {rowData.attachments?.length > 0 && rowData.attachments.map((i, index) => (
                       <div key={index} onClick={() => {
                         setSelectedAttachmentCard(index)
                         setSelectedAttachmentFilePath(i.content)

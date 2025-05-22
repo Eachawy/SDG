@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { countryCode } from "./date-utils";
+import { toast } from "react-toastify";
 
 export const IsJsonString = str => {
   try {
@@ -49,11 +50,45 @@ export const getFileType = (base64String) => {
   return match ? match[1] : 'Unknown';
 };
 
-export const removeCountryCode = (mobileNum: any)=>{
+export const removeCountryCode = (mobileNum: any) => {
   return String(mobileNum).substring(3, mobileNum.length)
 }
 
-export const getCountryCodeObj = (mobileNum:any)=>{
+export const getCountryCodeObj = (mobileNum: any) => {
   const code = String(mobileNum).substring(0, 3);
   return _.find(countryCode, (item) => item.name === ('+' + code))
+}
+
+
+export const setInitAttachFile = (attach: any) => {
+  if (attach) {
+    const data = {
+      ...attach,
+      base64: attach?.content
+    }
+    return data;
+  }
+  return undefined;
+}
+
+export const pushNotification = (type: string, message: string) => {
+  // success
+  switch (type) {
+    case 'success':
+      toast.success(message);
+      break;
+    case 'error':
+      toast.error(message);
+      break;
+    case 'warning':
+      toast.warning(message);
+      break;
+    case 'info':
+      toast.info(message);
+      break;
+
+      
+    default:
+      break;
+  }
 }

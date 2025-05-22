@@ -11,10 +11,14 @@
     flex-direction: row;
     align-items: baseline;
     padding-top: 60px;
+    display: block !important;
   }
   
   .toastifyMessage {
     margin: 0 20%;
+    display: flex;
+    width: 60%;
+    margin-bottom: 12px !important;
   
     .Toastify__close-button {
         right: 15px;

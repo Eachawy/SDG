@@ -89,7 +89,10 @@ const CompanySubFileData = (props) => {
             options={FileTypes}
             optionLabel={`name.${$lang === "en" ? "en" : "ar"}`}
             errors={props.errors}
-            onChange={e => props.setValue("fileType", e.value as object)}
+            onChange={e => {
+              props.reset();
+              props.setValue("fileType", e.value as object)
+            }}
             placeholder={translate("selectFileType.fileTypePlaceholder")}
             rules={{ required: "You must select the file type." }}
             label={translate("selectFileType.fileTypeSelection")}

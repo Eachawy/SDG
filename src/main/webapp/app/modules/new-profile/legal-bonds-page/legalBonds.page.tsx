@@ -1,16 +1,17 @@
 import CreateNewProfileStepsComponent from "app/modules/new-profile/createNewProfileStepsComponent/createNewProfileSteps.component";
 import BreadcrumbComponent from "app/shared/components/breadcrumbs.Component/breadcrumb.component";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { useForm } from "react-hook-form";
 import { Storage, translate } from "react-jhipster";
 import LegalBonds from "./components/legalBonds.component";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "app/config/store";
+import { pushNotification } from "app/shared/util/utils";
 
 
 const LegalBondsPage = () => {
-
+    const [fileRespone, setFileResponse] = useState(null)
     const {
         register,
         handleSubmit,
@@ -24,13 +25,19 @@ const LegalBondsPage = () => {
 
     const navigate = useNavigate();
 
-    const saveAndCloseFn = (data) => {
-        console.log(data);
+    const saveAndCloseFn = (data:any) => {
+        if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
+            navigate("/dashoard");
+        } else {
+            pushNotification("error", "Please add Legal bond");
+        }
     }
 
-    const nextFn = (data) => {
-        if (data !== null) {
+    const nextFn = (data:any) => {
+        if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
             navigate("/create-file/determine-responsibility-and-follow-up");
+        } else {
+            pushNotification("error", "Please add Legal bond");
         }
     };
 
@@ -65,7 +72,7 @@ const LegalBondsPage = () => {
                 <CreateNewProfileStepsComponent step={2} />
                 <div className="sdg_page ">
                     <label className="serialNoSubNo">{translate("createNewProfile.serial")} <span>{`${$masterFile?.fileNumber}`}</span></label>
-                    <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                    <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => setFileResponse(obj)} />
 
                     <div className="actionBtns">
                         <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>

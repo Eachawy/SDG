@@ -4,6 +4,7 @@ import { Storage, translate } from "react-jhipster";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from "app/config/store";
 import { reset } from 'app/modules/new-profile/create-new-file/createNewProfile.reducer';
+import { pushNotification } from 'app/shared/util/utils';
 
 const MainDashboardPage = () => {
 
@@ -11,13 +12,17 @@ const MainDashboardPage = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        resetAndClearSeasion();
+    }, []);
+
+    const resetAndClearSeasion = () => {
         dispatch(reset());
         Storage.session.remove('masterFile');
         Storage.session.remove('selectFileId');
         Storage.session.remove('collectionFileId');
         Storage.session.remove('applicantName');
         Storage.session.remove('isCompany');
-    }, [])
+    }
 
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');

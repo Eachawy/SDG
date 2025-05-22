@@ -22,7 +22,7 @@ const SelectFileTypePage = () => {
     const [isSaveClose, setIsSaveClose] = useState(false);
     const [date, setDate] = useState(Date);
 
-    const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: "onTouched" });
+    const { register, handleSubmit, formState: { errors }, reset, watch, setValue, getValues } = useForm({ mode: "onTouched" });
 
     const $masterFile = useAppSelector(state => state.createProfile.masterFile) ?? Storage.session.get('masterFile');
     const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
@@ -39,7 +39,7 @@ const SelectFileTypePage = () => {
                 if ($createFileResponse?.fileType === "COLLECTION" && $createFileResponse?.collectionFile?.id) {
                     Storage.session.set("collectionFileId", $createFileResponse?.collectionFile?.id);
                     navigate("/create-file/legal-bonds");
-                }else{
+                } else {
                     navigate("/create-file/determine-responsibility-and-follow-up");
                 }
             }
@@ -217,7 +217,7 @@ const SelectFileTypePage = () => {
 
             <div className="sdg_page">
                 <label className="serialNoSubNo">{translate("createNewProfile.serial")} <span>{`${$masterFile?.fileNumber}`}</span></label>
-                <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} />
+                <CompanySubFileData register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} reset={reset} />
 
                 {(watch('fileType')?.code === "URGENT_REQUEST" ||
                     (watch('fileType')?.code === "COURT_CASE" && watch('opponentCategory')) ||

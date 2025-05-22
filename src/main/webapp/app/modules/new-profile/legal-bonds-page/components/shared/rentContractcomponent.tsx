@@ -21,6 +21,7 @@ import { addLegalBond } from "../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import _ from 'lodash';
+import { setInitAttachFile } from "app/shared/util/utils";
 
 const RentContract = (props) => {
   const dispatch = useAppDispatch();
@@ -46,7 +47,7 @@ const RentContract = (props) => {
     if (props.rowDataEdit?.id) {
       setValue('schedulingType', 'manualScheduling');
       setValue('paymentType', props.rowDataEdit?.paymentPeriod);
-      for (let i = 0; i < props.rowDataEdit.paymentSchedules.length; i++) {
+      for (let i = 0; i < props.rowDataEdit.paymentSchedules?.length; i++) {
         const x = props.rowDataEdit.paymentSchedules[i];
         addingScheduledRow({
           addingDate: "", // placeholder to create the row
@@ -129,7 +130,7 @@ const RentContract = (props) => {
     }
     setShowLoader(true);
 
-    const schedulingFormatted = data.schedulingList.length > 0 && data.schedulingList.map((item: any) => {
+    const schedulingFormatted = data.schedulingList?.length > 0 && data.schedulingList.map((item: any) => {
       return {
         paymentDate: dayjs(item.addingDate).format('YYYY-MM-DD'),
         amount: Number(item.totalAmount),
@@ -137,7 +138,7 @@ const RentContract = (props) => {
       }
     });
 
-    const autoSchedulingFormatted = data.autoSchedulingList.length > 0 && data.autoSchedulingList.map((item: any) => {
+    const autoSchedulingFormatted = data.autoSchedulingList?.length > 0 && data.autoSchedulingList.map((item: any) => {
       return {
         paymentDate: dayjs(item.addingDate).format('YYYY-MM-DD'),
         amount: Number(item.totalAmount),
@@ -522,6 +523,7 @@ const RentContract = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("contractAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[0])}
                 />
               </div>
             </div>
