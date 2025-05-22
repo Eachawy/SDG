@@ -46,9 +46,9 @@ const WrittenAcknowledgmentTrustBond = (props) => {
         setValue('debtorsName', props.rowDataEdit?.deborName);
         setValue('WATBNationalNumber', props.rowDataEdit?.deborSsn);
 
-        if (props.rowDataEdit?.witnesses.length > 0) {
+        if (props.rowDataEdit?.witnesses?.length > 0) {
           setValue('WATBCheckBoxWitnesses', true);
-          for (let i = 0; i < props.rowDataEdit?.witnesses.length; i++) {
+          for (let i = 0; i < props.rowDataEdit?.witnesses?.length; i++) {
             const x = props.rowDataEdit?.witnesses[i];
             if (i !== 0) {
               addNewWitness()
@@ -60,8 +60,8 @@ const WrittenAcknowledgmentTrustBond = (props) => {
           }
         }
 
-        if(props.rowDataEdit?.paymentSchedules.length > 0){
-          for (let i = 0; i < props.rowDataEdit?.paymentSchedules.length; i++) {
+        if(props.rowDataEdit?.paymentSchedules?.length > 0){
+          for (let i = 0; i < props.rowDataEdit?.paymentSchedules?.length; i++) {
             const x = props.rowDataEdit?.paymentSchedules[i];
             if (i !== 0) {
               addingScheduled()
@@ -167,7 +167,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   };
 
   const restructureUponRequest = (data) => {
-    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+    const witnessesList: [] = data.witnesses?.length > 0 && data.witnesses.map((item: any) => {
       return {
         name: item.witnessName,
         ssn: Number(item.witnessesNationalNumber),
@@ -205,14 +205,14 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   }
 
   const restructureScheduled = (data) => {
-    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+    const witnessesList: [] = data.witnesses?.length > 0 && data.witnesses.map((item: any) => {
       return {
         name: item.witnessName,
         ssn: Number(item.witnessesNationalNumber),
       }
     });
 
-    const paymentSchedulesList: [] = data.scheduling.length > 0 && data.scheduling.map((item: any) => {
+    const paymentSchedulesList: [] = data.scheduling?.length > 0 && data.scheduling.map((item: any) => {
       return {
         paymentDate: dayjs(item.addingDate).format('YYYY-MM-DD'),
         amount: Number(item.totalAmount),
@@ -232,7 +232,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
         currency: data.scheduling[0]?.currency?.code,
         deborName: data.debtorsName,
         deborSsn: Number(data.WATBNationalNumber),
-        witnesses: witnessesList.length > 0 ? witnessesList : [],
+        witnesses: witnessesList?.length > 0 ? witnessesList : [],
         paymentSchedules: paymentSchedulesList.length > 0 ? paymentSchedulesList : [],
         attachments: [
           {
@@ -253,7 +253,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   }
 
   const restructureNonScheduled = (data) => {
-    const witnessesList: [] = data.witnesses.length > 0 && data.witnesses.map((item: any) => {
+    const witnessesList: [] = data.witnesses?.length > 0 && data.witnesses.map((item: any) => {
       return {
         name: item.witnessName,
         ssn: Number(item.witnessesNationalNumber),
@@ -271,7 +271,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
         currency: data.WATBCurrencyList?.code,
         deborName: data.debtorsName,
         deborSsn: Number(data.WATBNationalNumber),
-        witnesses: witnessesList.length > 0 ? witnessesList : [],
+        witnesses: witnessesList?.length > 0 ? witnessesList : [],
         dueDate: data.WATBdueDate ? dayjs(data.WATBdueDate).format('YYYY-MM-DD') : null,
         attachments: [
           {

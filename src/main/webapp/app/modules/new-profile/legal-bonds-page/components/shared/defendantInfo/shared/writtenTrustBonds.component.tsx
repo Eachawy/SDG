@@ -91,7 +91,7 @@ const WrittenTrustBondTableComponent = (props) => {
                 <div>
                   <div className="fileCardList">
 
-                    {rowData.attachments.length > 0 && rowData.attachments.map((i, index) => (
+                    {rowData.attachments?.length > 0 && rowData.attachments.map((i, index) => (
                       <div key={index} onClick={() => {
                         setSelectedAttachmentCard(index)
                         setSelectedAttachmentFilePath(i.content)

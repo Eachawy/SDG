@@ -95,7 +95,7 @@ const Cheque = (props) => {
       if (props.rowDataEdit?.legalBondParticipant?.length > 0) {
         setValue('firstBeneficiary', { name: { ar: "مستفيد اول", en: "First Beneficiary" }, code: "FB" });
         setValue('firstBeneficiaryName', props.rowDataEdit.chequeBeneficiaries[0]?.name);
-        for (let i = 0; i < props.rowDataEdit.legalBondParticipant.length; i++) {
+        for (let i = 0; i < props.rowDataEdit.legalBondParticipant?.length; i++) {
           const x = props.rowDataEdit.legalBondParticipant[i];
           if (i !== 0) {
             addNewRow()
@@ -106,7 +106,7 @@ const Cheque = (props) => {
         }
       } else {
         setValue('firstBeneficiary', { name: { ar: "مجير له", en: "Authorized Party" }, code: "AP" });
-        for (let i = 0; i < props.rowDataEdit.chequeBeneficiaries.length; i++) {
+        for (let i = 0; i < props.rowDataEdit.chequeBeneficiaries?.length; i++) {
           const x = props.rowDataEdit.chequeBeneficiaries[i];
           if (i !== 0) {
             addNewRow()

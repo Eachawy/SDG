@@ -53,11 +53,11 @@ const Draft = (props) => {
       const debotersList = props.rowDataEdit?.legalBondParticipant.filter(item => item.type === 'DEBTOR_NAME');
       const guarantorsList = props.rowDataEdit?.legalBondParticipant.filter(item => item.type === 'DRAFT_GUARANTOR');
 
-      if (guarantorsList.length > 0) {
+      if (guarantorsList?.length > 0) {
         setValue('promissoryNoteGuarantorCheckBox', true)
       }
 
-      if (debotersList.length > 0) {
+      if (debotersList?.length > 0) {
         for (let i = 0; i < debotersList.length; i++) {
           const x = debotersList[i];
           if (i !== 0) {
@@ -71,7 +71,7 @@ const Draft = (props) => {
         }
       }
 
-      if (guarantorsList.length > 0) {
+      if (guarantorsList?.length > 0) {
         for (let i = 0; i < guarantorsList.length; i++) {
           const x = guarantorsList[i];
           if (i !== 0) {
