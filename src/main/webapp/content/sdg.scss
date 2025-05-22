@@ -2680,6 +2680,13 @@ body,
   }
 }
 
+.fix_UI {
+  width: calc(50% - 16px) !important;
+  margin-bottom: 1.5rem !important;
+  .ammountDiv {
+    width: 100% !important;
+  }
+}
 // .GCDropDownComponent{
 //   margin-top: -5px !important;
 // }

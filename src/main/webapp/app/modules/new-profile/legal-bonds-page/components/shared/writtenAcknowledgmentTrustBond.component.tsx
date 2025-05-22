@@ -397,7 +397,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
             {watch('claimType') && (
               <>
                 {(watch('claimType') === 'UPON_REQUEST' || watch('claimType') === 'NON_SCHEDULED') && (
-                  <div className="w-100">
+                  <div className={watch('claimType') === 'NON_SCHEDULED' ? 'fix_UI':'w-100'} >
                     <div className="ammountDiv row">
                       <InputComponent
                         id="WATBAmount-id"
