@@ -147,7 +147,7 @@ const DefendantInfoComponent = (props) => {
       }
       setTimeout(async () => {
         await dispatch(deleteLegalBond(obj));
-      }, 100);
+      }, 500);
     }
 
     setShowLoader(false);
@@ -245,11 +245,11 @@ const DefendantInfoComponent = (props) => {
 
       {activeTab === "writtenTrustBonds" ?
         (collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
-        && <WrittenTrustBondTableComponent 
-              writtenTrustBondsList={writtenTrustBonds} 
-              deleteIdDoneFn={() => props.deleteIsDone()} 
-              editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
-            /> 
+        && <WrittenTrustBondTableComponent
+          writtenTrustBondsList={writtenTrustBonds}
+          deleteIdDoneFn={() => props.deleteIsDone()}
+          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+        />
         : null}
 
       {activeTab === "mortgage" ?
