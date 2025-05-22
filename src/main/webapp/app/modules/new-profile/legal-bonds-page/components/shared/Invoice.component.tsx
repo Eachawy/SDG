@@ -16,6 +16,7 @@ import LoaderComponent from "app/shared/components/loaderComponent/loaderCompone
 import dayjs from "dayjs";
 import { addLegalBond } from "../legalBonds.reducer";
 import _ from 'lodash';
+import { setInitAttachFile } from "app/shared/util/utils";
 
 const Invoice = (props) => {
   const dispatch = useAppDispatch();
@@ -169,6 +170,7 @@ const Invoice = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("invoiceAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[0])}
                 />
               </div>
             </div>

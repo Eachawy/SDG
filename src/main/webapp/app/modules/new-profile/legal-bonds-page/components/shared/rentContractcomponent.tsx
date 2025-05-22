@@ -21,6 +21,7 @@ import { addLegalBond } from "../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import _ from 'lodash';
+import { setInitAttachFile } from "app/shared/util/utils";
 
 const RentContract = (props) => {
   const dispatch = useAppDispatch();
@@ -522,6 +523,7 @@ const RentContract = (props) => {
                   setValueMethod={setValue}
                   attachList={(e) => setValue("contractAttach", e)}
                   Class="col-md-12 col-lg-6"
+                  initFile={setInitAttachFile(props.rowDataEdit?.attachments[0])}
                 />
               </div>
             </div>
