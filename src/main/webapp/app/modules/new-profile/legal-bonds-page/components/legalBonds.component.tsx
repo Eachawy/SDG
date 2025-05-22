@@ -46,6 +46,7 @@ const LegalBonds = (props) => {
     setValue("inputForm", "legalBonds");
     if ($fileDetailsResponse) {
       setFileResonse($fileDetailsResponse);
+      props.returnFileResponseFn($fileDetailsResponse);
     }
   }, [setValue, $fileDetailsResponse]);
 
