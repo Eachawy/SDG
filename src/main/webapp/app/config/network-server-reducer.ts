@@ -13,6 +13,12 @@ export const postVerifiedRequest = async (url, data) => {
   return response;
 }
 
+export const deleteVerifiedRequest = async (url, data) => {
+  const response = await axios.delete(url, {data});
+  return response;
+}
+
+
 // export function getParameterByKey(key: string) {
 //   const data = new Map(getSessionStorage(APP_PARAMETERS)).get(key);
 //   if (data) {

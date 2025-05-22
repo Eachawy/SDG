@@ -3,6 +3,9 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ButtonComponent } from '@eachawy/frontend-library';
 import { getFileSize, getFileType } from 'app/shared/util/utils';
+import { useAppDispatch, useAppSelector } from 'app/config/store';
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
+import { deleteLegalBond } from '../../../legalBonds.reducer';
 
 
 const ChequeTableComponent = (props) => {
@@ -17,6 +20,20 @@ const ChequeTableComponent = (props) => {
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
+  const [deleteID, setDeleteID] = useState<number | null>(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useAppDispatch();
+  const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
+
+  useEffect(() => {
+    if ($deleteLegalBondResponse?.status === 204) {
+      setDeleteID(null);
+      setShowDeletePopup(false);
+      props.deleteIdDoneFn();
+    }
+
+  }, [$deleteLegalBondResponse])
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -38,6 +55,14 @@ const ChequeTableComponent = (props) => {
     };
 
   }, []);
+
+  const beneficiaryBody = (rowData: any) => {
+    if (rowData?.legalBondParticipant?.length > 0) {
+      return <span>مستفيد أول</span>
+    } else {
+      return <span>مجير له</span>
+    }
+  }
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
@@ -114,33 +139,72 @@ const ChequeTableComponent = (props) => {
   }
 
   const beneficiaryInfoTemplateList = (rowData: any) => {
-    return (
-      <div className="action-column NFBList"
-        onClick={(e) => {
-          e.stopPropagation();
-          setBeneficiaryInfoListRowId(rowData.id);
-          setIsBeneficiaryInfoList(true)
-          setIsActionList(false);
-        }}
-      >
-        <div className="tdinnerDiv">
-          <span />
-          <p>{rowData.drawer}</p>
-        </div>
-        {beneficiaryInfoListRowId === rowData.id && isBeneficiaryInfoList && (
-          <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-
-            {rowData.bfList.map((b) => (
-              <div key={b.id} className={b.isBF && 'fb'}>
-                <p><label>{b.isBF ? 'اسم المستفيد' : 'اسم الساحب'}</label>{b.name}</p>
-                {b.isBF && <span>مستفيد أول</span>}
-              </div>
-            ))}
-
+    if (rowData?.legalBondParticipant?.length > 0) {
+      return (
+        <div className="action-column NFBList"
+          onClick={(e) => {
+            e.stopPropagation();
+            setBeneficiaryInfoListRowId(rowData.id);
+            setIsBeneficiaryInfoList(true)
+            setIsActionList(false);
+          }}
+        >
+          <div className="tdinnerDiv">
+            <span />
+            <p>{rowData?.chequeBeneficiaries[0]?.name + "/" + rowData?.legalBondParticipant[0]?.name}</p>
           </div>
-        )}
-      </div>
-    )
+          {beneficiaryInfoListRowId === rowData.id && isBeneficiaryInfoList && (
+            <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
+              <div className={'fb'}>
+                <p><label>اسم المستفيد</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
+                <span>مستفيد أول</span>
+              </div>
+              {rowData?.legalBondParticipant.map((b) => (
+
+                <div key={b.id}>
+                  <p><label>اسم الساحب</label>{b.name}</p>
+                </div>
+              ))}
+
+            </div>
+          )}
+        </div>
+      )
+    } else {
+      return (
+        <div className="action-column NFBList"
+          onClick={(e) => {
+            e.stopPropagation();
+            setBeneficiaryInfoListRowId(rowData.id);
+            setIsBeneficiaryInfoList(true)
+            setIsActionList(false);
+          }}
+        >
+          <div className="tdinnerDiv">
+            <span />
+            <p>{rowData?.chequeBeneficiaries[0]?.name + (rowData?.chequeBeneficiaries.length > 1 ? "/" + rowData?.chequeBeneficiaries[1].name : '')}</p>
+          </div>
+          {beneficiaryInfoListRowId === rowData.id && isBeneficiaryInfoList && (
+            <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
+              <div className={'fb'}>
+                <p><label>اسم المجير له</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
+                <span>مستفيد أول</span>
+              </div>
+              {rowData?.chequeBeneficiaries.map((b, index) => (
+                <>
+                  {index !== 0 && (
+                    <div key={b.id}>
+                      <p><label>اسم المجير له</label>{b.name}</p>
+                    </div>
+                  )}
+                </>
+              ))}
+
+            </div>
+          )}
+        </div>
+      )
+    }
   }
 
   const actionBodyTemplate = (rowData: any) => {
@@ -160,6 +224,7 @@ const ChequeTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('CHQ',rowData);
               }}
             >
               تعديل
@@ -167,7 +232,8 @@ const ChequeTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
+                setShowDeletePopup(true);
+                setDeleteID(rowData.id);
               }}
             >
               حذف
@@ -178,80 +244,88 @@ const ChequeTableComponent = (props) => {
     );
   };
 
-  const cancelActionFn = () => {
-    setShowDeletePopup(false)
+
+  const deleteFN = async () => {
+    setShowLoader(true);
+    const obj = {
+      type: "CHEQUE",
+      ids: [deleteID]
+    }
+    await dispatch(deleteLegalBond(obj));
+    setShowLoader(false);
   }
 
-  const deleteFN = () => { }
-
   return (
-    <div className="table-container">
-      <DataTable
-        value={props.chequesList}
-        selectionMode="multiple"
-        selection={selectedCheques}
-        onSelectionChange={onChangeSelection}
-        dataKey="id"
-        className="custom-table"
-        paginator
-        rows={5}
-      >
-        <Column selectionMode="multiple" header="" className="checkBoxCol" />
-        <Column field="bank" header="اسم البنك" className="columnStyle" />
-        <Column
-          field="chequeNumber"
-          header="رقم الشيك"
-          className="columnStyle"
-        />
-        <Column
-          field="totalAmount"
-          header="قيمة الشيك"
-          className="columnStyle"
-        />
-        <Column
-          field="dueDate"
-          header="تاريخ الاستحقاق"
-          className="columnStyle"
-        />
-        <Column
-          field="returnDate"
-          header="تاريخ الإعادة"
-          className="columnStyle"
-        />
-        <Column field="beneficiary" header="المستفيد" className="columnStyle" />
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="table-container">
+        <DataTable
+          value={props.chequesList}
+          selectionMode="multiple"
+          selection={selectedCheques}
+          onSelectionChange={onChangeSelection}
+          dataKey="id"
+          className="custom-table"
+          paginator
+          rows={5}
+        >
+          <Column selectionMode="multiple" header="" className="checkBoxCol" />
+          <Column field={`bank.${$lang === 'en' ? 'arabicName' : 'englishName'}`} header="اسم البنك" className="columnStyle" />
+          <Column
+            field="chequeNumber"
+            header="رقم الشيك"
+            className="columnStyle"
+          />
+          <Column
+            field="totalAmount"
+            header="قيمة الشيك"
+            className="columnStyle"
+          />
+          <Column
+            field="dueDate"
+            header="تاريخ الاستحقاق"
+            className="columnStyle"
+          />
+          <Column
+            field="returnDate"
+            header="تاريخ الإعادة"
+            className="columnStyle"
+          />
+          <Column field="beneficiary" header="المستفيد" className="columnStyle" body={beneficiaryBody} />
 
-        <Column
-          field="drawer"
-          header="اسم المستفيد / الساحب / مجير له"
-          className="columnStyle"
-          body={beneficiaryInfoTemplateList}
-        />
+          <Column
+            field="drawer"
+            header="اسم المستفيد / الساحب / مجير له"
+            className="columnStyle"
+            body={beneficiaryInfoTemplateList}
+          />
 
-        <Column body={attachmentTemplate}
-          header="الملاحظات"
-          className="columnStyle attachmentCol"
-        />
+          <Column body={attachmentTemplate}
+            header="الملاحظات"
+            className="columnStyle attachmentCol"
+          />
 
-        <Column body={actionBodyTemplate} className="columnStyle" />
-      </DataTable>
+          <Column body={actionBodyTemplate} className="columnStyle" />
+        </DataTable>
 
-      {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
+        {showDeletePopup && (
+          <div className='deletePopupContainer'>
+            <div className='dialogBoxContent'>
+              <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
+              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="actionRowBtns">
+                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
+                  لا اريد الحذف
+                </ButtonComponent>
+                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
+                  نعم اريد الحذف
+                </ButtonComponent>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

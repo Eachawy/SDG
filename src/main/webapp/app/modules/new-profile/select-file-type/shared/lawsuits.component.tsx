@@ -106,8 +106,6 @@ const Lawsuits = (props) => {
             optionLabel={`name.${$lang}`}
             onChange={(e) => props.setValue("court", e.value as object)}
             placeholder="اختر موقع المحكمة"
-            // errors={props.errors}
-            // rules={{ required: "يجب اختيار موقع المحكمة" }}
             className="col-md-6 mb-4"
           />
 
@@ -122,8 +120,6 @@ const Lawsuits = (props) => {
             optionLabel={`name.${$lang}`}
             onChange={(e) => props.setValue("judge", e.value as object)}
             placeholder="اختر اسم القاضي"
-            // errors={props.errors}
-            // rules={{ required: "يجب اختيارالقاضي" }}
             className="col-md-6 flex-1 mb-4"
           />
 
@@ -137,8 +133,6 @@ const Lawsuits = (props) => {
             setValueMethod={props.setValue}
             watch={props.watch}
             onChange={(e) => props.setValue("caseNumber", e.target.value)}
-            // errors={props.errors}
-            // rules={{ required: "يجب ادخال رقم القضية" }}
             className="col-md-6 flex-1 mb-4"
           />
 
@@ -147,9 +141,8 @@ const Lawsuits = (props) => {
             name="lawsuitsRecordDate"
             label={"تاريخ تسجيل القضية"}
             placeholder={"DD/MM/YYYY"}
+            dateFormat="dd/mm/yy"
             register={props.register}
-            // rules={{ required: "يجب اختيار تاريخ تسجيل القضية" }}
-            // errors={props.errors}
             setValueMethod={props.setValue}
             watch={props.watch}
             onChange={(e) => props.setValue("lawsuitsRecordDate", e.target.value)}
@@ -192,30 +185,6 @@ const Lawsuits = (props) => {
           <div className="uploaderContainer">
             <h4>{translate("createNewProfile.attachments")}</h4>
             <div className="row">
-              {/* <AttachmentFileComponent
-                id="lawsuitsAttach_1"
-                name="lawsuitsAttach_1"
-                lang={$lang}
-                register={props.register}
-                watch={props.watch}
-                // rules={{ required: 'يجب ادخال المىفقات' }}
-                // errors={props.errors}
-                setValueMethod={props.setValue}
-                attachList={(e) => props.setValue("lawsuitsAttach_1", e)}
-                Class="col-md-12 col-lg-6"
-              />
-              <AttachmentFileComponent
-                id="lawsuitsAttach_2"
-                name="lawsuitsAttach_2"
-                lang={$lang}
-                register={props.register}
-                watch={props.watch}
-                // rules={{ required: 'يجب ادخال المىفقات' }}
-                // errors={errors}
-                setValueMethod={props.setValue}
-                attachList={(e) => props.setValue("lawsuitsAttach_2", e)}
-                Class="col-md-12 col-lg-6"
-              /> */}
               <AttachmentMultiFilesComponent
                 name={"lawsuitsAttach"}
                 attachList={(e) => props.setValue("lawsuitsAttach", e)}

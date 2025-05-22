@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Cheque from "./shared/cheque";
-import DefendantInfoComponent from "./shared/defendantInfo/defendantInfo.component.tsx";
+import DefendantInfoComponent from "./shared/defendantInfo/defendantInfo.component";
 import Draft from "./shared/draft";
 import MortgageBond from "./shared/mortgageBond.component";
 import AccountStatement from "./shared/accountStatement.component";
@@ -22,6 +22,8 @@ const LegalBonds = (props) => {
   const [showlegalBondPopup, setShowlegalBondPopup] = useState(false);
   const [fileResponse, setFileResonse] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [rowDataEdit, setRowDataEdit] = useState(null);
+  const [rowDataType, setRowDataType] = useState(null);
 
   const dispatch = useAppDispatch();
 
@@ -30,7 +32,7 @@ const LegalBonds = (props) => {
   const $fileId = $createFileResponse?.id ?? Storage.session.get('selectFileId');
   const $fileDetailsResponse = useAppSelector(state => state.legalBonds.fileDetailsResponse);
 
-  const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: "onTouched" });
+  const { register, formState: { errors }, watch, setValue } = useForm({ mode: "onTouched" });
 
   useEffect(() => {
     dispatch(resetAddLegalBond());
@@ -49,6 +51,8 @@ const LegalBonds = (props) => {
 
   const closepopUpFn = (e) => {
     setShowlegalBondPopup(e);
+    setRowDataEdit(null);
+    setRowDataType(null);
     if (!e) {
       getFileDetailsFn();
     }
@@ -92,15 +96,64 @@ const LegalBonds = (props) => {
         )}
       </div>
 
-      {(watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) && <Cheque closepopUpFn={(e) => closepopUpFn(e)} />}
-      {(watch("legalBondsList")?.code === "PN" && showlegalBondPopup) && <Draft closepopUpFn={(e) => closepopUpFn(e)} />}
-      {/* {(watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) && <WrittenAcknowledgmentTrustBond closepopUpFn={closepopUpFn} />}
-      {(watch("legalBondsList")?.code === "LC" && showlegalBondPopup) && <RentContract closepopUpFn={closepopUpFn} />}*/}
-      {(watch("legalBondsList")?.code === "MB" && showlegalBondPopup) && <MortgageBond closepopUpFn={(e) => closepopUpFn(e)} />}
-      {(watch("legalBondsList")?.code === "AS" && showlegalBondPopup) && <AccountStatement closepopUpFn={(e) => closepopUpFn(e)} />}
-      {(watch("legalBondsList")?.code === "INV" && showlegalBondPopup) && <Invoice closepopUpFn={(e) => closepopUpFn(e)} />}
+      {((watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) || (rowDataType === 'CHQ')) &&
+        <Cheque 
+          closepopUpFn={(e) => closepopUpFn(e)} 
+          rowDataEdit={rowDataEdit}
+        />
+      }
 
-      <DefendantInfoComponent fileResponse={fileResponse} />
+      {((watch("legalBondsList")?.code === "DR" && showlegalBondPopup) || (rowDataType === 'DR')) &&
+        <Draft 
+          closepopUpFn={(e) => closepopUpFn(e)} 
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      {((watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) || (rowDataType === 'WTB')) &&
+        <WrittenAcknowledgmentTrustBond 
+          closepopUpFn={(e) => closepopUpFn(e)} 
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      {((watch("legalBondsList")?.code === "RC" && showlegalBondPopup) || (rowDataType === 'RC')) &&
+        <RentContract 
+          closepopUpFn={(e) => closepopUpFn(e)} 
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      {((watch("legalBondsList")?.code === "MB" && showlegalBondPopup) || (rowDataType === 'MB')) &&
+        <MortgageBond
+          closepopUpFn={(e) => closepopUpFn(e)}
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      {((watch("legalBondsList")?.code === "AS" && showlegalBondPopup) || (rowDataType === 'AS')) &&
+        <AccountStatement
+          closepopUpFn={(e) => closepopUpFn(e)}
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      {((watch("legalBondsList")?.code === "INV" && showlegalBondPopup) || (rowDataType === 'INV')) &&
+        <Invoice
+          closepopUpFn={(e) => closepopUpFn(e)}
+          rowDataEdit={rowDataEdit}
+        />
+      }
+
+      <DefendantInfoComponent
+        fileResponse={fileResponse}
+        deleteIsDone={() => getFileDetailsFn()}
+        editRecordData={(type, obj) => {
+          setRowDataType(type);
+          setRowDataEdit(obj);
+        }}
+      />
+
       <LoaderComponent show={showLoader} />
     </div>
   );

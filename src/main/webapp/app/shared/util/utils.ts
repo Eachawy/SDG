@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { countryCode } from "./date-utils";
 
 export const IsJsonString = str => {
   try {
@@ -47,3 +48,12 @@ export const getFileType = (base64String) => {
   const match = base64String.match(/^data:(.+?);base64,/);
   return match ? match[1] : 'Unknown';
 };
+
+export const removeCountryCode = (mobileNum: any)=>{
+  return String(mobileNum).substring(3, mobileNum.length)
+}
+
+export const getCountryCodeObj = (mobileNum:any)=>{
+  const code = String(mobileNum).substring(0, 3);
+  return _.find(countryCode, (item) => item.name === ('+' + code))
+}

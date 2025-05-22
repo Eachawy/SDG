@@ -13,6 +13,7 @@ import {
 import { CurrencyList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { addLegalBond } from "../legalBonds.reducer";
+import _ from 'lodash';
 
 const AccountStatement = (props) => {
 
@@ -27,13 +28,21 @@ const AccountStatement = (props) => {
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch, } = useForm({ mode: "onTouched" });
 
   useEffect(() => {
-      setValue("inputForm", "legalBonds");
-  
-      if ($addLegalBondResponse?.id) {
-        props.closepopUpFn(false);
-      }
-  
-    }, [setValue, $addLegalBondResponse]);
+    setValue("inputForm", "legalBonds");
+
+    if ($addLegalBondResponse?.id) {
+      props.closepopUpFn(false);
+    }
+
+  }, [setValue, $addLegalBondResponse]);
+
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      setValue('accountStatNumber', props.rowDataEdit?.accountNumber);
+      setValue('accountStatAmount', props.rowDataEdit?.totalAmount);
+      setValue('accountStatCurrency', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
+    }
+  }, [props, setValue]);
 
 
   const cancelFn = () => {
@@ -42,27 +51,28 @@ const AccountStatement = (props) => {
 
   const addAccountStatFn = async (data: any) => {
     setShowLoader(true);
-    
-        const obj = {
-          collectionFileId: $collectionFileId,
-          accountStatement: {
-            accountNumber: Number(data.accountStatNumber),
-            totalAmount: Number(data.accountStatAmount),
-            currency: data.accountStatCurrency?.code,
-            attachments: [
-              {
-                attachmentType: "ACCOUNT_STATEMENT",
-                name: data.accountStatAttach?.name,
-                content: data.accountStatAttach?.base64,
-                mimeType: "PDF"
-              }
-            ]
+
+    const obj = {
+      collectionFileId: $collectionFileId,
+      accountStatement: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
+        accountNumber: Number(data.accountStatNumber),
+        totalAmount: Number(data.accountStatAmount),
+        currency: data.accountStatCurrency?.code,
+        attachments: [
+          {
+            attachmentType: "ACCOUNT_STATEMENT",
+            name: data.accountStatAttach?.name,
+            content: data.accountStatAttach?.base64,
+            mimeType: "PDF"
           }
-        }
-    
-        // Call API
-        await dispatch(addLegalBond(obj));
-        setShowLoader(false);
+        ]
+      }
+    }
+
+    // Call API
+    await dispatch(addLegalBond(obj));
+    setShowLoader(false);
   };
 
   return (
@@ -86,7 +96,7 @@ const AccountStatement = (props) => {
                 const numericValue = e.target.value.replace(/[^0-9]/g, "");
                 setValue("accountStatNumber", numericValue);
               }}
-              value={watch("accountStatementNationalNo")}
+              // value={watch("accountStatNumber")}
               label="رقم كشف الحساب"
               className="col-md-6"
               rules={{ required: "يجب ادخال رقم كشف الحساب" }}
@@ -148,7 +158,9 @@ const AccountStatement = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addAccountStatFn)}>إضافة كشف حساب</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addAccountStatFn)}> 
+                {props.rowDataEdit?.id ? 'تعديل كشف حساب' : 'إضافة كشف حساب'}
+              </ButtonComponent>
             </div>
           </div>
         </div>

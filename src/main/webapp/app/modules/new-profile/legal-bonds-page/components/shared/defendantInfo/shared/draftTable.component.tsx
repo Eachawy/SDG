@@ -3,6 +3,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { getFileSize, getFileType } from "app/shared/util/utils";
+import { deleteLegalBond } from "../../../legalBonds.reducer";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import { useAppDispatch, useAppSelector } from "app/config/store";
 
 const DraftTableComponent = (props) => {
 
@@ -19,6 +22,19 @@ const DraftTableComponent = (props) => {
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
+  const [deleteID, setDeleteID] = useState<number | null>(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useAppDispatch();
+  const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
+
+  useEffect(() => {
+    if ($deleteLegalBondResponse?.status === 204) {
+      setDeleteID(null);
+      setShowDeletePopup(false);
+      props.deleteIdDoneFn();
+    }
+
+  }, [$deleteLegalBondResponse])
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -44,7 +60,6 @@ const DraftTableComponent = (props) => {
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
-      console.log("Closing popup, previous state:", prev);
       return false;
     });
   };
@@ -162,7 +177,7 @@ const DraftTableComponent = (props) => {
       >
         <div className="tdinnerDiv">
           <span className={`${!(guarantorsList.length > 0) && "hideIcon"}`} />
-          <p>{guarantorsList.length > 0 ? guarantorsList[0].name +  (guarantorsList.length > 1 ? "/" + guarantorsList[1].name : '') : "لا يوجد كفيل"}</p>
+          <p>{guarantorsList.length > 0 ? guarantorsList[0].name + (guarantorsList.length > 1 ? "/" + guarantorsList[1].name : '') : "لا يوجد كفيل"}</p>
         </div>
         {guarantorNameInfoListRowId === rowData.id && isGuarantorInfoList && (
           <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
@@ -196,6 +211,7 @@ const DraftTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('DR',rowData);
               }}
             >
               تعديل
@@ -203,7 +219,8 @@ const DraftTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
+                setShowDeletePopup(true);
+                setDeleteID(rowData.id);
               }}
             >
               حذف
@@ -214,82 +231,90 @@ const DraftTableComponent = (props) => {
     );
   };
 
-  const cancelActionFn = () => {
-    setShowDeletePopup(false)
+  const deleteFN = async () => {
+    setShowLoader(true);
+    const obj = {
+      type: "DRAFT",
+      ids: [deleteID]
+    }
+    await dispatch(deleteLegalBond(obj));
+    setShowLoader(false);
   }
-  const deleteFN = () => { }
 
 
   return (
-    <div className="table-container">
-      <DataTable
-        value={props.draftsList}
-        selectionMode="multiple"
-        selection={selectedCheques}
-        onSelectionChange={onChangeSelection}
-        dataKey="id"
-        className="custom-table"
-        paginator
-        rows={5}
-      >
-        <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="table-container">
+        <DataTable
+          value={props.draftsList}
+          selectionMode="multiple"
+          selection={selectedCheques}
+          onSelectionChange={onChangeSelection}
+          dataKey="id"
+          className="custom-table"
+          paginator
+          rows={5}
+        >
+          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
-        <Column
-          body={debtorNameTemplate}
-          header="اسم المدين"
-          className="columnStyle debtorNameList" />
+          <Column
+            body={debtorNameTemplate}
+            header="اسم المدين"
+            className="columnStyle debtorNameList" />
 
-        <Column
-          field="issueDate"
-          header="تاريخ الإصدار"
-          className="columnStyle"
-        />
+          <Column
+            field="issueDate"
+            header="تاريخ الإصدار"
+            className="columnStyle"
+          />
 
-        <Column
-          field="dueDate"
-          header="تاريخ الاستحقاق"
-          className="columnStyle"
-        />
+          <Column
+            field="dueDate"
+            header="تاريخ الاستحقاق"
+            className="columnStyle"
+          />
 
-        <Column
-          field="totalAmount"
-          header="اجمالي الملغ"
-          className="columnStyle"
-        />
+          <Column
+            field="totalAmount"
+            header="اجمالي المبلغ"
+            className="columnStyle"
+          />
 
-        <Column
-          field="guarantors"
-          header="الكفلاء"
-          className="columnStyle debtorNameList"
-          body={guarantorsTemplateList}
-        />
+          <Column
+            field="guarantors"
+            header="الكفلاء"
+            className="columnStyle debtorNameList"
+            body={guarantorsTemplateList}
+          />
 
-        <Column body={attachmentTemplate}
-          header="المرفقات"
-          className="columnStyle attachmentCol"
-        />
+          <Column body={attachmentTemplate}
+            header="المرفقات"
+            className="columnStyle attachmentCol"
+          />
 
-        <Column body={actionBodyTemplate} className="columnStyle" />
-      </DataTable>
+          <Column body={actionBodyTemplate} className="columnStyle" />
+        </DataTable>
 
 
-      {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
+        {showDeletePopup && (
+          <div className='deletePopupContainer'>
+            <div className='dialogBoxContent'>
+              <h4>هل أنت متأكد أنك تريد حذف بيانات الكمبياة</h4>
+              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الكمبيالة ولا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="actionRowBtns">
+                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
+                  لا اريد الحذف
+                </ButtonComponent>
+                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
+                  نعم اريد الحذف
+                </ButtonComponent>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -104,10 +104,8 @@ const UrgentRequest = (props) => {
           setValueMethod={props.setValue}
           options={allCourts}
           optionLabel={`name.${$lang}`}
-          // errors={props.errors}
           onChange={(e) => props.setValue("court", e.value as object)}
           placeholder="اختر موقع المحكمة"
-          // rules={{ required: "يجب اختيار موقع المحكمة" }}
           className="col-md-6 mb-4"
         />
 
@@ -122,8 +120,6 @@ const UrgentRequest = (props) => {
           optionLabel={`name.${$lang}`}
           onChange={(e) => props.setValue("judge", e.value as object)}
           placeholder="ادخل اسم القاضي"
-          // errors={props.errors}
-          // rules={{ required: "يجب اختيار اسم القاضي" }}
           className="col-md-6 mb-4"
         />
 
@@ -137,19 +133,16 @@ const UrgentRequest = (props) => {
           setValueMethod={props.setValue}
           watch={props.watch}
           onChange={(e) => props.setValue("requestNumber", e.target.value)}
-          // errors={props.errors}
-          // rules={{ required: "يجب ادخال رقم الطلب" }}
           className="col-md-6 flex-1 mb-4"
         />
 
         <DatePickerComponent
           id="urgentRequestRecordDate"
           name="urgentRequestRecordDate"
+          dateFormat="dd/mm/yy"
           label={"تاريخ تسجيل الطلب"}
           placeholder={"DD/MM/YYYY"}
           register={props.register}
-          // rules={{ required: "You must select urgent request record date" }}
-          // errors={props.errors}
           setValueMethod={props.setValue}
           watch={props.watch}
           onChange={(e) => props.setValue("urgentRequestRecordDate", e.target.value)}
@@ -192,30 +185,6 @@ const UrgentRequest = (props) => {
         <div className="uploaderContainer">
           <h4>{translate("createNewProfile.attachments")}</h4>
           <div className="row">
-            {/* <AttachmentFileComponent
-              id="urgentCaseAttach_1"
-              name="urgentCaseAttach_1"
-              lang={$lang}
-              register={props.register}
-              watch={props.watch}
-              // rules={{ required: 'يجب ادخال المىفقات' }}
-              // errors={props.errors}
-              setValueMethod={props.setValue}
-              attachList={(e) => props.setValue("urgentCaseAttach_1", e)}
-              Class="col-md-12 col-lg-6"
-            />
-            <AttachmentFileComponent
-              id="urgentCaseAttach_2"
-              name="urgentCaseAttach_2"
-              lang={$lang}
-              register={props.register}
-              watch={props.watch}
-              // rules={{ required: 'يجب ادخال المىفقات' }}
-              // errors={errors}
-              setValueMethod={props.setValue}
-              attachList={(e) => props.setValue("urgentCaseAttach_2", e)}
-              Class="col-md-12 col-lg-6"
-            /> */}
             <AttachmentMultiFilesComponent
               name={"urgentCaseAttach"}
               attachList={(e) => props.setValue("urgentCaseAttach", e)}

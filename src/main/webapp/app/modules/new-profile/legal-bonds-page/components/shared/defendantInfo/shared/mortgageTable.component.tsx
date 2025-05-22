@@ -3,6 +3,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { getFileSize, getFileType } from "app/shared/util/utils";
+import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import { useAppDispatch, useAppSelector } from "app/config/store";
+import { deleteLegalBond } from "../../../legalBonds.reducer";
 
 const MortgageTableComponent = (props) => {
 
@@ -15,6 +18,19 @@ const MortgageTableComponent = (props) => {
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
+  const [deleteID, setDeleteID] = useState<number | null>(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useAppDispatch();
+  const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
+
+  useEffect(() => {
+    if ($deleteLegalBondResponse?.status === 204) {
+      setDeleteID(null);
+      setShowDeletePopup(false);
+      props.deleteIdDoneFn();
+    }
+
+  }, [$deleteLegalBondResponse])
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
@@ -36,7 +52,6 @@ const MortgageTableComponent = (props) => {
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
-      console.log("Closing popup, previous state:", prev);
       return false;
     });
   };
@@ -122,6 +137,7 @@ const MortgageTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
+                props.editRecordDataFN('MB',rowData);
               }}
             >
               تعديل
@@ -129,7 +145,8 @@ const MortgageTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                setShowDeletePopup(true)
+                setShowDeletePopup(true);
+                setDeleteID(rowData.id);
               }}
             >
               حذف
@@ -140,79 +157,87 @@ const MortgageTableComponent = (props) => {
     );
   };
 
-  const cancelActionFn = () => {
-    setShowDeletePopup(false)
+  const deleteFN = async () => {
+    setShowLoader(true);
+    const obj = {
+      type: "MORTGAGE_BOND",
+      ids: [deleteID]
+    }
+    await dispatch(deleteLegalBond(obj));
+    setShowLoader(false);
   }
-  const deleteFN = () => { }
 
 
   return (
-    <div className="table-container">
-      <DataTable
-        value={props.mortageBondsList}
-        selectionMode="multiple"
-        selection={selectedCheques}
-        onSelectionChange={onChangeSelection}
-        dataKey="id"
-        className="custom-table"
-        paginator
-        rows={5}
-      >
-        <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+    <>
+      <LoaderComponent show={showLoader} />
+      <div className="table-container">
+        <DataTable
+          value={props.mortageBondsList}
+          selectionMode="multiple"
+          selection={selectedCheques}
+          onSelectionChange={onChangeSelection}
+          dataKey="id"
+          className="custom-table"
+          paginator
+          rows={5}
+        >
+          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
-        <Column
-          field="deborName"
-          header="اسم المدين"
-          className="columnStyle debtorNameList" />
+          <Column
+            field="deborName"
+            header="اسم المدين"
+            className="columnStyle debtorNameList" />
 
-        <Column
-          field="deborSsn"
-          header="الرقم الوطني"
-          className="columnStyle" />
+          <Column
+            field="deborSsn"
+            header="الرقم الوطني"
+            className="columnStyle" />
 
-        <Column
-          field="issueDate"
-          header="تاريخ الإصدار"
-          className="columnStyle"
-        />
+          <Column
+            field="issueDate"
+            header="تاريخ الإصدار"
+            className="columnStyle"
+          />
 
-        <Column
-          field="dueDate"
-          header="تاريخ الاستحقاق"
-          className="columnStyle"
-        />
+          <Column
+            field="dueDate"
+            header="تاريخ الاستحقاق"
+            className="columnStyle"
+          />
 
-        <Column
-          field="totalAmount"
-          header="اجمالي الملغ"
-          className="columnStyle"
-        />
+          <Column
+            field="totalAmount"
+            header="اجمالي المبلغ"
+            className="columnStyle"
+          />
 
-        <Column body={attachmentTemplate}
-          header="المرفقات"
-          className="columnStyle attachmentCol"
-        />
+          <Column body={attachmentTemplate}
+            header="المرفقات"
+            className="columnStyle attachmentCol"
+          />
 
-        <Column body={actionBodyTemplate} className="columnStyle" />
-      </DataTable>
+          <Column body={actionBodyTemplate} className="columnStyle" />
+        </DataTable>
 
-      {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف بيانات الشيك؟</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الشيك ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={cancelActionFn}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
+        {showDeletePopup && (
+          <div className='deletePopupContainer'>
+            <div className='dialogBoxContent'>
+              <h4>هل أنت متأكد أنك تريد حذف بيانات سند الرهن</h4>
+              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات سند الرهن ولا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="actionRowBtns">
+                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
+                  لا اريد الحذف
+                </ButtonComponent>
+                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
+                  نعم اريد الحذف
+                </ButtonComponent>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

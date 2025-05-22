@@ -958,6 +958,7 @@ body,
 
         .legalBonds {
           margin-bottom: 32px;
+          padding-top: 20px;
 
           >div {
             .GCDropDownComponent {
@@ -1217,7 +1218,7 @@ body,
               .tabsRowDiv {
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
+                // justify-content: space-between;
                 align-items: center;
                 width: 82%;
 
@@ -1237,7 +1238,7 @@ body,
                   flex-wrap: nowrap;
                   cursor: pointer;
                   user-select: none;
-
+                  margin: 0 4px;
                   &._active {
                     border-color: 2D51A3;
                     color: #fff;
@@ -2661,6 +2662,21 @@ body,
 .GCDatePickerComponent {
   .p-calendar {
     overflow: hidden;
+  }
+}
+
+.customEightWidthDiv{
+  width: calc(80% - 4px);
+
+  .GCInputComponent{
+    width: 100% !important;
+  }
+}
+
+.customTwentyWidthDiv{
+  width: calc(20% - 4px);
+  .GCDropDownComponent{
+    width: 100% !important;
   }
 }
 

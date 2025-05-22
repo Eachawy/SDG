@@ -62,7 +62,6 @@ const PhoneNumberComponent = props => {
                         const numericValue = e.target.value.replace(/[^0-9]/g, "");
                         props.setValue(props.name ? props.name : "phoneNumber", numericValue);
                     }}
-
                 />
             </div>
         </div>

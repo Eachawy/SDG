@@ -15,3 +15,4 @@ export const countryCode = [
   { name: "+962", code: "JO" },
   { name: "+971", code: "AE" },
 ];
+

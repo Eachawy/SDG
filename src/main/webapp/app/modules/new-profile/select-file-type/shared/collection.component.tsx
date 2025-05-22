@@ -20,7 +20,6 @@ const Collection = (props) => {
             name="collectionAmount"
             placeholder={translate("createNewProfile.exm") + "20,000"}
             register={props.register}
-            // errors={props.errors}
             setValueMethod={props.setValue}
             watch={props.watch}
             onChange={(e) => {
@@ -28,7 +27,6 @@ const Collection = (props) => {
               props.setValue("collectionAmount", numericValue);
             }}
             label="اصل الذمة"
-            // rules={{ required: "يجب ادخال اصل الذمة" }}
           />
           <DropDownComponent
             id="collectionCurrencyList"
@@ -38,7 +36,6 @@ const Collection = (props) => {
             setValueMethod={props.setValue}
             options={CurrencyList}
             optionLabel={`name.${$lang}`}
-            // errors={props.errors}
             onChange={(e) => props.setValue("collectionCurrency", e.value as object)}
             placeholder="دينار"
             setValue={CurrencyList[0]}

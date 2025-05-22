@@ -15,7 +15,7 @@ import { CurrencyList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import { addLegalBond } from "../legalBonds.reducer";
-
+import _ from 'lodash';
 
 const Invoice = (props) => {
   const dispatch = useAppDispatch();
@@ -37,6 +37,14 @@ const Invoice = (props) => {
 
   }, [setValue, $addLegalBondResponse]);
 
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      setValue('invoiceAmount', props.rowDataEdit?.totalAmount);
+      setValue('invoiceNo', props.rowDataEdit?.invoiceNumber);
+      setValue('invoiceIssueDate', new Date(props.rowDataEdit?.invoiceDate));
+      setValue('invoiceCurrency', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
+    }
+  }, [props, setValue]);
 
   const cancelFn = () => {
     props.closepopUpFn(false)
@@ -48,6 +56,7 @@ const Invoice = (props) => {
     const obj = {
       collectionFileId: $collectionFileId,
       invoice: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         totalAmount: Number(data.invoiceAmount),
         currency: data.invoiceCurrency?.code,
         invoiceDate: dayjs(data.invoiceIssueDate).format('YYYY-MM-DD'),
@@ -88,6 +97,7 @@ const Invoice = (props) => {
               watch={watch}
               onChange={(e) => setValue("invoiceIssueDate", e.target.value)}
               className="col-md-6"
+              dateFormat="dd/mm/yy"
             />
 
             <div className="ammountDiv row col-md-6">
@@ -165,7 +175,9 @@ const Invoice = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addInvoiceFn)}>إضافة فاتورة</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addInvoiceFn)}>
+                {props.rowDataEdit?.id ? 'تعديل الفاتورة' : 'إضافة فاتورة'}
+              </ButtonComponent>
             </div>
           </div>
         </div>

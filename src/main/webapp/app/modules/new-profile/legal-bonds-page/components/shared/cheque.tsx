@@ -21,7 +21,7 @@ import { ChequeBeneficiaryList, CurrencyList } from "app/modules/shared/constant
 import { addLegalBond, getAllBanks } from "../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
-
+import _ from 'lodash'
 
 const Cheque = (props) => {
   const dispatch = useAppDispatch();
@@ -43,7 +43,9 @@ const Cheque = (props) => {
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
+    // if(!props.rowDataEdit?.id){
     setValue("rows", [{ drawerName: "" }]);
+    // }
 
     if ($banksList?.length > 0) {
       const arr = $banksList.map(item => {
@@ -68,6 +70,55 @@ const Cheque = (props) => {
     await dispatch(getAllBanks());
   }
 
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      if ($banksList?.length > 0) {
+        setValue('cheuqeBank', {
+          name: {
+            en: props.rowDataEdit?.bank?.englishName,
+            ar: props.rowDataEdit?.bank?.arabicName
+          },
+          code: props.rowDataEdit?.bank?.id
+        })
+      }
+      setValue('chequeAmount', props.rowDataEdit?.totalAmount);
+      setValue('currency', _.find(CurrencyList, item => item.code === props.rowDataEdit?.currency))
+      setValue('dueDate', new Date(props.rowDataEdit?.dueDate));
+      setValue('chequeNumber', props.rowDataEdit?.chequeNumber);
+      if (props.rowDataEdit?.returnDate) {
+        setIsChequeStamped(true);
+        setTimeout(() => {
+          setValue('returnDate', new Date(props.rowDataEdit?.returnDate));
+        }, 100);
+      }
+
+      if (props.rowDataEdit?.legalBondParticipant?.length > 0) {
+        setValue('firstBeneficiary', { name: { ar: "مستفيد اول", en: "First Beneficiary" }, code: "FB" });
+        setValue('firstBeneficiaryName', props.rowDataEdit.chequeBeneficiaries[0]?.name);
+        for (let i = 0; i < props.rowDataEdit.legalBondParticipant.length; i++) {
+          const x = props.rowDataEdit.legalBondParticipant[i];
+          if (i !== 0) {
+            addNewRow()
+          }
+          setTimeout(() => {
+            setValue(`rows[${i}].drawerName`, x?.name);
+          }, 100);
+        }
+      } else {
+        setValue('firstBeneficiary', { name: { ar: "مجير له", en: "Authorized Party" }, code: "AP" });
+        for (let i = 0; i < props.rowDataEdit.chequeBeneficiaries.length; i++) {
+          const x = props.rowDataEdit.chequeBeneficiaries[i];
+          if (i !== 0) {
+            addNewRow()
+          }
+          setTimeout(() => {
+            setValue(`rows[${i}].drawerName`, x?.name);
+          }, 100);
+        }
+      }
+    }
+  }, [props.rowDataEdit, setValue, $banksList]);
+
   // Array of rows on Extra Participants
   const { fields, append, remove } = useFieldArray({
     control,
@@ -82,10 +133,6 @@ const Cheque = (props) => {
     remove(index);
   };
 
-  const handleRowChange = (index, value) => {
-    const letterValue = value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
-    setValue(`rows.${index}.drawerName`, letterValue);
-  };
   // End Array Configuration
 
   const cancelFn = () => {
@@ -116,11 +163,12 @@ const Cheque = (props) => {
     const obj = {
       collectionFileId: $collectionFileId,
       cheque: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         totalAmount: Number(data.chequeAmount),
         currency: data.chequeCurrencyList?.code,
         chequeNumber: Number(data.chequeNumber),
         dueDate: dayjs(data.dueDate).format('YYYY-MM-DD'),
-        returnDate: data.returnDate ? dayjs(data.returnDate).format('YYYY-MM-DD') : null,
+        returnDate: isChequeStamped && data.returnDate ? dayjs(data.returnDate).format('YYYY-MM-DD') : null,
         bank: { id: Number(data.cheuqeBank?.code) },
         legalBondParticipant: watch("firstBeneficiary")?.code === "FB" ? legalBondParticipants : [],
         chequeBeneficiaries: watch("firstBeneficiary")?.code === "FB" ? [
@@ -249,7 +297,9 @@ const Cheque = (props) => {
               <InputSwitch
                 inputId="isChequeStamped-id"
                 checked={isChequeStamped}
-                onChange={(e) => setIsChequeStamped(e.value)}
+                onChange={(e) => {
+                  setIsChequeStamped(e.value)}
+                }
               />
 
               <label htmlFor="isChequeStamped-id">الشيك مختوم</label>
@@ -310,7 +360,7 @@ const Cheque = (props) => {
                   setValueMethod={setValue}
                   watch={watch}
                   onChange={(e) => {
-                    const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                    const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
                     setValue("firstBeneficiaryName", letterValue);
                   }}
                   rules={{
@@ -334,27 +384,18 @@ const Cheque = (props) => {
                 <div key={field.id} className="flex-row">
                   <div>
                     <InputComponent
-                      id={`legalBondsDrawerName_${field.id}`}
+                      id={`legalBondsDrawerName_${field.id}id`}
                       type="text"
-                      name={`rows.${index}.drawerName`}
+                      name={`rows[${index}].drawerName`}
                       placeholder={
                         watch("firstBeneficiary")?.code === "FB"
-                          ? "اضف اسم المستفيد الأول"
+                          ? "اضف اسم اسم الساحب"
                           : "اضف اسم المجير"
                       }
-                      register={register as unknown as UseFormRegister<Record<string, unknown>>}
-                      control={control}
-                      errors={
-                        errors?.rows?.[index]?.drawerName
-                          ? {
-                            [`drawerName_${field.id}`]:
-                              errors.rows[index].drawerName,
-                          }
-                          : undefined
-                      }
-                      setValueMethod={ setValue as unknown as UseFormSetValue<Record<string, unknown>>}
-                      watch={ watch as unknown as UseFormWatch<Record<string, unknown>>}
-                      onChange={(e) => handleRowChange(index, e.target.value)}
+                      onChange={(e) => {
+                        const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
+                        setValue(`rows[${index}].drawerName`, letterValue);
+                      }}
                       rules={{
                         required: watch("firstBeneficiary")?.code === "FB"
                           ? "يجب ادخال اسم الساحب"
@@ -365,7 +406,18 @@ const Cheque = (props) => {
                           ? "اسم الساحب"
                           : "اسم المجير"
                       }
-                      value={watch(`rows.${index}.drawerName`)} 
+                      register={register as unknown as UseFormRegister<Record<string, unknown>>}
+                      control={control}
+                      errors={
+                        errors?.rows?.[index]?.drawerName
+                          ? {
+                            [`legalBondsDrawerName_${field.id}id`]:
+                              errors?.rows?.[index]?.drawerName,
+                          }
+                          : undefined
+                      }
+                      setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
+                      watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
                     />
                     {errors.rows?.[index]?.drawerName &&
                       <span className="errorMsg">
@@ -427,7 +479,9 @@ const Cheque = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>إضافة شيك</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>
+                {props.rowDataEdit?.id ? 'تعديل الشيك' : 'إضافة شيك'}
+              </ButtonComponent>
             </div>
           </div>
         </div>

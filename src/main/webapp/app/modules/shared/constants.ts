@@ -32,17 +32,11 @@ export const CurrencyList = [
 
 export const BondTypes = [
     { name: { ar: "شيك", en: "Cheque" }, code: "CHQ" },
-    { name: { ar: "كمبيالة", en: "Draft" }, code: "PN" },
-    // {
-    //     name: {
-    //         ar: "اقرار خطي/ سند امانة",
-    //         en: "Written Acknowledgment / Trust Bond",
-    //     },
-    //     code: "WTB",
-    // },
+    { name: { ar: "كمبيالة", en: "Draft" }, code: "DR" },
+    { name: { ar: "اقرار خطي/ سند امانة", en: "Written Consent / Trust Bond" }, code: "WTB" },
     { name: { ar: "سند رهن", en: "Mortgage Bond" }, code: "MB" },
     { name: { ar: "كشف حساب", en: "Account Statement" }, code: "AS" },
-    // { name: { ar: "عقد ايجار", en: "Rent Contract" }, code: "LC" },
+    { name: { ar: "عقد ايجار", en: "Rent Contract" }, code: "RC" },
     { name: { ar: "فاتوره", en: "Invoice" }, code: "INV" },
 ];
 
@@ -50,3 +44,32 @@ export const ChequeBeneficiaryList = [
     { name: { ar: "مستفيد اول", en: "First Beneficiary" }, code: "FB" },
     { name: { ar: "مجير له", en: "Authorized Party" }, code: "AP" },
 ];
+
+export const TrustWrittenList = [
+    { name: { ar: "سند أمانة", en: "Trust Bond" }, code: "TRUST_BOND" },
+    { name: { ar: "اقرار خطي", en: "Written Consent" }, code: "WRITTEN_CONSENT" }
+];
+
+export const TrustWrittenObj = {
+    WRITTEN_CONSENT: {
+        name: { en: 'Written Consent', ar: 'اقرار خطي' }
+    },
+    TRUST_BOND: {
+        name: { en: 'Trust Bond', ar: 'سند أمانة' }
+    }
+}
+
+export const PaymentTypesObj = {
+    MONTHLY: {
+        name: { en: 'Monthly', ar: 'شهري' }
+    },
+    QUARTERLY: {
+        name: { en: 'Quarterly', ar: 'ربع سنوي' }
+    },
+    HALF_YEARLY: {
+        name: { en: 'Half Yearly', ar: 'نص سنوي' }
+    },
+    YEARLY: {
+        name: { en: 'Yearly', ar: 'سنوي' }
+    }
+}

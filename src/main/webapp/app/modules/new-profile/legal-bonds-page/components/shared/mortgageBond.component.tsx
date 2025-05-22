@@ -13,7 +13,7 @@ import { CurrencyList } from "app/modules/shared/constants";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import dayjs from "dayjs";
 import { addLegalBond } from "../legalBonds.reducer";
-
+import _ from 'lodash'
 
 const MortgageBond = (props) => {
   const dispatch = useAppDispatch();
@@ -37,6 +37,16 @@ const MortgageBond = (props) => {
 
   }, [setValue, $addLegalBondResponse]);
 
+  useEffect(() => {
+    if (props.rowDataEdit?.id) {
+      setValue('mortgageBondissueDate', new Date(props.rowDataEdit?.issueDate));
+      setValue('mortgageBondDueDate', new Date(props.rowDataEdit?.dueDate));
+      setValue('mortgageBondAmount', props.rowDataEdit?.totalAmount);
+      setValue('mortgageBondCurrency', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
+      setValue('mortgagBondDebtorName', props.rowDataEdit?.deborName);
+      setValue('mortgageBondNationalNo', props.rowDataEdit?.deborSsn);
+    }
+  }, [props, setValue]);
 
   const cancelFn = () => {
     props.closepopUpFn(false)
@@ -48,6 +58,7 @@ const MortgageBond = (props) => {
     const obj = {
       collectionFileId: $collectionFileId,
       bond: {
+        ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: "MORTGAGE_BOND",
         issueDate: dayjs(data.mortgageBondissueDate).format('YYYY-MM-DD'),
         category: "NON_SCHEDULED",
@@ -100,6 +111,7 @@ const MortgageBond = (props) => {
               onChange={(e) => setValue("mortgageBondissueDate", e.target.value)}
               className="w-50-16px"
               maxDate={new Date()}
+              dateFormat="dd/mm/yy"
             />
 
             <DatePickerComponent
@@ -107,6 +119,7 @@ const MortgageBond = (props) => {
               name="mortgageBondDueDate"
               label={"تاريخ الاستحقاق"}
               placeholder={"DD/MM/YYYY"}
+              dateFormat="dd/mm/yy"
               register={register}
               errors={errors}
               setValueMethod={setValue}
@@ -162,7 +175,7 @@ const MortgageBond = (props) => {
               setValueMethod={setValue}
               watch={watch}
               onChange={(e) => {
-                const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF]/g, "");
+                const letterValue = e.target.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
                 setValue("mortgagBondDebtorName", letterValue);
               }}
               value={watch("mortgagBondDebtorName")}
@@ -195,7 +208,7 @@ const MortgageBond = (props) => {
             </div>
 
             <div className="uploaderContainer w-100">
-              <h4>تحميل اقرار الخطي / سند امانة</h4>
+              <h4>تحميل سند الرهن</h4>
 
               <div className="row">
                 <AttachmentFileComponent
@@ -204,7 +217,7 @@ const MortgageBond = (props) => {
                   lang={$lang}
                   register={register}
                   watch={watch}
-                  rules={{ required: 'يجب ادخال الواجهة لسند الرهن' }}
+                  rules={{ required: 'يجب ادخال صورة سند الرهن' }}
                   errors={errors}
                   setValueMethod={setValue}
                   attachList={(e) => setValue("mortageBondAttach1", e)}
@@ -229,7 +242,10 @@ const MortgageBond = (props) => {
 
             <div className="actionBtns">
               <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addMortageBondFn)}>إضافة سند رهن</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addMortageBondFn)}>
+
+                {props.rowDataEdit?.id ? 'تعديل سند رهن' : 'إضافة سند رهن'}
+              </ButtonComponent>
             </div>
           </div>
         </div>
