@@ -229,7 +229,7 @@ const ChequeTableComponent = (props) => {
           setIsBeneficiaryInfoList(false)
         }}
       >
-        action
+        <span className="dots-menu" />
         {actionRowId === rowData.id && isActionList && (
           <div className="actionList" onClick={(e) => e.stopPropagation()}>
             <span
