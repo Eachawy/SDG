@@ -230,7 +230,7 @@ const ChequeTableComponent = (props) => {
         }}
       >
         <span className="dots-menu" />
-        {actionRowId === rowData.id && isActionList && (
+        {45 === rowData.id && isActionList && (
           <div className="actionList" onClick={(e) => e.stopPropagation()}>
             <span
               onClick={() => {
