@@ -16,7 +16,8 @@ const DefendantInfoComponent = (props) => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [collectionFile, setCollectionFile] = useState(null);
   const [writtenTrustBonds, setWrittenTrustBonds] = useState([]);
-
+  const [deleteType, setDeleteType] = useState('');
+  const [selectedRowsDelete, setSelectedRowsDelete] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const dispatch = useAppDispatch();
   const $deleteLegalBondResponse = useAppSelector(state => state.legalBonds.deleteLegalBondResponse);
@@ -33,25 +34,25 @@ const DefendantInfoComponent = (props) => {
       setWrittenTrustBonds([]);
     }
     if (collectionFile?.cheques?.length > 0) {
-      setActiveTab("cheques");
+      setActiveTabFn("cheques");
     }
     else if (collectionFile?.drafts?.length > 0) {
-      setActiveTab("drafts");
+      setActiveTabFn("drafts");
     }
     else if (writtenTrustBonds.length > 0) {
-      setActiveTab("writtenTrustBonds");
+      setActiveTabFn("writtenTrustBonds");
     }
     else if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0) {
-      setActiveTab("mortgage");
+      setActiveTabFn("mortgage");
     }
     else if (collectionFile?.accountStatements?.length > 0) {
-      setActiveTab("statement");
+      setActiveTabFn("statement");
     }
     else if (collectionFile?.rentContracts?.length > 0) {
-      setActiveTab("rentContract");
+      setActiveTabFn("rentContract");
     }
     else if (collectionFile?.invoices?.length > 0) {
-      setActiveTab("invoice");
+      setActiveTabFn("invoice");
     }
 
   }, [props.fileResponse, collectionFile]);
@@ -59,12 +60,20 @@ const DefendantInfoComponent = (props) => {
   useEffect(() => {
     if ($deleteLegalBondResponse?.status === 204) {
       setShowDeletePopup(false);
+      setSelectedRowsDelete([]);
+      setDeleteType('');
       props.deleteIsDone();
     }
 
-  }, [$deleteLegalBondResponse])
+  }, [$deleteLegalBondResponse]);
 
-  const deleteAllRows = async () => {
+  const setActiveTabFn = (tab) => {
+    setSelectedRowsDelete([]);
+    setDeleteType('');
+    setActiveTab(tab);
+  }
+
+  const deleteRows = async () => {
     setShowLoader(true);
     let obj: any = {}
     switch (activeTab) {
@@ -72,7 +81,7 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.cheques?.length > 0) {
           obj = {
             type: "CHEQUE",
-            ids: collectionFile?.cheques.map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.cheques.map(item => item.id) : []
           }
         }
         break;
@@ -80,7 +89,7 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.drafts?.length > 0) {
           obj = {
             type: "DRAFT",
-            ids: collectionFile?.drafts.map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.drafts.map(item => item.id) : []
           }
         }
         break;
@@ -88,7 +97,7 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.invoices?.length > 0) {
           obj = {
             type: "INVOICE",
-            ids: collectionFile?.invoices.map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.invoices.map(item => item.id) : []
           }
         }
         break;
@@ -96,7 +105,7 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.accountStatements?.length > 0) {
           obj = {
             type: "ACCOUNT_STATEMENT",
-            ids: collectionFile?.accountStatements.map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.accountStatements.map(item => item.id) : []
           }
         }
         break;
@@ -104,7 +113,7 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.rentContracts?.length > 0) {
           obj = {
             type: "RENT_CONTRACT",
-            ids: collectionFile?.rentContracts.map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.rentContracts.map(item => item.id) : []
           }
         }
         break;
@@ -112,46 +121,54 @@ const DefendantInfoComponent = (props) => {
         if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND')?.length > 0) {
           obj = {
             type: "MORTGAGE_BOND",
-            ids: collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').map(item => item.id)
+            ids: deleteType === 'SELECTED' ? selectedRowsDelete : deleteType === 'ALL' ? collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').map(item => item.id) : []
           }
         }
         break;
       case 'writtenTrustBonds':
-        deleteAllWrittenTrustBonds();
+        deleteWrittenTrustBonds();
         return
       default:
         break;
     }
-
     await dispatch(deleteLegalBond(obj));
     setShowLoader(false);
   }
 
-  const deleteAllWrittenTrustBonds = async () => {
+  const deleteWrittenTrustBonds = async () => {
     setShowLoader(true);
     const trustBondsList = collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND');
     const writtenConsentList = collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT');
+    const selectedTrustBondsIds = selectedRowsDelete.filter(item => item.bondType === 'TRUST_BOND');
+    const selectedWrittenConsentIds = selectedRowsDelete.filter(item => item.bondType === 'WRITTEN_CONSENT');
 
     if (trustBondsList?.length > 0) {
       const obj = {
         type: "TRUST_BOND",
-        ids: trustBondsList.map(item => item.id)
+        ids: deleteType === 'SELECTED' ? selectedTrustBondsIds.map(item => item.id) : deleteType === 'ALL' ? trustBondsList.map(item => item.id) : []
       }
-      await dispatch(deleteLegalBond(obj));
+      if ((deleteType === 'ALL' && trustBondsList?.length > 0)|| 
+        (deleteType === 'SELECTED' && selectedTrustBondsIds.length > 0)) {
+        await dispatch(deleteLegalBond(obj));
+      }
     }
 
     if (writtenConsentList?.length > 0) {
       const obj = {
         type: "WRITTEN_CONSENT",
-        ids: writtenConsentList.map(item => item.id)
+        ids: deleteType === 'SELECTED' ? selectedWrittenConsentIds.map(item => item.id) : deleteType === 'ALL' ? writtenConsentList.map(item => item.id) : []
       }
       setTimeout(async () => {
-        await dispatch(deleteLegalBond(obj));
+        if ((deleteType === 'ALL' && writtenConsentList?.length > 0) ||
+          (deleteType === 'SELECTED' && selectedWrittenConsentIds.length > 0)) {
+          await dispatch(deleteLegalBond(obj));
+        }
       }, 500);
     }
 
     setShowLoader(false);
   }
+
 
   return (
     <div className="defendantInfo">
@@ -161,14 +178,23 @@ const DefendantInfoComponent = (props) => {
             <h4>بيانات المدعي عليه التى تم إدخالها</h4>
             <div className="tabsRowAndActionBtnsDiv">
               <div className="actionTableBtnsDiv">
-                <span>حذف الإختيارات</span>
-                <span onClick={() => setShowDeletePopup(true)}>حذف الكل</span>
+                {selectedRowsDelete?.length > 0 && (
+                  <span onClick={() => {
+                    setDeleteType('SELECTED');
+                    setShowDeletePopup(true);
+                  }}>حذف الإختيارات</span>
+                )}
+                <span onClick={() => {
+                  setDeleteType('ALL');
+                  setSelectedRowsDelete([]);
+                  setShowDeletePopup(true);
+                }}>حذف الكل</span>
               </div>
               <div className="tabsRowDiv">
                 {collectionFile?.cheques?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "cheques" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("cheques")}
+                    onClick={() => { setActiveTabFn("cheques") }}
                   >
                     شيك ({collectionFile?.cheques?.length})
                   </div>
@@ -176,7 +202,7 @@ const DefendantInfoComponent = (props) => {
                 {collectionFile?.drafts?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "drafts" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("drafts")}
+                    onClick={() => setActiveTabFn("drafts")}
                   >
                     كمبيالة ({collectionFile?.drafts?.length})
                   </div>
@@ -184,7 +210,7 @@ const DefendantInfoComponent = (props) => {
                 {writtenTrustBonds?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "writtenTrustBonds" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("writtenTrustBonds")}
+                    onClick={() => setActiveTabFn("writtenTrustBonds")}
                   >
                     اقرار خطي/ سند امانة ({writtenTrustBonds?.length})
                   </div>
@@ -193,7 +219,7 @@ const DefendantInfoComponent = (props) => {
                 {collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0 && (
                   <div
                     className={`tab ${activeTab === "mortgage" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("mortgage")}
+                    onClick={() => setActiveTabFn("mortgage")}
                   >
                     سند رهن ({collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length})
                   </div>
@@ -201,7 +227,7 @@ const DefendantInfoComponent = (props) => {
                 {collectionFile?.accountStatements?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "statement" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("statement")}
+                    onClick={() => setActiveTabFn("statement")}
                   >
                     كشف حساب ({collectionFile?.accountStatements?.length})
                   </div>
@@ -209,7 +235,7 @@ const DefendantInfoComponent = (props) => {
                 {collectionFile?.rentContracts?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "rentContract" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("rentContract")}
+                    onClick={() => setActiveTabFn("rentContract")}
                   >
                     عقد ايجار ({collectionFile?.rentContracts?.length})
                   </div>
@@ -217,7 +243,7 @@ const DefendantInfoComponent = (props) => {
                 {collectionFile?.invoices?.length > 0 && (
                   <div
                     className={`tab ${activeTab === "invoice" ? "_active" : ""}`}
-                    onClick={() => setActiveTab("invoice")}
+                    onClick={() => setActiveTabFn("invoice")}
                   >
                     فاتوره ({collectionFile?.invoices?.length})
                   </div>
@@ -232,6 +258,7 @@ const DefendantInfoComponent = (props) => {
           chequesList={collectionFile?.cheques}
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
         />
         : null}
 
@@ -240,15 +267,17 @@ const DefendantInfoComponent = (props) => {
           draftsList={collectionFile?.drafts}
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
         />
         : null}
 
       {activeTab === "writtenTrustBonds" ?
-        (collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
+        (props.fileResponse?.collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || props.fileResponse?.collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
         && <WrittenTrustBondTableComponent
           writtenTrustBondsList={writtenTrustBonds}
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(rows) => setSelectedRowsDelete(rows)}
         />
         : null}
 
@@ -258,6 +287,7 @@ const DefendantInfoComponent = (props) => {
           mortageBondsList={collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND')}
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
         />
         : null}
 
@@ -266,6 +296,7 @@ const DefendantInfoComponent = (props) => {
           rentContractList={collectionFile}
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
         />
         : null}
 
@@ -273,14 +304,18 @@ const DefendantInfoComponent = (props) => {
         <StatementTableComponent
           accountStatementsList={collectionFile?.accountStatements}
           deleteIdDoneFn={() => props.deleteIsDone()}
-          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)} /> :
-        null}
+          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+        />
+        : null}
 
       {activeTab === "invoice" ? collectionFile?.invoices.length > 0 &&
         <InvoiceTableComponent
           invoicesList={collectionFile?.invoices}
           deleteIdDoneFn={() => props.deleteIsDone()}
-          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)} />
+          editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
+          setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+        />
         : null}
 
       <LoaderComponent show={showLoader} />
@@ -293,7 +328,7 @@ const DefendantInfoComponent = (props) => {
               <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
                 لا اريد الحذف
               </ButtonComponent>
-              <ButtonComponent onClick={deleteAllRows} Class={'BtnStyle BtnCancel'}>
+              <ButtonComponent onClick={deleteRows} Class={'BtnStyle BtnCancel'}>
                 نعم اريد الحذف
               </ButtonComponent>
             </div>

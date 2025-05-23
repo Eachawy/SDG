@@ -39,17 +39,17 @@ const Invoice = (props) => {
   }, [setValue, $addLegalBondResponse]);
 
   useEffect(() => {
+    handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('invoiceAmount', props.rowDataEdit?.totalAmount);
       setValue('invoiceNo', props.rowDataEdit?.invoiceNumber);
       setValue('invoiceIssueDate', new Date(props.rowDataEdit?.invoiceDate));
       setValue('invoiceCurrency', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
     }
-  }, [props, setValue]);
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
-  };
+  }
 
   const addInvoiceFn = async (data: any) => {
     setShowLoader(true);
@@ -176,7 +176,7 @@ const Invoice = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addInvoiceFn)}>
                 {props.rowDataEdit?.id ? 'تعديل الفاتورة' : 'إضافة فاتورة'}
               </ButtonComponent>

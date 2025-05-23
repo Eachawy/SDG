@@ -3,10 +3,11 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
 import { getFileSize, getFileType } from "app/shared/util/utils";
-import { PaymentTypesObj } from "app/modules/shared/constants";
+import { CurrencyList, PaymentTypesObj } from "app/modules/shared/constants";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { deleteLegalBond } from "../../../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import _ from "lodash";
 
 const RentTableComponent = (props) => {
 
@@ -38,6 +39,7 @@ const RentTableComponent = (props) => {
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
+    props.setSelectedRowsFn(e.value.map(item => item.id));
   };
 
   useEffect(() => {
@@ -57,11 +59,21 @@ const RentTableComponent = (props) => {
   }, []);
 
   const totalAmountBody = () => {
-    return <span>{props.rentContractList?.totalAmount}</span>
+    return (
+      <div className="totalAmountBody">
+        <span>{props.rentContractList?.totalAmount}</span>
+        <span>{_.find(CurrencyList, (item) => item.code === props.rentContractList?.currency)?.name[$lang]}</span>
+      </div>
+    )
   }
 
   const totalCollectedAmountBody = () => {
-    return <span>{props.rentContractList?.requiredCollectionAmount}</span>
+    return (
+      <div className="totalAmountBody">
+        <span>{props.rentContractList?.requiredCollectionAmount}</span>
+        <span>{_.find(CurrencyList, (item) => item.code === props.rentContractList?.currency)?.name[$lang]}</span>
+      </div>
+    )
   }
 
   const rentStartDateBody = rowData => {
@@ -195,7 +207,7 @@ const RentTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                props.editRecordDataFN('RC',rowData);
+                props.editRecordDataFN('RC', rowData);
               }}
             >
               تعديل
@@ -237,7 +249,7 @@ const RentTableComponent = (props) => {
           dataKey="id"
           className="custom-table"
           paginator
-          rows={5}
+          rows={10}
         >
           <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 

@@ -29,7 +29,7 @@ const LegalBondsPage = () => {
         if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
             navigate("/dashoard");
         } else {
-            pushNotification("error", "Please add Legal bond");
+            pushNotification("error", "يرجى اضافة السندات القانونية");
         }
     }
 
@@ -37,7 +37,7 @@ const LegalBondsPage = () => {
         if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
             navigate("/create-file/determine-responsibility-and-follow-up");
         } else {
-            pushNotification("error", "Please add Legal bond");
+            pushNotification("error", "يرجى اضافة السندات القانونية");
         }
     };
 

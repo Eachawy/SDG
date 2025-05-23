@@ -1544,6 +1544,14 @@ body,
                           }
                         }
                       }
+
+                      .totalAmountBody{
+                        span{
+                          &:last-child{
+                            padding: 0 5px;
+                          }
+                        }
+                      }
                     }
                   }
                 }

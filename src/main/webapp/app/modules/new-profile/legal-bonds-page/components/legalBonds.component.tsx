@@ -98,29 +98,29 @@ const LegalBonds = (props) => {
       </div>
 
       {((watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) || (rowDataType === 'CHQ')) &&
-        <Cheque 
-          closepopUpFn={(e) => closepopUpFn(e)} 
+        <Cheque
+          closepopUpFn={(e) => closepopUpFn(e)}
           rowDataEdit={rowDataEdit}
         />
       }
 
       {((watch("legalBondsList")?.code === "DR" && showlegalBondPopup) || (rowDataType === 'DR')) &&
-        <Draft 
-          closepopUpFn={(e) => closepopUpFn(e)} 
+        <Draft
+          closepopUpFn={(e) => closepopUpFn(e)}
           rowDataEdit={rowDataEdit}
         />
       }
 
       {((watch("legalBondsList")?.code === "WTB" && showlegalBondPopup) || (rowDataType === 'WTB')) &&
-        <WrittenAcknowledgmentTrustBond 
-          closepopUpFn={(e) => closepopUpFn(e)} 
+        <WrittenAcknowledgmentTrustBond
+          closepopUpFn={(e) => closepopUpFn(e)}
           rowDataEdit={rowDataEdit}
         />
       }
 
       {((watch("legalBondsList")?.code === "RC" && showlegalBondPopup) || (rowDataType === 'RC')) &&
-        <RentContract 
-          closepopUpFn={(e) => closepopUpFn(e)} 
+        <RentContract
+          closepopUpFn={(e) => closepopUpFn(e)}
           rowDataEdit={rowDataEdit}
         />
       }

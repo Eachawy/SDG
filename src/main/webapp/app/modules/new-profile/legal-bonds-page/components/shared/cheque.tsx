@@ -87,7 +87,7 @@ const Cheque = (props) => {
         })
       }
       setValue('chequeAmount', props.rowDataEdit?.totalAmount);
-      setValue('currency', _.find(CurrencyList, item => item.code === props.rowDataEdit?.currency))
+      setValue('chequeCurrencyList', _.find(CurrencyList, item => item.code === props.rowDataEdit?.currency))
       setValue('dueDate', new Date(props.rowDataEdit?.dueDate));
       setValue('chequeNumber', props.rowDataEdit?.chequeNumber);
       if (props.rowDataEdit?.returnDate) {
