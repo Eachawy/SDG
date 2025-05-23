@@ -14,6 +14,7 @@ import SubfileDataSentPage from "./modules/new-profile/subfile-data-sent/subfile
 import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
+import TestPage from "./modules/test";
 
 const AppRoutes = () => {
   return (
@@ -27,8 +28,8 @@ const AppRoutes = () => {
           <Route path="dashoard" element={
             <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
               <MainDashboardPage />
-            </PrivateRoute>  
-            } />
+            </PrivateRoute>
+          } />
 
 
 
@@ -50,7 +51,7 @@ const AppRoutes = () => {
               }
             />
 
-          <Route
+            <Route
               path="legal-bonds"
               element={
                 <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
@@ -78,6 +79,7 @@ const AppRoutes = () => {
             />
           </Route>
           <Route path="*" element={<PageNotFound />} />
+          <Route path="testPage" element={<TestPage />} />
           <Route path="error" element={<ErrorPage />} />
         </Route>
 
