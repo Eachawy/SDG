@@ -222,7 +222,8 @@ const ChequeTableComponent = (props) => {
     return (
       <div
         className="action-column"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setActionRowId(rowData.id);
           setIsActionList(true);
           setIsBeneficiaryInfoList(false)
