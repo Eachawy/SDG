@@ -10,7 +10,7 @@ const postcssRTLCSS = require("postcss-rtlcss");
 const utils = require("./utils.js");
 const commonConfig = require("./webpack.common.js");
 
-const ENV = "development";
+const ENV = "production";
 
 module.exports = async () =>
   webpackMerge(await commonConfig({ env: ENV }), {
