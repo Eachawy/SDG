@@ -39,6 +39,10 @@ const MortgageBond = (props) => {
   }, [setValue, $addLegalBondResponse]);
 
   useEffect(() => {
+      handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('mortgageBondissueDate', new Date(props.rowDataEdit?.issueDate));
       setValue('mortgageBondDueDate', new Date(props.rowDataEdit?.dueDate));
@@ -47,11 +51,7 @@ const MortgageBond = (props) => {
       setValue('mortgagBondDebtorName', props.rowDataEdit?.deborName);
       setValue('mortgageBondNationalNo', props.rowDataEdit?.deborSsn);
     }
-  }, [props, setValue]);
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
-  };
+  }
 
   const addMortageBondFn = async (data: any) => {
     setShowLoader(true);
@@ -244,7 +244,7 @@ const MortgageBond = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addMortageBondFn)}>
 
                 {props.rowDataEdit?.id ? 'تعديل سند رهن' : 'إضافة سند رهن'}

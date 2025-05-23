@@ -6,6 +6,8 @@ import { getFileSize, getFileType } from "app/shared/util/utils";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { deleteLegalBond } from "../../../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
+import { CurrencyList } from "app/modules/shared/constants";
+import _ from "lodash";
 
 const StatementTableComponent = (props) => {
 
@@ -17,7 +19,7 @@ const StatementTableComponent = (props) => {
   const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
   const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-
+  const $lang = useAppSelector((state) => state.locale.currentLocale);
   const [deleteID, setDeleteID] = useState<number | null>(null);
   const [showLoader, setShowLoader] = useState(false);
   const dispatch = useAppDispatch();
@@ -34,6 +36,7 @@ const StatementTableComponent = (props) => {
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
+    props.setSelectedRowsFn(e.value.map(item => item.id));
   };
 
   useEffect(() => {
@@ -49,6 +52,15 @@ const StatementTableComponent = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const totalAmountBody = (rowData: any) => {
+    return (
+      <div className="totalAmountBody">
+        <span>{rowData?.totalAmount}</span>
+        <span>{_.find(CurrencyList, (item) => item.code === rowData?.currency)?.name[$lang]}</span>
+      </div>
+    )
+  }
 
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
@@ -137,7 +149,7 @@ const StatementTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                props.editRecordDataFN('AS',rowData);
+                props.editRecordDataFN('AS', rowData);
               }}
             >
               تعديل
@@ -179,7 +191,7 @@ const StatementTableComponent = (props) => {
           dataKey="id"
           className="custom-table"
           paginator
-          rows={5}
+          rows={10}
         >
           <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
@@ -192,6 +204,7 @@ const StatementTableComponent = (props) => {
             field="totalAmount"
             header="اجمالي المبلغ"
             className="columnStyle"
+            body={totalAmountBody}
           />
 
           <Column body={attachmentTemplate}

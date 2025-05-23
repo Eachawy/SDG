@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ButtonComponent } from "@eachawy/frontend-library";
-import { TrustWrittenObj } from "app/modules/shared/constants";
+import { CurrencyList, TrustWrittenObj } from "app/modules/shared/constants";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { getFileSize, getFileType } from "app/shared/util/utils";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { deleteLegalBond } from "../../../legalBonds.reducer";
+import _ from "lodash";
 
 const WrittenTrustBondTableComponent = (props) => {
 
@@ -38,6 +39,7 @@ const WrittenTrustBondTableComponent = (props) => {
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
+    props.setSelectedRowsFn(e.value);
   };
 
   useEffect(() => {
@@ -56,9 +58,19 @@ const WrittenTrustBondTableComponent = (props) => {
     };
   }, []);
 
+  const totalAmountBody = (rowData: any) => {
+    return (
+      <div className="totalAmountBody">
+        <span>{rowData?.totalAmount}</span>
+        <span>{_.find(CurrencyList, (item) => item.code === rowData?.currency)?.name[$lang]}</span>
+      </div>
+    )
+  }
+
   const requestTypeBody = rowData => {
     return <span>{TrustWrittenObj[rowData.bondType]?.name[$lang]}</span>
   }
+
   const closeAttachmentPopupFn = () => {
     setIsAttachmentTamplateList((prev) => {
       return false;
@@ -176,7 +188,7 @@ const WrittenTrustBondTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                props.editRecordDataFN('WTB',rowData);
+                props.editRecordDataFN('WTB', rowData);
               }}
             >
               تعديل
@@ -218,7 +230,7 @@ const WrittenTrustBondTableComponent = (props) => {
           dataKey="id"
           className="custom-table"
           paginator
-          rows={5}
+          rows={10}
         >
           <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
 
@@ -249,6 +261,7 @@ const WrittenTrustBondTableComponent = (props) => {
             field="totalAmount"
             header="اجمالي المبلغ"
             className="columnStyle"
+            body={totalAmountBody}
           />
 
           <Column

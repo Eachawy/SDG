@@ -36,6 +36,10 @@ const WrittenAcknowledgmentTrustBond = (props) => {
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
   useEffect(() => {
+    handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('WATB', _.find(TrustWrittenList, (item) => item.code === props.rowDataEdit?.bondType))
       setValue('issueDate', new Date(props.rowDataEdit?.issueDate));
@@ -61,7 +65,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
           }
         }
 
-        if(props.rowDataEdit?.paymentSchedules?.length > 0){
+        if (props.rowDataEdit?.paymentSchedules?.length > 0) {
           for (let i = 0; i < props.rowDataEdit?.paymentSchedules?.length; i++) {
             const x = props.rowDataEdit?.paymentSchedules[i];
             if (i !== 0) {
@@ -77,7 +81,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
       }, 100);
 
     }
-  }, [props.rowDataEdit, setValue]);
+  }
 
   useEffect(() => {
     setValue("inputForm", "legalBonds");
@@ -98,10 +102,6 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
 
   useEffect(() => {
-    // if (!watch("witnesses") || watch("witnesses").length === 0) {
-    //   setValue("witnesses", [{ witnessName: "", witnessesNationalNumber: "" }]);
-    // }
-
     if (!watch("scheduling") || watch("scheduling").length === 0) {
       setValue("scheduling", [{ addingDate: "", totalAmount: "", currency: "" }]);
     }
@@ -130,10 +130,6 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     if (index >= 0 && index < scheduling.length) {
       removeScheduledRow(index);
     }
-  };
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
   };
 
   const addChequeFn = async (data: any) => {
@@ -398,7 +394,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
             {watch('claimType') && (
               <>
                 {(watch('claimType') === 'UPON_REQUEST' || watch('claimType') === 'NON_SCHEDULED') && (
-                  <div className={watch('claimType') === 'NON_SCHEDULED' ? 'fix_UI':'w-100'} >
+                  <div className={watch('claimType') === 'NON_SCHEDULED' ? 'fix_UI' : 'w-100'} >
                     <div className="ammountDiv row">
                       <InputComponent
                         id="WATBAmount-id"
@@ -658,7 +654,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
                                   [`WATBWitnessesNationalNumber-_${field.id}`]:
                                     errors?.witnesses?.[index]?.witnessesNationalNumber,
                                 }
-                                : undefined 
+                                : undefined
                             }
                             setValueMethod={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
                             watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
@@ -723,9 +719,9 @@ const WrittenAcknowledgmentTrustBond = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addChequeFn)}>
-                
+
                 {props.rowDataEdit?.id ? 'تعديل سند امانة / اقرار خطي' : 'إضافة سند امانة / اقرار خطي'}
               </ButtonComponent>
             </div>
