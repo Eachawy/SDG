@@ -45,6 +45,10 @@ const Draft = (props) => {
   }, [setValue, $addLegalBondResponse]);
 
   useEffect(() => {
+    handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('draftIssueDate', new Date(props.rowDataEdit?.issueDate));
       setValue('draftDueDate', new Date(props.rowDataEdit?.dueDate))
@@ -83,7 +87,7 @@ const Draft = (props) => {
       }
 
     }
-  }, [props.rowDataEdit, setValue]);
+  }
 
   // Array of rows on Extra Deboters and Guarantors
   const { fields: debtors, append: appendDebtor, remove: removeDebtor } = useFieldArray({
@@ -120,9 +124,6 @@ const Draft = (props) => {
   };
   // End Array
 
-  const cancelFn = () => {
-    props.closepopUpFn(false)
-  };
 
   const addDraftFn = async (data: any) => {
     setShowLoader(true);
@@ -496,7 +497,7 @@ const Draft = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addDraftFn)}>
                 {props.rowDataEdit?.id ? 'تعديل كمبيالة' : 'إضافة كمبيالة'}
               </ButtonComponent>

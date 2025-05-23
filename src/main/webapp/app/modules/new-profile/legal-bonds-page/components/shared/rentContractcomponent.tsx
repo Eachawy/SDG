@@ -44,6 +44,10 @@ const RentContract = (props) => {
   }, [setValue, $addLegalBondResponse]);
 
   useEffect(() => {
+    handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('schedulingType', 'manualScheduling');
       setValue('paymentType', props.rowDataEdit?.paymentPeriod);
@@ -63,7 +67,7 @@ const RentContract = (props) => {
         }, 100);
       }
     }
-  }, [props, setValue]);
+  }
 
   const { fields: schedulingList, append: addingScheduledRow, remove: removeScheduledRow, replace: replaceScheduledList } = useFieldArray({
     control,
@@ -109,10 +113,6 @@ const RentContract = (props) => {
     if (index >= 0 && index < schedulingList.length) {
       removeScheduledRow(index);
     }
-  };
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
   };
 
   const addRentContractFn = async (data: any) => {
@@ -529,7 +529,7 @@ const RentContract = (props) => {
             </div>
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
               <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addRentContractFn)}>
                 {props.rowDataEdit?.id ? 'تعديل عقد ايجار' : 'اضافة عقد ايجار'}
               </ButtonComponent>

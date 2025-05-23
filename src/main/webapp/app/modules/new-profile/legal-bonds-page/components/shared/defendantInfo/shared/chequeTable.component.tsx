@@ -6,7 +6,8 @@ import { getFileSize, getFileType } from 'app/shared/util/utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { deleteLegalBond } from '../../../legalBonds.reducer';
-
+import { CurrencyList } from 'app/modules/shared/constants';
+import _ from 'lodash';
 
 const ChequeTableComponent = (props) => {
   const [selectedCheques, setSelectedCheques] = useState([]);
@@ -37,6 +38,7 @@ const ChequeTableComponent = (props) => {
 
   const onChangeSelection = (e) => {
     setSelectedCheques(e.value);
+    props.setSelectedRowsFn(e.value);
   };
 
   useEffect(() => {
@@ -55,6 +57,15 @@ const ChequeTableComponent = (props) => {
     };
 
   }, []);
+
+  const totalAmountBody = (rowData: any) => {
+    return (
+      <div className="totalAmountBody">
+        <span>{rowData?.totalAmount}</span>
+        <span>{_.find(CurrencyList, (item) => item.code === rowData?.currency)?.name[$lang]}</span>
+      </div>
+    )
+  }
 
   const beneficiaryBody = (rowData: any) => {
     if (rowData?.legalBondParticipant?.length > 0) {
@@ -224,7 +235,7 @@ const ChequeTableComponent = (props) => {
             <span
               onClick={() => {
                 setIsActionList(false);
-                props.editRecordDataFN('CHQ',rowData);
+                props.editRecordDataFN('CHQ', rowData);
               }}
             >
               تعديل
@@ -243,7 +254,6 @@ const ChequeTableComponent = (props) => {
       </div>
     );
   };
-
 
   const deleteFN = async () => {
     setShowLoader(true);
@@ -267,7 +277,7 @@ const ChequeTableComponent = (props) => {
           dataKey="id"
           className="custom-table"
           paginator
-          rows={5}
+          rows={10}
         >
           <Column selectionMode="multiple" header="" className="checkBoxCol" />
           <Column field={`bank.${$lang === 'en' ? 'arabicName' : 'englishName'}`} header="اسم البنك" className="columnStyle" />
@@ -280,6 +290,7 @@ const ChequeTableComponent = (props) => {
             field="totalAmount"
             header="قيمة الشيك"
             className="columnStyle"
+            body={totalAmountBody}
           />
           <Column
             field="dueDate"

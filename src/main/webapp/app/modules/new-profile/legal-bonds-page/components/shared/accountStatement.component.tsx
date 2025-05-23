@@ -38,17 +38,16 @@ const AccountStatement = (props) => {
   }, [setValue, $addLegalBondResponse]);
 
   useEffect(() => {
+    handelEditMode()
+  }, [props.rowDataEdit, setValue]);
+
+  const handelEditMode = () => {
     if (props.rowDataEdit?.id) {
       setValue('accountStatNumber', props.rowDataEdit?.accountNumber);
       setValue('accountStatAmount', props.rowDataEdit?.totalAmount);
       setValue('accountStatCurrency', _.find(CurrencyList, (item) => item.code === props.rowDataEdit?.currency));
     }
-  }, [props, setValue]);
-
-
-  const cancelFn = () => {
-    props.closepopUpFn(false)
-  };
+  }
 
   const addAccountStatFn = async (data: any) => {
     setShowLoader(true);
@@ -159,8 +158,8 @@ const AccountStatement = (props) => {
 
 
             <div className="actionBtns">
-              <ButtonComponent Class={'BtnCancel'} onClick={() => cancelFn()}>إلغاء</ButtonComponent>
-              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addAccountStatFn)}> 
+              <ButtonComponent Class={'BtnCancel'} onClick={() => props.closepopUpFn(false)}>إلغاء</ButtonComponent>
+              <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(addAccountStatFn)}>
                 {props.rowDataEdit?.id ? 'تعديل كشف حساب' : 'إضافة كشف حساب'}
               </ButtonComponent>
             </div>

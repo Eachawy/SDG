@@ -13,6 +13,7 @@ import _ from 'lodash';
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { AddEditPerson } from "../select-file-type.reducer";
 import { countryCode } from "app/shared/util/date-utils";
+import { getCountryCodeObj, removeCountryCode } from "app/shared/util/utils";
 
 const SearchByDefendant = (props) => {
     const dispatch = useAppDispatch();
@@ -44,50 +45,37 @@ const SearchByDefendant = (props) => {
                 }
             })
             setAllPersons(arr);
-        }
-
-        if (editMode) {
-            const mobileCode1 = String(selectedPerson?.mobileOne).substring(0, 3);
-            const mobileCode2 = String(selectedPerson?.mobileTwo).substring(0, 3);
-            const mobileCode3 = String(selectedPerson?.mobileThree).substring(0, 3);
-
-            const mobileCode1Obj = _.find(countryCode, (item) => item.name === ('+' + mobileCode1));
-            const mobileCode2Obj = _.find(countryCode, (item) => item.name === ('+' + mobileCode2));
-            const mobileCode3Obj = _.find(countryCode, (item) => item.name === ('+' + mobileCode3));
-
-            const mobileSplit1 = String(selectedPerson?.mobileOne).substring(3, selectedPerson?.mobileOne.length);
-            const mobileSplit2 = String(selectedPerson?.mobileTwo).substring(3, selectedPerson?.mobileTwo.length);
-            const mobileSplit3 = String(selectedPerson?.mobileThree).substring(3, selectedPerson?.mobileThree.length);
-
-            setValue('personNameEN', selectedPerson?.nameEnglish);
-            setValue('personNameAR', selectedPerson?.nameArabic);
-            setValue('personNationlId', selectedPerson?.nationalId);
-            setValue('personAddress1', selectedPerson?.addressOne);
-            setValue('personAddress2', selectedPerson?.addressTwo);
-            setValue('personCode1', mobileCode1Obj);
-            setValue('personCode2', mobileCode2Obj);
-            setValue('personCode3', mobileCode3Obj);
-            setValue('personPhone1', Number(mobileSplit1));
-            setValue('personPhone2', Number(mobileSplit2));
-            setValue('personPhone3', Number(mobileSplit3));
-            setValue('personEmail', selectedPerson?.email);
-
-        }
-
-        if ($addEditPersonResponse && editMode && $persons?.length > 0) {
-            const obj = {
-                name: {
-                    en: $addEditPersonResponse?.nameEnglish,
-                    ar: $addEditPersonResponse?.nameArabic
-                },
-                code: $addEditPersonResponse?.id
+            if (editMode) {
+                handleEditMode()
             }
-
-            setValue('personId', obj);
-            setSelectedPerson($addEditPersonResponse)
+            if ($addEditPersonResponse) {
+                const obj = _.find($persons, (person) => person.id === $addEditPersonResponse?.id)
+                setValue('personId', {
+                    name: {
+                        en: obj?.nameEnglish,
+                        ar: obj?.nameArabic
+                    },
+                    code: obj?.id
+                });
+                setSelectedPerson($addEditPersonResponse);
+            }
         }
-
     }, [$persons, editMode, $addEditPersonResponse]);
+
+    const handleEditMode = () => {
+        setValue('personNameEN', selectedPerson?.nameEnglish);
+        setValue('personNameAR', selectedPerson?.nameArabic);
+        setValue('personNationlId', selectedPerson?.nationalId);
+        setValue('personAddress1', selectedPerson?.addressOne);
+        setValue('personAddress2', selectedPerson?.addressTwo);
+        setValue('personCode1', getCountryCodeObj(selectedPerson?.mobileOne));
+        setValue('personCode2', getCountryCodeObj(selectedPerson?.mobileTwo));
+        setValue('personCode3', getCountryCodeObj(selectedPerson?.mobileThree));
+        setValue('personPhone1', Number(removeCountryCode(selectedPerson?.mobileOne)));
+        setValue('personPhone2', Number(removeCountryCode(selectedPerson?.mobileTwo)));
+        setValue('personPhone3', Number(removeCountryCode(selectedPerson?.mobileThree)));
+        setValue('personEmail', selectedPerson?.email);
+    }
 
     const getAllLookups = async () => {
         await dispatch(getAllPersons());
@@ -118,6 +106,7 @@ const SearchByDefendant = (props) => {
         dispatch(resetAllPersons());
         await addEditPerson(data);
         await dispatch(getAllPersons());
+        setEditMode(false);
         setShowDefendantPopup(false);
     }
 
@@ -154,6 +143,7 @@ const SearchByDefendant = (props) => {
                 <DropDownComponent
                     id="personId"
                     name="personId"
+                    // value="personId"
                     register={props.register}
                     watch={props.watch}
                     setValueMethod={props.setValue}
