@@ -80,7 +80,7 @@ const InvoiceTableComponent = (props) => {
         onClick={(e) => {
           e.stopPropagation();
           $('.action-column').find('.actionList').hide();
-          $(e.target).find('.actionList').css("display", "flex");;
+          $(e.currentTarget).find('.actionList').css("display", "flex");
         }}
       >
         <span className="dots-menu" />

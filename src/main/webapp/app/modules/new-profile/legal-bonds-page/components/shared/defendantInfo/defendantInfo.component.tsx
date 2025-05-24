@@ -10,9 +10,11 @@ import WrittenTrustBondTableComponent from './shared/writtenTrustBonds.component
 import { deleteLegalBond } from '../../legalBonds.reducer';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { ButtonComponent } from '@eachawy/frontend-library';
+import DeleteRowPopup from 'app/shared/components/deleteRowPopup.Component/deleteRowPopup.Component';
+import { Storage } from "react-jhipster";
+
 const DefendantInfoComponent = (props) => {
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState(Storage.session.get('SDC')['type']);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [collectionFile, setCollectionFile] = useState(null);
   const [writtenTrustBonds, setWrittenTrustBonds] = useState([]);
@@ -33,28 +35,6 @@ const DefendantInfoComponent = (props) => {
     } else {
       setWrittenTrustBonds([]);
     }
-    if (collectionFile?.cheques?.length > 0) {
-      setActiveTabFn("cheques");
-    }
-    else if (collectionFile?.drafts?.length > 0) {
-      setActiveTabFn("drafts");
-    }
-    else if (writtenTrustBonds.length > 0) {
-      setActiveTabFn("writtenTrustBonds");
-    }
-    else if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0) {
-      setActiveTabFn("mortgage");
-    }
-    else if (collectionFile?.accountStatements?.length > 0) {
-      setActiveTabFn("statement");
-    }
-    else if (collectionFile?.rentContracts?.length > 0) {
-      setActiveTabFn("rentContract");
-    }
-    else if (collectionFile?.invoices?.length > 0) {
-      setActiveTabFn("invoice");
-    }
-
   }, [props.fileResponse, collectionFile]);
 
   useEffect(() => {
@@ -71,6 +51,9 @@ const DefendantInfoComponent = (props) => {
     setSelectedRowsDelete([]);
     setDeleteType('');
     setActiveTab(tab);
+    Storage.session.set("SDC", {
+      "type": tab
+    });
   }
 
   const deleteRows = async () => {
@@ -147,7 +130,7 @@ const DefendantInfoComponent = (props) => {
         type: "TRUST_BOND",
         ids: deleteType === 'SELECTED' ? selectedTrustBondsIds.map(item => item.id) : deleteType === 'ALL' ? trustBondsList.map(item => item.id) : []
       }
-      if ((deleteType === 'ALL' && trustBondsList?.length > 0)|| 
+      if ((deleteType === 'ALL' && trustBondsList?.length > 0) ||
         (deleteType === 'SELECTED' && selectedTrustBondsIds.length > 0)) {
         await dispatch(deleteLegalBond(obj));
       }
@@ -168,7 +151,6 @@ const DefendantInfoComponent = (props) => {
 
     setShowLoader(false);
   }
-
 
   return (
     <div className="defendantInfo">
@@ -319,22 +301,11 @@ const DefendantInfoComponent = (props) => {
         : null}
 
       <LoaderComponent show={showLoader} />
+
       {showDeletePopup && (
-        <div className='deletePopupContainer'>
-          <div className='dialogBoxContent'>
-            <h4>هل أنت متأكد أنك تريد حذف البيانات الموجودة</h4>
-            <p>في حاله تاكيد الحذف سوف يتم حذف جميع البيانات ولا يمكن التراجع عن هذا الإجراء.</p>
-            <div className="actionRowBtns">
-              <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
-                لا اريد الحذف
-              </ButtonComponent>
-              <ButtonComponent onClick={deleteRows} Class={'BtnStyle BtnCancel'}>
-                نعم اريد الحذف
-              </ButtonComponent>
-            </div>
-          </div>
-        </div>
+        <DeleteRowPopup cancelPopup={() => setShowDeletePopup(false)} deleteFN={deleteRows} />
       )}
+
     </div>
   );
 };

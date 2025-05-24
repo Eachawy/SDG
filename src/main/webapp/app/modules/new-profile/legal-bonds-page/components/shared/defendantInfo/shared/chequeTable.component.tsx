@@ -84,7 +84,7 @@ const ChequeTableComponent = (props) => {
   }
 
   const openBeneficiaryList = (e: any) => {
-    $('.action-column.NFBList').find('.actionList._beneficiary').hide();
+    $('.action-column').find('.actionList').hide();
     $(e.currentTarget).find('.actionList._beneficiary').css("display", "flex");
   }
 
@@ -135,7 +135,7 @@ const ChequeTableComponent = (props) => {
             <span>مستفيد أول</span>
           </div>
           {rowData?.chequeBeneficiaries.map((b, index) => (
-            <span  key={b.id}>
+            <span key={b.id}>
               {index !== 0 && (
                 <div>
                   <p><label>اسم المجير له</label>{b.name}</p>
