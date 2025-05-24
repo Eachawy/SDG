@@ -8,16 +8,14 @@ import LoaderComponent from "app/shared/components/loaderComponent/loaderCompone
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { CurrencyList } from "app/modules/shared/constants";
 import _ from "lodash";
+import AttachmentPopupComponent from "app/shared/components/attachmentPopup.Component/attachmentPopup.Component";
 
 const InvoiceTableComponent = (props) => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
   const [actionRowId, setActionRowId] = useState<number | null>(null);
   const [isActionList, setIsActionList] = useState(false);
-  const [attachmentTamplateListRowId, setAttachmentTamplateListRowId] = useState<number | null>(null)
-  const [isAttachmentTamplateList, setIsAttachmentTamplateList] = useState(false)
-  const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
-  const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
+  const [attachmentListRow, setAttachmentListRow] = useState<number | null>(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const [deleteID, setDeleteID] = useState<number | null>(null);
@@ -63,73 +61,18 @@ const InvoiceTableComponent = (props) => {
     )
   }
 
-  const closeAttachmentPopupFn = () => {
-    setIsAttachmentTamplateList((prev) => {
-      return false;
-    });
-  };
-
   const attachmentTemplate = (rowData: any) => {
     return (
       <div className="action-column attachmentTemplateDiv"
         onClick={(e) => {
           e.stopPropagation();
-          if (attachmentTamplateListRowId !== rowData.id || !isAttachmentTamplateList) {
-            setAttachmentTamplateListRowId(rowData.id);
-            setIsAttachmentTamplateList(true);
-            setIsActionList(false);
-            setSelectedAttachmentCard(0)
-            setSelectedAttachmentFilePath(rowData.attachments[0].content)
-
-          }
+          setAttachmentListRow(rowData);
+          setIsActionList(false);
         }}
       >
         <div className="attachmentTdinnerDiv">
           <p>عرض</p>
         </div>
-
-        {(
-          attachmentTamplateListRowId === rowData.id &&
-          isAttachmentTamplateList) && (
-            <div className="popupView">
-              <div className="content">
-                <div>
-                  <div className="fileCardList">
-
-                    {rowData.attachments?.length > 0 && rowData.attachments.map((i, index) => (
-                      <div key={index} onClick={() => {
-                        setSelectedAttachmentCard(index)
-                        setSelectedAttachmentFilePath(i.content)
-                      }} className={`${selectedAttachmentCard === index && 'active'}`}>
-                        <p>
-                          <label>اسم الملف</label>
-                          {i.name}
-                        </p>
-                        <div>
-                          <p>
-                            <label>نوع الملف</label>
-                            {getFileType(i.content)}
-                          </p>
-                          <p>
-                            <label>حجم الملف</label>
-                            {getFileSize(i.content)}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                    }
-                  </div>
-                  <div className="fileViewSpace">
-                    <object width={"100%"} height={"100%"}
-                      data={`${selectedAttachmentFilePath}`}
-                    // type={selectedAttachmentFilePath.toLowerCase().endsWith('.pdf') ? "application/pdf" : "image/jpeg"}
-                    />
-                  </div>
-                </div>
-                <ButtonComponent Class={'BtnCancel'} onClick={closeAttachmentPopupFn}>إغلاق</ButtonComponent>
-              </div>
-            </div>
-          )}
       </div>
     )
   }
@@ -238,6 +181,11 @@ const InvoiceTableComponent = (props) => {
             </div>
           </div>
         )}
+
+        {attachmentListRow &&
+          <AttachmentPopupComponent attachList={attachmentListRow} closeAttachmentPopupFn={() => setAttachmentListRow(null)} />
+        }
+
       </div>
     </>
   );
