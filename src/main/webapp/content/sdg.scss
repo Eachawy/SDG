@@ -1408,11 +1408,16 @@ body,
                         flex-direction: column;
                         z-index: 10000;
                         overflow: hidden;
+                        display: none;
 
                         span {
                           padding: 8px 32px !important;
                           border-bottom: 1px solid #ddd;
                           cursor: pointer;
+
+                          &:hover {
+                            background: #f0f0f0;
+                          }
                         }
 
                         span:last-child {
@@ -1508,12 +1513,6 @@ body,
                               background-color: #fff;
                             }
                           }
-                        }
-                      }
-
-                      .actionList {
-                        span:hover {
-                          background: #f0f0f0;
                         }
                       }
 

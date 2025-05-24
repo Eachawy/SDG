@@ -8,6 +8,7 @@ import { CurrencyList } from "app/modules/shared/constants";
 import _ from "lodash";
 import AttachmentPopupComponent from "app/shared/components/attachmentPopup.Component/attachmentPopup.Component";
 import DeleteRowPopup from "app/shared/components/deleteRowPopup.Component/deleteRowPopup.Component";
+import $ from 'jquery';
 
 const InvoiceTableComponent = (props) => {
 
@@ -40,8 +41,7 @@ const InvoiceTableComponent = (props) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!(event.target as HTMLElement).closest(".action-column")) {
-        setIsActionList(false);
-        setActionRowId(null);
+        $(".p-datatable-table .action-column .actionList").hide();
       }
     };
 
@@ -76,38 +76,40 @@ const InvoiceTableComponent = (props) => {
     )
   }
 
+  const openActionList = (e: any) => {
+    $('.p-datatable-table .action-column').find('.actionList').hide();
+    $(e.target).find('.actionList').show();
+  }
+
   const actionBodyTemplate = (rowData: any) => {
     return (
       <div
         className="action-column"
         onClick={(e) => {
           e.stopPropagation();
-          setActionRowId(rowData.id);
-          setIsActionList(true);
+          openActionList(e);
         }}
       >
         <span className="dots-menu" />
-        {actionRowId === rowData.id && isActionList && (
-          <div className="actionList" onClick={(e) => e.stopPropagation()}>
-            <span
-              onClick={() => {
-                setIsActionList(false);
-                props.editRecordDataFN('INV', rowData);
-              }}
-            >
-              تعديل
-            </span>
-            <span
-              onClick={() => {
-                setIsActionList(false);
-                setShowDeletePopup(true);
-                setDeleteID(rowData.id)
-              }}
-            >
-              حذف
-            </span>
-          </div>
-        )}
+        <div className="actionList" onClick={(e) => e.stopPropagation()}>
+          <span
+            onClick={() => {
+              setIsActionList(false);
+              props.editRecordDataFN('INV', rowData);
+            }}
+          >
+            تعديل
+          </span>
+          <span
+            onClick={() => {
+              setIsActionList(false);
+              setShowDeletePopup(true);
+              setDeleteID(rowData.id)
+            }}
+          >
+            حذف
+          </span>
+        </div>
       </div>
     );
   };
