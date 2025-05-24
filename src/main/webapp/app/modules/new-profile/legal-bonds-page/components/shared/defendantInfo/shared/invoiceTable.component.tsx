@@ -13,8 +13,6 @@ import $ from 'jquery';
 const InvoiceTableComponent = (props) => {
 
   const [selectedCheques, setSelectedCheques] = useState([]);
-  const [actionRowId, setActionRowId] = useState<number | null>(null);
-  const [isActionList, setIsActionList] = useState(false);
   const [attachmentListRow, setAttachmentListRow] = useState<number | null>(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const $lang = useAppSelector((state) => state.locale.currentLocale);
@@ -41,7 +39,7 @@ const InvoiceTableComponent = (props) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!(event.target as HTMLElement).closest(".action-column")) {
-        $(".p-datatable-table .action-column .actionList").hide();
+        $(".action-column .actionList").hide();
       }
     };
 
@@ -66,7 +64,6 @@ const InvoiceTableComponent = (props) => {
         onClick={(e) => {
           e.stopPropagation();
           setAttachmentListRow(rowData);
-          setIsActionList(false);
         }}
       >
         <div className="attachmentTdinnerDiv">
@@ -90,7 +87,6 @@ const InvoiceTableComponent = (props) => {
         <div className="actionList" onClick={(e) => e.stopPropagation()}>
           <span
             onClick={() => {
-              setIsActionList(false);
               props.editRecordDataFN('INV', rowData);
             }}
           >
@@ -98,7 +94,6 @@ const InvoiceTableComponent = (props) => {
           </span>
           <span
             onClick={() => {
-              setIsActionList(false);
               setShowDeletePopup(true);
               setDeleteID(rowData.id)
             }}
