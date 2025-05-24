@@ -26,7 +26,7 @@ const LegalBondsPage = () => {
     const navigate = useNavigate();
 
     const saveAndCloseFn = (data:any) => {
-        if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
+        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)){
             navigate("/dashoard");
         } else {
             pushNotification("error", "يرجى اضافة السندات القانونية");
@@ -34,7 +34,7 @@ const LegalBondsPage = () => {
     }
 
     const nextFn = (data:any) => {
-        if (Object.values(fileRespone?.collectionFile).some(value => Array.isArray(value) && value.length > 0)){
+        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)){
             navigate("/create-file/determine-responsibility-and-follow-up");
         } else {
             pushNotification("error", "يرجى اضافة السندات القانونية");
