@@ -14,7 +14,7 @@ import DeleteRowPopup from 'app/shared/components/deleteRowPopup.Component/delet
 import { Storage } from "react-jhipster";
 
 const DefendantInfoComponent = (props) => {
-  const [activeTab, setActiveTab] = useState(Storage.session.get('SDC')['type']);
+  const [activeTab, setActiveTab] = useState(Storage.session.get('SDC') !== undefined ? Storage.session.get('SDC')['type'] : '');
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [collectionFile, setCollectionFile] = useState(null);
   const [writtenTrustBonds, setWrittenTrustBonds] = useState([]);
@@ -34,6 +34,30 @@ const DefendantInfoComponent = (props) => {
       setWrittenTrustBonds(writtenTrustBondsList);
     } else {
       setWrittenTrustBonds([]);
+    }
+
+    if (activeTab === '') {
+      if (collectionFile?.cheques?.length > 0) {
+        setActiveTabFn("cheques");
+      }
+      else if (collectionFile?.drafts?.length > 0) {
+        setActiveTabFn("drafts");
+      }
+      else if (writtenTrustBonds.length > 0) {
+        setActiveTabFn("writtenTrustBonds");
+      }
+      else if (collectionFile?.bonds.filter(item => item.bondType === 'MORTGAGE_BOND').length > 0) {
+        setActiveTabFn("mortgage");
+      }
+      else if (collectionFile?.accountStatements?.length > 0) {
+        setActiveTabFn("statement");
+      }
+      else if (collectionFile?.rentContracts?.length > 0) {
+        setActiveTabFn("rentContract");
+      }
+      else if (collectionFile?.invoices?.length > 0) {
+        setActiveTabFn("invoice");
+      }
     }
   }, [props.fileResponse, collectionFile]);
 
