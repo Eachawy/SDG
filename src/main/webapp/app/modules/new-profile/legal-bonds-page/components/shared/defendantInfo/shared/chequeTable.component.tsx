@@ -83,67 +83,69 @@ const ChequeTableComponent = (props) => {
     )
   }
 
+  const openBeneficiaryList = (e: any) => {
+    $('.action-column.NFBList').find('.actionList._beneficiary').hide();
+    $(e.currentTarget).find('.actionList._beneficiary').css("display", "flex");
+  }
+
+  const beneficiarylegalBondInfoTemplateList = (rowData: any) => {
+    return (
+      <div className="action-column NFBList"
+        onClick={(e) => {
+          e.stopPropagation();
+          openBeneficiaryList(e);
+        }}
+      >
+        <div className="tdinnerDiv">
+          <span />
+          <p>{rowData?.chequeBeneficiaries[0]?.name + "/" + rowData?.legalBondParticipant[0]?.name}</p>
+        </div>
+        <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
+          <div className={'fb'}>
+            <p><label>اسم المستفيد</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
+            <span>مستفيد أول</span>
+          </div>
+          {rowData?.legalBondParticipant.map((b) => (
+
+            <div key={b.id}>
+              <p><label>اسم الساحب</label>{b.name}</p>
+            </div>
+          ))}
+
+        </div>
+      </div>
+    )
+  }
+
   const beneficiaryInfoTemplateList = (rowData: any) => {
-    if (rowData?.legalBondParticipant?.length > 0) {
-      return (
-        <div className="action-column NFBList"
-          onClick={(e) => {
-            e.stopPropagation();
-            $('.action-column.NFBList').find('.actionList._beneficiary').hide();
-            $(e.target).find('.actionList._beneficiary').css("display", "flex");;
-          }}
-        >
-          <div className="tdinnerDiv">
-            <span />
-            <p>{rowData?.chequeBeneficiaries[0]?.name + "/" + rowData?.legalBondParticipant[0]?.name}</p>
-          </div>
-          <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-            <div className={'fb'}>
-              <p><label>اسم المستفيد</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
-              <span>مستفيد أول</span>
-            </div>
-            {rowData?.legalBondParticipant.map((b) => (
-
-              <div key={b.id}>
-                <p><label>اسم الساحب</label>{b.name}</p>
-              </div>
-            ))}
-
-          </div>
+    return (
+      <div className="action-column NFBList"
+        onClick={(e) => {
+          e.stopPropagation();
+          openBeneficiaryList(e);
+        }}
+      >
+        <div className="tdinnerDiv">
+          <span />
+          <p>{rowData?.chequeBeneficiaries[0]?.name + (rowData?.chequeBeneficiaries.length > 1 ? "/" + rowData?.chequeBeneficiaries[1].name : '')}</p>
         </div>
-      )
-    } else {
-      return (
-        <div className="action-column NFBList"
-          onClick={(e) => {
-            e.stopPropagation();
-            $('.action-column.NFBList').find('.actionList._beneficiary').hide();
-            $(e.target).find('.actionList._beneficiary').css("display", "flex");;
-          }}
-        >
-          <div className="tdinnerDiv">
-            <span />
-            <p>{rowData?.chequeBeneficiaries[0]?.name + (rowData?.chequeBeneficiaries.length > 1 ? "/" + rowData?.chequeBeneficiaries[1].name : '')}</p>
+        <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
+          <div className={'fb'}>
+            <p><label>اسم المجير له</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
+            <span>مستفيد أول</span>
           </div>
-          <div className="actionList _beneficiary" onClick={(e) => e.stopPropagation()}>
-            <div className={'fb'}>
-              <p><label>اسم المجير له</label>{rowData?.chequeBeneficiaries[0]?.name}</p>
-              <span>مستفيد أول</span>
-            </div>
-            {rowData?.chequeBeneficiaries.map((b, index) => (
-              <>
-                {index !== 0 && (
-                  <div key={b.id}>
-                    <p><label>اسم المجير له</label>{b.name}</p>
-                  </div>
-                )}
-              </>
-            ))}
-
-          </div>
+          {rowData?.chequeBeneficiaries.map((b, index) => (
+            <span  key={b.id}>
+              {index !== 0 && (
+                <div>
+                  <p><label>اسم المجير له</label>{b.name}</p>
+                </div>
+              )}
+            </span>
+          ))}
         </div>
-      )
-    }
+      </div>
+    )
   }
 
   const actionBodyTemplate = (rowData: any) => {
@@ -231,8 +233,13 @@ const ChequeTableComponent = (props) => {
             field="drawer"
             header="اسم المستفيد / الساحب / مجير له"
             className="columnStyle"
-            body={beneficiaryInfoTemplateList}
+            body={(rowData) =>
+              rowData?.legalBondParticipant?.length > 0 ?
+                beneficiarylegalBondInfoTemplateList(rowData) :
+                beneficiaryInfoTemplateList(rowData)
+            }
           />
+
 
           <Column body={attachmentTemplate}
             header="الملاحظات"
