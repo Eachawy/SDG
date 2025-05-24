@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { ButtonComponent } from "@eachawy/frontend-library";
-import { getFileSize, getFileType } from "app/shared/util/utils";
 import { deleteLegalBond } from "../../../legalBonds.reducer";
 import LoaderComponent from "app/shared/components/loaderComponent/loaderComponent";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import { CurrencyList } from "app/modules/shared/constants";
 import _ from "lodash";
 import AttachmentPopupComponent from "app/shared/components/attachmentPopup.Component/attachmentPopup.Component";
+import DeleteRowPopup from "app/shared/components/deleteRowPopup.Component/deleteRowPopup.Component";
 
 const InvoiceTableComponent = (props) => {
 
@@ -166,20 +165,7 @@ const InvoiceTableComponent = (props) => {
 
 
         {showDeletePopup && (
-          <div className='deletePopupContainer'>
-            <div className='dialogBoxContent'>
-              <h4>هل أنت متأكد أنك تريد حذف بيانات الفاتورة</h4>
-              <p>في حاله تاكيد الحذف سوف يتم حذف جميع بيانات الفاتورة ولا يمكن التراجع عن هذا الإجراء.</p>
-              <div className="actionRowBtns">
-                <ButtonComponent Class={'BtnStyle '} onClick={() => setShowDeletePopup(false)}>
-                  لا اريد الحذف
-                </ButtonComponent>
-                <ButtonComponent onClick={deleteFN} Class={'BtnStyle BtnCancel'}>
-                  نعم اريد الحذف
-                </ButtonComponent>
-              </div>
-            </div>
-          </div>
+          <DeleteRowPopup cancelPopup={() => setShowDeletePopup(false)} deleteFN={deleteFN} />
         )}
 
         {attachmentListRow &&
