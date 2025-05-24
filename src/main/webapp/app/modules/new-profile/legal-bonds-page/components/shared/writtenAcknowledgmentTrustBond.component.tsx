@@ -32,7 +32,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
+  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
   useEffect(() => {
@@ -172,7 +172,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     });
 
     return {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       bond: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,
@@ -219,7 +219,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     const totalAmount = data.scheduling.reduce((sum, payment) => sum + Number(payment?.totalAmount), 0)
 
     return {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       bond: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,
@@ -258,7 +258,7 @@ const WrittenAcknowledgmentTrustBond = (props) => {
     });
 
     return {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       bond: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: data.WATB?.code,

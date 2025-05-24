@@ -26,9 +26,10 @@ const DefendantInfoComponent = (props) => {
 
 
   useEffect(() => {
-    setCollectionFile(props.fileResponse?.collectionFile);
-    if (props.fileResponse?.collectionFile?.bonds?.length > 0) {
-      const writtenTrustBondsList = props.fileResponse?.collectionFile?.bonds.filter(item => {
+    setCollectionFile(props.fileResponse);
+    let writtenTrustBondsList;
+    if (props.fileResponse?.bonds?.length > 0) {
+      writtenTrustBondsList = props.fileResponse?.bonds.filter(item => {
         return (item.bondType === 'WRITTEN_CONSENT' || item.bondType === 'TRUST_BOND')
       })
       setWrittenTrustBonds(writtenTrustBondsList);
@@ -278,7 +279,7 @@ const DefendantInfoComponent = (props) => {
         : null}
 
       {activeTab === "writtenTrustBonds" ?
-        (props.fileResponse?.collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || props.fileResponse?.collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
+        (collectionFile?.bonds.filter(item => item.bondType === 'WRITTEN_CONSENT').length > 0 || collectionFile?.bonds.filter(item => item.bondType === 'TRUST_BOND').length > 0)
         && <WrittenTrustBondTableComponent
           writtenTrustBondsList={writtenTrustBonds}
           deleteIdDoneFn={() => props.deleteIsDone()}

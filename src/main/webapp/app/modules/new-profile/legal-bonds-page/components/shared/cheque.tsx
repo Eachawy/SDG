@@ -33,7 +33,7 @@ const Cheque = (props) => {
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $banksList = useAppSelector((state) => state.legalBonds.banksList);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
+  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
   const { register, handleSubmit, control, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
@@ -161,7 +161,7 @@ const Cheque = (props) => {
 
 
     const obj = {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       cheque: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         totalAmount: Number(data.chequeAmount),

@@ -37,5 +37,5 @@ export const getAllBanksAPI = 'api/banks?name=&size=';
 
 // Legal Bonds
 export const getFileDetailsAPI = 'api/files/';
-export const addLegalBondAPI = 'api/collection-files/legal-bonds';
-export const deleteLegalBondAPI = 'api/collection-files/legal-bond';
+export const addLegalBondAPI = 'api/legal-bonds';
+export const deleteLegalBondAPI = 'api/legal-bonds';
