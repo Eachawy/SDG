@@ -32,7 +32,7 @@ const RentContract = (props) => {
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
+  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
 
@@ -147,7 +147,7 @@ const RentContract = (props) => {
     });
 
     const obj = {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       rentedContract: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         paymentPeriod: data.paymentType,

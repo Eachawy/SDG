@@ -22,7 +22,7 @@ const MortgageBond = (props) => {
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $collectionFileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('collectionFileId');
+  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
 
@@ -57,7 +57,7 @@ const MortgageBond = (props) => {
     setShowLoader(true);
 
     const obj = {
-      collectionFileId: $collectionFileId,
+      fileId: $fileId,
       bond: {
         ...(props.rowDataEdit?.id && { id: props.rowDataEdit?.id }),
         bondType: "MORTGAGE_BOND",

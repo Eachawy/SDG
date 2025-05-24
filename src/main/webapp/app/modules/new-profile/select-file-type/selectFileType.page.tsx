@@ -36,9 +36,12 @@ const SelectFileTypePage = () => {
                 navigate("/dashoard");
             } else {
                 Storage.session.set("selectFileId", $createFileResponse?.id);
-                if ($createFileResponse?.fileType === "COLLECTION" && $createFileResponse?.collectionFile?.id) {
-                    Storage.session.set("collectionFileId", $createFileResponse?.collectionFile?.id);
+                if (($createFileResponse?.fileType === "COLLECTION" || $createFileResponse?.fileType === "COURT_CASE") &&
+                    $createFileResponse?.id) {
+
+                    Storage.session.set("fileId", $createFileResponse?.id);
                     navigate("/create-file/legal-bonds");
+
                 } else {
                     navigate("/create-file/determine-responsibility-and-follow-up");
                 }
