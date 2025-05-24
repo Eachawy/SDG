@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ButtonComponent } from '@eachawy/frontend-library';
-import { getFileSize, getFileType } from 'app/shared/util/utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { deleteLegalBond } from '../../../legalBonds.reducer';
@@ -10,17 +8,11 @@ import { CurrencyList } from 'app/modules/shared/constants';
 import _ from 'lodash';
 import DeleteRowPopup from 'app/shared/components/deleteRowPopup.Component/deleteRowPopup.Component';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
+import $ from 'jquery';
 
 const ChequeTableComponent = (props) => {
   const [selectedCheques, setSelectedCheques] = useState([]);
-  const [actionRowId, setActionRowId] = useState<number | null>(null);
-  const [isActionList, setIsActionList] = useState(false);
-  const [isBeneficiaryInfoList, setIsBeneficiaryInfoList] = useState(false);
-  const [beneficiaryInfoListRowId, setBeneficiaryInfoListRowId] = useState<number | null>(null);
   const [attachmentListRow, setAttachmentListRow] = useState<number | null>(null)
-  const [isAttachmentTamplateList, setIsAttachmentTamplateList] = useState(false)
-  const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0)
-  const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('')
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
@@ -168,7 +160,6 @@ const ChequeTableComponent = (props) => {
         <div className="actionList" onClick={(e) => e.stopPropagation()}>
           <span
             onClick={() => {
-              setIsActionList(false);
               props.editRecordDataFN('CHQ', rowData);
             }}
           >
@@ -176,7 +167,6 @@ const ChequeTableComponent = (props) => {
           </span>
           <span
             onClick={() => {
-              setIsActionList(false);
               setShowDeletePopup(true);
               setDeleteID(rowData.id);
             }}
