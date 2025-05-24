@@ -76,18 +76,14 @@ const InvoiceTableComponent = (props) => {
     )
   }
 
-  const openActionList = (e: any) => {
-    $('.p-datatable-table .action-column').find('.actionList').hide();
-    $(e.target).find('.actionList').show();
-  }
-
   const actionBodyTemplate = (rowData: any) => {
     return (
       <div
         className="action-column"
         onClick={(e) => {
           e.stopPropagation();
-          openActionList(e);
+          $('.action-column').find('.actionList').hide();
+          $(e.target).find('.actionList').css("display", "flex");;
         }}
       >
         <span className="dots-menu" />
