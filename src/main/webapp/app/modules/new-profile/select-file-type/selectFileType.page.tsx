@@ -55,6 +55,12 @@ const SelectFileTypePage = () => {
         submitCreateFile(data);
     }
 
+
+    const cancelFn = () => {
+        navigate("/dashoard");
+    }
+
+
     const saveAndCloseFn = (data: any) => {
         setIsSaveClose(true);
         submitCreateFile(data);
@@ -246,6 +252,7 @@ const SelectFileTypePage = () => {
                 )}
 
                 <div className="actionBtns">
+                    <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>{translate("createNewProfile.close")}</ButtonComponent>
                     <ButtonComponent Class={'BtnCancel'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
                     {/* <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.addAndSave")}</ButtonComponent> */}
                     <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveAndContinueFn)}>{translate("createNewProfile.next")}</ButtonComponent>

@@ -25,16 +25,22 @@ const LegalBondsPage = () => {
 
     const navigate = useNavigate();
 
-    const saveAndCloseFn = (data:any) => {
-        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)){
+
+    const cancelFn = () => {
+        navigate("/dashoard");
+    }
+
+
+    const saveAndCloseFn = (data: any) => {
+        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)) {
             navigate("/dashoard");
         } else {
             pushNotification("error", "يرجى اضافة السندات القانونية");
         }
     }
 
-    const nextFn = (data:any) => {
-        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)){
+    const nextFn = (data: any) => {
+        if (Object.values(fileRespone).some(value => Array.isArray(value) && value.length > 0)) {
             navigate("/create-file/determine-responsibility-and-follow-up");
         } else {
             pushNotification("error", "يرجى اضافة السندات القانونية");
@@ -75,6 +81,7 @@ const LegalBondsPage = () => {
                     <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => setFileResponse(obj)} />
 
                     <div className="actionBtns">
+                        <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>{translate("createNewProfile.close")}</ButtonComponent>
                         <ButtonComponent Class={'BtnCancel'} onClick={saveAndCloseFn}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
                         {/* <ButtonComponent Class={'btnStyle _saveAndAdd'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.addAndSave")}</ButtonComponent> */}
                         <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(nextFn)}>{translate("createNewProfile.next")}</ButtonComponent>
