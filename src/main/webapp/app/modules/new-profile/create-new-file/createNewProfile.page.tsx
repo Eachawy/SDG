@@ -49,6 +49,10 @@ const CreateNewProfilePage = () => {
 
     };
 
+    const cancelFn = () => {
+        navigate("/dashoard");
+    }
+
     const createProfile = (data) => {
         setIsSaveClose(false);
         restructureObject(data);
@@ -225,6 +229,7 @@ const CreateNewProfilePage = () => {
                 </div>
 
                 <div className="actionBtns">
+                    <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>{translate("createNewProfile.close")}</ButtonComponent>
                     <ButtonComponent Class={'BtnCancel'} onClick={handleSubmit(saveAndCloseFn)}>{translate("createNewProfile.saveAndClose")}</ButtonComponent>
                     <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(createProfile)}>{translate("createNewProfile.next")}</ButtonComponent>
                 </div>

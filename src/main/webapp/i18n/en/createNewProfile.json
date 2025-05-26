@@ -24,6 +24,7 @@
     "attachments": "Attachments",
     "saveAndClose": "Save and Close",
     "next": "Next",
-    "addAndSave": "Save and Add"
+    "addAndSave": "Save and Add",
+    "close": "Close"
   }
 }
