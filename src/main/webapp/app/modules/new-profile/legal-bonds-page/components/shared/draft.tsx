@@ -317,17 +317,17 @@ const Draft = (props) => {
                             }}
                             register={register as unknown as UseFormRegister<Record<string, unknown>>}
                             control={control}
-                            errors={
-                              errors?.debtors?.[index]?.phoneNumber
-                                ? {
-                                  [`debtorsPhoneNumber${field.id}`]:
-                                    errors.debtors[index].phoneNumber,
-                                }
-                                : undefined
-                            }
+                            // errors={
+                            //   errors?.debtors?.[index]?.phoneNumber
+                            //     ? {
+                            //       [`debtorsPhoneNumber${field.id}`]:
+                            //         errors.debtors[index].phoneNumber,
+                            //     }
+                            //     : undefined
+                            // }
                             setValue={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
                             watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
-                            rules={{ required: "يجب اختيار رقم الهاتف" }}
+                            // rules={{ required: "يجب اختيار رقم الهاتف" }}
                           />
                           {errors.debtors?.[index]?.phoneNumber &&
                             <span className="errorMsg"> يجب ادخال رقم الهاتف</span>
@@ -441,17 +441,17 @@ const Draft = (props) => {
                               }}
                               register={register as unknown as UseFormRegister<Record<string, unknown>>}
                               control={control}
-                              errors={
-                                errors?.guarantors?.[index]?.guarantorPhoneNumber
-                                  ? {
-                                    [`guarantorPhoneNumber${field.id}`]:
-                                      errors.guarantors[index].guarantorPhoneNumber,
-                                  }
-                                  : undefined
-                              }
+                              // errors={
+                              //   errors?.guarantors?.[index]?.guarantorPhoneNumber
+                              //     ? {
+                              //       [`guarantorPhoneNumber${field.id}`]:
+                              //         errors.guarantors[index].guarantorPhoneNumber,
+                              //     }
+                              //     : undefined
+                              // }
                               setValue={setValue as unknown as UseFormSetValue<Record<string, unknown>>}
                               watch={watch as unknown as UseFormWatch<Record<string, unknown>>}
-                              rules={{ required: "يجب ادخال رقم الهاتف" }}
+                              // rules={{ required: "يجب ادخال رقم الهاتف" }}
                             />
                             {errors.guarantors?.[index]?.guarantorPhoneNumber &&
                               <span className="errorMsg"> يجب ادخال رقم الهاتف</span>

@@ -217,23 +217,6 @@ const SearchByDefendant = (props) => {
                             </h4>
 
                             <InputComponent
-                                id="personNameEN"
-                                type="text"
-                                name="personNameEN"
-                                label="اسم الشخص باللغة الإنجليزية"
-                                placeholder={"ادخل اسم الشخص"}
-                                register={register}
-                                rules={{ required: 'يجب ادخال اسم الشخص' }}
-                                errors={errors}
-                                setValueMethod={setValue}
-                                watch={watch}
-                                onChange={(e) => {
-                                    const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-                                    setValue("personNameEN", englishOnly);
-                                }}
-                            />
-
-                            <InputComponent
                                 id="personNameAR"
                                 type="text"
                                 name="personNameAR"
@@ -251,14 +234,31 @@ const SearchByDefendant = (props) => {
                             />
 
                             <InputComponent
+                                id="personNameEN"
+                                type="text"
+                                name="personNameEN"
+                                label="اسم الشخص باللغة الإنجليزية"
+                                placeholder={"ادخل اسم الشخص"}
+                                register={register}
+                                rules={{ required: 'يجب ادخال اسم الشخص' }}
+                                errors={errors}
+                                setValueMethod={setValue}
+                                watch={watch}
+                                onChange={(e) => {
+                                    const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                                    setValue("personNameEN", englishOnly);
+                                }}
+                            />
+
+                            <InputComponent
                                 id="personNationlId"
                                 type="text"
                                 name="personNationlId"
                                 label={translate("createNewProfile.nationalNumber")}
                                 placeholder={translate("createNewProfile.exm") + "1234567"}
                                 register={register}
-                                rules={{ required: 'يجب ادخال الرقم الوطني' }}
-                                errors={errors}
+                                // rules={{ required: 'يجب ادخال الرقم الوطني' }}
+                                // errors={errors}
                                 setValueMethod={setValue}
                                 watch={watch}
                                 onChange={(e) => {
