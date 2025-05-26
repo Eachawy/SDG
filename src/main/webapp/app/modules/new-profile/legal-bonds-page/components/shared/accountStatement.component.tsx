@@ -23,7 +23,7 @@ const AccountStatement = (props) => {
 
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
+  const $fileId = ($createFileResponse?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch, } = useForm({ mode: "onTouched" });

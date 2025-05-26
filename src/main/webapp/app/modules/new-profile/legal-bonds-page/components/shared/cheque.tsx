@@ -33,7 +33,7 @@ const Cheque = (props) => {
   const $lang = useAppSelector((state) => state.locale.currentLocale);
   const $banksList = useAppSelector((state) => state.legalBonds.banksList);
   const $createFileResponse = useAppSelector(state => state.selectFileType.createFileResponse);
-  const $fileId = ($createFileResponse?.collectionFile?.id) ?? Storage.session.get('fileId');
+  const $fileId = ($createFileResponse?.id) ?? Storage.session.get('fileId');
   const $addLegalBondResponse = useAppSelector(state => state.legalBonds.addLegalBondResponse);
 
   const { register, handleSubmit, control, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
