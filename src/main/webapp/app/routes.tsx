@@ -14,6 +14,7 @@ import SubfileDataSentPage from "./modules/new-profile/subfile-data-sent/subfile
 import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
+import MainPage from "./modules/dashboard/main-page/mainPage";
 
 const AppRoutes = () => {
   return (
@@ -24,13 +25,22 @@ const AppRoutes = () => {
 
         <Route path="" element={<LayoutSystemTemplete />} >
 
-          <Route path="dashoard" element={
-            <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
-              <MainDashboardPage />
-            </PrivateRoute>
-          } />
+          <Route path="dashoard">
+            
+            <Route path="" element={
+              <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                <MainDashboardPage />
+              </PrivateRoute>
+            } />
 
+            <Route path="main-page" element={
+              <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
+                <MainPage />
+              </PrivateRoute>
+            } />
+          </Route>
 
+          
 
           <Route path="create-file">
             <Route

@@ -25,7 +25,7 @@ const MainDashboardPage = () => {
     }
 
     const createNewFileFn = () => {
-        navigate('/create-file/create-new-profile');
+        navigate('/dashoard/main-page');
     }
 
     const followUpsFn = () => {
