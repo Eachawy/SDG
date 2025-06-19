@@ -15,6 +15,7 @@ import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
 
+
 const AppRoutes = () => {
   return (
     <div>
