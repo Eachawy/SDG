@@ -1,0 +1,27 @@
+{
+    "mainDashboard": {
+        "dashboard": "Dashboard",
+        "viewFiles": "View files",
+        "viewFilesHeader": "View files",
+        "createNewFileButton": "Create New File",
+        "totalFiles": "Total Files",
+        "urgentFiles": "Urgent Files",
+        "collectionFiles": "Collection Files",
+        "casesFiles": "Cases Files",
+        "activeFiles": "Active Files",
+        "closedFiles": "Closed Files",
+        "searchByFileOrName": "Search by File Number / Name",
+        "searchByDefendantName": "Search by Defendant Name",
+        "previousMonth": "Previous Month:",
+        "currentMonth": "Current Month:",
+        "viewFile": "View File",
+        "filesNeedUpdate": "Files Need Update",
+        "fileNumber": "File Number",
+        "mainFileName": "Main File Name",
+        "defendantName": "Defendant Name",
+        "registerDate": "File Registration Date",
+        "lastUpdateDate": "Last Update Date",
+        "fileType": "File Type",
+        "dataStatus": "File Data Status"
+    }
+}

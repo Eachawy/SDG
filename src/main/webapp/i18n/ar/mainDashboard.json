@@ -1,0 +1,27 @@
+{
+    "mainDashboard": {
+        "dashboard": "لوحة التحكم",
+        "viewFiles": "عرض الملفات",
+        "viewFilesHeader": "عرض الملفات",
+        "createNewFileButton": "انشاء ملف جديد",
+        "totalFiles": "اجمالى الملفات",
+        "urgentFiles": "عدد الملفات المستعجلة",
+        "collectionFiles": "عدد ملفات التحصيل",
+        "casesFiles": "عدد ملفات القضايا",
+        "activeFiles": "الملفات الفعالة",
+        "closedFiles": "الملفات المغلقة",
+        "searchByFileOrName": "البحث برقم الملف / الاسم",
+        "searchByDefendantName": "البحث باسم المدعى عليه",
+        "previousMonth": "الشهر السابق:",
+        "currentMonth": "الشهر الجاري:",
+        "viewFile": "عرض الملف",
+        "filesNeedUpdate": "ملفات تحتاج إلى تحديث",
+        "fileNumber": "رقم الملف",
+        "mainFileName": "اسم الملف الرئيسي",
+        "defendantName": "اسم المدعى عليه",
+        "registerDate": "تاريخ تسجيل الملف",
+        "lastUpdateDate": "تاريخ آخر تحديث",
+        "fileType": "نوع الملف",
+        "dataStatus": "حالة بيانات الملف"
+    }
+}
