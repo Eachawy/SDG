@@ -225,7 +225,6 @@ const CreateNewProfilePage = () => {
                             Class="col-md-12 col-lg-6"
                         />
                     </div>
-
                 </div>
 
                 <div className="actionBtns">

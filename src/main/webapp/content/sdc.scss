@@ -1,3 +1,74 @@
+.popupView {
+  background: #00000057;
+  position: fixed;
+
+  .contanier {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    outline: 8px solid #fff;
+
+    .footerPopup {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+
+      @media screen and (max-width: 768px) {
+        flex-direction: column;
+      }
+
+      .btnStyle,
+      .BtnCancel {
+        background-color: #2d51a3;
+        color: #fff;
+        font-size: 16px;
+        line-height: 16px;
+        font-weight: 400;
+        cursor: pointer;
+        border-radius: 6px;
+        padding: 8px 40px 11px;
+        user-select: none;
+        font-family: "Cairo-Regular";
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          text-align: center;
+        }
+
+        &:hover {
+          background-color: #f7941d;
+          color: #fff;
+          border-color: transparent;
+        }
+
+        &._saveAndAdd {
+          background-color: #f7941d;
+          color: #fff;
+          border-color: transparent;
+        }
+      }
+
+      .BtnCancel {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #d9d9d9;
+        min-width: 158px;
+      }
+    }
+  }
+}
+
+
+
 .titlePageDashboard {
   display: flex;
   justify-content: space-between;
@@ -10,7 +81,7 @@
   }
 
   h2 {
-    font: 24px / 26px 'Cairo-Regular';
+    font: 21px / 24px 'Cairo-Regular';
     color: #000;
   }
 
@@ -19,7 +90,10 @@
     border: 1px solid #f7941d;
     color: #fff;
     width: 200px;
-    font: 16px / 18px 'Cairo-Regular'
+    font: 16px / 18px 'Cairo-Regular';
+    border-radius: 8px;
+    max-height: 48px;
+    padding-bottom: 6px;
   }
 
 }
@@ -206,8 +280,95 @@
   }
 }
 
+.progressBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.completed {
+    .p-progressbar {
+      .p-progressbar-value {
+        background: #1FB356;
+        width: calc(100% - 2px) !important;
+      }
+    }
+  }
+
+  .p-progressbar {
+    background: #eeeeee96;
+    border-radius: 10px;
+    flex: 1;
+    height: 14px;
+    width: 100px;
+    border: 1px solid #d9d9d9a6;
+    padding: 0.5px;
+    align-items: center;
+
+    .p-progressbar-value {
+      background: #fb8c1d;
+      border-radius: 8px;
+      height: 10px;
+      top: 1.29px;
+      left: 1px;
+    }
+  }
+
+  >span {
+    font: 10px / 12px 'Cairo-Bold';
+    color: #000;
+  }
+}
+
+.p-paginator {
+  border: 1px solid #D9D9D9;
+  border-radius: 4px;
+  margin-top: 16px;
+  width: fit-content;
+  padding: 0;
+  margin-left: auto;
+  overflow: hidden;
+
+  &.p-paginator-bottom {
+    button {
+      border-left: 1px solid #D9D9D9;
+      color: #2563EB;
+      background-color: #fff;
+
+      &:focus {
+        background-color: #2563EB;
+        color: #ffffff;
+      }
+    }
+
+    >span {
+      border-left: 1px solid #D9D9D9 !important;
+      border-right: 1px solid #D9D9D9 !important;
+
+      >button {
+        border-left: 1px solid #D9D9D9 !important;
+
+        &:last-child {
+          border-left: none;
+        }
+      }
+    }
+  }
+}
+
 .files-table {
   margin-bottom: 16px;
+
+  @media (max-width: 992px) {
+    .custom-table .p-datatable-wrapper {
+      overflow-x: auto;
+    }
+
+    .custom-table {
+      .p-datatable-table {
+        min-width: 992px;
+      }
+    }
+  }
 
   .titleTableHeader {
     display: flex;
@@ -253,7 +414,7 @@
           border: 1px solid #D9D9D9;
           background-color: #FAFAFB;
           border-radius: 8px;
-          padding: 16px 20px;
+          padding: 13px 20px 16px;
           cursor: default;
 
           &,
@@ -318,6 +479,7 @@
           padding: 14px 12px;
           font-size: 11px;
           font-weight: 400;
+          white-space: nowrap;
 
           @media screen and (max-width: 768px) {
             min-width: 150px;
@@ -343,35 +505,27 @@
             font-size: 11px;
             color: #52525B;
 
-            .progressBar {
-              display: flex;
-              align-items: center;
-              gap: 8px;
+            &:first-child {
+              min-width: 77px;
+            }
 
-              .p-progressbar {
-                background: #eeeeee96;
-                border-radius: 10px;
-                flex: 1;
-                height: 14px;
-                width: 100px;
-                border: 1px solid #d9d9d9a6;
-                padding: 0.5px;
-                align-items: center;
 
-                .p-progressbar-value {
-                  background: #fb8c1d;
-                  border-radius: 8px;
-                  height: 10px;
-                  top: 1px;
+            &.legalDocs-col {
+              width: 300px;
 
-                }
-              }
-
-              >span {
-                font: 10px / 12px 'Cairo-Bold';
-                color: #000;
+              @media screen and (max-width: 1200px) {
+                width: 200px;
               }
             }
+
+            &.dataStatus-col {
+              min-width: 197px;
+
+              @media screen and (max-width: 1200px) {
+                min-width: 185px;
+              }
+            }
+
 
             .action-column {
               position: relative;
@@ -431,6 +585,277 @@
     }
   }
 }
+
+.fileInfoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  background-color: #fff;
+  margin-top: 32px;
+  border-bottom: 1px solid #ececec;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  >div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 16px;
+    border-right: 1px solid #ececec;
+    padding: 0 24px 8px;
+    color: #52525B;
+    font: 14px / 16px 'Cairo-Regular';
+
+    @media screen and (max-width: 768px) {
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    >span {
+      color: #000;
+      font: 14px / 16px 'Cairo-Bold';
+    }
+
+    &:first-child {
+      padding: 0;
+      color: #000;
+      font: 12px / 14px "Cairo-Regular";
+      gap: 12px;
+
+      span {
+        color: #fff;
+        background-color: #F7941D;
+        border-radius: 6px;
+        font: 12px / 18px "Cairo-Regular";
+        padding: 4px 20px;
+        width: 103px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    &:last-child {
+      padding-right: 0;
+      border-right: none;
+      gap: 8px;
+
+      >span {
+        color: #000;
+        font: 11px / 15px "Cairo-Bold";
+        display: flex;
+
+        a {
+          font: 12px / 14px 'Cairo-Bold';
+          color: #2563EB;
+          margin: 0 4px;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.main-file-data {
+  .mainFileHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0;
+
+    @media screen and (max-width: 368px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .headerTitle {
+      color: #000;
+      font: 15px / 16px 'Cairo-Bold';
+    }
+
+    .menu {
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+      background: #fff;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      font: 11px / 12px 'Cairo-Regular';
+      cursor: pointer;
+      gap: 16px;
+      flex-direction: row-reverse;
+      user-select: none;
+      position: relative;
+
+      &::before {
+        content: "";
+        font-size: 20px;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        pointer-events: none;
+        background: url("../content/images/3-dots-menu-h.svg") center / contain no-repeat;
+      }
+
+      .serviceActionList {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 180px;
+        text-align: left;
+
+        @media screen and (max-width: 368px) {
+          left: 0;
+        }
+
+        span {
+          border-bottom: 1px solid #ddd;
+          cursor: pointer;
+          color: #000;
+          font: 12px / 14px "Cairo-Regular";
+          padding: 12px;
+
+          &:hover {
+            background: #f0f0f0;
+          }
+        }
+
+        span:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  .mainFileContent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+
+
+    p {
+      display: flex;
+      flex: 1 1 45%;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ccc;
+      font: 14px / 16px 'Cairo-Bold';
+      color: #000;
+
+      label {
+        color: #52525B;
+        font-family: 'Cairo-Regular';
+      }
+    }
+
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+
+      p {
+        width: 100%
+      }
+    }
+  }
+}
+
+.defendant-data {
+  >h4 {
+    color: #000;
+    font: 15px / 16px 'Cairo-Bold';
+    margin: 32px 0;
+  }
+}
+
+.searchByProfile {
+  .popupView {
+    .contanier {
+      overflow: auto;
+
+      .header {
+        padding: 0;
+        color: #000;
+        font: 12px / 14px "Cairo-Regular";
+        gap: 12px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 32px;
+
+        span {
+          color: #fff;
+          background-color: #F7941D;
+          border-radius: 6px;
+          font: 12px / 18px "Cairo-Regular";
+          padding: 4px 20px;
+          width: 103px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .content {
+        .radioButtonDiv {
+          margin-bottom: 32px;
+
+          .p-radiobutton {
+            label {
+              color: #212529;
+              font: 14px / 16px 'Cairo-Regular';
+            }
+          }
+        }
+
+        .formDiv {
+          margin-bottom: 32px;
+
+          input {
+            border-radius: 8px;
+          }
+
+          .phoneNumber {
+            margin-top: -4px;
+
+            >div {
+              align-items: flex-start;
+            }
+          }
+        }
+
+        .uploaderContainer {
+          margin-bottom: 32px;
+
+          h4 {
+            color: #000;
+            font: 14px / 16px 'Cairo-Bold';
+          }
+        }
+      }
+    }
+  }
+}
+
 
 
 // Eachawy
