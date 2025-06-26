@@ -15,6 +15,9 @@ import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
 import MainPage from "./modules/dashboard/main-page/mainPage";
+import { SearchByProfile } from "./modules/dashboard/search/search-by-profile/searchByProfile";
+
+
 
 const AppRoutes = () => {
   return (
@@ -26,7 +29,7 @@ const AppRoutes = () => {
         <Route path="" element={<LayoutSystemTemplete />} >
 
           <Route path="dashoard">
-            
+
             <Route path="" element={
               <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}>
                 <MainDashboardPage />
@@ -38,9 +41,18 @@ const AppRoutes = () => {
                 <MainPage />
               </PrivateRoute>
             } />
+
+            <Route path="search-by-profile" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <SearchByProfile />
+              </PrivateRoute>
+            } />
+
           </Route>
 
-          
+
 
           <Route path="create-file">
             <Route

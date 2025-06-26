@@ -82,7 +82,7 @@ export const FilesTable = ({ filesList }) => {
                     <Column field="lastUpdateDate" header={translate('mainDashboard.lastUpdateDate')} className="columnStyle" />
                     <Column field="fileType" header={translate('mainDashboard.fileType')} className="columnStyle" />
                     <Column field="dataStatus" header={translate('mainDashboard.dataStatus')} className="columnStyle" body={dataStatusTemplate} />
-                    <Column body={actionList} className="columnStyle" style={{ width: '40px' }} />
+                    <Column body={actionList} className="actionList-col" style={{ width: '40px' }} />
                 </DataTable>
             </div>
         </div>

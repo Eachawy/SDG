@@ -124,7 +124,22 @@ const MainPage = () => {
                         </ButtonComponent>
                     </div>
 
-                    <FileSearch />
+                    <FileSearch
+                        label1={translate('mainDashboard.searchByFileOrName')}
+                        placeholder1={translate('mainDashboard.searchByFileOrName')}
+                        optionList1={[
+                            { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1234" },
+                            { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "5978" },
+                            { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "8799" }
+                        ]}
+                        label2={translate('mainDashboard.searchByDefendantName')}
+                        placeholder2={translate('mainDashboard.searchByDefendantName')}
+                        optionList2={[
+                            { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "9784" },
+                            { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "6635" },
+                            { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "7849" }
+                        ]}
+                    />
 
                     <div className='divCardsRow'>
                         <DashboardCard

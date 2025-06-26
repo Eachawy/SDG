@@ -1,56 +1,65 @@
-
+import React from 'react';
 import { DropDownComponent } from '@eachawy/frontend-library';
 import { useAppSelector } from 'app/config/store';
-import React from 'react';
 import { useForm } from 'react-hook-form';
-import { translate } from 'react-jhipster';
 
-export const FileSearch = () => {
-
+export const FileSearch = ({
+    label1,
+    placeholder1,
+    optionList1,
+    label2,
+    placeholder2,
+    optionList2
+}) => {
     const { register, formState: { errors }, watch, setValue } = useForm({ mode: "onTouched" });
-    const $lang = useAppSelector((state) => state.locale.currentLocale);
-
+    const $lang = useAppSelector((state) => state.locale.currentLocale);    
+    
+    const combineSerialWithName = (optionList = []) => {
+        return optionList?.map(item => ({
+            ...item,
+            name: {
+                ar: `${item.code} - ${item.name.ar}`,
+                en: `${item.code} - ${item.name.en}`
+            }
+        }));
+    };
+    
+    const combineSerialWithNameL1 = combineSerialWithName(optionList1);
+    const combineSerialWithNameL2 = combineSerialWithName(optionList2);
+    
     return (
-        <div className='row file-search'>
+        <div className="row file-search">
             <DropDownComponent
-                id="searchByNoNameFile-id"
-                name="searchByNoNameFile"
+                id="searchByNoNameFile-id1"
+                name="searchByNoNameFile1"
                 register={register}
                 watch={watch}
                 setValueMethod={setValue}
-                options={[
-                    { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "MA" },
-                    { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "FA" },
-                    { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "KA" }
-                ]}
+                options={combineSerialWithNameL1}
                 optionLabel={`name.${$lang}`}
                 errors={errors}
-                onChange={(e) => setValue("searchByNoNameFile", e.value as object)}
-                placeholder={translate('mainDashboard.searchByFileOrName')}
+                onChange={(e) => setValue("searchByNoNameFile1", e.value)}
+                placeholder={placeholder1}
                 className="col-md-6"
                 filter={true}
-                label={translate('mainDashboard.searchByFileOrName')}
+                label={label1}
             />
 
             <DropDownComponent
-                id="searchByNoNameFile-id"
-                name="searchByNoNameFile"
+                id="searchByNoNameFile-id2"
+                name="searchByNoNameFile2"
                 register={register}
                 watch={watch}
                 setValueMethod={setValue}
-                options={[
-                    { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "MA" },
-                    { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "FA" },
-                    { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "KA" }
-                ]}
+                options={combineSerialWithNameL2}
                 optionLabel={`name.${$lang}`}
                 errors={errors}
-                onChange={(e) => setValue("searchByNoNameFile", e.value as object)}
-                placeholder={translate('mainDashboard.searchByDefendantName')}
+                onChange={(e) => setValue("searchByNoNameFile2", e.value)}
+                placeholder={placeholder2}
                 className="col-md-6"
                 filter={true}
-                label={translate('mainDashboard.searchByDefendantName')}
+                label={label2}
             />
         </div>
-    )
-}
+    );
+};
