@@ -1,19 +1,17 @@
-import { AttachmentMultiFilesComponent, ButtonComponent, InputComponent, RadioButtonComponent } from '@eachawy/frontend-library';
+import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
 import React, { useState } from 'react';
 import { translate } from 'react-jhipster';
 import { useNavigate } from 'react-router';
-import { FileInfoHeader } from '../components/file-info-header/file-info-header';
-import { MainFileData } from '../components/main-file-data/main-file-data';
-import { DefendantDataTable } from '../components/defendant-data-table/defendant-data-table';
-import { useForm } from 'react-hook-form';
-import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
+import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
+import { MainFileData } from '../components/main-file-data/main-file-data.component';
+import { DefendantDataTable } from '../components/defendant-data-table/defendant-data-table.component';
 import { useAppSelector } from 'app/config/store';
+import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
 
-export const SearchByProfile = () => {
+export const SearchByMainFile = () => {
     const [showPopup, setShowPopup] = useState(false)
-    const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
     const navigate = useNavigate();
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
@@ -221,11 +219,7 @@ export const SearchByProfile = () => {
             dataStatus: 100,
         },
     ];
-    const cancelFn = () => {
-        setShowPopup(false)
-    }
-    const saveFn = () => {
-    }
+
     return (
         <>
             <BreadcrumbComponent
@@ -279,164 +273,7 @@ export const SearchByProfile = () => {
                 <DefendantDataTable defendantDataList={defendantDataList} />
 
                 {showPopup && (
-                    <div className="popupView">
-                        <div className="contanier">
-                            <div className='header'>
-                                {translate('search.serialNumber')}
-                                <span>123456789</span>
-                            </div>
-                            <div className="content">
-                                <div className="radioButtonDiv">
-                                    <RadioButtonComponent
-                                        name="profileType"
-                                        label={translate("createNewProfile.companyTypeCorporate")}
-                                        register={register}
-                                        errors={errors}
-                                        value={'corporateType'}
-                                        watch={watch}
-                                        onChange={() => setValue("profileType", "corporateType")}
-                                        checked={getValues().profileType === 'corporateType'}
-                                    />
-                                    <RadioButtonComponent
-                                        name="profileType"
-                                        label={translate("createNewProfile.companyTypePersonal")}
-                                        register={register}
-                                        errors={errors}
-                                        value={'personalType'}
-                                        watch={watch}
-                                        onChange={() => setValue("profileType", "personalType")}
-                                        checked={getValues().profileType === 'personalType'}
-                                    />
-                                </div>
-
-                                <div className="formDiv row g-4 mt-8">
-                                    <div className='col-md-6'>
-                                        <InputComponent
-                                            id="NameAr"
-                                            type="text"
-                                            name="NameAr"
-                                            label={
-                                                (getValues().profileType === 'corporateType') ?
-                                                    translate("createNewProfile.companyNameAr") : translate("createNewProfile.personNameAr")}
-                                            placeholder={
-                                                (getValues().profileType === 'corporateType') ?
-                                                    translate("createNewProfile.companyNameAr") : translate("createNewProfile.personNameAr")}
-                                            register={register}
-                                            // rules={{ required: translate("search.requiredField") }}
-                                            errors={errors}
-                                            setValueMethod={setValue}
-                                            watch={watch}
-                                            onChange={(e) => {
-                                                const arabicOnly = e.target.value.replace(/[^\u0600-\u06FF\s]/g, "");
-                                                setValue("NameAr", arabicOnly);
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <InputComponent
-                                            id="NameEn"
-                                            type="text"
-                                            name="NameEn"
-                                            label={
-                                                (getValues().profileType === 'corporateType') ?
-                                                    translate("createNewProfile.companyNameEn") : translate("createNewProfile.personNameEn")}
-                                            placeholder={
-                                                (getValues().profileType === 'corporateType') ?
-                                                    translate("createNewProfile.companyNameEn") : translate("createNewProfile.personNameEn")}
-                                            register={register}
-                                            // rules={{ required: translate("search.requiredField") }}
-                                            errors={errors}
-                                            setValueMethod={setValue}
-                                            watch={watch}
-                                            onChange={(e) => {
-                                                const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-                                                setValue("NameEn", englishOnly);
-                                            }}
-                                            Class={'col-md-6'}
-                                        />
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <InputComponent
-                                            id="nationalNumber"
-                                            type="nationalNumber"
-                                            name="nationalNumber"
-                                            label={translate("createNewProfile.nationalNumber")}
-                                            placeholder={translate("createNewProfile.exm") + "1234567"}
-                                            register={register}
-                                            errors={errors}
-                                            setValueMethod={setValue}
-                                            watch={watch}
-                                            onChange={(e) => {
-                                                const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                                                setValue("nationalNumber", numericValue);
-                                            }}
-                                            Class={'col-md-6'}
-                                        />
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <InputComponent
-                                            id="address"
-                                            type="address"
-                                            name="address"
-                                            label={translate("createNewProfile.address")}
-                                            placeholder={translate("createNewProfile.enterTheAddress")}
-                                            register={register}
-                                            errors={errors}
-                                            setValueMethod={setValue}
-                                            watch={watch}
-                                            onChange={(e) => setValue("address", e.target.value)}
-                                            Class={'col-md-6'}
-                                        />
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <PhoneNumberComponent
-                                            register={register}
-                                            errors={errors}
-                                            watch={watch}
-                                            setValue={setValue}
-                                            Class={'col-md-6'}
-                                        />
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <InputComponent
-                                            id="email"
-                                            type="email"
-                                            name="email"
-                                            label={translate("createNewProfile.email")}
-                                            placeholder={translate("loginPage.emailPlaceholder")}
-                                            register={register}
-                                            errors={errors}
-                                            setValueMethod={setValue}
-                                            watch={watch}
-                                            onChange={(e) => setValue("email", e.target.value)}
-                                            Class={'col-md-6'}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="uploaderContainer">
-                                    <h4>{translate("createNewProfile.attachments")}</h4>
-                                    <div className="row mb-4">
-                                        <AttachmentMultiFilesComponent
-                                            name={"attach1"}
-                                            attachList={(e) => setValue("attach1", e)}
-                                            lang={$lang}
-                                            register={register}
-                                            watch={watch}
-                                            setValueMethod={setValue}
-                                            fileTypePlaceHolder={'Select a File Type'}
-                                            Class="col-md-12 col-lg-6"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="footerPopup">
-                                <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>{translate("search.close")}</ButtonComponent>
-                                <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveFn)}>{translate("search.save")}</ButtonComponent>
-                            </div>
-                        </div>
-                    </div>
+                    <EditMainProfilePopup setShowPopup={setShowPopup} />
                 )}
             </div>
         </>

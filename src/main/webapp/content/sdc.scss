@@ -2,7 +2,7 @@
   background: #00000057;
   position: fixed;
 
-  .contanier {
+  .container {
     background: #fff;
     border-radius: 16px;
     padding: 30px;
@@ -12,7 +12,13 @@
     overflow-x: hidden;
     outline: 8px solid #fff;
 
-    .footerPopup {
+    .popupHeader {
+      color: #000;
+      font: 15px / 16px 'Cairo-Bold';
+      margin-bottom: 32px;
+    }
+
+    .popupFooter {
       display: flex;
       flex-direction: row;
       gap: 16px;
@@ -378,6 +384,15 @@
     margin-bottom: 16px;
     gap: 16px;
 
+    &._defendantTableHeader {
+      margin-top: 32px;
+
+      >h4 {
+        color: #000;
+        font: 15px / 16px 'Cairo-Bold';
+      }
+    }
+
     @media screen and (max-width: 360px) {
       flex-direction: column-reverse;
     }
@@ -509,7 +524,6 @@
               min-width: 77px;
             }
 
-
             &.legalDocs-col {
               width: 300px;
 
@@ -521,11 +535,22 @@
             &.dataStatus-col {
               min-width: 197px;
 
+              &._defendant-dataStatus-col {
+                min-width: 200px;
+                width: 246px;
+              }
+
               @media screen and (max-width: 1200px) {
                 min-width: 185px;
               }
             }
 
+            &.actionList-col {
+              &._defendant-actionList-col {
+                max-width: 40px;
+
+              }
+            }
 
             .action-column {
               position: relative;
@@ -676,9 +701,57 @@
       gap: 24px;
     }
 
+    &._mainDefendantHeader {
+      @media screen and (max-width: 768px) {
+        flex-direction: column-reverse !important;
+        text-align: center;
+      }
+
+      ~.main-file-data {
+        .mainFileHeader {
+          display: none;
+        }
+      }
+    }
+
+
+
     .headerTitle {
       color: #000;
       font: 15px / 16px 'Cairo-Bold';
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-direction: row;
+
+      @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      >div {
+        padding: 10px 16px;
+        border: 1px solid #e0e0e0;
+        background: #fff;
+        color: #2d51a3;
+        font: 12px / 14px "Cairo-Bold";
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s, color 0.2s;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
+
+        &.active {
+          background: #2563eb;
+          color: #fff;
+          border: 1px solid #2563eb;
+        }
+      }
     }
 
     .menu {
@@ -789,7 +862,7 @@
 
 .searchByProfile {
   .popupView {
-    .contanier {
+    .container {
       overflow: auto;
 
       .header {

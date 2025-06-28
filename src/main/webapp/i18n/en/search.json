@@ -36,6 +36,27 @@
         "fileStatus": "File Status",
         "documents": "Documents",
         "save": "Save",
-        "close": "Close"
+        "close": "Close",
+        "personName": "Person Name",
+        "address1": "Address 1",
+        "address2": "Address 2",
+        "phoneNumber1": "Phone Number 1",
+        "phoneNumber2": "Phone Number 2",
+        "phoneNumber3": "Phone Number 3",
+        "lastUpdate": "Last Update Date",
+        "defendantData": "Defendant Data",
+        "editDefendantData": "Edit Defendant Data",
+        "phone1": "Phone Number 1",
+        "phone2": "Phone Number 2",
+        "phone3": "Phone Number 3",
+        "registerDate": "File Registration Date",
+        "dataStatus": "File Status",
+        "fileType": "File Type",
+        "defendantFiles": "Defendant's Files",
+        "mainFileName": "Main File Name",
+        "showFollowUps": "Show Follow ups",
+        "legalBondDetails": "Legal Bond Details",
+        "selectFileType": "Select file type",
+        "lawsuitRegistrationDate": "Lawsuit Registration Date"
     }
 }

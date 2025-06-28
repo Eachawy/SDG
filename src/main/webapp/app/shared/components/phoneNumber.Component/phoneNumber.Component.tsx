@@ -29,7 +29,7 @@ const PhoneNumberComponent = props => {
     return (
         <div className={`phoneNumber ${props.class}`}>
             <label>
-                {translate("createNewProfile.phoneNumber")}
+              {props.label ? props.label : translate("createNewProfile.phoneNumber")}
                 {props.error && <span>*</span>}
             </label>
             <div>
