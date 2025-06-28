@@ -15,7 +15,9 @@ import PrivateRoute from "./shared/auth/private-route";
 import { AUTHORITIES } from 'app/config/constants';
 import ErrorPage from "./shared/error/error.page";
 import MainPage from "./modules/dashboard/main-page/mainPage";
-import { SearchByProfile } from "./modules/dashboard/search/search-by-profile/searchByProfile";
+import { SearchByMainFile } from "./modules/dashboard/search/search-by-main-file/searchByMainFile.page";
+import { SearchByDefendant } from "./modules/dashboard/search/search-by-defendant/searchByDefendant.page";
+import { SearchByMainFileDefendant } from "./modules/dashboard/search/search-by-main-file-defendant/searchByMainFileDefendant.page";
 
 
 
@@ -42,16 +44,31 @@ const AppRoutes = () => {
               </PrivateRoute>
             } />
 
-            <Route path="search-by-profile" element={
+            <Route path="search-by-main-file" element={
               <PrivateRoute
                 hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
               >
-                <SearchByProfile />
+                <SearchByMainFile />
+              </PrivateRoute>
+            } />
+
+            <Route path="search-by-defendant" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <SearchByDefendant />
+              </PrivateRoute>
+            } />
+
+            <Route path="search-by-main-file-defendant" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <SearchByMainFileDefendant />
               </PrivateRoute>
             } />
 
           </Route>
-
 
 
           <Route path="create-file">

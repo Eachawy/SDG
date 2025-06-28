@@ -4,7 +4,6 @@ import { Storage, translate } from "react-jhipster";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from "app/config/store";
 import { reset } from 'app/modules/new-profile/create-new-file/createNewProfile.reducer';
-import { pushNotification } from 'app/shared/util/utils';
 
 const MainDashboardPage = () => {
 
