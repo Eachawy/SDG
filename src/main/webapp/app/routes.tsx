@@ -18,6 +18,7 @@ import MainPage from "./modules/dashboard/main-page/mainPage";
 import { SearchByMainFile } from "./modules/dashboard/search/search-by-main-file/searchByMainFile.page";
 import { SearchByDefendant } from "./modules/dashboard/search/search-by-defendant/searchByDefendant.page";
 import { SearchByMainFileDefendant } from "./modules/dashboard/search/search-by-main-file-defendant/searchByMainFileDefendant.page";
+import { AllProfiles } from "./modules/dashboard/search/all-profiles/allProfiles.page";
 
 
 
@@ -65,6 +66,14 @@ const AppRoutes = () => {
                 hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
               >
                 <SearchByMainFileDefendant />
+              </PrivateRoute>
+            } />
+
+            <Route path="all-profiles" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <AllProfiles />
               </PrivateRoute>
             } />
 

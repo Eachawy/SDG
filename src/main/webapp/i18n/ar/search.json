@@ -57,6 +57,15 @@
         "showFollowUps": "عرض المتابعات",
         "legalBondDetails": "تفاصيل السندات القانونية",
         "selectFileType": "اختر نوع الملف",
-        "lawsuitRegistrationDate": "تاريخ تسجيل القضية"
+        "lawsuitRegistrationDate": "تاريخ تسجيل القضية",
+        "showAllFiles": "عرض جميع الملفات",
+        "show": "عرض",
+        "fileFrom": "ملف من",
+        "showAllFilesTab": "عرض كل الملفات",
+        "needUpdateFiles": "ملفات تحتاج إلى تحديث",
+        "activeFiles": "الملفات الفعالة",
+        "closedFiles": "ملفات تم إغلاقها",
+        "companyOrPersonName": "اسم الشركة / الشخص",
+        "fileRegisterDate": "تاريخ تسجيل الملف"
     }
 }

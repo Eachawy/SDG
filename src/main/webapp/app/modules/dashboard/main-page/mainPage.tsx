@@ -9,6 +9,7 @@ import { FileChart } from '../components/fileChart/fileChart';
 import { FilesTable } from '../components/files-table/filesTable';
 
 
+
 const MainPage = () => {
 
     const navigate = useNavigate();
@@ -93,7 +94,6 @@ const MainPage = () => {
             dataStatus: 75,
         },
     ];
-
 
     return (
         <>
