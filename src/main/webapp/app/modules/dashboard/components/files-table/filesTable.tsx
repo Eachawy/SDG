@@ -4,9 +4,10 @@ import { Column } from 'primereact/column';
 import $ from 'jquery';
 import { ProgressBar } from 'primereact/progressbar';
 import { translate } from 'react-jhipster';
+import { useNavigate } from 'react-router';
 
 export const FilesTable = ({ filesList }) => {
-
+    const navigate = useNavigate();
     useEffect(() => {
         function handleDocumentClick(e) {
             if (!$(e.target).closest('.action-column').length) {
@@ -25,6 +26,10 @@ export const FilesTable = ({ filesList }) => {
             <span>{rowData.dataStatus}%</span>
         </div>
     );
+
+    const totalFilesFn = () => {
+        navigate('/dashoard/all-profiles');
+    }
 
     const actionList = () => {
         return (
@@ -62,7 +67,7 @@ export const FilesTable = ({ filesList }) => {
                         {translate('mainDashboard.closedFiles')} <span>(1500)</span>
                     </div>
                 </div>
-                <div className='totalFiles'>
+                <div onClick={totalFilesFn} className='totalFiles _link'>
                     {translate('mainDashboard.totalFiles')}
                     <span>(2500)</span>
                 </div>

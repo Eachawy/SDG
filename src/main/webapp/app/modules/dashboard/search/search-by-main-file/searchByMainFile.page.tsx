@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router';
 import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
 import { MainFileData } from '../components/main-file-data/main-file-data.component';
 import { DefendantDataTable } from '../components/defendant-data-table/defendant-data-table.component';
-import { useAppSelector } from 'app/config/store';
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
 
 export const SearchByMainFile = () => {
@@ -16,7 +15,6 @@ export const SearchByMainFile = () => {
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
     }
-    const $lang = useAppSelector(state => state.locale.currentLocale);
     const defendantDataList = [
         {
             id: 1,

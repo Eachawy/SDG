@@ -57,6 +57,15 @@
         "showFollowUps": "Show Follow ups",
         "legalBondDetails": "Legal Bond Details",
         "selectFileType": "Select file type",
-        "lawsuitRegistrationDate": "Lawsuit Registration Date"
+        "lawsuitRegistrationDate": "Lawsuit Registration Date",
+        "showAllFiles": "Show All Files",
+        "show": "show",
+        "fileFrom": "file from",
+        "showAllFilesTab": "Show All Files",
+        "needUpdateFiles": "Files Need Update",
+        "activeFiles": "Active Files",
+        "closedFiles": "Closed Files",
+        "companyOrPersonName": "Company / Person Name",
+        "fileRegisterDate": "File Register Date"
     }
 }
