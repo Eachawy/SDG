@@ -8,63 +8,18 @@ import { FileInfoHeader } from '../components/main-file-info-header/main-file-in
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
 import { MainFileDefendantData } from '../components/main-file-defendant-data/main-file-defendant-data.component';
 import { EditDefendantProfilePopup } from '../components/edit-defendant-main-file-popup/edit-defendant-main-file-popup.component';
-import { DefendantFilesDataTable } from '../components/defendant-files-data-table/defendant-files-data-table.component';
+import { CollectionInfo } from '../components/collection-info/collection-info.component';
+import { Lawsuits } from '../components/lawsuits/lawsuits';
+import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
 
-export const SearchByMainFileDefendant = () => {
+export const ViewAllFiles = () => {
     const [showDefendantPopup, setShowDefendantPopup] = useState(false)
     const [showMainFilePopup, setShowMainFilePopup] = useState(false)
-
+    const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
     const navigate = useNavigate();
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
     }
-
-    const defendantDataList = [
-        {
-            id: 1,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12345",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
-            dataStatus: 100,
-        },
-        {
-            id: 2,
-            fileNumber: "12346",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12346",
-            registerDate: "01-04-2025",
-            lastUpdateDate: "22-12-2025",
-            fileType: "طلب مستعجل",
-            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
-            dataStatus: 20,
-        },
-        {
-            id: 3,
-            fileNumber: "12347",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12347",
-            registerDate: "02-04-2025",
-            lastUpdateDate: "23-12-2025",
-            fileType: "قضايا",
-            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
-            dataStatus: 100,
-        },
-        {
-            id: 4,
-            fileNumber: "12348",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12348",
-            registerDate: "03-04-2025",
-            lastUpdateDate: "24-12-2025",
-            fileType: "تحصيل",
-            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
-            dataStatus: 100,
-        }
-    ];
 
     return (
         <>
@@ -78,7 +33,7 @@ export const SearchByMainFileDefendant = () => {
                         },
                     },
                     {
-                        id: 'PAGE2',
+                        id: 'PAGE1',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -87,9 +42,9 @@ export const SearchByMainFileDefendant = () => {
                 ]}
             />
 
-            <div className='sdg_page searchByProfile'>
+            <div className='sdg_page searchByProfile main-file-data'>
                 <div className='titlePageDashboard'>
-                    <h2>{translate('search.searchResults')}</h2>
+                    <h2>{translate('search.showAllFiles')}</h2>
                     <ButtonComponent onClick={createNewFileFn}>
                         {translate('mainDashboard.createNewFileButton')}
                     </ButtonComponent>
@@ -112,20 +67,46 @@ export const SearchByMainFileDefendant = () => {
                     ]}
                 />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} />
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
                     setShowMainFilePopup={setShowMainFilePopup}
+                    fileData={{
+                        fileType: "تحصيل",
+                        fileOpenDate: "02-12-2024",
+                        fileStatus: "مغلق",
+                        fileStatusMode: 'closed'
+                    }}
                 />
 
-                <DefendantFilesDataTable personData={defendantDataList} />
+                {true && <CollectionInfo />}
+
+                {true && <UrgentRequest />}
+
+                {true && <Lawsuits />}
+
+                <div className="tabs mt-5">
+                    <div
+                        className={footerActiveTab === "followUps" && "active"}
+                        onClick={() => setFooterActiveTab("followUps")}
+                    >
+                        {translate('search.followUps')}
+                    </div>
+                    <div
+                        className={footerActiveTab === "legalBonds" && "active"}
+                        onClick={() => setFooterActiveTab("legalBonds")}
+                    >
+                        {translate('search.legalBonds')}
+                    </div>
+                </div>
+
                 {showMainFilePopup && (
                     <EditMainProfilePopup setShowPopup={setShowMainFilePopup} />
                 )}
 
                 {showDefendantPopup && (
-                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} personData={null} />
+                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} />
                 )}
             </div>
         </>

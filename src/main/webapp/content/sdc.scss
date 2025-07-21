@@ -846,6 +846,41 @@
 }
 
 .main-file-data {
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    >div {
+      padding: 10px 16px;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      color: #2d51a3;
+      font: 12px / 14px "Cairo-Bold";
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s, color 0.2s;
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        text-align: center;
+      }
+
+      &.active {
+        background: #2563eb;
+        color: #fff;
+        border: 1px solid #2563eb;
+      }
+    }
+  }
+
   .mainFileHeader {
     display: flex;
     flex-direction: row;
@@ -873,44 +908,9 @@
       }
     }
 
-
-
     .headerTitle {
       color: #000;
       font: 15px / 16px 'Cairo-Bold';
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      flex-direction: row;
-
-      @media screen and (max-width: 768px) {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      >div {
-        padding: 10px 16px;
-        border: 1px solid #e0e0e0;
-        background: #fff;
-        color: #2d51a3;
-        font: 12px / 14px "Cairo-Bold";
-        border-radius: 8px;
-        cursor: pointer;
-        user-select: none;
-        transition: background 0.2s, color 0.2s;
-
-        @media screen and (max-width: 768px) {
-          width: 100%;
-        }
-
-        &.active {
-          background: #2563eb;
-          color: #fff;
-          border: 1px solid #2563eb;
-        }
-      }
     }
 
     .menu {
@@ -990,7 +990,7 @@
       flex-direction: column;
       gap: 8px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #D9D9D9;
       font: 14px / 16px 'Cairo-Bold';
       color: #000;
 
@@ -1006,6 +1006,108 @@
 
       p {
         width: 100%
+      }
+    }
+  }
+
+  .fileInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    background-color: #FAFAFB;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    margin-bottom: 32px;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    >div:nth-child(2) {
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+
+      @media screen and (max-width: 768px) {
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-left: none;
+        border-right: none;
+        margin-top: 32px;
+      }
+    }
+
+    >div:first-child {
+      padding: 0 8px;
+    }
+
+    >div {
+      display: flex;
+      flex-direction: column;
+      padding: 0 32px;
+      color: #52525B;
+      flex: 1;
+      font: 14px / 16px 'Cairo-Regular';
+
+      @media screen and (max-width: 768px) {
+        padding: 32px 0;
+        width: 100%;
+      }
+
+      span {
+        color: #000;
+        margin-top: 16px;
+        font: 14px / 16px 'Cairo-Bold';
+
+        &.closed {
+          color: #ED0000;
+        }
+
+        &.active {
+          color: #1fb356;
+        }
+      }
+    }
+  }
+
+  ._fileTypeInfoDiv {
+    margin-top: 32px;
+    background-color: #FAFAFB;
+    border: 1px solid #D9D9D9;
+    padding: 23px 18px 0;
+    border-radius: 8px;
+
+    h4 {
+      font: 16px / 18px 'Cairo-Bold';
+      color: #000;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    p:nth-last-child(1),
+    p:nth-last-child(2) {
+      border: none;
+    }
+
+    p:nth-last-child(2) {
+      @media screen and (max-width: 768px) {
+        border-bottom: 1px solid #ccc;
+      }
+    }
+
+    &._requestData {
+      div {
+        width: 100%;
+
+        p {
+          width: calc(50% - 16px);
+          border-bottom: 1px solid #D9D9D9;
+
+          @media screen and (max-width: 768px) {
+            width: 100%;
+          }
+        }
       }
     }
   }

@@ -4,7 +4,18 @@ import { translate } from 'react-jhipster';
 import { MainFileData } from '../main-file-data/main-file-data.component';
 import { DefendantData } from '../defendant-data/defendant-data.component';
 
-export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePopup }) => {
+interface MainFileDefendantDataProps {
+    setShowDefendantPopup: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowMainFilePopup: React.Dispatch<React.SetStateAction<boolean>>;
+  fileData?: {
+    fileType: string;
+    fileOpenDate: string;
+    fileStatus: string;
+    fileStatusMode: string;
+  };
+}
+
+export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ setShowDefendantPopup, setShowMainFilePopup, fileData }) => {
     const [activeTab, setActiveTab] = useState("defendant");
 
     const onEditFile = (e: React.MouseEvent<HTMLElement, MouseEvent>, fileType: string) => {
@@ -70,11 +81,24 @@ export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePo
                     </div>
                 </div>
             </div>
+
+            {fileData && (
+                <div className='fileInfo'>
+                    <div>{translate('search.fileType')}<span>{fileData.fileType}</span></div>
+                    <div>{translate('search.fileOpenDate')}<span>{fileData.fileOpenDate}</span></div>
+                    <div>{translate('search.fileStatus')}
+                        <span className={fileData.fileStatusMode === 'closed' ? 'closed' : 'active'}>
+                            {fileData.fileStatus}
+                        </span>
+                    </div>
+                </div>
+            )}
+
             {activeTab === 'main' ? (
                 <MainFileData setShowPopup={undefined}  masterFileDetails={null} />
             ) : (
                 <DefendantData setShowPopup={undefined} personData={null} />
             )}
-        </div>
+        </div >
     )
 }

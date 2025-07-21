@@ -19,6 +19,7 @@ import { SearchByMainFile } from "./modules/dashboard/search/search-by-main-file
 import { SearchByDefendant } from "./modules/dashboard/search/search-by-defendant/searchByDefendant.page";
 import { SearchByMainFileDefendant } from "./modules/dashboard/search/search-by-main-file-defendant/searchByMainFileDefendant.page";
 import { AllProfiles } from "./modules/dashboard/search/all-profiles/allProfiles.page";
+import { ViewAllFiles } from "./modules/dashboard/search/view-all-files/viewAllFiles.page";
 
 
 
@@ -74,6 +75,14 @@ const AppRoutes = () => {
                 hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
               >
                 <AllProfiles />
+              </PrivateRoute>
+            } />
+
+            <Route path="view-all-files" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <ViewAllFiles />
               </PrivateRoute>
             } />
 
