@@ -29,7 +29,7 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
             const arabicMonths = [
                 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
                 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
-              ];
+            ];
 
             const englishMonths = [
                 'Dec', 'Nov', 'Oct', 'Sep', 'Aug', 'Jul',
@@ -44,9 +44,9 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
 
             const option: echarts.EChartsOption = {
                 grid: {
-                    left: '3%',
-                    right: '15%',
-                    bottom: '3%',
+                    left: '2%',
+                    right: '1%',
+                    bottom: '0px',
                     top: '10%',
                     containLabel: true
                 },
@@ -67,7 +67,8 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
                     axisLabel: {
                         color: '#666',
                         fontSize: 12,
-                        interval: 0
+                        interval: 0,
+                        fontFamily: "Cairo-Regular"
                     }
                 },
                 yAxis: {
@@ -81,7 +82,8 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
                     },
                     axisLabel: {
                         color: '#666',
-                        fontSize: 12
+                        fontSize: 12,
+                        fontFamily: "Cairo-Regular"
                     },
                     splitLine: {
                         show: false
@@ -94,22 +96,22 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
                         smooth: false,
                         symbol: 'none',
                         lineStyle: {
-                            color: `${color === 'orange' ? '#fb8c8c' : '#22c561'}`,
+                            color: `${color === 'orange' ? '#c1c1c1' : '#22c561'}`,
                             width: 2
                         },
                         areaStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                                 {
                                     offset: 0,
-                                    color: `${color === 'orange' ? 'rgba(251, 140, 140, 0.8)' : 'rgba(34, 197, 94, 0.9)'}`
+                                    color: `${color === 'orange' ? 'rgba(193, 193, 193, 0.8)' : 'rgba(34, 197, 94, 0.9)'}`
                                 },
                                 {
                                     offset: 0.5,
-                                    color: `${color === 'orange' ? 'rgba(251, 140, 140, 0.4)' : 'rgba(34, 197, 94, 0.3)'}`
+                                    color: `${color === 'orange' ? 'rgba(193, 193, 193, 0.4)' : 'rgba(34, 197, 94, 0.3)'}`
                                 },
                                 {
                                     offset: 1,
-                                    color: `${color === 'orange' ? 'rgba(251, 140, 140, 0.02)' : 'rgba(255, 255, 255, 0)'}`
+                                    color: `${color === 'orange' ? 'rgba(193, 193, 193, 0.02)' : 'rgba(255, 255, 255, 0)'}`
                                 }
                             ])
                         }
