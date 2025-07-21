@@ -4,8 +4,10 @@ import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate } from 'react-jhipster';
+import { useAppSelector } from "app/config/store";
 
 export const DefendantFilesDataTable = ({ defendantDataList }) => {
+    const lang = useAppSelector((state) => state.locale.currentLocale);
     useEffect(() => {
         function handleDocumentClick(e) {
             if (!$(e.target).closest('.action-column').length) {
@@ -19,11 +21,18 @@ export const DefendantFilesDataTable = ({ defendantDataList }) => {
     }, []);
 
     const dataStatusTemplate = (rowData) => (
-        <div className={`progressBar ${rowData.dataStatus === 100 && 'completed'}`}>
+        <div className={`progressBar ${rowData.dataStatus === 100 && 'completed'} ${rowData.fileTypeStatus.code === 'CL' && 'closed'} `}>
             <ProgressBar value={rowData.dataStatus} />
             <span>{rowData.dataStatus}%</span>
         </div>
     );
+
+    const fileType = (rowData) => (
+        <div className={`fileType ${rowData.fileTypeStatus.code === 'AC' ? 'active' : 'closed'}`}>
+            <p>{rowData.fileType}</p> 
+            <span>({rowData.fileTypeStatus.name[lang]})</span>
+        </div>
+    )
 
     const actionList = () => {
         return (
@@ -74,7 +83,7 @@ export const DefendantFilesDataTable = ({ defendantDataList }) => {
                         <Column field="mainFileName" header={translate('search.mainFileName')} className="columnStyle" />
                         <Column field="registerDate" header={translate('search.registerDate')} className="columnStyle" />
                         <Column field="lastUpdateDate" header={translate('search.lastUpdateDate')} className="columnStyle" />
-                        <Column field="fileType" header={translate('search.fileType')} className="columnStyle" />
+                        <Column field="fileType" body={fileType} header={translate('search.fileType')} className="columnStyle" />
                         <Column field="dataStatus" header={translate('search.dataStatus')} className="dataStatus-col _defendant-dataStatus-col" body={dataStatusTemplate} />
                         <Column body={actionList} className="columnStyle actionList-col _defendant-actionList-col" />
                     </DataTable>

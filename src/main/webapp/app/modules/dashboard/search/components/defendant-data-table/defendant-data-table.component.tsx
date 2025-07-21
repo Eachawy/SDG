@@ -1,18 +1,28 @@
 import { ProgressBar } from 'primereact/progressbar';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate } from 'react-jhipster';
+import { InputSwitch } from 'primereact/inputswitch';
 
 export const DefendantDataTable = ({ defendantDataList }) => {
+
+    const [isActiveFileSelected, setIsActiveFileSelected] = useState(false);
+    const [fileNeedUpdateSelected, setFileNeedUpdateSelected] = useState(false);
+    const [closedFilesSelected, setClosedFilesSelected] = useState(false);
     useEffect(() => {
         function handleDocumentClick(e) {
             if (!$(e.target).closest('.action-column').length) {
                 $('.actionList').hide();
             }
+            if (!$(e.target).closest('.menu').length) {
+                $('.fileTypeList').hide();
+            }
         }
+
         $(document).on('mousedown', handleDocumentClick);
+
         return () => {
             $(document).off('mousedown', handleDocumentClick);
         };
@@ -50,6 +60,32 @@ export const DefendantDataTable = ({ defendantDataList }) => {
         );
     };
 
+    const fileStatusList = (e) => {
+        e.stopPropagation();
+        $(e.currentTarget).find('.fileTypeList').css("display", "flex");
+    };
+
+    const handleSwitchChange = (e, switchId) => {
+
+        switch (switchId) {
+            case "activeFileInputSwitch-id":
+                setIsActiveFileSelected(e.value);
+                break;
+
+            case "fileNeedUpdateInputSwitch-id":
+                setFileNeedUpdateSelected(e.value);
+                break;
+
+            case "closedFilesInputSwitch-id":
+                setClosedFilesSelected(e.value);
+                break;
+
+            default:
+                console.log("Unknown switch ID", switchId);
+                break;
+        }
+    };
+
     return (
         <div className='defendant-data'>
             <h4>{translate('search.defendantDataTitle')}</h4>
@@ -66,9 +102,44 @@ export const DefendantDataTable = ({ defendantDataList }) => {
                             {translate('search.cases')} <span>(10)</span>
                         </div>
                     </div>
-                    <div className='totalFiles'>
-                        {translate('search.totalFiles')}
-                        <span>(2500)</span>
+                    <div className='filterBy'>
+                        <div>
+                            <p>{translate('search.selectBy')}</p>
+                            <div className='menu' onClick={fileStatusList}>
+                                {translate('search.fileStatus')}
+                                <div className="fileTypeList">
+                                    <span>
+                                        <p>{translate('search.activeFiles')}<span>(10)</span></p>
+                                        <InputSwitch
+                                            inputId="activeFileInputSwitch-id"
+                                            checked={isActiveFileSelected}
+                                            onChange={(e) => handleSwitchChange(e, "activeFileInputSwitch-id")}
+                                        />
+                                    </span>
+                                    <span>
+                                        <p>{translate('search.needUpdateFiles')}<span>(5)</span></p>
+                                        <InputSwitch
+                                            inputId="fileNeedUpdateInputSwitch-id"
+                                            checked={fileNeedUpdateSelected}
+                                            onChange={(e) => handleSwitchChange(e, "fileNeedUpdateInputSwitch-id")}
+                                        />
+                                    </span>
+                                    <span>
+                                        <p>{translate('search.closedFiles')}<span>(5)</span></p>
+                                        <InputSwitch
+                                            inputId="closedFilesInputSwitch-id"
+                                            checked={closedFilesSelected}
+                                            onChange={(e) => handleSwitchChange(e, "closedFilesInputSwitch-id")}
+                                        />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='totalFiles'>
+                            {translate('search.totalFiles')}
+                            <span>(2500)</span>
+                        </div>
                     </div>
                 </div>
 

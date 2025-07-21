@@ -5,7 +5,6 @@ import { translate } from 'react-jhipster';
 export const MainFileData = ({ setShowPopup }) => {
 
     const onEditMainFile = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        console.log('Test Btn Done')
         e.preventDefault();
         e.stopPropagation();
         setShowPopup(true)

@@ -5,7 +5,7 @@ import { MainFileData } from '../main-file-data/main-file-data.component';
 import { DefendantData } from '../defendant-data/defendant-data.component';
 
 export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePopup }) => {
-    const [activeTab, setActiveTab] = useState("main");
+    const [activeTab, setActiveTab] = useState("defendant");
 
     const onEditFile = (e: React.MouseEvent<HTMLElement, MouseEvent>, fileType: string) => {
         e.preventDefault();
@@ -39,16 +39,16 @@ export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePo
             <div className='mainFileHeader _mainDefendantHeader'>
                 <div className="tabs">
                     <div
-                        className={activeTab === "main" && "active"}
-                        onClick={() => setActiveTab("main")}
-                    >
-                        {translate('search.mainFileData')}
-                    </div>
-                    <div
                         className={activeTab === "defendant" && "active"}
                         onClick={() => setActiveTab("defendant")}
                     >
                         {translate('search.defendantData')}
+                    </div>
+                    <div
+                        className={activeTab === "main" && "active"}
+                        onClick={() => setActiveTab("main")}
+                    >
+                        {translate('search.mainFileData')}
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@ export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePo
                                 {translate('search.editDefendantData')}
                             </span>}
                         <span onClick={() => { }}>
-                            {translate('search.showFollowUps')}
+                            {translate('search.addsubfile')}
                         </span>
                         <span onClick={() => { }}>
                             {translate('search.attachments')}

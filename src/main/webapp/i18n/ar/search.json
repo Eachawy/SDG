@@ -66,6 +66,8 @@
         "activeFiles": "الملفات الفعالة",
         "closedFiles": "ملفات تم إغلاقها",
         "companyOrPersonName": "اسم الشركة / الشخص",
-        "fileRegisterDate": "تاريخ تسجيل الملف"
+        "fileRegisterDate": "تاريخ تسجيل الملف",
+        "addsubfile": "إضافة ملف فرعي",
+        "selectBy": "اختيار حسب:"
     }
 }

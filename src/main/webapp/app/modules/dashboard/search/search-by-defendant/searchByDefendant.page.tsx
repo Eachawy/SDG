@@ -24,7 +24,8 @@ export const SearchByDefendant = () => {
             registerDate: "29-03-2025",
             lastUpdateDate: "20-12-2025",
             fileType: "تحصيل",
-            dataStatus: 20,
+            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
+            dataStatus: 100,
         },
         {
             id: 2,
@@ -34,7 +35,8 @@ export const SearchByDefendant = () => {
             registerDate: "01-04-2025",
             lastUpdateDate: "22-12-2025",
             fileType: "طلب مستعجل",
-            dataStatus: 60,
+            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
+            dataStatus: 20,
         },
         {
             id: 3,
@@ -44,7 +46,8 @@ export const SearchByDefendant = () => {
             registerDate: "02-04-2025",
             lastUpdateDate: "23-12-2025",
             fileType: "قضايا",
-            dataStatus: 10,
+            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
+            dataStatus: 100,
         },
         {
             id: 4,
@@ -54,7 +57,8 @@ export const SearchByDefendant = () => {
             registerDate: "03-04-2025",
             lastUpdateDate: "24-12-2025",
             fileType: "تحصيل",
-            dataStatus: 40,
+            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
+            dataStatus: 100,
         }
     ];
 
@@ -107,7 +111,7 @@ export const SearchByDefendant = () => {
                 <DefendantData setShowPopup={setShowPopup} />
 
                 <DefendantFilesDataTable defendantDataList={defendantDataList} />
-                
+
                 {showPopup && <EditDefendantProfilePopup setShowPopup={setShowPopup} />}
 
             </div>

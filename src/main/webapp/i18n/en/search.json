@@ -66,6 +66,8 @@
         "activeFiles": "Active Files",
         "closedFiles": "Closed Files",
         "companyOrPersonName": "Company / Person Name",
-        "fileRegisterDate": "File Register Date"
+        "fileRegisterDate": "File Register Date",
+        "addsubfile": "Add Subfile",
+        "selectBy": "Select By:"
     }
 }
