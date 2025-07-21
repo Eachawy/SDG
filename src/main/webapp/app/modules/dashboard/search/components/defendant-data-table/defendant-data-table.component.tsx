@@ -1,12 +1,28 @@
 import { ProgressBar } from 'primereact/progressbar';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate } from 'react-jhipster';
+import { getFilesTableData, getMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import _ from 'lodash';
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 
-export const DefendantDataTable = ({ defendantDataList }) => {
+export const DefendantDataTable = ({ masterFileDetails }) => {
+    const dispatch = useAppDispatch();
+    const [masterFileCounters, setMasterFileCounters] = useState(null)
+    const [activeTab, setActiveTab] = React.useState('COLLECTION');
+    const [showLoader, setShowLoader] = React.useState(false);
+    const [filesList, setFilesList] = React.useState([]);
+
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
+    const $masterFileCounters = useAppSelector((state) => state.dashboard.masterFileCounters);
+    const $tableFilesData = useAppSelector((state) => state.dashboard.tableFilesData);
+
     useEffect(() => {
+        getMasterFileCountersFN();
+        getTableFilesFN(activeTab);
         function handleDocumentClick(e) {
             if (!$(e.target).closest('.action-column').length) {
                 $('.actionList').hide();
@@ -18,12 +34,55 @@ export const DefendantDataTable = ({ defendantDataList }) => {
         };
     }, []);
 
+    useEffect(() => {
+        if ($masterFileCounters) {
+            setMasterFileCounters($masterFileCounters);
+        }
+    }, [$masterFileCounters]);
+
+    useEffect(() => {
+        if ($tableFilesData) {
+            setShowLoader(false);
+            setFilesList($tableFilesData);
+        }
+    }, [$tableFilesData]);
+
+    const getMasterFileCountersFN = async () => {
+        const obj = {
+            masterFileId: masterFileDetails?.id
+        }
+        await dispatch(getMasterFileCounters(obj));
+    }
+
     const dataStatusTemplate = (rowData) => (
-        <div className={`progressBar ${rowData.dataStatus === 100 && 'completed'}`}>
-            <ProgressBar value={rowData.dataStatus} />
-            <span>{rowData.dataStatus}%</span>
+        <div className={`progressBar ${rowData.fileCompletionPercentage === 100 && 'completed'}`}>
+            <ProgressBar value={rowData.fileCompletionPercentage} />
+            <span>{rowData.fileCompletionPercentage}%</span>
         </div>
     );
+
+    const legalDocsTemplate = (rowData) => {
+        let text = '';
+        if(rowData?.hasCheque){
+            text += 'شيك '
+        }
+        if(rowData?.hasDraft){
+            text += '/ كمبيالة '
+        }
+        if(rowData?.hasBond){
+            text += '/ اقرار خطي - سند امانة - سند رهن '
+        }
+        if(rowData?.hasAccountStatement){
+            text += '/ كشف حساب '
+        }
+        if(rowData?.hasRentContract){
+            text += '/ عقد إيجار '
+        }
+        if(rowData?.hasInvoice){
+            text += '/ فاتورة '
+        }
+        return text;
+    }
 
     const actionList = () => {
         return (
@@ -42,13 +101,25 @@ export const DefendantDataTable = ({ defendantDataList }) => {
                     >
                         {translate('mainDashboard.viewFile')}
                     </span>
-                    <span onClick={() => { }}>
-                        {translate('search.documents')}
-                    </span>
                 </div>
             </div>
         );
     };
+
+    const onTabClick = (tabName) => {
+        if (activeTab === tabName) return;
+        setActiveTab(tabName);
+        getTableFilesFN(tabName);
+    }
+
+    const getTableFilesFN = async (tab) => {
+        setShowLoader(true);
+        const obj = {
+            masterFileId: masterFileDetails?.id,
+            fileType: tab
+        }
+        await dispatch(getFilesTableData(obj));
+    }
 
     return (
         <div className='defendant-data'>
@@ -56,42 +127,43 @@ export const DefendantDataTable = ({ defendantDataList }) => {
             <div className='files-table'>
                 <div className='titleTableHeader'>
                     <div className="tableTabs">
-                        <div className="active">
-                            {translate('search.collection')} <span>(20)</span>
+                        <div className={`${activeTab === 'COLLECTION' ? 'active' : ''}`} onClick={() => onTabClick('COLLECTION')}>
+                            {translate('search.collection')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COLLECTION'))?.count || 0})</span>
                         </div>
-                        <div>
-                            {translate('search.urgentRequest')} <span>(20)</span>
+                        <div className={`${activeTab === 'URGENT_REQUEST' ? 'active' : ''}`} onClick={() => onTabClick('URGENT_REQUEST')}>
+                            {translate('search.urgentRequest')} <span>({(_.find(masterFileCounters, (item) => item.name === 'URGENT_REQUEST'))?.count || 0})</span>
                         </div>
-                        <div>
-                            {translate('search.cases')} <span>(10)</span>
+                        <div className={`${activeTab === 'COURT_CASE' ? 'active' : ''}`} onClick={() => onTabClick('COURT_CASE')}>
+                            {translate('search.cases')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COURT_CASE'))?.count || 0})</span>
                         </div>
                     </div>
                     <div className='totalFiles'>
                         {translate('search.totalFiles')}
-                        <span>(2500)</span>
+                        <span>({(_.find(masterFileCounters, (item) => item.name === 'TOTAL'))?.count || 0})</span>
                     </div>
                 </div>
 
                 <div className="table-container">
                     <DataTable
-                        value={defendantDataList}
-                        dataKey="id"
+                        value={filesList}
+                        dataKey="fileId"
                         className="custom-table"
                         rows={10}
                         paginator
                         scrollable
                     >
-                        <Column field="fileNumber" header={translate("search.fileNumber")} className="columnStyle fileNo" />
-                        <Column field="defendantName" header={translate("search.defendantName")} className="columnStyle defendantName-col" />
-                        <Column field="nationalNumber" header={translate("search.nationalNumber")} className="columnStyle" />
-                        <Column field="registerDate" header={translate("search.fileOpenDate")} className="columnStyle" />
-                        <Column field="lastUpdateDate" header={translate("search.lastUpdateDate")} className="columnStyle" />
-                        <Column field="legalDocuments" header={translate("search.legalDocuments")} className="legalDocs-col" />
+                        <Column field="fullFileNumber" header={translate("search.fileNumber")} className="columnStyle fileNo" />
+                        <Column field={$lang === 'en' ? 'personNameEn' : 'personNameAr'} header={translate("search.defendantName")} className="columnStyle defendantName-col" />
+                        <Column field="nationalId" header={translate("search.nationalNumber")} className="columnStyle" />
+                        <Column field="creationDate" header={translate("search.fileOpenDate")} className="columnStyle" />
+                        <Column field="lastModifiedDate" header={translate("search.lastUpdateDate")} className="columnStyle" />
+                        <Column field="legalDocuments" header={translate("search.legalDocuments")} className="legalDocs-col" body={legalDocsTemplate} />
                         <Column field="dataStatus" header={translate("search.fileStatus")} className="dataStatus-col" body={dataStatusTemplate} />
                         <Column body={actionList} className="columnStyle actionList-col" />
                     </DataTable>
                 </div>
             </div>
+            <LoaderComponent show={showLoader} />
         </div>
     );
 };

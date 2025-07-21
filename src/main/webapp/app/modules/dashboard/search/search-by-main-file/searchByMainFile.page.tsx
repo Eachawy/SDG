@@ -1,222 +1,97 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { translate } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
 import { MainFileData } from '../components/main-file-data/main-file-data.component';
 import { DefendantDataTable } from '../components/defendant-data-table/defendant-data-table.component';
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
+import { getAllMasterFiles, getAllFilteredPersons } from '../../dashboardLookups.reducer';
+import { getMasterFileDetails } from '../../dashboard.reducer';
+import _ from 'lodash';
+import { combineSerialWithName } from 'app/shared/util/utils';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 
 export const SearchByMainFile = () => {
-    const [showPopup, setShowPopup] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [showPopup, setShowPopup] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
+    const [masterFileDetails, setMasterFileDetails] = useState(null);
+    const [masterFilesList, setMasterFilesList] = React.useState<any>([]);
+    const [filteredPersonList, setFilteredPesonsList] = React.useState<any>([]);
+
+
+    const $masterFilesList = useAppSelector((state) => state.dashboardLookups.masterFilesList);
+    const $filteredPersonsList = useAppSelector((state) => state.dashboardLookups.filteredPersonsList);
+    const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
+
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
     }
-    const defendantDataList = [
-        {
-            id: 1,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 50,
-        },
-        {
-            id: 2,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 3,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 50,
-        },
-        {
-            id: 4,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 5,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 6,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 7,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 8,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 9,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 10,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 11,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 12,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 13,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 14,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 15,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 16,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 17,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 18,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-        {
-            id: 19,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 20,
-        },
-        {
-            id: 20,
-            fileNumber: "10 / 12564",
-            defendantName: "اسم المدعي عليه يكتب هنا",
-            nationalNumber: "12345679",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            legalDocuments: "شيك / كمبيالة / إقرار خطي- سند امانة / كشف حساب / عقد ايجار/ قانوني",
-            dataStatus: 100,
-        },
-    ];
+
+    useEffect(() => {
+        getFilteredMasterFilesFN();
+        getFilteredPersonsFN(0);
+        getMasterFileDetailsFn(1);
+    }, []);
+
+    useEffect(() => {
+        if ($masterFilesList) {
+            const filteredFiles = $masterFilesList.map((item) => {
+                return {
+                    id: item.id,
+                    code: item.fileNumber,
+                    name: {
+                        en: item.englishName,
+                        ar: item.arabicName
+                    },
+
+                };
+            });
+            setMasterFilesList(filteredFiles);
+        }
+    }, [$masterFilesList]);
+
+    useEffect(() => {
+        if ($filteredPersonsList) {
+            const filteredPersons = $filteredPersonsList.map((item) => {
+                return {
+                    code: item.id,
+                    name: {
+                        en: item.nameEnglish,
+                        ar: item.nameArabic
+                    },
+
+                };
+            });
+            setFilteredPesonsList(filteredPersons);
+        }
+    }, [$filteredPersonsList]);
+
+    useEffect(() => {
+        if ($masterFileDetails) {
+            setShowLoader(false);
+            setMasterFileDetails($masterFileDetails)
+        }
+    }, [$masterFileDetails]);
+
+    const getFilteredMasterFilesFN = async () => {
+        setShowLoader(true);
+        await dispatch(getAllMasterFiles());
+    }
+
+    const getFilteredPersonsFN = async (id) => {
+        await dispatch(getAllFilteredPersons(id));
+    }
+
+    const getMasterFileDetailsFn = (id) => {
+        dispatch(getMasterFileDetails(id))
+    }
+
 
     return (
         <>
@@ -230,7 +105,7 @@ export const SearchByMainFile = () => {
                         },
                     },
                     {
-                        id: 'PAGE1',
+                        id: 'PAGE2',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -250,29 +125,27 @@ export const SearchByMainFile = () => {
                 <FileSearch
                     label1={translate('search.searchByNoNameMainFile')}
                     placeholder1={translate('search.searchByNoNameMainFile')}
-                    optionList1={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1234" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "5978" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "8799" }
-                    ]}
+                    optionList1={combineSerialWithName(masterFilesList)}
                     label2={translate('mainDashboard.searchByDefendantName')}
                     placeholder2={translate('mainDashboard.searchByDefendantName')}
-                    optionList2={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1284" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "8976" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "9965" }
-                    ]}
+                    optionList2={filteredPersonList}
+                    list1Change={(e) => getFilteredPersonsFN(e.id)}
+                    list2Change={(e) => console.log(e)}
                 />
+                {masterFileDetails && (
+                    <>
+                        <FileInfoHeader setShowPopup={setShowPopup} masterFileDetails={masterFileDetails} />
+                        <MainFileData setShowPopup={setShowPopup} masterFileDetails={masterFileDetails} />
+                        <DefendantDataTable masterFileDetails={masterFileDetails} />
+                    </>
+                )}
 
-                <FileInfoHeader setShowPopup={setShowPopup} />
-
-                <MainFileData setShowPopup={setShowPopup} />
-
-                <DefendantDataTable defendantDataList={defendantDataList} />
 
                 {showPopup && (
                     <EditMainProfilePopup setShowPopup={setShowPopup} />
                 )}
+
+                <LoaderComponent show={showLoader} />
             </div>
         </>
     );

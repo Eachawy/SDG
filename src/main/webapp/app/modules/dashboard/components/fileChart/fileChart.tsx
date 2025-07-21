@@ -27,9 +27,9 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
             const chartInstance = echarts.init(chartElement);
 
             const arabicMonths = [
-                'ديسمبر', 'نوفمبر', 'أكتوبر', 'سبتمبر', 'أغسطس', 'يوليو',
-                'يونيو', 'مايو', 'أبريل', 'مارس', 'فبراير', 'يناير'
-            ];
+                'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+              ];
 
             const englishMonths = [
                 'Dec', 'Nov', 'Oct', 'Sep', 'Aug', 'Jul',

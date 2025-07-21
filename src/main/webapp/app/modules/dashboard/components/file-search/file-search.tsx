@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropDownComponent } from '@eachawy/frontend-library';
+import { ButtonComponent, DropDownComponent } from '@eachawy/frontend-library';
 import { useAppSelector } from 'app/config/store';
 import { useForm } from 'react-hook-form';
 
@@ -9,24 +9,23 @@ export const FileSearch = ({
     optionList1,
     label2,
     placeholder2,
-    optionList2
+    optionList2,
+    list1Change = (e) => {},
+    list2Change = (e) => {}
 }) => {
     const { register, formState: { errors }, watch, setValue } = useForm({ mode: "onTouched" });
-    const $lang = useAppSelector((state) => state.locale.currentLocale);    
-    
-    const combineSerialWithName = (optionList = []) => {
-        return optionList?.map(item => ({
-            ...item,
-            name: {
-                ar: `${item.code} - ${item.name.ar}`,
-                en: `${item.code} - ${item.name.en}`
-            }
-        }));
-    };
-    
-    const combineSerialWithNameL1 = combineSerialWithName(optionList1);
-    const combineSerialWithNameL2 = combineSerialWithName(optionList2);
-    
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
+
+    const ddl1Change = (e) => {
+        setValue("searchByNoNameFile1", e.value);
+        list1Change(e.value);
+    }
+
+    const ddl2Change = (e) => {
+        setValue("searchByNoNameFile2", e.value);
+        list2Change(e.value);
+    }
+
     return (
         <div className="row file-search">
             <DropDownComponent
@@ -35,12 +34,12 @@ export const FileSearch = ({
                 register={register}
                 watch={watch}
                 setValueMethod={setValue}
-                options={combineSerialWithNameL1}
+                options={optionList1}
                 optionLabel={`name.${$lang}`}
                 errors={errors}
-                onChange={(e) => setValue("searchByNoNameFile1", e.value)}
+                onChange={(e) => ddl1Change(e)}
                 placeholder={placeholder1}
-                className="col-md-6"
+                className="col-md-12 col-lg-6"
                 filter={true}
                 label={label1}
             />
@@ -51,12 +50,12 @@ export const FileSearch = ({
                 register={register}
                 watch={watch}
                 setValueMethod={setValue}
-                options={combineSerialWithNameL2}
+                options={optionList2}
                 optionLabel={`name.${$lang}`}
                 errors={errors}
-                onChange={(e) => setValue("searchByNoNameFile2", e.value)}
+                onChange={(e) => ddl2Change(e)}
                 placeholder={placeholder2}
-                className="col-md-6"
+                className="col-md-12 col-lg-6"
                 filter={true}
                 label={label2}
             />
