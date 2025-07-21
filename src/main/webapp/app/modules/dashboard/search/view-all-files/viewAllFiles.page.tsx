@@ -8,11 +8,14 @@ import { FileInfoHeader } from '../components/main-file-info-header/main-file-in
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
 import { MainFileDefendantData } from '../components/main-file-defendant-data/main-file-defendant-data.component';
 import { EditDefendantProfilePopup } from '../components/edit-defendant-main-file-popup/edit-defendant-main-file-popup.component';
+import { CollectionInfo } from '../components/collection-info/collection-info.component';
+import { Lawsuits } from '../components/lawsuits/lawsuits';
+import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
 
-export const SearchByMainFileDefendant = () => {
+export const ViewAllFiles = () => {
     const [showDefendantPopup, setShowDefendantPopup] = useState(false)
     const [showMainFilePopup, setShowMainFilePopup] = useState(false)
-
+    const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
     const navigate = useNavigate();
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
@@ -39,9 +42,9 @@ export const SearchByMainFileDefendant = () => {
                 ]}
             />
 
-            <div className='sdg_page searchByProfile'>
+            <div className='sdg_page searchByProfile main-file-data'>
                 <div className='titlePageDashboard'>
-                    <h2>{translate('search.searchResults')}</h2>
+                    <h2>{translate('search.showAllFiles')}</h2>
                     <ButtonComponent onClick={createNewFileFn}>
                         {translate('mainDashboard.createNewFileButton')}
                     </ButtonComponent>
@@ -69,7 +72,34 @@ export const SearchByMainFileDefendant = () => {
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
                     setShowMainFilePopup={setShowMainFilePopup}
+                    fileData={{
+                        fileType: "تحصيل",
+                        fileOpenDate: "02-12-2024",
+                        fileStatus: "مغلق",
+                        fileStatusMode: 'closed'
+                    }}
                 />
+
+                {true && <CollectionInfo />}
+
+                {true && <UrgentRequest />}
+
+                {true && <Lawsuits />}
+
+                <div className="tabs mt-5">
+                    <div
+                        className={footerActiveTab === "followUps" && "active"}
+                        onClick={() => setFooterActiveTab("followUps")}
+                    >
+                        {translate('search.followUps')}
+                    </div>
+                    <div
+                        className={footerActiveTab === "legalBonds" && "active"}
+                        onClick={() => setFooterActiveTab("legalBonds")}
+                    >
+                        {translate('search.legalBonds')}
+                    </div>
+                </div>
 
                 {showMainFilePopup && (
                     <EditMainProfilePopup setShowPopup={setShowMainFilePopup} />
