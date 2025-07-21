@@ -67,7 +67,7 @@ export const ViewAllFiles = () => {
                     ]}
                 />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup}  masterFileDetails={null} />
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
@@ -106,7 +106,7 @@ export const ViewAllFiles = () => {
                 )}
 
                 {showDefendantPopup && (
-                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} />
+                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} personData={null} />
                 )}
             </div>
         </>
