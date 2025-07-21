@@ -1,99 +1,99 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { translate } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { FileSearch } from '../components/file-search/file-search';
 import { DashboardCard } from '../components/dashboard-card/dashboard-card';
 import { FileChart } from '../components/fileChart/fileChart';
 import { FilesTable } from '../components/files-table/filesTable';
-
-
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import { getBoxesData, getCompletedChartsData, getClosedChartsData } from '../dashboard.reducer';
+import { getAllMasterFiles, getAllFilteredPersons } from '../dashboardLookups.reducer';
+import _ from 'lodash';
+import { combineSerialWithName, exportChartData } from 'app/shared/util/utils';
+import { CURRENT_MONTH, PREV_MONTH } from 'app/modules/shared/constants';
 
 const MainPage = () => {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [boxesData, setBoxesData] = React.useState<any>(null);
+    const [masterFilesList, setMasterFilesList] = React.useState<any>([]);
+    const [filteredPersonList, setFilteredPesonsList] = React.useState<any>([]);
 
-    const createNewFileFn = () => {
-        navigate('/create-file/create-new-profile');
+    const $boxesData = useAppSelector((state) => state.dashboard.boxesData);
+    const $completedChartsData = useAppSelector((state) => state.dashboard.completedChartsData);
+    const $closedChartsData = useAppSelector((state) => state.dashboard.closedChartsData);
+    const $masterFilesList = useAppSelector((state) => state.dashboardLookups.masterFilesList);
+    const $filteredPersonsList = useAppSelector((state) => state.dashboardLookups.filteredPersonsList);
+
+    useEffect(() => {
+        getBoxesDataFN();
+        getFilteredMasterFilesFN();
+        getFilteredPersonsFN(0);
+        getCompletedChartsDataFN();
+        getClosedChartsDataFN();
+    }, []);
+
+    useEffect(() => {
+        if ($boxesData) {
+            setBoxesData($boxesData);
+        }
+    }, [$boxesData]);
+
+    useEffect(() => {
+        if ($masterFilesList) {
+            const filteredFiles = $masterFilesList.map((item) => {
+                return {
+                    id: item.id,
+                    code: item.fileNumber,
+                    name: {
+                        en: item.englishName,
+                        ar: item.arabicName
+                    },
+
+                };
+            });
+            setMasterFilesList(filteredFiles);
+        }
+    }, [$masterFilesList]);
+
+    useEffect(() => {
+        if ($filteredPersonsList) {
+            const filteredPersons = $filteredPersonsList.map((item) => {
+                return {
+                    code: item.id,
+                    name: {
+                        en: item.nameEnglish,
+                        ar: item.nameArabic
+                    },
+
+                };
+            });
+            setFilteredPesonsList(filteredPersons);
+        }
+    }, [$filteredPersonsList]);
+
+    const getBoxesDataFN = async () => {
+        await dispatch(getBoxesData());
     }
 
-    const chartData = {
-        series: [30, 150, 50, 200, 400, 80, 250, 350, 450, 500, 100, 180]
-    };
+    const getCompletedChartsDataFN = async () => {
+        await dispatch(getCompletedChartsData());
+    }
 
-    const filesList = [
-        {
-            id: 1,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            dataStatus: 20,
-        },
-        {
-            id: 2,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "طلب مستعجل",
-            dataStatus: 60,
-        },
-        {
-            id: 3,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "قضايا",
-            dataStatus: 10,
-        },
-        {
-            id: 4,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            dataStatus: 60,
-        },
-        {
-            id: 5,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "طلب مستعجل",
-            dataStatus: 20,
-        },
-        {
-            id: 6,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            dataStatus: 60,
-        },
-        {
-            id: 7,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            defendantName: "محمد عبدالله رشوان",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            dataStatus: 75,
-        },
-    ];
+    const getClosedChartsDataFN = async () => {
+        await dispatch(getClosedChartsData());
+    }
+
+    const getFilteredMasterFilesFN = async () => {
+        await dispatch(getAllMasterFiles());
+    }
+
+    const getFilteredPersonsFN = async (id) => {
+        await dispatch(getAllFilteredPersons(id));
+    }
 
     return (
         <>
@@ -107,7 +107,7 @@ const MainPage = () => {
                         },
                     },
                     {
-                        id: 'PAGE1',
+                        id: 'PAGE2',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -119,72 +119,66 @@ const MainPage = () => {
                 <div className='mainDashboardPage'>
                     <div className='titlePageDashboard'>
                         <h2>{translate('mainDashboard.viewFilesHeader')}</h2>
-                        <ButtonComponent Class={''} onClick={createNewFileFn}>
+                        <ButtonComponent Class={''} onClick={() => navigate('/create-file/create-new-profile')}>
                             {translate('mainDashboard.createNewFileButton')}
                         </ButtonComponent>
                     </div>
 
                     <FileSearch
-                        label1={translate('mainDashboard.searchByFileOrName')}
-                        placeholder1={translate('mainDashboard.searchByFileOrName')}
-                        optionList1={[
-                            { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1234" },
-                            { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "5978" },
-                            { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "8799" }
-                        ]}
+                        label1={translate('search.searchByNoNameMainFile')}
+                        placeholder1={translate('search.searchByNoNameMainFile')}
+                        optionList1={combineSerialWithName(masterFilesList)}
                         label2={translate('mainDashboard.searchByDefendantName')}
                         placeholder2={translate('mainDashboard.searchByDefendantName')}
-                        optionList2={[
-                            { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "9784" },
-                            { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "6635" },
-                            { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "7849" }
-                        ]}
+                        optionList2={filteredPersonList}
+                        list1Change={(e) => getFilteredPersonsFN(e.id)}
+                        list2Change={(e) => console.log(e)}
                     />
 
                     <div className='divCardsRow'>
                         <DashboardCard
                             mode={''}
                             label={translate('mainDashboard.totalFiles')}
-                            count={2500}
+                            count={(_.find(boxesData, (item) => item.name === 'TOTAL'))?.count || 0}
                         />
 
                         <DashboardCard
                             mode={'_card_1'}
                             label={translate('mainDashboard.urgentFiles')}
-                            count={600}
+                            count={(_.find(boxesData, (item) => item.name === 'URGENT_REQUEST'))?.count || 0}
                         />
 
                         <DashboardCard
                             mode={'_card_2'}
                             label={translate('mainDashboard.collectionFiles')}
-                            count={1700}
+                            count={(_.find(boxesData, (item) => item.name === 'COLLECTION'))?.count || 0}
                         />
 
                         <DashboardCard
                             mode={'_card_3'}
                             label={translate('mainDashboard.casesFiles')}
-                            count={2200}
+                            count={(_.find(boxesData, (item) => item.name === 'COURT_CASE'))?.count || 0}
                         />
                     </div>
 
                     <div className='row chartstDiv g-4'>
                         <FileChart
                             chartTitle={translate('mainDashboard.activeFiles')}
-                            lastMonth={300}
-                            currentMonth={200}
-                            chartData={chartData}
+                            lastMonth={_.find($completedChartsData, (item) => item.name === PREV_MONTH)?.count || 0}
+                            currentMonth={_.find($completedChartsData, (item) => item.name === CURRENT_MONTH)?.count || 0}
+                            chartData={$completedChartsData && exportChartData($completedChartsData)}
                             color={'green'}
                         />
                         <FileChart
                             chartTitle={translate('mainDashboard.closedFiles')}
-                            lastMonth={300}
-                            currentMonth={200}
-                            chartData={undefined}
+                            lastMonth={_.find($closedChartsData, (item) => item.name === PREV_MONTH)?.count || 0}
+                            currentMonth={_.find($closedChartsData, (item) => item.name === CURRENT_MONTH)?.count || 0}
+                            chartData={$closedChartsData && exportChartData($closedChartsData)}
                             color={'orange'}
                         />
                     </div>
 
-                    <FilesTable filesList={filesList} />
+                    <FilesTable />
 
                 </div>
             </div>

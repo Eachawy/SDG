@@ -78,7 +78,7 @@ export const SearchByMainFileDefendant = () => {
                         },
                     },
                     {
-                        id: 'PAGE1',
+                        id: 'PAGE2',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -112,7 +112,7 @@ export const SearchByMainFileDefendant = () => {
                     ]}
                 />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
@@ -125,7 +125,7 @@ export const SearchByMainFileDefendant = () => {
                 )}
 
                 {showDefendantPopup && (
-                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} />
+                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} personData={null} />
                 )}
             </div>
         </>

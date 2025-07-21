@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import $ from 'jquery';
 import { translate } from 'react-jhipster';
+import { useAppSelector } from 'app/config/store';
 
-export const DefendantData = ({ setShowPopup }) => {
+export const DefendantData = ({ setShowPopup, personData }) => {
+
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
 
     const onEditMainFile = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        console.log('Test Btn Done')
         e.preventDefault();
         e.stopPropagation();
         setShowPopup(true)
@@ -47,35 +49,35 @@ export const DefendantData = ({ setShowPopup }) => {
             <div className='mainFileContent'>
                 <p>
                     <label>{translate('search.personName')}</label>
-                    محمد عبدالله رشوان
+                    {$lang === 'en' ? personData?.nameEnglish : personData?.nameArabic}
                 </p>
                 <p>
                     <label>{translate('search.nationalID')}</label>
-                    123456789
+                    {personData?.nationalId ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.address1')}</label>
-                    شارع محمد عبدالحميد زغلول بلوك ٨٩
+                    {personData?.addressOne ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.address2')}</label>
-                    شارع محمد عبدالحميد زغلول بلوك ٨٩
+                    {personData?.addressTwo ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.phoneNumber1')}</label>
-                    54368956435
+                    {personData?.mobileOne ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.phoneNumber2')}</label>
-                    6544543434
+                    {personData?.mobileTwo ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.phoneNumber3')}</label>
-                    55675544545
+                    {personData?.mobileThree ?? '--'}
                 </p>
                 <p>
                     <label>{translate('search.email')}</label>
-                    info@gmail.com
+                    {personData?.email ?? '--'}
                 </p>
             </div>
         </div>

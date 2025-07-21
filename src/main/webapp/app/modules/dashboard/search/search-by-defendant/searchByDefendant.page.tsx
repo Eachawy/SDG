@@ -1,66 +1,96 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { translate } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { DefendantData } from '../components/defendant-data/defendant-data.component';
 import { EditDefendantProfilePopup } from '../components/edit-defendant-main-file-popup/edit-defendant-main-file-popup.component';
 import { DefendantFilesDataTable } from '../components/defendant-files-data-table/defendant-files-data-table.component';
+import { combineSerialWithName } from 'app/shared/util/utils';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import { getAllMasterFiles, getAllFilteredPersons, getAllPersons } from '../../dashboardLookups.reducer';
+import _ from 'lodash'
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 
 export const SearchByDefendant = () => {
-    const [showPopup, setShowPopup] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const [showPopup, setShowPopup] = useState(false)
+    const [showLoader, setShowLoader] = useState(false);
+    const [masterFilesList, setMasterFilesList] = React.useState<any>([]);
+    const [filteredPersonList, setFilteredPesonsList] = React.useState<any>([]);
+    const [personData, setPersonData] = React.useState(null);
+
+    const $masterFilesList = useAppSelector((state) => state.dashboardLookups.masterFilesList);
+    const $filteredPersonsList = useAppSelector((state) => state.dashboardLookups.filteredPersonsList);
+    const $allPersonsList = useAppSelector((state) => state.dashboardLookups.allPersonsList);
+
     const createNewFileFn = () => {
         navigate('/create-file/create-new-profile');
     }
 
-    const defendantDataList = [
-        {
-            id: 1,
-            fileNumber: "12345",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12345",
-            registerDate: "29-03-2025",
-            lastUpdateDate: "20-12-2025",
-            fileType: "تحصيل",
-            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
-            dataStatus: 100,
-        },
-        {
-            id: 2,
-            fileNumber: "12346",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12346",
-            registerDate: "01-04-2025",
-            lastUpdateDate: "22-12-2025",
-            fileType: "طلب مستعجل",
-            fileTypeStatus: { name: { en: 'Active', ar: 'فعال' }, code: 'AC' },
-            dataStatus: 20,
-        },
-        {
-            id: 3,
-            fileNumber: "12347",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12347",
-            registerDate: "02-04-2025",
-            lastUpdateDate: "23-12-2025",
-            fileType: "قضايا",
-            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
-            dataStatus: 100,
-        },
-        {
-            id: 4,
-            fileNumber: "12348",
-            mainFileName: "اسم الشركة يكتب هنا",
-            nationalNumber: "12348",
-            registerDate: "03-04-2025",
-            lastUpdateDate: "24-12-2025",
-            fileType: "تحصيل",
-            fileTypeStatus: { name: { en: 'Closed', ar: 'مغلق' }, code: 'CL' },
-            dataStatus: 100,
+    useEffect(() => {
+        getFilteredMasterFilesFN();
+        getFilteredPersonsFN(0);
+        getAllPersonsFN();
+    }, []);
+
+    useEffect(() => {
+        if ($masterFilesList) {
+            const filteredFiles = $masterFilesList.map((item) => {
+                return {
+                    id: item.id,
+                    code: item.fileNumber,
+                    name: {
+                        en: item.englishName,
+                        ar: item.arabicName
+                    },
+
+                };
+            });
+            setMasterFilesList(filteredFiles);
         }
-    ];
+    }, [$masterFilesList]);
+
+    useEffect(() => {
+        if ($filteredPersonsList) {
+            const filteredPersons = $filteredPersonsList.map((item) => {
+                return {
+                    code: item.id,
+                    name: {
+                        en: item.nameEnglish,
+                        ar: item.nameArabic
+                    },
+
+                };
+            });
+            setFilteredPesonsList(filteredPersons);
+        }
+    }, [$filteredPersonsList]);
+
+    useEffect(() => {
+        if ($allPersonsList) {
+            const filteredPerson = _.find($allPersonsList, item => item.id === 1);
+            setPersonData(filteredPerson);
+            setShowLoader(false);
+        }
+    }, [$allPersonsList]);
+
+    const getFilteredMasterFilesFN = async () => {
+        setShowLoader(true);
+        await dispatch(getAllMasterFiles());
+    }
+
+    const getFilteredPersonsFN = async (id) => {
+        await dispatch(getAllFilteredPersons(id));
+    }
+
+    const getAllPersonsFN = async () => {
+        setShowLoader(true);
+        await dispatch(getAllPersons());
+    }
 
     return (
         <>
@@ -74,7 +104,7 @@ export const SearchByDefendant = () => {
                         },
                     },
                     {
-                        id: 'PAGE1',
+                        id: 'PAGE2',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -94,25 +124,24 @@ export const SearchByDefendant = () => {
                 <FileSearch
                     label1={translate('search.searchByNoNameMainFile')}
                     placeholder1={translate('search.searchByNoNameMainFile')}
-                    optionList1={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1234" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "5978" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "8799" }
-                    ]}
+                    optionList1={combineSerialWithName(masterFilesList)}
                     label2={translate('mainDashboard.searchByDefendantName')}
                     placeholder2={translate('mainDashboard.searchByDefendantName')}
-                    optionList2={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1284" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "8976" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "9965" }
-                    ]}
+                    optionList2={filteredPersonList}
+                    list1Change={(e) => getFilteredPersonsFN(e.id)}
+                    list2Change={(e) => console.log(e)}
                 />
 
-                <DefendantData setShowPopup={setShowPopup} />
+                {personData && (
+                    <>
+                        <DefendantData setShowPopup={setShowPopup} personData={personData} />
+                        <DefendantFilesDataTable personData={personData} />
+                    </>
+                )}
 
-                <DefendantFilesDataTable defendantDataList={defendantDataList} />
+                {showPopup && <EditDefendantProfilePopup setShowPopup={setShowPopup} personData={personData} />}
 
-                {showPopup && <EditDefendantProfilePopup setShowPopup={setShowPopup} />}
+                <LoaderComponent show={showLoader} />
 
             </div>
         </>

@@ -7,6 +7,9 @@ import createProfile from 'app/modules/new-profile/create-new-file/createNewProf
 import createProfileLookups from 'app/modules/new-profile/select-file-type/newProfileLookups.reducer';
 import selectFileType from 'app/modules/new-profile/select-file-type/select-file-type.reducer';
 import legalBonds from 'app/modules/new-profile/legal-bonds-page/components/legalBonds.reducer';
+import dashboard from 'app/modules/dashboard/dashboard.reducer';
+import dashboardLookups from 'app/modules/dashboard/dashboardLookups.reducer';
+
 const rootReducer: ReducersMapObject = {
   authentication,
   locale,
@@ -15,6 +18,8 @@ const rootReducer: ReducersMapObject = {
   selectFileType,
   createProfileLookups,
   legalBonds,
+  dashboard,
+  dashboardLookups,
   ...entitiesReducers,
 };
 

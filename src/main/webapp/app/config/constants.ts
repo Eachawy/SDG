@@ -39,3 +39,13 @@ export const getAllBanksAPI = 'api/banks?name=&size=';
 export const getFileDetailsAPI = 'api/files/';
 export const addLegalBondAPI = 'api/legal-bonds';
 export const deleteLegalBondAPI = 'api/legal-bonds';
+
+// Dashboard
+export const getBoxesDataAPI = 'api/files/file-count';
+export const getChartsDataAPI = 'api/files/file-count-per-month/status/';
+export const getTableTabsDataAPI = 'api/files/file-count-per-status';
+export const getFilesTableDataAPI = 'api/master-files/search?size=100&page=0';
+export const getFilteredMasterFilesAPI ='api/master-files/filtered';
+export const getFilteredPersonsAPI = 'api/persons/masterFileId/';
+export const getMasterFileDetailsAPI = 'api/master-files/';
+export const getMasterFileCountersAPI = 'api/master-files/counters'
