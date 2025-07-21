@@ -1,14 +1,35 @@
 import { InputComponent, AttachmentMultiFilesComponent, ButtonComponent } from '@eachawy/frontend-library';
 import { useAppSelector } from 'app/config/store';
 import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
-import React from 'react';
+import { getCountryCodeObj, removeCountryCode } from 'app/shared/util/utils';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { translate } from 'react-jhipster';
 
-export const EditDefendantProfilePopup = ({ setShowPopup }) => {
+export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
 
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched' });
     const $lang = useAppSelector(state => state.locale.currentLocale);
+
+    useEffect(() => {
+        handleEditMode();
+    }, []);
+
+    const handleEditMode = () => {
+        setValue('personNameEN', personData?.nameEnglish);
+        setValue('personNameAR', personData?.nameArabic);
+        setValue('personNationlId', personData?.nationalId);
+        setValue('personAddress1', personData?.addressOne);
+        setValue('personAddress2', personData?.addressTwo);
+        setValue('personCode1', getCountryCodeObj(personData?.mobileOne));
+        setValue('personCode2', getCountryCodeObj(personData?.mobileTwo));
+        setValue('personCode3', getCountryCodeObj(personData?.mobileThree));
+        setValue('personPhone1', Number(removeCountryCode(personData?.mobileOne)));
+        setValue('personPhone2', Number(removeCountryCode(personData?.mobileTwo)));
+        setValue('personPhone3', Number(removeCountryCode(personData?.mobileThree)));
+        setValue('personEmail', personData?.email);
+    }
+
     const cancelFn = () => {
         setShowPopup(false);
     };
@@ -25,9 +46,9 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="defendantNameAr"
+                                id="personNameAR"
                                 type="text"
-                                name="defendantNameAr"
+                                name="personNameAR"
                                 label={translate("createNewProfile.personNameAr")}
                                 placeholder={translate("createNewProfile.personNameAr")}
                                 register={register}
@@ -37,16 +58,16 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
                                 watch={watch}
                                 onChange={(e) => {
                                     const arabicOnly = e.target.value.replace(/[^\u0600-\u06FF\s]/g, "");
-                                    setValue("defendantNameAr", arabicOnly);
+                                    setValue("personNameAR", arabicOnly);
                                 }}
                             />
                         </div>
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="defendantNameEn"
+                                id="personNameEN"
                                 type="text"
-                                name="defendantNameEn"
+                                name="personNameEN"
                                 label={translate("createNewProfile.personNameEn")}
                                 placeholder={translate("createNewProfile.personNameEn")}
                                 register={register}
@@ -56,16 +77,16 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
                                 watch={watch}
                                 onChange={(e) => {
                                     const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-                                    setValue("defendantNameEn", englishOnly);
+                                    setValue("personNameEN", englishOnly);
                                 }}
                             />
                         </div>
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="nationalNumber"
+                                id="personNationlId"
                                 type="text"
-                                name="nationalNumber"
+                                name="personNationlId"
                                 label={translate("createNewProfile.nationalNumber")}
                                 placeholder={translate("createNewProfile.exm") + "1234567"}
                                 register={register}
@@ -73,16 +94,16 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
                                 watch={watch}
                                 onChange={(e) => {
                                     const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                                    setValue("nationalNumber", numericValue);
+                                    setValue("personNationlId", numericValue);
                                 }}
                             />
                         </div>
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="defendantAddress1"
+                                id="personAddress1"
                                 type="text"
-                                name="defendantAddress1"
+                                name="personAddress1"
                                 label={translate("search.address1")}
                                 placeholder={translate("createNewProfile.enterTheAddress")}
                                 register={register}
@@ -90,28 +111,29 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
                                 rules={{ required: translate("search.requiredField") }}
                                 setValueMethod={setValue}
                                 watch={watch}
-                                onChange={(e) => setValue("defendantAddress1", e.target.value)}
+                                onChange={(e) => setValue("personAddress1", e.target.value)}
                             />
                         </div>
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="defendantAddress2"
+                                id="personAddress2"
                                 type="text"
-                                name="defendantAddress2"
+                                name="personAddress2"
                                 label={translate("search.address2")}
                                 placeholder={translate("createNewProfile.enterTheAddress")}
                                 register={register}
                                 errors={errors}
                                 setValueMethod={setValue}
                                 watch={watch}
-                                onChange={(e) => setValue("defendantAddress2", e.target.value)}
+                                onChange={(e) => setValue("personAddress2", e.target.value)}
                             />
                         </div>
 
                         <div className='col-md-6'>
                             <PhoneNumberComponent
-                                name="phoneNumber1"
+                                name="personPhone1"
+                                listName="personCode1"
                                 register={register}
                                 errors={errors}
                                 watch={watch}
@@ -123,7 +145,8 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
 
                         <div className='col-md-6'>
                             <PhoneNumberComponent
-                                name="phoneNumber2"
+                                name="personPhone2"
+                                listName="personCode2"
                                 register={register}
                                 errors={errors}
                                 watch={watch}
@@ -135,7 +158,8 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
 
                         <div className='col-md-6'>
                             <PhoneNumberComponent
-                                name="phoneNumber3"
+                                name="personPhone3"
+                                listName="personCode3"
                                 register={register}
                                 errors={errors}
                                 watch={watch}
@@ -147,21 +171,21 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
 
                         <div className='col-md-6'>
                             <InputComponent
-                                id="defendantEmail"
+                                id="personEmail"
                                 type="email"
-                                name="defendantEmail"
+                                name="personEmail"
                                 label={translate("search.email")}
                                 placeholder={translate("loginPage.emailPlaceholder")}
                                 register={register}
                                 errors={errors}
                                 setValueMethod={setValue}
                                 watch={watch}
-                                onChange={(e) => setValue("defendantEmail", e.target.value)}
+                                onChange={(e) => setValue("personEmail", e.target.value)}
                             />
                         </div>
                     </div>
 
-                    <div className="uploaderContainer">
+                    {/* <div className="uploaderContainer">
                         <h4>{translate("createNewProfile.attachments")}</h4>
                         <div className="row mb-4">
                             <AttachmentMultiFilesComponent
@@ -175,7 +199,7 @@ export const EditDefendantProfilePopup = ({ setShowPopup }) => {
                                 Class="col-md-12 col-lg-6"
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="popupFooter">

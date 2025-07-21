@@ -71,9 +71,9 @@ export const MainFileDefendantData = ({ setShowDefendantPopup, setShowMainFilePo
                 </div>
             </div>
             {activeTab === 'main' ? (
-                <MainFileData setShowPopup={undefined} />
+                <MainFileData setShowPopup={undefined}  masterFileDetails={null} />
             ) : (
-                <DefendantData setShowPopup={undefined} />
+                <DefendantData setShowPopup={undefined} personData={null} />
             )}
         </div>
     )

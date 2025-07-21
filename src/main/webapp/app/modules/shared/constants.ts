@@ -1,3 +1,7 @@
+export const CURRENT_MONTH = new Date().toLocaleString('en-US', { month: 'long' });
+export const previousMonthDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+export const PREV_MONTH = previousMonthDate.toLocaleString('en-US', { month: 'long' });
+
 export const FileTypes = [
     {
         name: { en: 'Urgent Request', ar: 'طلب مستعجل' },

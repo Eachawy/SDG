@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import $ from 'jquery';
 import { translate } from 'react-jhipster';
+import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
+import { pushNotification } from 'app/shared/util/utils';
 
-export const MainFileData = ({ setShowPopup }) => {
+export const MainFileData = ({ setShowPopup, masterFileDetails }) => {
+
+    const [attachmentListRow, setAttachmentListRow] = React.useState<number | null>(null)
 
     const onEditMainFile = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        console.log('Test Btn Done')
         e.preventDefault();
         e.stopPropagation();
         setShowPopup(true)
@@ -28,31 +31,45 @@ export const MainFileData = ({ setShowPopup }) => {
         $(e.currentTarget).find('.serviceActionList').css("display", "flex");
     };
 
-    return (
-        <div className='main-file-data'>
-            <div className='mainFileHeader'>
-                <div className='headerTitle'>
-                    {translate('search.mainFileData')}
-                </div>
+    const setAttachments = (masterFile) => {
+        if (masterFile.attachments && masterFile.attachments.length > 0) {
+            setAttachmentListRow(masterFile);
+        } else {
+            setAttachmentListRow(null);
+            pushNotification("error", "لم يتم العثور على مرفقات لهذا الملف");
+        }
+    }
 
-                <div className='menu' onClick={serviceList}>
-                    {translate('search.serviceList')}
-                    <div className="serviceActionList">
-                        <span onClick={(e) => onEditMainFile(e)}>
-                            {translate('search.editMainFile')}
-                        </span>
-                        <span onClick={()=>{}}>
-                            {translate('search.attachments')}
-                        </span>
+    return (
+        <>
+            <div className='main-file-data'>
+                <div className='mainFileHeader'>
+                    <div className='headerTitle'>
+                        {translate('search.mainFileData')}
+                    </div>
+
+                    <div className='menu' onClick={serviceList}>
+                        {translate('search.serviceList')}
+                        <div className="serviceActionList">
+                            <span onClick={(e) => onEditMainFile(e)}>
+                                {translate('search.editMainFile')}
+                            </span>
+                            <span onClick={() => setAttachments(masterFileDetails)}>
+                                {translate('search.attachments')}
+                            </span>
+                        </div>
                     </div>
                 </div>
+                <div className='mainFileContent'>
+                    <p><label>{translate('search.nationalID')}</label>{masterFileDetails?.ssn ?? '--'}</p>
+                    <p><label>{translate('search.address')}</label>{masterFileDetails?.address ?? '--'}</p>
+                    <p><label>{translate('search.phoneNumber')}</label>{masterFileDetails?.mobileNumber ?? '--'}</p>
+                    <p><label>{translate('search.email')}</label>{masterFileDetails?.email ?? '--'}</p>
+                </div>
             </div>
-            <div className='mainFileContent'>
-                <p><label>{translate('search.nationalID')}</label>123456789</p>
-                <p><label>{translate('search.address')}</label>شركة النور</p>
-                <p><label>{translate('search.phoneNumber')}</label>8546898435</p>
-                <p><label>{translate('search.email')}</label>sdc@info.com</p>
-            </div>
-        </div>
+            {attachmentListRow &&
+                <AttachmentPopupComponent attachList={attachmentListRow} closeAttachmentPopupFn={() => setAttachmentListRow(null)} />
+            }
+        </>
     )
 }

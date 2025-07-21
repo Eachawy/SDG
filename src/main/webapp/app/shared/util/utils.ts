@@ -87,8 +87,30 @@ export const pushNotification = (type: string, message: string) => {
       toast.info(message);
       break;
 
-      
+
     default:
       break;
   }
+}
+
+export const combineSerialWithName = (optionList = []) => {
+  return optionList?.map(item => ({
+    ...item,
+    name: {
+      ar: `${item.code} - ${item.name.ar}`,
+      en: `${item.code} - ${item.name.en}`
+    }
+  }));
+};
+
+export const exportChartData = (chartData: any) => {
+  const chartSeries = chartData?.map((item: any) => {
+    return item.count
+  });
+
+  const seriesObj = {
+    series: chartSeries
+  }
+
+  return seriesObj
 }
