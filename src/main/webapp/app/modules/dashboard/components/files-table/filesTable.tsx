@@ -137,7 +137,6 @@ export const FilesTable = () => {
         setFirst(e.first);
     };
 
-
     return (
         <div className='files-table'>
             <div className='titleTableHeader'>

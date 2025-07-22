@@ -71,9 +71,9 @@ export const DefendantFilesDataTable = ({ personData }) => {
     );
     
     const fileType = (rowData) => (
-        <div className={`fileType ${rowData.fileTypeStatus.code === 'AC' ? 'active' : 'closed'}`}>
+        <div className={`fileType ${rowData?.fileTypeStatus?.code === 'AC' ? 'active' : 'closed'}`}>
             <p>{rowData.fileType}</p> 
-            <span>({rowData.fileTypeStatus.name[$lang]})</span>
+            <span>({rowData?.fileTypeStatus?.name[$lang]})</span>
         </div>
     );
 
