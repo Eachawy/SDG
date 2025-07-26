@@ -70,12 +70,12 @@ export const DefendantFilesDataTable = ({ personData }) => {
         </div>
     );
     
-    const fileType = (rowData) => (
-        <div className={`fileType ${rowData?.fileTypeStatus?.code === 'AC' ? 'active' : 'closed'}`}>
-            <p>{rowData.fileType}</p> 
-            <span>({rowData?.fileTypeStatus?.name[$lang]})</span>
-        </div>
-    );
+    // const fileType = (rowData) => (
+    //     <div className={`fileType ${rowData.fileTypeStatus.code === 'AC' ? 'active' : 'closed'}`}>
+    //         <p>{rowData.fileType}</p> 
+    //         <span>({rowData.fileTypeStatus.name[$lang]})</span>
+    //     </div>
+    // );
 
     const actionList = (rowData) => {
         return (
@@ -132,11 +132,11 @@ export const DefendantFilesDataTable = ({ personData }) => {
                         paginator
                         rows={5}
                     >
-                        <Column field="fileNumber" header={translate('search.fileNumber')} className="columnStyle fileNo" />
-                        <Column field="mainFileName" header={translate('search.mainFileName')} className="columnStyle" />
-                        <Column field="registerDate" header={translate('search.registerDate')} className="columnStyle" />
-                        <Column field="lastUpdateDate" header={translate('search.lastUpdateDate')} className="columnStyle" />
-                        <Column field="fileType" body={fileType} header={translate('search.fileType')} className="columnStyle" />
+                        <Column field="fullFileNumber" header={translate('search.fileNumber')} className="columnStyle fileNo" />
+                        <Column field={$lang === 'en' ? 'masterFileNameEn' :'masterFileNameAr'} header={translate('search.mainFileName')} className="columnStyle" />
+                        <Column field="creationDate" header={translate('search.registerDate')} className="columnStyle" />
+                        <Column field="lastModifiedDate" header={translate('search.lastUpdateDate')} className="columnStyle" />
+                        <Column field="fileType" body={fileTypeTemplate} header={translate('search.fileType')} className="columnStyle" />
                         <Column field="dataStatus" header={translate('search.dataStatus')} className="dataStatus-col _defendant-dataStatus-col" body={dataStatusTemplate} />
                         <Column body={actionList} className="columnStyle actionList-col _defendant-actionList-col" />
                     </DataTable>

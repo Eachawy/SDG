@@ -121,7 +121,7 @@ export const SearchByMainFileDefendant = () => {
 
                 <DefendantFilesDataTable personData={defendantDataList} />
                 {showMainFilePopup && (
-                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} />
+                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={null}/>
                 )}
 
                 {showDefendantPopup && (

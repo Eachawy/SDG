@@ -36,7 +36,7 @@ export const SearchByMainFile = () => {
     useEffect(() => {
         getFilteredMasterFilesFN();
         getFilteredPersonsFN(0);
-        getMasterFileDetailsFn(1);
+        getMasterFileDetailsFn(4);
     }, []);
 
     useEffect(() => {
@@ -142,7 +142,10 @@ export const SearchByMainFile = () => {
 
 
                 {showPopup && (
-                    <EditMainProfilePopup setShowPopup={setShowPopup} />
+                    <EditMainProfilePopup setShowPopup={(status: any) => {
+                        setShowPopup(status);
+                        getMasterFileDetailsFn(3)
+                    }} masterFileDetails={masterFileDetails} />
                 )}
 
                 <LoaderComponent show={showLoader} />

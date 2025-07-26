@@ -139,7 +139,15 @@ export const SearchByDefendant = () => {
                     </>
                 )}
 
-                {showPopup && <EditDefendantProfilePopup setShowPopup={setShowPopup} personData={personData} />}
+                {showPopup &&
+                    <EditDefendantProfilePopup
+                        setShowPopup={(status: any) => {
+                            setShowPopup(status);
+                            getAllPersonsFN()
+                        }}
+                        personData={personData}
+                    />
+                }
 
                 <LoaderComponent show={showLoader} />
 

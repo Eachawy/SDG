@@ -1,39 +1,71 @@
-import { InputComponent, AttachmentMultiFilesComponent, ButtonComponent } from '@eachawy/frontend-library';
-import { useAppSelector } from 'app/config/store';
+import { InputComponent, ButtonComponent } from '@eachawy/frontend-library';
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
 import { getCountryCodeObj, removeCountryCode } from 'app/shared/util/utils';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { translate } from 'react-jhipster';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import { editPerson, handleResetEditPerson } from 'app/modules/dashboard/dashboard.reducer';
 
 export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
 
+    const dispatch = useAppDispatch();
+    const [showLoader, setShowLoader] = React.useState(false);
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched' });
+    
     const $lang = useAppSelector(state => state.locale.currentLocale);
-
+    const $editPersonResponse = useAppSelector((state) => state.dashboard.editPersonResponse);
+    
     useEffect(() => {
+        
         handleEditMode();
     }, []);
+
+    useEffect(() => {
+        if ($editPersonResponse) {
+            setShowLoader(false);
+            dispatch(handleResetEditPerson());
+            setShowPopup(false);
+        }
+    }, [$editPersonResponse]);
 
     const handleEditMode = () => {
         setValue('personNameEN', personData?.nameEnglish);
         setValue('personNameAR', personData?.nameArabic);
         setValue('personNationlId', personData?.nationalId);
         setValue('personAddress1', personData?.addressOne);
-        setValue('personAddress2', personData?.addressTwo);
+        setValue('personAddress2', personData?.addressTwo ?? '');
         setValue('personCode1', getCountryCodeObj(personData?.mobileOne));
         setValue('personCode2', getCountryCodeObj(personData?.mobileTwo));
         setValue('personCode3', getCountryCodeObj(personData?.mobileThree));
-        setValue('personPhone1', Number(removeCountryCode(personData?.mobileOne)));
-        setValue('personPhone2', Number(removeCountryCode(personData?.mobileTwo)));
-        setValue('personPhone3', Number(removeCountryCode(personData?.mobileThree)));
-        setValue('personEmail', personData?.email);
+        setValue('personPhone1', personData?.mobileOne ? Number(removeCountryCode(personData?.mobileOne)) : null);
+        setValue('personPhone2', personData?.mobileTwo ? Number(removeCountryCode(personData?.mobileTwo)) : null);
+        setValue('personPhone3', personData?.mobileThree ? Number(removeCountryCode(personData?.mobileThree)) : null);
+        setValue('personEmail', personData?.email ?? null);
     }
 
     const cancelFn = () => {
         setShowPopup(false);
     };
-    const saveFn = () => {
+    const saveFn = async (data) => {
+        setShowLoader(true);
+        const obj = {
+            id: personData?.id,
+            nameArabic: data.personNameAR,
+            nameEnglish: data.personNameEN,
+            nationalId: Number(data.personNationlId),
+            addressOne: data.personAddress1,
+            addressTwo: data.personAddress2,
+            mobileOne: Number(data.personCode1?.name + data.personPhone1),
+            mobileTwo: Number(data.personCode2?.name + data.personPhone2),
+            mobileThree: Number(data.personCode3?.name + data.personPhone3),
+            email: data.personEmail
+        }
+
+        // Call API
+        await dispatch(editPerson(obj));
+        setShowLoader(false);
     };
 
     return (
@@ -206,6 +238,7 @@ export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
                     <ButtonComponent Class={'BtnCancel'} onClick={cancelFn}>{translate("search.close")}</ButtonComponent>
                     <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveFn)}>{translate("search.save")}</ButtonComponent>
                 </div>
+                <LoaderComponent show={showLoader} />
             </div>
         </div>
     );

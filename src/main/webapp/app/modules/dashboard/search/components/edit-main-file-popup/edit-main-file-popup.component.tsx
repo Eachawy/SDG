@@ -1,18 +1,72 @@
 import { RadioButtonComponent, InputComponent, AttachmentMultiFilesComponent, ButtonComponent } from '@eachawy/frontend-library';
-import { useAppSelector } from 'app/config/store';
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
-import React from 'react';
+import { getCountryCodeObj, IsMobileNumberUndefined, IsUndefined, removeCountryCode } from 'app/shared/util/utils';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { translate } from 'react-jhipster';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import { editMasterFile, handleResetEditMasterFile } from 'app/modules/dashboard/dashboard.reducer';
 
-export const EditMainProfilePopup = ({setShowPopup}) => {
+
+export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
+    const dispatch = useAppDispatch();
+    const [showLoader, setShowLoader] = useState(false);
 
     const { register, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm({ mode: 'onTouched', });
     const $lang = useAppSelector(state => state.locale.currentLocale);
+    const $editMasterFileResponse = useAppSelector(state => state.dashboard.editMasterFileResponse);
+
+    useEffect(() => {
+        handleEdit();
+    }, [masterFileDetails]);
+
+    useEffect(() => {
+        if ($editMasterFileResponse && $editMasterFileResponse.status === 200) {
+            dispatch(handleResetEditMasterFile());
+            cancelFn();
+        }
+    }, [$editMasterFileResponse]);
+
+    const handleEdit = () => {
+        if (masterFileDetails.company) {
+            setValue('profileType', 'corporateType');
+        } else {
+            setValue('profileType', 'personalType');
+        }
+
+        setValue('NameAr', masterFileDetails.arabicName ?? '');
+        setValue('NameEn', masterFileDetails.englishName ?? '');
+        setValue('nationalNumber', masterFileDetails.ssn ?? '');
+        setValue('address', masterFileDetails.address ?? '');
+        setValue('masterCode', getCountryCodeObj(masterFileDetails.mobileNumber));
+        setValue('masterPhone', masterFileDetails.mobileNumber ? Number(removeCountryCode(masterFileDetails.mobileNumber)) : '');
+        setValue('email', masterFileDetails.email ?? '');
+    }
+
     const cancelFn = () => {
         setShowPopup(false)
     }
-    const saveFn = () => {
+
+    const saveFn = async (data) => {
+        setShowLoader(true);
+        const _data = {
+            id: masterFileDetails?.id,
+            company: data.profileType === 'corporateType' ? true : false,
+            arabicName: data.NameAr,
+            englishName: data.NameEn,
+            ssn: IsUndefined(data.nationalNumber),
+            address: IsUndefined(data.address),
+            email: IsUndefined(data.email),
+            status: masterFileDetails.status,
+            mobileNumber:Number(data.masterCode?.name + data.masterPhone),
+            // attachments: attachmentDTO(data.attach, "MASTER_FILE_ATTACHMENT"),
+            attachments: []
+        }
+
+        // Call API
+        await dispatch(editMasterFile(_data));
+        setShowLoader(false);
     }
 
     return (
@@ -21,7 +75,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
             <div className="container">
                 <div className='header'>
                     {translate('search.serialNumber')}
-                    <span>123456789</span>
+                    <span>{masterFileDetails?.fileNumber}</span>
                 </div>
                 <div className="content">
                     <div className="radioButtonDiv">
@@ -90,7 +144,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                     const englishOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
                                     setValue("NameEn", englishOnly);
                                 }}
-                                Class={'col-md-6'}
+                            // className={'col-md-6'}
                             />
                         </div>
                         <div className='col-md-6'>
@@ -108,7 +162,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                     const numericValue = e.target.value.replace(/[^0-9]/g, "");
                                     setValue("nationalNumber", numericValue);
                                 }}
-                                Class={'col-md-6'}
+                            // className={'col-md-6'}
                             />
                         </div>
                         <div className='col-md-6'>
@@ -123,7 +177,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                 setValueMethod={setValue}
                                 watch={watch}
                                 onChange={(e) => setValue("address", e.target.value)}
-                                Class={'col-md-6'}
+                            // className={'col-md-6'}
                             />
                         </div>
                         <div className='col-md-6'>
@@ -132,7 +186,9 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                 errors={errors}
                                 watch={watch}
                                 setValue={setValue}
-                                Class={'col-md-6'}
+                                name="masterPhone"
+                                listName="masterCode"
+                            // className={'col-md-6'}
                             />
                         </div>
                         <div className='col-md-6'>
@@ -147,7 +203,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                 setValueMethod={setValue}
                                 watch={watch}
                                 onChange={(e) => setValue("email", e.target.value)}
-                                Class={'col-md-6'}
+                            // className={'col-md-6'}
                             />
                         </div>
                     </div>
@@ -163,7 +219,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                                 watch={watch}
                                 setValueMethod={setValue}
                                 fileTypePlaceHolder={'Select a File Type'}
-                                Class="col-md-12 col-lg-6"
+                                Class="col-md-6 col-lg-6"
                             />
                         </div>
                     </div>
@@ -174,6 +230,7 @@ export const EditMainProfilePopup = ({setShowPopup}) => {
                     <ButtonComponent Class={'btnStyle'} onClick={handleSubmit(saveFn)}>{translate("search.save")}</ButtonComponent>
                 </div>
             </div>
+            <LoaderComponent show={showLoader} />
         </div>
     )
 }

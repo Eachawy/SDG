@@ -102,7 +102,7 @@ export const ViewAllFiles = () => {
                 </div>
 
                 {showMainFilePopup && (
-                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} />
+                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={null}/>
                 )}
 
                 {showDefendantPopup && (
