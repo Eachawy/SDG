@@ -4,7 +4,7 @@ import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate } from 'react-jhipster';
-import { getFilesTableData, getMasterFileDetails, handleResetMasterFileDetails } from 'app/modules/dashboard/dashboard.reducer';
+import { getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments, handleResetMasterFileDetails } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { FileTypes } from 'app/modules/shared/constants';
@@ -12,7 +12,7 @@ import _ from 'lodash'
 import { pushNotification } from 'app/shared/util/utils';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
 
-export const DefendantFilesDataTable = ({ personData }) => {
+export const DefendantFilesDataTable = ({ personData, masterFileDetails }) => {
     const dispatch = useAppDispatch();
     const [showLoader, setShowLoader] = React.useState(false);
     const [filesList, setFilesList] = React.useState([]);
@@ -20,7 +20,7 @@ export const DefendantFilesDataTable = ({ personData }) => {
 
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $tableFilesData = useAppSelector((state) => state.dashboard.tableFilesData);
-    const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
+    const $masterFileAttachmentssss = useAppSelector((state) => state.dashboard.masterFileAttachments);
 
     useEffect(() => {
         getTableFilesFN();
@@ -43,22 +43,28 @@ export const DefendantFilesDataTable = ({ personData }) => {
     }, [$tableFilesData]);
 
     useEffect(() => {
-        if ($masterFileDetails) {
+        if ($masterFileAttachmentssss) {
             setShowLoader(false);
-            if ($masterFileDetails.attachments && $masterFileDetails.attachments.length > 0) {
-                setAttachmentListRow($masterFileDetails);
+            if ($masterFileAttachmentssss.attachments && $masterFileAttachmentssss.attachments.length > 0) {
+                setAttachmentListRow($masterFileAttachmentssss);
             } else {
                 setAttachmentListRow(null);
                 pushNotification("error", "لم يتم العثور على مرفقات لهذا الملف");
             }
-            dispatch(handleResetMasterFileDetails());
+            dispatch(handleResetMasterFileAttachments());
         }
-    }, [$masterFileDetails]);
+    }, [$masterFileAttachmentssss]);
 
     const getTableFilesFN = async () => {
         setShowLoader(true);
-        const obj = {
+        let obj: any = {
             personId: personData?.id,
+        }
+        if (masterFileDetails) {
+            obj = {
+                ...obj,
+                masterFileId: masterFileDetails.id
+            }
         }
         await dispatch(getFilesTableData(obj));
     }
@@ -69,13 +75,6 @@ export const DefendantFilesDataTable = ({ personData }) => {
             <span>{rowData.fileCompletionPercentage}%</span>
         </div>
     );
-    
-    // const fileType = (rowData) => (
-    //     <div className={`fileType ${rowData.fileTypeStatus.code === 'AC' ? 'active' : 'closed'}`}>
-    //         <p>{rowData.fileType}</p> 
-    //         <span>({rowData.fileTypeStatus.name[$lang]})</span>
-    //     </div>
-    // );
 
     const actionList = (rowData) => {
         return (
@@ -89,11 +88,11 @@ export const DefendantFilesDataTable = ({ personData }) => {
             >
                 <span className="dots-menu" />
                 <div className="actionList">
-                    <span
+                    {/* <span
                         onClick={() => { }}
                     >
                         {translate('mainDashboard.viewFile')}
-                    </span>
+                    </span> */}
                     <span onClick={() => getMasterFileAttachmentsFn(rowData.masterFileId)}>
                         {translate('search.documents')}
                     </span>
@@ -108,7 +107,7 @@ export const DefendantFilesDataTable = ({ personData }) => {
 
     const getMasterFileAttachmentsFn = (id) => {
         setShowLoader(true);
-        dispatch(getMasterFileDetails(id))
+        dispatch(getMasterFileAttachments(id))
     }
 
 
@@ -133,7 +132,7 @@ export const DefendantFilesDataTable = ({ personData }) => {
                         rows={5}
                     >
                         <Column field="fullFileNumber" header={translate('search.fileNumber')} className="columnStyle fileNo" />
-                        <Column field={$lang === 'en' ? 'masterFileNameEn' :'masterFileNameAr'} header={translate('search.mainFileName')} className="columnStyle" />
+                        <Column field={$lang === 'en' ? 'masterFileNameEn' : 'masterFileNameAr'} header={translate('search.mainFileName')} className="columnStyle" />
                         <Column field="creationDate" header={translate('search.registerDate')} className="columnStyle" />
                         <Column field="lastModifiedDate" header={translate('search.lastUpdateDate')} className="columnStyle" />
                         <Column field="fileType" body={fileTypeTemplate} header={translate('search.fileType')} className="columnStyle" />
@@ -144,7 +143,11 @@ export const DefendantFilesDataTable = ({ personData }) => {
             </div>
             <LoaderComponent show={showLoader} />
             {attachmentListRow &&
-                <AttachmentPopupComponent attachList={attachmentListRow} closeAttachmentPopupFn={() => setAttachmentListRow(null)} />
+                <AttachmentPopupComponent attachList={attachmentListRow}
+                    closeAttachmentPopupFn={() => {
+                        setAttachmentListRow(null)
+                    }} 
+                />
             }
         </div>
     );

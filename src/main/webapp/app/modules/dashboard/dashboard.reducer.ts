@@ -12,6 +12,7 @@ const initialState: any = {
     tableTabsData: null,
     tableFilesData: null,
     masterFileDetails: null,
+    masterFileAttachments: null,
     masterFileCounters: null,
     editMasterFileResponse: null,
     editPersonResponse: null,
@@ -50,6 +51,11 @@ export const getMasterFileDetails = createAsyncThunk('DASHBOARD/GET_MASTER_FILE_
     serializeError: serializeAxiosError,
 });
 
+export const getMasterFileAttachments = createAsyncThunk('DASHBOARD/GET_MASTER_FILE_ATTACHMENTS',
+    async (id: any) => getVerifiedRequest(getMasterFileDetailsAPI + id), {
+    serializeError: serializeAxiosError,
+});
+
 export const getMasterFileCounters = createAsyncThunk('DASHBOARD/GET_MASTER_FILE_COUNTERS',
     async (data: any) => postVerifiedRequest(getMasterFileCountersAPI, data), {
     serializeError: serializeAxiosError,
@@ -76,6 +82,12 @@ export const DashboardState = createSlice({
             return {
                 ...initialState,
                 masterFileDetails: null
+            };
+        },
+        handleResetMasterFileAttachments() {
+            return {
+                ...initialState,
+                masterFileAttachments: null
             };
         },
         handleResetEditMasterFile() {
@@ -117,6 +129,10 @@ export const DashboardState = createSlice({
                 state.loading = false;
                 state.masterFileDetails = action.payload.data;
             })
+            .addCase(getMasterFileAttachments.fulfilled, (state, action) => {
+                state.loading = false;
+                state.masterFileAttachments = action.payload.data;
+            })
             .addCase(getMasterFileCounters.fulfilled, (state, action) => {
                 state.loading = false;
                 state.masterFileCounters = action.payload.data;
@@ -137,6 +153,7 @@ export const DashboardState = createSlice({
                     getTableTabsData,
                     getFilesTableData,
                     getMasterFileDetails,
+                    getMasterFileAttachments,
                     getMasterFileCounters,
                     editMasterFile,
                     editPerson
@@ -153,6 +170,7 @@ export const DashboardState = createSlice({
                     getTableTabsData,
                     getFilesTableData,
                     getMasterFileDetails,
+                    getMasterFileAttachments,
                     getMasterFileCounters,
                     editMasterFile,
                     editPerson
@@ -165,7 +183,13 @@ export const DashboardState = createSlice({
     },
 });
 
-export const { reset, handleResetMasterFileDetails, handleResetEditMasterFile ,handleResetEditPerson} = DashboardState.actions;
+export const {
+    reset,
+    handleResetMasterFileDetails,
+    handleResetMasterFileAttachments,
+    handleResetEditMasterFile,
+    handleResetEditPerson
+} = DashboardState.actions;
 
 // Reducer
 export default DashboardState.reducer;

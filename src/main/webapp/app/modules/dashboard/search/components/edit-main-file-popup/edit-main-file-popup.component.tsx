@@ -1,7 +1,7 @@
 import { RadioButtonComponent, InputComponent, AttachmentMultiFilesComponent, ButtonComponent } from '@eachawy/frontend-library';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
-import { getCountryCodeObj, IsMobileNumberUndefined, IsUndefined, removeCountryCode } from 'app/shared/util/utils';
+import { attachmentDTO, getCountryCodeObj, IsMobileNumberUndefined, IsUndefined, removeCountryCode } from 'app/shared/util/utils';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { translate } from 'react-jhipster';
@@ -60,8 +60,8 @@ export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
             email: IsUndefined(data.email),
             status: masterFileDetails.status,
             mobileNumber:Number(data.masterCode?.name + data.masterPhone),
-            // attachments: attachmentDTO(data.attach, "MASTER_FILE_ATTACHMENT"),
-            attachments: []
+            attachments: attachmentDTO(data.attach1, "MASTER_FILE_ATTACHMENT"),
+            // attachments: []
         }
 
         // Call API
@@ -220,6 +220,7 @@ export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
                                 setValueMethod={setValue}
                                 fileTypePlaceHolder={'Select a File Type'}
                                 Class="col-md-6 col-lg-6"
+                                initFile={masterFileDetails.attachments}
                             />
                         </div>
                     </div>

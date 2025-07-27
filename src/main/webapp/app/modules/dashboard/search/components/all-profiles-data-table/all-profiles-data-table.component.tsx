@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate } from 'react-jhipster';
 import { useAppSelector, useAppDispatch } from "app/config/store";
-import { getTableTabsData, getFilesTableData, getMasterFileDetails, handleResetMasterFileDetails } from '../../../dashboard.reducer';
+import { getTableTabsData, getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments } from '../../../dashboard.reducer';
 import { pushNotification } from 'app/shared/util/utils';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
@@ -25,12 +25,12 @@ export const AllProfilesDataTable = () => {
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $tableTabsData = useAppSelector((state) => state.dashboard.tableTabsData);
     const $tableFilesData = useAppSelector((state) => state.dashboard.tableFilesData);
-    const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
+    const $masterFileAttachments = useAppSelector((state) => state.dashboard.masterFileAttachments);
 
     useEffect(() => {
         getTableTabsFN();
         getTableFilesFN('ALL');
-        
+
         function handleDocumentClick(e) {
             if (!$(e.target).closest('.action-column').length) {
                 $('.actionList').hide();
@@ -56,17 +56,17 @@ export const AllProfilesDataTable = () => {
     }, [$tableFilesData]);
 
     useEffect(() => {
-        if ($masterFileDetails) {
+        if ($masterFileAttachments) {
             setShowLoader(false);
-            if ($masterFileDetails.attachments && $masterFileDetails.attachments.length > 0) {
-                setAttachmentListRow($masterFileDetails);
+            if ($masterFileAttachments.attachments && $masterFileAttachments.attachments.length > 0) {
+                setAttachmentListRow($masterFileAttachments);
             } else {
                 setAttachmentListRow(null);
                 pushNotification("error", "لم يتم العثور على مرفقات لهذا الملف");
             }
-            dispatch(handleResetMasterFileDetails());
+            dispatch(handleResetMasterFileAttachments());
         }
-    }, [$masterFileDetails]);
+    }, [$masterFileAttachments]);
 
     const getTableTabsFN = async () => {
         await dispatch(getTableTabsData());
@@ -87,7 +87,7 @@ export const AllProfilesDataTable = () => {
 
     const getMasterFileAttachmentsFn = (id) => {
         setShowLoader(true);
-        dispatch(getMasterFileDetails(id))
+        dispatch(getMasterFileAttachments(id))
     }
 
     const dataStatusTemplate = (rowData) => (
@@ -185,7 +185,7 @@ export const AllProfilesDataTable = () => {
                         <Column field="lastModifiedDate" header={translate('mainDashboard.lastUpdateDate')} className="columnStyle" />
                         <Column field="fileType" header={translate('mainDashboard.fileType')} className="columnStyle" body={fileTypeTemplate} />
                         <Column field="dataStatus" header={translate('mainDashboard.dataStatus')} className="columnStyle" body={dataStatusTemplate} />
-                        <Column body={actionList} className="columnStyle actionList-col"/>
+                        <Column body={actionList} className="columnStyle actionList-col" />
                     </DataTable>
                 </div>
             </div>

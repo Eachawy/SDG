@@ -18,7 +18,7 @@ export const attachmentDTO = (obj: any, type: string) => {
     const attachObj = [];
     attachData.map((t: any) => {
       attachObj.push({
-        "attachmentType": type, "name": t.name, "content": t.base64, "mimeType": "PDF"
+        "attachmentType": type, "name": t.name, "content": t.content ?? t.base64, "mimeType": "PDF"
       })
     });
     return attachObj;

@@ -171,7 +171,7 @@ export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
                                 watch={watch}
                                 setValue={setValue}
                                 label={translate('search.phoneNumber1')}
-                                rules={{ required: translate("search.requiredField") }}
+                                // rules={{ required: translate("search.requiredField") }}
                             />
                         </div>
 
@@ -184,7 +184,7 @@ export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
                                 watch={watch}
                                 setValue={setValue}
                                 label={translate('search.phoneNumber2')}
-                                rules={{ required: translate("search.requiredField") }}
+                                // rules={{ required: translate("search.requiredField") }}
                             />
                         </div>
 
@@ -197,7 +197,7 @@ export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
                                 watch={watch}
                                 setValue={setValue}
                                 label={translate('search.phoneNumber3')}
-                                rules={{ required: translate("search.requiredField") }}
+                                // rules={{ required: translate("search.requiredField") }}
                             />
                         </div>
 
@@ -216,22 +216,6 @@ export const EditDefendantProfilePopup = ({ setShowPopup, personData }) => {
                             />
                         </div>
                     </div>
-
-                    {/* <div className="uploaderContainer">
-                        <h4>{translate("createNewProfile.attachments")}</h4>
-                        <div className="row mb-4">
-                            <AttachmentMultiFilesComponent
-                                name={"defendantAttach"}
-                                attachList={(e) => setValue("attach1", e)}
-                                lang={$lang}
-                                register={register}
-                                watch={watch}
-                                setValueMethod={setValue}
-                                fileTypePlaceHolder={'Select a File Type'}
-                                Class="col-md-12 col-lg-6"
-                            />
-                        </div>
-                    </div> */}
                 </div>
 
                 <div className="popupFooter">

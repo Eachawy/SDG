@@ -2,7 +2,7 @@ import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
 import React, { useState } from 'react';
-import { translate } from 'react-jhipster';
+import { translate, Storage } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
@@ -13,13 +13,15 @@ import { Lawsuits } from '../components/lawsuits/lawsuits';
 import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
 
 export const ViewAllFiles = () => {
+    const navigate = useNavigate();
     const [showDefendantPopup, setShowDefendantPopup] = useState(false)
     const [showMainFilePopup, setShowMainFilePopup] = useState(false)
     const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
-    const navigate = useNavigate();
-    const createNewFileFn = () => {
-        navigate('/create-file/create-new-profile');
-    }
+ 
+    Storage.session.remove("DashboardSelectedMasterFileID");
+    Storage.session.remove("DashboardSelectedPersonID");
+
+ 
 
     return (
         <>
@@ -33,7 +35,7 @@ export const ViewAllFiles = () => {
                         },
                     },
                     {
-                        id: 'PAGE1',
+                        id: 'PAGE2',
                         name: {
                             en: 'View files',
                             ar: 'عرض الملفات',
@@ -45,29 +47,14 @@ export const ViewAllFiles = () => {
             <div className='sdg_page searchByProfile main-file-data'>
                 <div className='titlePageDashboard'>
                     <h2>{translate('search.showAllFiles')}</h2>
-                    <ButtonComponent onClick={createNewFileFn}>
+                    <ButtonComponent onClick={() => navigate('/create-file/create-new-profile')}>
                         {translate('mainDashboard.createNewFileButton')}
                     </ButtonComponent>
                 </div>
 
-                <FileSearch
-                    label1={translate('search.searchByNoNameMainFile')}
-                    placeholder1={translate('search.searchByNoNameMainFile')}
-                    optionList1={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1234" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "5978" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "8799" }
-                    ]}
-                    label2={translate('mainDashboard.searchByDefendantName')}
-                    placeholder2={translate('mainDashboard.searchByDefendantName')}
-                    optionList2={[
-                        { name: { ar: "محمد أحمد عامر", en: "Mohamed Ahmed Amer" }, code: "1284" },
-                        { name: { ar: "فاطمة علي حسن", en: "Fatima Ali Hassan" }, code: "8976" },
-                        { name: { ar: "خالد محمود سالم", en: "Khaled Mahmoud Salem" }, code: "9965" }
-                    ]}
-                />
+                <FileSearch />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup}  masterFileDetails={null} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
@@ -78,6 +65,8 @@ export const ViewAllFiles = () => {
                         fileStatus: "مغلق",
                         fileStatusMode: 'closed'
                     }}
+                    masterFileDetails={null}
+                    personData={null}
                 />
 
                 {true && <CollectionInfo />}
@@ -102,7 +91,7 @@ export const ViewAllFiles = () => {
                 </div>
 
                 {showMainFilePopup && (
-                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={null}/>
+                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
                 )}
 
                 {showDefendantPopup && (
