@@ -75,6 +75,7 @@ const LoginPage = () => {
             }}
             errors={errors}
             password
+            feedback={false}
             setValueMethod={setValue}
             watch={watch}
             onChange={(e) => setValue("password", e.target.value)}
