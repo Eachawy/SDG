@@ -1,7 +1,12 @@
 import React from 'react';
 import { translate } from 'react-jhipster';
+import { useAppSelector } from "app/config/store";
+import { CurrencyList } from 'app/modules/shared/constants';
+import _ from 'lodash';
 
-export const Lawsuits = (courtCaseDetails) => {
+export const Lawsuits = ({courtCaseDetails}) => {
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
+
     return (
         <div className='mainFileContent _fileTypeInfoDiv  _requestData '>
             <h4>{translate('search.lawsuitData')}</h4>
@@ -10,32 +15,32 @@ export const Lawsuits = (courtCaseDetails) => {
                     <label>
                         {translate('search.amountToBeCollected')}
                     </label>
-                    1500 {translate('search.JOD')}
+                    {courtCaseDetails?.requiredAmount} {_.find(CurrencyList, (item) => item.code === courtCaseDetails?.currency)?.name[$lang]}
                 </p>
             </div>
             <p>
                 <label>{translate('search.lawsuitNo')}</label>
-                123456789
+                {courtCaseDetails?.caseNumber}
             </p>
             <p>
                 <label>{translate('search.lawsuitType')}</label>
-                مدنية
+                {$lang === 'en' ? courtCaseDetails?.caseType?.englishName : courtCaseDetails?.caseType?.arabicName}
             </p>
             <p>
                 <label>{translate('search.judicialJurisdiction')}</label>
-                جنائي
+                {$lang === 'en' ? courtCaseDetails?.court?.englishName : courtCaseDetails?.court?.arabicName}
             </p>
             <p>
                 <label>{translate('search.judge')}</label>
-                محمد زكريا
+                {$lang === 'en' ? courtCaseDetails?.judge?.englishName : courtCaseDetails?.judge?.arabicName}
             </p>
-            <p>
+            {/* <p>
                 <label>{translate('search.courtLocation')}</label>
                 شارع رشدي الصفدي – الصويفية / عمان
-            </p>
+            </p> */}
             <p>
                 <label>{translate('search.lawsuitRegistrationDate')}</label>
-                29-09-2025
+                {courtCaseDetails?.registrationDate}
             </p>
         </div>
     )

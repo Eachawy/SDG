@@ -17,6 +17,21 @@ export const FileTypes = [
     }
 ]
 
+export const FileStatues = [
+    {
+        name: { en: 'Completed', ar: 'مكتمل' },
+        code: 'COMPLETED'
+    },
+    {
+        name: { en: 'In Complete', ar: 'غير مكتمل' },
+        code: 'INCOMPLETE'
+    },
+    {
+        name: { en: 'Closed', ar: 'مغلق' },
+        code: 'CLOSED'
+    }
+]
+
 export const OpponentCategories = [
     {
         name: { en: 'Respondent', ar: 'المدعى عليه' },

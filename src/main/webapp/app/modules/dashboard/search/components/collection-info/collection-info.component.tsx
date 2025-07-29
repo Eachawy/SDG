@@ -1,7 +1,12 @@
+import { CurrencyList } from 'app/modules/shared/constants';
 import React from 'react';
 import { translate } from 'react-jhipster';
+import { useAppSelector } from "app/config/store";
+import _ from 'lodash';
 
-export const CollectionInfo = (collectionsDetails) => {
+export const CollectionInfo = ({collectionsDetails}) => {
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
+
     return (
         <div className='mainFileContent _fileTypeInfoDiv '>
             <h4>{translate('search.collectionData')}</h4>
@@ -9,15 +14,15 @@ export const CollectionInfo = (collectionsDetails) => {
                 <label>
                     {translate('search.amountToBeCollected')}
                 </label>
-                1500 {translate('search.JOD')}
+                {collectionsDetails?.requiredCollectionAmount} {_.find(CurrencyList, (item) => item.code === collectionsDetails?.currency)?.name[$lang]}
             </p>
             <p>
                 <label>
                     {translate('search.originalDebt')}
                 </label>
-                2500 {translate('search.JOD')}
+                {collectionsDetails?.requiredCollectionAmount} {_.find(CurrencyList, (item) => item.code === collectionsDetails?.currency)?.name[$lang]}
             </p>
-            <p>
+            {/* <p>
                 <label>
                     {translate('search.amountCollected')}
                 </label>
@@ -28,7 +33,7 @@ export const CollectionInfo = (collectionsDetails) => {
                     {translate('search.remainingAmount')}
                 </label>
                 1000 {translate('search.JOD')}
-            </p>
+            </p> */}
         </div>
     )
 }

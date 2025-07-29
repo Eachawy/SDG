@@ -14,7 +14,10 @@ import { UrgentRequest } from '../components/urgnet-request/urgentRequest.compon
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { getFileDetails, getMasterFileCounters, getMasterFileDetails } from '../../dashboard.reducer';
-import _ from 'lodash';
+import _, { set } from 'lodash';
+import { FileStatues, FileTypes } from 'app/modules/shared/constants';
+import LegalBonds from 'app/modules/new-profile/legal-bonds-page/components/legalBonds.component';
+import { useForm } from "react-hook-form";
 
 export const ViewAllFiles = () => {
     const navigate = useNavigate();
@@ -24,21 +27,25 @@ export const ViewAllFiles = () => {
     const [showMainFilePopup, setShowMainFilePopup] = useState(false)
     const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
     const [masterFileDetails, setMasterFileDetails] = useState(null);
-    const [fileDetails, setFileDetails] = useState(null)
+    const [viewFilesMasterFileID, setViewFilesMasterFileID] = useState(null);
+    const [fileDetails, setFileDetails] = useState(null);
+    const { register, formState: { errors }, watch, setValue, getValues, } = useForm({ mode: "onTouched" });
 
     Storage.session.remove("DashboardSelectedMasterFileID");
     Storage.session.remove("DashboardSelectedPersonID");
 
-
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
     const $fileDetailsResponse = useAppSelector((state) => state.dashboard.fileDetailsResponse);
 
     useEffect(() => {
         const _viewFilesMasterFileID = Storage.session.get("viewFilesMasterFileID");
         const _viewFilesFileID = Storage.session.get("viewFilesFileID");
-        if (_viewFilesMasterFileID) {
+        if (_viewFilesMasterFileID && _viewFilesFileID) {
+            setViewFilesMasterFileID(_viewFilesMasterFileID);
             getFileDetailsFN(_viewFilesFileID);
             getMasterFileDetailsFn(_viewFilesMasterFileID);
+            Storage.session.set('selectFileId', _viewFilesFileID)
         }
     }, []);
 
@@ -97,46 +104,65 @@ export const ViewAllFiles = () => {
 
                 <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
 
-                <MainFileDefendantData
-                    setShowDefendantPopup={setShowDefendantPopup}
-                    setShowMainFilePopup={setShowMainFilePopup}
-                    fileData={{
-                        fileType: "تحصيل",
-                        fileOpenDate: fileDetails?.issueDate,
-                        fileStatus: fileDetails?.status,
-                        fileStatusMode: 'closed'
-                    }}
-                    masterFileDetails={masterFileDetails}
-                    personData={null}
-                />
+                {fileDetails && (
+                    <MainFileDefendantData
+                        setShowDefendantPopup={setShowDefendantPopup}
+                        setShowMainFilePopup={setShowMainFilePopup}
+                        fileData={{
+                            fileType: (_.find(FileTypes, (item) => item.code === fileDetails.fileType)).name[$lang] || ' ',
+                            fileOpenDate: fileDetails?.issueDate,
+                            fileStatus: (_.find(FileStatues, (item) => item.code === fileDetails.status)).name[$lang] || ' ',
+                            fileStatusMode: fileDetails?.status
+                        }}
+                        masterFileDetails={masterFileDetails}
+                        personData={null}
+                    />
+                )}
 
-                {fileDetails?.fileType === 'COLLECTION' && <CollectionInfo collectionsDetails={fileDetails?.collectionFile} />}
+                {fileDetails && fileDetails?.fileType === 'COLLECTION' && <CollectionInfo collectionsDetails={fileDetails?.collectionFile} />}
 
-                {fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.collectionFile}/>}
+                {fileDetails && fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.courtCaseFile} />}
 
-                {fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.collectionFile}/>}
+                {fileDetails && fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.courtCaseFile} />}
 
                 <div className="tabs mt-5">
-                    <div
-                        className={footerActiveTab === "followUps" && "active"}
-                        onClick={() => setFooterActiveTab("followUps")}
-                    >
-                        {translate('search.followUps')}
-                    </div>
                     <div
                         className={footerActiveTab === "legalBonds" && "active"}
                         onClick={() => setFooterActiveTab("legalBonds")}
                     >
                         {translate('search.legalBonds')}
                     </div>
+                    <div
+                        className={footerActiveTab === "followUps" && "active"}
+                        onClick={() => setFooterActiveTab("followUps")}
+                    >
+                        {translate('search.followUps')}
+                    </div>
+
+                </div>
+
+                <div className='SelectFileTypePage'>
+                    <div className="sdg_page ">
+                        <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => { }} />
+                    </div>
                 </div>
 
                 {showMainFilePopup && (
-                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
+                    <EditMainProfilePopup
+                        setShowPopup={(status: any) => {
+                            setShowMainFilePopup(status);
+                            getMasterFileDetailsFn(viewFilesMasterFileID)
+                        }}
+                        masterFileDetails={masterFileDetails} />
                 )}
 
                 {showDefendantPopup && (
-                    <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} personData={null} />
+                    <EditDefendantProfilePopup
+                        setShowPopup={(status: any) => {
+                            setShowDefendantPopup(status);
+                            // getAllPersonsFN()
+                        }}
+                        personData={null} />
                 )}
 
                 <LoaderComponent show={showLoader} />

@@ -140,7 +140,7 @@ export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ se
                     <div>{translate('search.fileType')}<span>{fileData.fileType}</span></div>
                     <div>{translate('search.fileOpenDate')}<span>{fileData.fileOpenDate}</span></div>
                     <div>{translate('search.fileStatus')}
-                        <span className={fileData.fileStatusMode === 'closed' ? 'closed' : 'active'}>
+                        <span className={fileData.fileStatusMode === 'CLOSED' ? 'closed' : 'active'}>
                             {fileData.fileStatus}
                         </span>
                     </div>

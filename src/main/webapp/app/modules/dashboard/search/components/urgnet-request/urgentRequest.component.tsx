@@ -1,7 +1,11 @@
 import React from 'react';
 import { translate } from 'react-jhipster';
+import { useAppSelector } from "app/config/store";
+import _ from 'lodash';
+import { CurrencyList } from 'app/modules/shared/constants';
 
-export const UrgentRequest = (urgentRequestDetails) => {
+export const UrgentRequest = ({urgentRequestDetails}) => {
+    const $lang = useAppSelector((state) => state.locale.currentLocale);
     return (
         <div className='mainFileContent _fileTypeInfoDiv  _requestData '>
             <h4>{translate('search.requestData')}</h4>
@@ -10,32 +14,32 @@ export const UrgentRequest = (urgentRequestDetails) => {
                     <label>
                         {translate('search.amountToBeCollected')}
                     </label>
-                    1500 {translate('search.JOD')}
+                    {urgentRequestDetails?.requiredAmount} {_.find(CurrencyList, (item) => item.code === urgentRequestDetails?.currency)?.name[$lang]}
                 </p>
             </div>
             <p>
                 <label>{translate('search.requestNumber')}</label>
-                123456789
+                {urgentRequestDetails?.caseNumber}
             </p>
             <p>
                 <label>{translate('search.requestType')}</label>
-                نفقة
+                {$lang === 'en' ? urgentRequestDetails?.caseType?.englishName : urgentRequestDetails?.caseType?.arabicName}
             </p>
             <p>
                 <label>{translate('search.judicialJurisdiction')}</label>
-                جنائي
+                {$lang === 'en' ? urgentRequestDetails?.court?.englishName : urgentRequestDetails?.court?.arabicName}
             </p>
             <p>
                 <label>{translate('search.judge')}</label>
-                محمد زكريا
+                {$lang === 'en' ? urgentRequestDetails?.judge?.englishName : urgentRequestDetails?.judge?.arabicName}
             </p>
-            <p>
+            {/* <p>
                 <label>{translate('search.courtLocation')}</label>
                 شارع رشدي الصفدي – الصويفية / عمان
-            </p>
+            </p> */}
             <p>
                 <label>{translate('search.requestRegistrationDate')}</label>
-                29-09-2025
+                {urgentRequestDetails?.registrationDate}
             </p>
         </div>
     )
