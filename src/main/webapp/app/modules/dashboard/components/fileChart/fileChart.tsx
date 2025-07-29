@@ -120,7 +120,7 @@ export const FileChart: React.FC<FileChartProps> = ({ chartTitle, lastMonth, cur
                 tooltip: {
                     trigger: 'axis',
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    borderColor: `${color === 'orange' ? '#fb8c8c' : '#22c561'}`,
+                    borderColor: `${color === 'orange' ? '#c1c1c1' : '#22c561'}`,
                     borderWidth: 1,
                     textStyle: {
                         color: '#333'

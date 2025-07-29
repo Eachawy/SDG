@@ -2,7 +2,7 @@ import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
 import React, { useState, useEffect } from 'react';
-import { translate,Storage } from 'react-jhipster';
+import { translate, Storage } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
 import { MainFileData } from '../components/main-file-data/main-file-data.component';
@@ -45,6 +45,7 @@ export const SearchByMainFile = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',

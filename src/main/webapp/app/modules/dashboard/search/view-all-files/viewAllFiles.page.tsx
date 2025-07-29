@@ -74,6 +74,7 @@ export const ViewAllFiles = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',

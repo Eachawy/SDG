@@ -7,10 +7,22 @@ const AttachmentPopupComponent = props => {
 
     const [selectedAttachmentFilePath, setSelectedAttachmentFilePath] = useState('');
     const [selectedAttachmentCard, setSelectedAttachmentCard] = useState(0);
+    const [pdfView, setPdfView] = useState(false);
 
     useEffect(() => {
         setSelectedAttachmentFilePath(props.attachList.attachments[0]?.content);
     }, []);
+
+    const viewFile = (base64: any, index: any) => {
+        setSelectedAttachmentCard(index);
+        setSelectedAttachmentFilePath(base64);
+        if (base64.startsWith("data:image/")) {
+            setPdfView(false)
+        } else {
+            setPdfView(true)
+        }
+        // base64.startsWith("data:image/") ? setPdfView(false) : setPdfView(true);
+    }
 
     return (
         <>
@@ -19,10 +31,7 @@ const AttachmentPopupComponent = props => {
                     <div>
                         <div className="fileCardList">
                             {props.attachList.attachments?.length > 0 && props.attachList.attachments.map((i, index) => (
-                                <div key={index} onClick={() => {
-                                    setSelectedAttachmentCard(index)
-                                    setSelectedAttachmentFilePath(i.content)
-                                }} className={`${selectedAttachmentCard === index && 'active'}`}>
+                                <div key={index} onClick={() => viewFile(i.content, index)} className={`${selectedAttachmentCard === index && 'active'}`}>
                                     <p>
                                         <label>اسم الملف</label>
                                         {i.name}
@@ -42,7 +51,12 @@ const AttachmentPopupComponent = props => {
                             }
                         </div>
                         <div className="fileViewSpace">
-                            <object width={"100%"} height={"100%"} data={`${selectedAttachmentFilePath}`} />
+                            {pdfView &&
+                                <object width={"100%"} height={"100%"} data={`${selectedAttachmentFilePath}`} />
+                            }
+                            {!pdfView &&
+                                <img width={"100%"} src={`${selectedAttachmentFilePath}`} />
+                            }
                         </div>
                     </div>
                     <ButtonComponent Class={'BtnCancel'} onClick={props.closeAttachmentPopupFn}>إغلاق</ButtonComponent>

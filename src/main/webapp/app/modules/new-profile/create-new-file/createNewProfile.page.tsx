@@ -4,7 +4,7 @@ import { translate } from "react-jhipster";
 import CreateNewProfileStepsComponent from "../createNewProfileStepsComponent/createNewProfileSteps.component";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent } from "@eachawy/frontend-library";
+import { ButtonComponent, InputComponent, RadioButtonComponent, AttachmentMultiFilesComponent, AttachmentFileComponent, InputMaskComponent } from "@eachawy/frontend-library";
 import { useAppDispatch, useAppSelector } from "app/config/store";
 import PhoneNumberComponent from "app/shared/components/phoneNumber.Component/phoneNumber.Component";
 import { CreateNewProfile } from "./createNewProfile.reducer";
@@ -158,7 +158,7 @@ const CreateNewProfilePage = () => {
                             setValue("NameEn", englishOnly);
                         }}
                     />
-                    <InputComponent
+                    <InputMaskComponent
                         id="nationalNumber"
                         type="nationalNumber"
                         name="nationalNumber"
@@ -168,12 +168,13 @@ const CreateNewProfilePage = () => {
                         // rules={{ required: 'يجب ادخال الرقم الوطني' }}
                         // errors={errors}
                         setValueMethod={setValue}
+                        mask={(getValues().companyType === 'corporateType') ? "999999999" : "9999999999"}
                         watch={watch}
                         onChange={(e) => {
-                            const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                            setValue("nationalNumber", numericValue);
+                            setValue("nationalNumber", e.target.value);
                         }}
                     />
+
                     <InputComponent
                         id="address"
                         type="address"

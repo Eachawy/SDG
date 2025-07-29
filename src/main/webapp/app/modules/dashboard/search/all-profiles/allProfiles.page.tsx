@@ -13,6 +13,7 @@ export const AllProfiles = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',
