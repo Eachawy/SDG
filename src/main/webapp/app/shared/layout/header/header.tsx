@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Storage } from "react-jhipster";
+import React, { useEffect } from "react";
+import { Storage, translate } from "react-jhipster";
 import { useAppDispatch } from "app/config/store";
 import { setLocale } from "app/shared/reducers/locale";
 import { isRTL, setTextDirection } from "app/config/translation";
+import { useNavigate } from "react-router";
 
 export interface IHeaderProps {
   currentLocale: string;
 }
 
 const Header = (props: IHeaderProps) => {
+
+  const navigate = useNavigate();
+
   useEffect(() =>
     document
       .querySelector("html")
@@ -31,6 +35,13 @@ const Header = (props: IHeaderProps) => {
     setTextDirection(langKey);
   };
 
+  const logOut = () => {
+    Storage.session.set("token", '');
+    Storage.session.set("viewFilesFileID", '');
+    Storage.session.set("viewFilesMasterFileID", '');
+    navigate('/login');
+  }
+
   return (
     <div className="sdg_Header">
       <div className="container">
@@ -45,8 +56,15 @@ const Header = (props: IHeaderProps) => {
           </div>
         </div>
         <div className="part_3">
-          <span onClick={handleLocaleChange}>Change Lang</span> 
-          {props.currentLocale}
+          <span onClick={handleLocaleChange}>
+            {translate('global.local')}
+          </span>
+        </div>
+        -
+        <div className="part_3">
+          <span onClick={logOut}>
+            {translate('global.logOut')}
+          </span>
         </div>
       </div>
     </div>

@@ -67,6 +67,7 @@ export const ViewAllFiles = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',
@@ -112,9 +113,9 @@ export const ViewAllFiles = () => {
 
                 {fileDetails?.fileType === 'COLLECTION' && <CollectionInfo collectionsDetails={fileDetails?.collectionFile} />}
 
-                {fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.collectionFile}/>}
+                {fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.collectionFile} />}
 
-                {fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.collectionFile}/>}
+                {fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.collectionFile} />}
 
                 <div className="tabs mt-5">
                     <div

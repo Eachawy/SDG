@@ -46,6 +46,7 @@ export const SearchByDefendant = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',
