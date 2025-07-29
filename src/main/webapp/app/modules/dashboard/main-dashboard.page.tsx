@@ -21,6 +21,8 @@ const MainDashboardPage = () => {
         Storage.session.remove('fileId');
         Storage.session.remove('applicantName');
         Storage.session.remove('isCompany');
+        // Storage.session.remove("DashboardSelectedMasterFileID");
+        // Storage.session.remove("DashboardSelectedPersonID");
     }
 
     const createNewFileFn = () => {

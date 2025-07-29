@@ -9,7 +9,13 @@ import { useAppSelector, useAppDispatch } from "app/config/store";
 import _ from 'lodash';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 
+import { InputSwitch } from 'primereact/inputswitch';
+
 export const DefendantDataTable = ({ masterFileDetails }) => {
+
+    const [isActiveFileSelected, setIsActiveFileSelected] = useState(false);
+    const [fileNeedUpdateSelected, setFileNeedUpdateSelected] = useState(false);
+    const [closedFilesSelected, setClosedFilesSelected] = useState(false);
     const dispatch = useAppDispatch();
     const [masterFileCounters, setMasterFileCounters] = useState(null)
     const [activeTab, setActiveTab] = React.useState('COLLECTION');
@@ -27,8 +33,13 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
             if (!$(e.target).closest('.action-column').length) {
                 $('.actionList').hide();
             }
+            if (!$(e.target).closest('.menu').length) {
+                $('.fileTypeList').hide();
+            }
         }
+
         $(document).on('mousedown', handleDocumentClick);
+
         return () => {
             $(document).off('mousedown', handleDocumentClick);
         };
@@ -63,22 +74,22 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
 
     const legalDocsTemplate = (rowData) => {
         let text = '';
-        if(rowData?.hasCheque){
+        if (rowData?.hasCheque) {
             text += 'شيك '
         }
-        if(rowData?.hasDraft){
+        if (rowData?.hasDraft) {
             text += '/ كمبيالة '
         }
-        if(rowData?.hasBond){
+        if (rowData?.hasBond) {
             text += '/ اقرار خطي - سند امانة - سند رهن '
         }
-        if(rowData?.hasAccountStatement){
+        if (rowData?.hasAccountStatement) {
             text += '/ كشف حساب '
         }
-        if(rowData?.hasRentContract){
+        if (rowData?.hasRentContract) {
             text += '/ عقد إيجار '
         }
-        if(rowData?.hasInvoice){
+        if (rowData?.hasInvoice) {
             text += '/ فاتورة '
         }
         return text;
@@ -106,6 +117,31 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
         );
     };
 
+    const fileStatusList = (e) => {
+        e.stopPropagation();
+        $(e.currentTarget).find('.fileTypeList').css("display", "flex");
+    };
+
+    const handleSwitchChange = (e, switchId) => {
+
+        switch (switchId) {
+            case "activeFileInputSwitch-id":
+                setIsActiveFileSelected(e.value);
+                break;
+
+            case "fileNeedUpdateInputSwitch-id":
+                setFileNeedUpdateSelected(e.value);
+                break;
+
+            case "closedFilesInputSwitch-id":
+                setClosedFilesSelected(e.value);
+                break;
+
+            default:
+                console.log("Unknown switch ID", switchId);
+                break;
+        }
+    };
     const onTabClick = (tabName) => {
         if (activeTab === tabName) return;
         setActiveTab(tabName);
@@ -135,6 +171,40 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
                         </div>
                         <div className={`${activeTab === 'COURT_CASE' ? 'active' : ''}`} onClick={() => onTabClick('COURT_CASE')}>
                             {translate('search.cases')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COURT_CASE'))?.count || 0})</span>
+                        </div>
+                    </div>
+                    <div className='filterBy'>
+                        <div>
+                            <p>{translate('search.selectBy')}</p>
+                            <div className='menu' onClick={fileStatusList}>
+                                {translate('search.fileStatus')}
+                                <div className="fileTypeList">
+                                    <span>
+                                        <p>{translate('search.activeFiles')}<span>(10)</span></p>
+                                        <InputSwitch
+                                            inputId="activeFileInputSwitch-id"
+                                            checked={isActiveFileSelected}
+                                            onChange={(e) => handleSwitchChange(e, "activeFileInputSwitch-id")}
+                                        />
+                                    </span>
+                                    <span>
+                                        <p>{translate('search.needUpdateFiles')}<span>(5)</span></p>
+                                        <InputSwitch
+                                            inputId="fileNeedUpdateInputSwitch-id"
+                                            checked={fileNeedUpdateSelected}
+                                            onChange={(e) => handleSwitchChange(e, "fileNeedUpdateInputSwitch-id")}
+                                        />
+                                    </span>
+                                    <span>
+                                        <p>{translate('search.closedFiles')}<span>(5)</span></p>
+                                        <InputSwitch
+                                            inputId="closedFilesInputSwitch-id"
+                                            checked={closedFilesSelected}
+                                            onChange={(e) => handleSwitchChange(e, "closedFilesInputSwitch-id")}
+                                        />
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className='totalFiles'>

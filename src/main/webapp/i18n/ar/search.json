@@ -66,6 +66,26 @@
         "activeFiles": "الملفات الفعالة",
         "closedFiles": "ملفات تم إغلاقها",
         "companyOrPersonName": "اسم الشركة / الشخص",
-        "fileRegisterDate": "تاريخ تسجيل الملف"
+        "fileRegisterDate": "تاريخ تسجيل الملف",
+        "addsubfile": "إضافة ملف فرعي",
+        "selectBy": "اختيار حسب:",
+        "collectionData": "بيانات التحصيل",
+        "amountToBeCollected": "المبلغ المراد تحصيلة",
+        "originalDebt": "اصل الذمة",
+        "amountCollected": "المبلغ المحصل",
+        "remainingAmount": "المبلغ المتبقى",
+        "requestData": "بيانات الطلب",
+        "requestNumber": "رقم الطلب",
+        "requestType": "نوع الطلب",
+        "judicialJurisdiction": "الاختصاص القضائي",
+        "judge": "القاضي",
+        "courtLocation": "موقع المحكمة",
+        "requestRegistrationDate": "تاريخ تسجيل الطلب",
+        "lawsuitData": "بيانات القضية",
+        "lawsuitNo": "رقم القضية",
+        "lawsuitType": "نوع القضية",
+        "followUps": "المتابعات",
+        "legalBonds": "السندات القانونية",
+        "JOD": "دينار"
     }
 }

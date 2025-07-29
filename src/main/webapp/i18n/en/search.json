@@ -66,6 +66,26 @@
         "activeFiles": "Active Files",
         "closedFiles": "Closed Files",
         "companyOrPersonName": "Company / Person Name",
-        "fileRegisterDate": "File Register Date"
+        "fileRegisterDate": "File Register Date",
+        "addsubfile": "Add Subfile",
+        "selectBy": "Select By:",
+        "collectionData": "Collection Data",
+        "amountToBeCollected": "Amount to be Collected",
+        "originalDebt": "Original Debt",
+        "amountCollected": "Amount Collected",
+        "remainingAmount": "Remaining Amount",
+        "requestData": "Request Data",
+        "requestNumber": "Request Number",
+        "requestType": "Request Type",
+        "judicialJurisdiction": "Judicial Jurisdiction",
+        "judge": "Judge",
+        "courtLocation": "Court Location",
+        "requestRegistrationDate": "Request Registration Date",
+        "lawsuitData": "Lawsuit Data",
+        "lawsuitNo": "Lawsuit Number",
+        "lawsuitType": "Lawsuit Type",
+        "followUps": "Follow ups",
+        "legalBonds": "Legal Bonds",
+        "JOD": "JOD"
     }
 }

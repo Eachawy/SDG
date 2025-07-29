@@ -3,11 +3,11 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import $ from 'jquery';
 import { ProgressBar } from 'primereact/progressbar';
-import { translate } from 'react-jhipster';
+import { translate,Storage } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import { useAppSelector, useAppDispatch } from "app/config/store";
-import { getTableTabsData, getFilesTableData, getMasterFileDetails, handleResetMasterFileDetails } from '../../dashboard.reducer';
+import { getTableTabsData, getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments } from '../../dashboard.reducer';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import { FileTypes } from 'app/modules/shared/constants';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
@@ -27,7 +27,7 @@ export const FilesTable = () => {
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $tableTabsData = useAppSelector((state) => state.dashboard.tableTabsData);
     const $tableFilesData = useAppSelector((state) => state.dashboard.tableFilesData);
-    const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
+    const $masterFileAttachments = useAppSelector((state) => state.dashboard.masterFileAttachments);
 
     useEffect(() => {
         getTableTabsFN();
@@ -58,17 +58,17 @@ export const FilesTable = () => {
     }, [$tableFilesData]);
 
     useEffect(() => {
-        if ($masterFileDetails) {
+        if ($masterFileAttachments) {
             setShowLoader(false);
-            if ($masterFileDetails.attachments && $masterFileDetails.attachments.length > 0) {
-                setAttachmentListRow($masterFileDetails);
+            if ($masterFileAttachments.attachments && $masterFileAttachments.attachments.length > 0) {
+                setAttachmentListRow($masterFileAttachments);
             } else {
                 setAttachmentListRow(null);
                 pushNotification("error", "لم يتم العثور على مرفقات لهذا الملف");
             }
-            dispatch(handleResetMasterFileDetails());
+            dispatch(handleResetMasterFileAttachments());
         }
-    }, [$masterFileDetails]);
+    }, [$masterFileAttachments]);
 
     const getTableTabsFN = async () => {
         await dispatch(getTableTabsData());
@@ -84,7 +84,7 @@ export const FilesTable = () => {
 
     const getMasterFileAttachmentsFn = (id) => {
         setShowLoader(true);
-        dispatch(getMasterFileDetails(id))
+        dispatch(getMasterFileAttachments(id))
     }
 
     const fileTypeTemplate = (rowData) => (
@@ -110,11 +110,11 @@ export const FilesTable = () => {
             >
                 <span className="dots-menu" />
                 <div className="actionList">
-                    {/* <span
-                        onClick={() => { }}
+                    <span
+                        onClick={() => viewFileFn(rowData)}
                     >
                         {translate('mainDashboard.viewFile')}
-                    </span> */}
+                    </span>
                     <span
                         onClick={() => getMasterFileAttachmentsFn(rowData.masterFileId)}
                     >
@@ -137,6 +137,12 @@ export const FilesTable = () => {
         setFirst(e.first);
     };
 
+    const viewFileFn = (rowData) => {
+        Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
+        Storage.session.set("viewFilesFileID", rowData.fileId);
+        // Storage.session.set("viewFilesPersonID", rowData.personId);
+        navigate(`/dashoard/view-all-files`);
+    };
 
     return (
         <div className='files-table'>
