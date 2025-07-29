@@ -1,7 +1,7 @@
 import { getVerifiedRequest, postVerifiedRequest } from 'app/config/network-server-reducer';
 import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { addEditPersonAPI, editMasterFileAPI, getBoxesDataAPI, getChartsDataAPI, getFilesTableDataAPI, getMasterFileCountersAPI, getMasterFileDetailsAPI, getTableTabsDataAPI } from 'app/config/constants';
+import { addEditPersonAPI, editMasterFileAPI, getBoxesDataAPI, getChartsDataAPI, getFileDetailsAPI, getFilesTableDataAPI, getMasterFileCountersAPI, getMasterFileDetailsAPI, getTableTabsDataAPI } from 'app/config/constants';
 
 const initialState: any = {
     errorMessage: null,
@@ -16,6 +16,7 @@ const initialState: any = {
     masterFileCounters: null,
     editMasterFileResponse: null,
     editPersonResponse: null,
+    fileDetailsResponse:null
 };
 
 export type IDashboardState = Readonly<typeof initialState>;
@@ -68,6 +69,11 @@ export const editMasterFile = createAsyncThunk('DASHBOARD/EDIT_MASTER_FILE',
 
 export const editPerson = createAsyncThunk('DASHBOARD/EDIT_PERSON',
     async (data: any) => postVerifiedRequest(addEditPersonAPI, data), {
+    serializeError: serializeAxiosError,
+});
+
+export const getFileDetails = createAsyncThunk('DASHBOARD/GET_FILE_DETAILS',
+    async (id: any) => getVerifiedRequest(getFileDetailsAPI + id), {
     serializeError: serializeAxiosError,
 });
 
@@ -145,6 +151,11 @@ export const DashboardState = createSlice({
                 state.loading = false;
                 state.editPersonResponse = action.payload;
             })
+            .addCase(getFileDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.fileDetailsResponse = action.payload.data;
+            })
+            
             .addMatcher(
                 isPending(
                     getBoxesData,
@@ -156,7 +167,8 @@ export const DashboardState = createSlice({
                     getMasterFileAttachments,
                     getMasterFileCounters,
                     editMasterFile,
-                    editPerson
+                    editPerson,
+                    getFileDetails
                 ),
                 (state) => {
                     state.loading = true;
@@ -173,7 +185,8 @@ export const DashboardState = createSlice({
                     getMasterFileAttachments,
                     getMasterFileCounters,
                     editMasterFile,
-                    editPerson
+                    editPerson,
+                    getFileDetails
                 ),
                 (state, action) => {
                     state.loading = false;

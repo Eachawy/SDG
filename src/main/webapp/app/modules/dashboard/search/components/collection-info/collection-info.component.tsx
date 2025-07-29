@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-jhipster';
 
-export const CollectionInfo = () => {
+export const CollectionInfo = (collectionsDetails) => {
     return (
         <div className='mainFileContent _fileTypeInfoDiv '>
             <h4>{translate('search.collectionData')}</h4>

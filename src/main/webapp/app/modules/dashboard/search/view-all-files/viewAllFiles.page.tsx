@@ -1,7 +1,7 @@
 import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { translate, Storage } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import { FileInfoHeader } from '../components/main-file-info-header/main-file-info-header.component';
@@ -11,17 +11,58 @@ import { EditDefendantProfilePopup } from '../components/edit-defendant-main-fil
 import { CollectionInfo } from '../components/collection-info/collection-info.component';
 import { Lawsuits } from '../components/lawsuits/lawsuits';
 import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
+import { useAppSelector, useAppDispatch } from "app/config/store";
+import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
+import { getFileDetails, getMasterFileCounters, getMasterFileDetails } from '../../dashboard.reducer';
+import _ from 'lodash';
 
 export const ViewAllFiles = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [showLoader, setShowLoader] = useState(false);
     const [showDefendantPopup, setShowDefendantPopup] = useState(false)
     const [showMainFilePopup, setShowMainFilePopup] = useState(false)
     const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
- 
+    const [masterFileDetails, setMasterFileDetails] = useState(null);
+    const [fileDetails, setFileDetails] = useState(null)
+
     Storage.session.remove("DashboardSelectedMasterFileID");
     Storage.session.remove("DashboardSelectedPersonID");
 
- 
+
+    const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
+    const $fileDetailsResponse = useAppSelector((state) => state.dashboard.fileDetailsResponse);
+
+    useEffect(() => {
+        const _viewFilesMasterFileID = Storage.session.get("viewFilesMasterFileID");
+        const _viewFilesFileID = Storage.session.get("viewFilesFileID");
+        if (_viewFilesMasterFileID) {
+            getFileDetailsFN(_viewFilesFileID);
+            getMasterFileDetailsFn(_viewFilesMasterFileID);
+        }
+    }, []);
+
+    useEffect(() => {
+        if ($masterFileDetails) {
+            setShowLoader(false);
+            setMasterFileDetails($masterFileDetails)
+        }
+    }, [$masterFileDetails]);
+
+    useEffect(() => {
+        if ($fileDetailsResponse) {
+            setFileDetails($fileDetailsResponse);
+        }
+    }, [$fileDetailsResponse]);
+
+    const getFileDetailsFN = async (id) => {
+        await dispatch(getFileDetails(id));
+    }
+
+    const getMasterFileDetailsFn = (id) => {
+        setShowLoader(true);
+        dispatch(getMasterFileDetails(id))
+    }
 
     return (
         <>
@@ -54,26 +95,26 @@ export const ViewAllFiles = () => {
 
                 <FileSearch />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}
                     setShowMainFilePopup={setShowMainFilePopup}
                     fileData={{
                         fileType: "تحصيل",
-                        fileOpenDate: "02-12-2024",
-                        fileStatus: "مغلق",
+                        fileOpenDate: fileDetails?.issueDate,
+                        fileStatus: fileDetails?.status,
                         fileStatusMode: 'closed'
                     }}
-                    masterFileDetails={null}
+                    masterFileDetails={masterFileDetails}
                     personData={null}
                 />
 
-                {true && <CollectionInfo />}
+                {fileDetails?.fileType === 'COLLECTION' && <CollectionInfo collectionsDetails={fileDetails?.collectionFile} />}
 
-                {true && <UrgentRequest />}
+                {fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.collectionFile}/>}
 
-                {true && <Lawsuits />}
+                {fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.collectionFile}/>}
 
                 <div className="tabs mt-5">
                     <div
@@ -91,12 +132,14 @@ export const ViewAllFiles = () => {
                 </div>
 
                 {showMainFilePopup && (
-                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={null} />
+                    <EditMainProfilePopup setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
                 )}
 
                 {showDefendantPopup && (
                     <EditDefendantProfilePopup setShowPopup={setShowDefendantPopup} personData={null} />
                 )}
+
+                <LoaderComponent show={showLoader} />
             </div>
         </>
     );

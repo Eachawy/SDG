@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import $ from 'jquery';
 import { ProgressBar } from 'primereact/progressbar';
-import { translate } from 'react-jhipster';
+import { translate,Storage } from 'react-jhipster';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import { useAppSelector, useAppDispatch } from "app/config/store";
@@ -110,11 +110,11 @@ export const FilesTable = () => {
             >
                 <span className="dots-menu" />
                 <div className="actionList">
-                    {/* <span
-                        onClick={() => { }}
+                    <span
+                        onClick={() => viewFileFn(rowData)}
                     >
                         {translate('mainDashboard.viewFile')}
-                    </span> */}
+                    </span>
                     <span
                         onClick={() => getMasterFileAttachmentsFn(rowData.masterFileId)}
                     >
@@ -135,6 +135,13 @@ export const FilesTable = () => {
 
     const onPage = (e) => {
         setFirst(e.first);
+    };
+
+    const viewFileFn = (rowData) => {
+        Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
+        Storage.session.set("viewFilesFileID", rowData.fileId);
+        // Storage.session.set("viewFilesPersonID", rowData.personId);
+        navigate(`/dashoard/view-all-files`);
     };
 
     return (

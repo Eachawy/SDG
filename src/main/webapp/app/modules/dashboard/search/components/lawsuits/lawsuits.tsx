@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-jhipster';
 
-export const Lawsuits = () => {
+export const Lawsuits = (courtCaseDetails) => {
     return (
         <div className='mainFileContent _fileTypeInfoDiv  _requestData '>
             <h4>{translate('search.lawsuitData')}</h4>

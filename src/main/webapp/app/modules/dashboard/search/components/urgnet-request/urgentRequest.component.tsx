@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-jhipster';
 
-export const UrgentRequest = () => {
+export const UrgentRequest = (urgentRequestDetails) => {
     return (
         <div className='mainFileContent _fileTypeInfoDiv  _requestData '>
             <h4>{translate('search.requestData')}</h4>

@@ -25,7 +25,7 @@ interface MainFileDefendantDataProps {
 }
 
 export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ setShowDefendantPopup, setShowMainFilePopup, fileData, masterFileDetails, personData }) => {
-    const [activeTab, setActiveTab] = useState("defendant");
+    const [activeTab, setActiveTab] = useState("main");
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [attachmentListRow, setAttachmentListRow] = React.useState<number | null>(null);
@@ -95,17 +95,18 @@ export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ se
             <div className='mainFileHeader _mainDefendantHeader'>
                 <div className="tabs">
                     <div
-                        className={activeTab === "defendant" && "active"}
-                        onClick={() => setActiveTab("defendant")}
-                    >
-                        {translate('search.defendantData')}
-                    </div>
-                    <div
                         className={activeTab === "main" && "active"}
                         onClick={() => setActiveTab("main")}
                     >
                         {translate('search.mainFileData')}
                     </div>
+                    <div
+                        className={activeTab === "defendant" && "active"}
+                        onClick={() => setActiveTab("defendant")}
+                    >
+                        {translate('search.defendantData')}
+                    </div>
+
                 </div>
 
                 <div className='menu' onClick={serviceList}>
