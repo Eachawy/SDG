@@ -40,6 +40,7 @@ export const ViewAllFiles = () => {
     const $fileDetailsResponse = useAppSelector((state) => state.dashboard.fileDetailsResponse);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const _viewFilesMasterFileID = Storage.session.get("viewFilesMasterFileID");
         const _viewFilesFileID = Storage.session.get("viewFilesFileID");
         if (_viewFilesMasterFileID && _viewFilesFileID) {

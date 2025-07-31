@@ -32,6 +32,7 @@ export const SearchByMainFileDefendant = () => {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const ـDashboardSelectedMasterFileID = Storage.session.get("DashboardSelectedMasterFileID");
         setDashboardSelectedMasterFileID(ـDashboardSelectedMasterFileID);
 

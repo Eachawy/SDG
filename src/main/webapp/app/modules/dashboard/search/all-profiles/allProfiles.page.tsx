@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ButtonComponent } from '@eachawy/frontend-library';
 import { FileSearch } from 'app/modules/dashboard/components/file-search/file-search';
 import BreadcrumbComponent from 'app/shared/components/breadcrumbs.Component/breadcrumb.component';
@@ -8,6 +8,10 @@ import { AllProfilesDataTable } from '../components/all-profiles-data-table/all-
 
 export const AllProfiles = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
 
     return (
