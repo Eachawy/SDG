@@ -1,9 +1,10 @@
 import { ProgressBar } from 'primereact/progressbar';
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { translate } from 'react-jhipster';
+import { translate,Storage } from 'react-jhipster';
 import { getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments, handleResetMasterFileDetails } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
@@ -14,6 +15,7 @@ import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Comp
 
 export const DefendantFilesDataTable = ({ personData, masterFileDetails }) => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [showLoader, setShowLoader] = React.useState(false);
     const [filesList, setFilesList] = React.useState([]);
     const [attachmentListRow, setAttachmentListRow] = React.useState<number | null>(null);
@@ -88,17 +90,24 @@ export const DefendantFilesDataTable = ({ personData, masterFileDetails }) => {
             >
                 <span className="dots-menu" />
                 <div className="actionList">
-                    {/* <span
-                        onClick={() => { }}
+                    <span
+                        onClick={() => viewFileFn(rowData)}
                     >
                         {translate('mainDashboard.viewFile')}
-                    </span> */}
+                    </span>
                     <span onClick={() => getMasterFileAttachmentsFn(rowData.masterFileId)}>
                         {translate('search.documents')}
                     </span>
                 </div>
             </div>
         );
+    };
+
+    const viewFileFn = (rowData) => {
+        Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
+        Storage.session.set("viewFilesFileID", rowData.fileId);
+        Storage.session.set("viewFilesPersonID", rowData.personId);
+        navigate(`/dashoard/view-all-files`);
     };
 
     const fileTypeTemplate = (rowData) => (
@@ -146,7 +155,7 @@ export const DefendantFilesDataTable = ({ personData, masterFileDetails }) => {
                 <AttachmentPopupComponent attachList={attachmentListRow}
                     closeAttachmentPopupFn={() => {
                         setAttachmentListRow(null)
-                    }} 
+                    }}
                 />
             }
         </div>

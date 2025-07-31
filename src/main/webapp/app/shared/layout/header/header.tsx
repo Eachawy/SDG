@@ -4,6 +4,7 @@ import { useAppDispatch } from "app/config/store";
 import { setLocale } from "app/shared/reducers/locale";
 import { isRTL, setTextDirection } from "app/config/translation";
 import { useNavigate } from "react-router";
+import { resetAndClearSeasion } from "app/shared/util/utils";
 
 export interface IHeaderProps {
   currentLocale: string;
@@ -36,11 +37,12 @@ const Header = (props: IHeaderProps) => {
   };
 
   const logOut = () => {
-    Storage.session.set("token", '');
-    Storage.session.set("viewFilesFileID", '');
-    Storage.session.set("viewFilesMasterFileID", '');
+    Storage.session.remove('token');
+    resetAndClearSeasion();
     navigate('/login');
   }
+
+  
 
   return (
     <div className="sdg_Header">

@@ -204,7 +204,7 @@ const ChequeTableComponent = (props) => {
           paginator
           rows={10}
         >
-          <Column selectionMode="multiple" header="" className="checkBoxCol" />
+          {!props.isDashboard && <Column selectionMode="multiple" header="" className="checkBoxCol" />}
           <Column field={`bank.${$lang === 'en' ? 'arabicName' : 'englishName'}`} header="اسم البنك" className="columnStyle" />
           <Column
             field="chequeNumber"
@@ -242,7 +242,7 @@ const ChequeTableComponent = (props) => {
 
 
           <Column body={attachmentTemplate}
-            header="الملاحظات"
+            header="المرفقات"
             className="columnStyle attachmentCol"
           />
 

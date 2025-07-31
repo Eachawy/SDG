@@ -28,6 +28,7 @@ export const ViewAllFiles = () => {
     const [footerActiveTab, setFooterActiveTab] = useState("legalBonds");
     const [masterFileDetails, setMasterFileDetails] = useState(null);
     const [viewFilesMasterFileID, setViewFilesMasterFileID] = useState(null);
+    const [viewFilesFileID, setViewFilesFileID] = useState(null);
     const [fileDetails, setFileDetails] = useState(null);
     const { register, formState: { errors }, watch, setValue, getValues, } = useForm({ mode: "onTouched" });
 
@@ -43,9 +44,12 @@ export const ViewAllFiles = () => {
         const _viewFilesFileID = Storage.session.get("viewFilesFileID");
         if (_viewFilesMasterFileID && _viewFilesFileID) {
             setViewFilesMasterFileID(_viewFilesMasterFileID);
-            getFileDetailsFN(_viewFilesFileID);
             getMasterFileDetailsFn(_viewFilesMasterFileID);
-            Storage.session.set('selectFileId', _viewFilesFileID)
+
+            Storage.session.set('selectFileId', _viewFilesFileID);
+            Storage.session.set('fileId', _viewFilesFileID);
+            setViewFilesFileID(_viewFilesFileID);
+            getFileDetailsFN(_viewFilesFileID);
         }
     }, []);
 
@@ -142,11 +146,13 @@ export const ViewAllFiles = () => {
 
                 </div>
 
-                <div className='SelectFileTypePage'>
-                    <div className="sdg_page ">
-                        <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => { }} />
+                {viewFilesFileID && footerActiveTab === "legalBonds" && (
+                    <div className='SelectFileTypePage'>
+                        <div className="sdg_page " style={{ padding: '10px 0px' }}>
+                            <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => { }} isDashboard={true} />
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {showMainFilePopup && (
                     <EditMainProfilePopup

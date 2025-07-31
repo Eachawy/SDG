@@ -129,7 +129,7 @@ const InvoiceTableComponent = (props) => {
           paginator
           rows={10}
         >
-          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+          {!props.isDashboard && <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />}
 
           <Column
             field="invoiceNumber"

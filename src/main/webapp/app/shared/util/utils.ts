@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { countryCode } from "./date-utils";
 import { toast } from "react-toastify";
+import { Storage } from "react-jhipster";
 
 export const IsJsonString = str => {
   try {
@@ -114,3 +115,18 @@ export const exportChartData = (chartData: any) => {
 
   return seriesObj
 }
+
+export const resetAndClearSeasion = () => {
+  
+  Storage.session.remove('SDC');
+  Storage.session.remove('masterFile');
+  Storage.session.remove('selectFileId');
+  Storage.session.remove('fileId');
+  Storage.session.remove('applicantName');
+  Storage.session.remove('isCompany');
+  Storage.session.remove("DashboardSelectedMasterFileID");
+  Storage.session.remove("DashboardSelectedPersonID");
+  Storage.session.remove("viewFilesMasterFileID");
+  Storage.session.remove("viewFilesFileID");
+  Storage.session.remove("viewFilesPersonID");
+} 

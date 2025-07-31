@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { translate } from 'react-jhipster';
+import { translate, Storage } from 'react-jhipster';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import { getTableTabsData, getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments } from '../../../dashboard.reducer';
 import { pushNotification } from 'app/shared/util/utils';
@@ -15,6 +15,7 @@ import { FileTypes } from 'app/modules/shared/constants';
 
 export const AllProfilesDataTable = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [tableTabsData, setTableTabsData] = React.useState<any>(null);
     const [activeTab, setActiveTab] = React.useState('ALL');
     const [filesList, setFilesList] = React.useState([]);
@@ -109,11 +110,11 @@ export const AllProfilesDataTable = () => {
             >
                 <span className="dots-menu" />
                 <div className="actionList">
-                    {/* <span
-                        onClick={() => { }}
+                    <span
+                        onClick={() => viewFileFn(rowData)}
                     >
                         {translate('mainDashboard.viewFile')}
-                    </span> */}
+                    </span>
                     <span
                         onClick={() => getMasterFileAttachmentsFn(rowData.masterFileId)}
                     >
@@ -122,6 +123,13 @@ export const AllProfilesDataTable = () => {
                 </div>
             </div>
         );
+    };
+
+    const viewFileFn = (rowData) => {
+        Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
+        Storage.session.set("viewFilesFileID", rowData.fileId);
+        Storage.session.set("viewFilesPersonID", rowData.personId);
+        navigate(`/dashoard/view-all-files`);
     };
 
     const fileTypeTemplate = (rowData) => (

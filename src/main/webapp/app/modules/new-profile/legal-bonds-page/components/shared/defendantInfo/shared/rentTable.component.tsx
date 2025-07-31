@@ -182,7 +182,7 @@ const RentTableComponent = (props) => {
           paginator
           rows={10}
         >
-          <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />
+          {!props.isDashboard && <Column selectionMode="multiple" header="" style={{ width: "30px" }} className="checkBoxCol" />}
 
           <Column field="startDate" header="تاريخ بدء الإيجار" className="columnStyle" body={rentStartDateBody} />
 

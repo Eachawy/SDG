@@ -140,7 +140,7 @@ export const FilesTable = () => {
     const viewFileFn = (rowData) => {
         Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
         Storage.session.set("viewFilesFileID", rowData.fileId);
-        // Storage.session.set("viewFilesPersonID", rowData.personId);
+        Storage.session.set("viewFilesPersonID", rowData.personId);
         navigate(`/dashoard/view-all-files`);
     };
 

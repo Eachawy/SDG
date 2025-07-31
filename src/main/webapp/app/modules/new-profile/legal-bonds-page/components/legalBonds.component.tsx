@@ -75,27 +75,29 @@ const LegalBonds = (props) => {
     <div className="legalBonds">
 
       {/* legalBondsRowDiv */}
-      <div className="row g-4 gy-4 mb-4">
-        <DropDownComponent
-          id="legalBondsList-id"
-          name="legalBondsList"
-          register={register}
-          watch={watch}
-          setValueMethod={setValue}
-          options={BondTypes}
-          optionLabel={`name.${$lang}`}
-          errors={errors}
-          onChange={(e) => setValue("legalBondsList", e.value as object)}
-          placeholder="اختر السند القانوني"
-          rules={{ required: "يجب اختيار السند القانوني" }}
-          className="col-md-6"
-        />
-        {(watch("legalBondsList")?.code) && (
-          <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
-            إضافة
-          </div>
-        )}
-      </div>
+      {!props.isDashboard && (
+        <div className="row g-4 gy-4 mb-4">
+          <DropDownComponent
+            id="legalBondsList-id"
+            name="legalBondsList"
+            register={register}
+            watch={watch}
+            setValueMethod={setValue}
+            options={BondTypes}
+            optionLabel={`name.${$lang}`}
+            errors={errors}
+            onChange={(e) => setValue("legalBondsList", e.value as object)}
+            placeholder="اختر السند القانوني"
+            rules={{ required: "يجب اختيار السند القانوني" }}
+            className="col-md-6"
+          />
+          {(watch("legalBondsList")?.code) && (
+            <div onClick={legalBondFn} className="btnStyle _saveAndAdd">
+              إضافة
+            </div>
+          )}
+        </div>
+      )}
 
       {((watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) || (rowDataType === 'CHQ')) &&
         <Cheque
@@ -153,6 +155,7 @@ const LegalBonds = (props) => {
           setRowDataType(type);
           setRowDataEdit(obj);
         }}
+        isDashboard={props.isDashboard}
       />
 
       <LoaderComponent show={showLoader} />

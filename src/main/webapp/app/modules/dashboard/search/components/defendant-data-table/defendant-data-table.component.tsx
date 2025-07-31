@@ -1,9 +1,10 @@
 import { ProgressBar } from 'primereact/progressbar';
+import { useNavigate } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { translate } from 'react-jhipster';
+import { translate, Storage } from 'react-jhipster';
 import { getFilesTableData, getMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import _ from 'lodash';
@@ -12,7 +13,7 @@ import LoaderComponent from 'app/shared/components/loaderComponent/loaderCompone
 import { InputSwitch } from 'primereact/inputswitch';
 
 export const DefendantDataTable = ({ masterFileDetails }) => {
-
+    const navigate = useNavigate();
     const [isActiveFileSelected, setIsActiveFileSelected] = useState(false);
     const [fileNeedUpdateSelected, setFileNeedUpdateSelected] = useState(false);
     const [closedFilesSelected, setClosedFilesSelected] = useState(false);
@@ -95,7 +96,7 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
         return text;
     }
 
-    const actionList = () => {
+    const actionList = (rowData) => {
         return (
             <div
                 className="action-column"
@@ -108,13 +109,20 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
                 <span className="dots-menu" />
                 <div className="actionList">
                     <span
-                        onClick={() => { }}
+                        onClick={() => viewFileFn(rowData)}
                     >
                         {translate('mainDashboard.viewFile')}
                     </span>
                 </div>
             </div>
         );
+    };
+
+    const viewFileFn = (rowData) => {
+        Storage.session.set("viewFilesMasterFileID", rowData.masterFileId);
+        Storage.session.set("viewFilesFileID", rowData.fileId);
+        Storage.session.set("viewFilesPersonID", rowData.personId);
+        navigate(`/dashoard/view-all-files`);
     };
 
     const fileStatusList = (e) => {

@@ -25,6 +25,12 @@ const MainPage = () => {
 
     Storage.session.remove("DashboardSelectedMasterFileID");
     Storage.session.remove("DashboardSelectedPersonID");
+    Storage.session.remove("fileId");
+    Storage.session.remove("selectFileId");
+    Storage.session.remove("viewFilesFileID");
+    Storage.session.remove("viewFilesMasterFileID");
+    Storage.session.remove("viewFilesPersonID");
+    
     
     useEffect(() => {
         getBoxesDataFN();

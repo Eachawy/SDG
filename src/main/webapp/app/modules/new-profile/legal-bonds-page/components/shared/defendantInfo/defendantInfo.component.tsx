@@ -182,21 +182,23 @@ const DefendantInfoComponent = (props) => {
       {collectionFile &&
         Object.values(collectionFile).some(value => Array.isArray(value) && value.length > 0) && (
           <>
-            <h4>بيانات المدعي عليه التى تم إدخالها</h4>
+            {!props.isDashboard && <h4>بيانات المدعي عليه التى تم إدخالها</h4>}
             <div className="tabsRowAndActionBtnsDiv">
-              <div className="actionTableBtnsDiv">
-                {selectedRowsDelete?.length > 0 && (
+              {!props.isDashboard && (
+                <div className="actionTableBtnsDiv">
+                  {selectedRowsDelete?.length > 0 && (
+                    <span onClick={() => {
+                      setDeleteType('SELECTED');
+                      setShowDeletePopup(true);
+                    }}>حذف الإختيارات</span>
+                  )}
                   <span onClick={() => {
-                    setDeleteType('SELECTED');
+                    setDeleteType('ALL');
+                    setSelectedRowsDelete([]);
                     setShowDeletePopup(true);
-                  }}>حذف الإختيارات</span>
-                )}
-                <span onClick={() => {
-                  setDeleteType('ALL');
-                  setSelectedRowsDelete([]);
-                  setShowDeletePopup(true);
-                }}>حذف الكل</span>
-              </div>
+                  }}>حذف الكل</span>
+                </div>
+              )}
               <div className="tabsRowDiv">
                 {collectionFile?.cheques?.length > 0 && (
                   <div
@@ -266,6 +268,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -275,6 +278,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -285,6 +289,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(rows) => setSelectedRowsDelete(rows)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -295,6 +300,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -304,6 +310,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -313,6 +320,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
@@ -322,6 +330,7 @@ const DefendantInfoComponent = (props) => {
           deleteIdDoneFn={() => props.deleteIsDone()}
           editRecordDataFN={(type, obj) => props.editRecordData(type, obj)}
           setSelectedRowsFn={(ids) => setSelectedRowsDelete(ids)}
+          isDashboard={props.isDashboard}
         />
         : null}
 
