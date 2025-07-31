@@ -70,6 +70,7 @@ export const SearchByMainFileDefendant = () => {
     return (
         <>
             <BreadcrumbComponent
+                back={true}
                 links={[
                     {
                         id: 'PAGE1',
