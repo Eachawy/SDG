@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate, Storage } from 'react-jhipster';
-import { getFilesTableData, getMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
+import { getFilesTableData, getMasterFileCounters, handleResetMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import _ from 'lodash';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
@@ -170,17 +170,19 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
             <h4>{translate('search.defendantDataTitle')}</h4>
             <div className='files-table'>
                 <div className='titleTableHeader'>
-                    <div className="tableTabs">
-                        <div className={`${activeTab === 'COLLECTION' ? 'active' : ''}`} onClick={() => onTabClick('COLLECTION')}>
-                            {translate('search.collection')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COLLECTION'))?.count || 0})</span>
+                    {masterFileCounters && (
+                        <div className="tableTabs">
+                            <div className={`${activeTab === 'COLLECTION' ? 'active' : ''}`} onClick={() => onTabClick('COLLECTION')}>
+                                {translate('search.collection')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COLLECTION'))?.count || 0})</span>
+                            </div>
+                            <div className={`${activeTab === 'URGENT_REQUEST' ? 'active' : ''}`} onClick={() => onTabClick('URGENT_REQUEST')}>
+                                {translate('search.urgentRequest')} <span>({(_.find(masterFileCounters, (item) => item.name === 'URGENT_REQUEST'))?.count || 0})</span>
+                            </div>
+                            <div className={`${activeTab === 'COURT_CASE' ? 'active' : ''}`} onClick={() => onTabClick('COURT_CASE')}>
+                                {translate('search.cases')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COURT_CASE'))?.count || 0})</span>
+                            </div>
                         </div>
-                        <div className={`${activeTab === 'URGENT_REQUEST' ? 'active' : ''}`} onClick={() => onTabClick('URGENT_REQUEST')}>
-                            {translate('search.urgentRequest')} <span>({(_.find(masterFileCounters, (item) => item.name === 'URGENT_REQUEST'))?.count || 0})</span>
-                        </div>
-                        <div className={`${activeTab === 'COURT_CASE' ? 'active' : ''}`} onClick={() => onTabClick('COURT_CASE')}>
-                            {translate('search.cases')} <span>({(_.find(masterFileCounters, (item) => item.name === 'COURT_CASE'))?.count || 0})</span>
-                        </div>
-                    </div>
+                    )}
                     <div className='filterBy'>
                         <div>
                             <p>{translate('search.selectBy')}</p>

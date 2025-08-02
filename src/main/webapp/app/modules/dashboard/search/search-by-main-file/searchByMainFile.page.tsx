@@ -8,7 +8,7 @@ import { FileInfoHeader } from '../components/main-file-info-header/main-file-in
 import { MainFileData } from '../components/main-file-data/main-file-data.component';
 import { DefendantDataTable } from '../components/defendant-data-table/defendant-data-table.component';
 import { EditMainProfilePopup } from '../components/edit-main-file-popup/edit-main-file-popup.component';
-import { getMasterFileDetails } from '../../dashboard.reducer';
+import { getMasterFileDetails, handleResetMasterFileCounters, handleResetMasterFileDetails } from '../../dashboard.reducer';
 import _ from 'lodash';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
@@ -23,6 +23,9 @@ export const SearchByMainFile = () => {
 
     const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
 
+    dispatch(handleResetMasterFileDetails())
+    dispatch(handleResetMasterFileCounters())
+    
     useEffect(() => {
         const ـDashboardSelectedMasterFileID = Storage.session.get("DashboardSelectedMasterFileID");
         setDashboardSelectedMasterFileID(ـDashboardSelectedMasterFileID);
