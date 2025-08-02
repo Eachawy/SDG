@@ -90,6 +90,12 @@ export const DashboardState = createSlice({
                 masterFileDetails: null
             };
         },
+        handleResetMasterFileCounters() {
+            return {
+                ...initialState,
+                masterFileCounters: null
+            };
+        },
         handleResetMasterFileAttachments() {
             return {
                 ...initialState,
@@ -201,7 +207,8 @@ export const {
     handleResetMasterFileDetails,
     handleResetMasterFileAttachments,
     handleResetEditMasterFile,
-    handleResetEditPerson
+    handleResetEditPerson,
+    handleResetMasterFileCounters
 } = DashboardState.actions;
 
 // Reducer

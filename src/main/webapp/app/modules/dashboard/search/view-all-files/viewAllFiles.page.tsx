@@ -13,11 +13,12 @@ import { Lawsuits } from '../components/lawsuits/lawsuits';
 import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
-import { getFileDetails, getMasterFileCounters, getMasterFileDetails } from '../../dashboard.reducer';
+import { getFileDetails, getMasterFileDetails } from '../../dashboard.reducer';
 import _, { set } from 'lodash';
 import { FileStatues, FileTypes } from 'app/modules/shared/constants';
 import LegalBonds from 'app/modules/new-profile/legal-bonds-page/components/legalBonds.component';
 import { useForm } from "react-hook-form";
+import { getAllPersons } from '../../dashboardLookups.reducer';
 
 export const ViewAllFiles = () => {
     const navigate = useNavigate();
@@ -30,6 +31,8 @@ export const ViewAllFiles = () => {
     const [viewFilesMasterFileID, setViewFilesMasterFileID] = useState(null);
     const [viewFilesFileID, setViewFilesFileID] = useState(null);
     const [fileDetails, setFileDetails] = useState(null);
+    const [viewFilesPersonID, setViewFilesPersonID] = useState(null);
+    const [personData, setPersonData] = React.useState(null);
     const { register, formState: { errors }, watch, setValue, getValues, } = useForm({ mode: "onTouched" });
 
     Storage.session.remove("DashboardSelectedMasterFileID");
@@ -38,11 +41,14 @@ export const ViewAllFiles = () => {
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
     const $fileDetailsResponse = useAppSelector((state) => state.dashboard.fileDetailsResponse);
+    const $allPersonsList = useAppSelector((state) => state.dashboardLookups.allPersonsList);
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
         const _viewFilesMasterFileID = Storage.session.get("viewFilesMasterFileID");
         const _viewFilesFileID = Storage.session.get("viewFilesFileID");
+        const _viewFilesPersonID = Storage.session.get("viewFilesPersonID");
         if (_viewFilesMasterFileID && _viewFilesFileID) {
             setViewFilesMasterFileID(_viewFilesMasterFileID);
             getMasterFileDetailsFn(_viewFilesMasterFileID);
@@ -52,6 +58,12 @@ export const ViewAllFiles = () => {
             setViewFilesFileID(_viewFilesFileID);
             getFileDetailsFN(_viewFilesFileID);
         }
+
+        if (_viewFilesPersonID) {
+            setViewFilesPersonID(_viewFilesPersonID);
+            getAllPersonsFN();
+        }
+
     }, []);
 
     useEffect(() => {
@@ -67,6 +79,14 @@ export const ViewAllFiles = () => {
         }
     }, [$fileDetailsResponse]);
 
+    useEffect(() => {
+        if ($allPersonsList) {
+            const filteredPerson = _.find($allPersonsList, item => item.id === viewFilesPersonID);
+            setPersonData(filteredPerson);
+            setShowLoader(false);
+        }
+    }, [$allPersonsList]);
+
     const getFileDetailsFN = async (id) => {
         await dispatch(getFileDetails(id));
     }
@@ -74,6 +94,11 @@ export const ViewAllFiles = () => {
     const getMasterFileDetailsFn = (id) => {
         setShowLoader(true);
         dispatch(getMasterFileDetails(id))
+    }
+
+    const getAllPersonsFN = async () => {
+        setShowLoader(true);
+        await dispatch(getAllPersons());
     }
 
     return (
@@ -121,7 +146,7 @@ export const ViewAllFiles = () => {
                             fileStatusMode: fileDetails?.status
                         }}
                         masterFileDetails={masterFileDetails}
-                        personData={null}
+                        personData={personData}
                     />
                 )}
 
@@ -169,9 +194,9 @@ export const ViewAllFiles = () => {
                     <EditDefendantProfilePopup
                         setShowPopup={(status: any) => {
                             setShowDefendantPopup(status);
-                            // getAllPersonsFN()
+                            getAllPersonsFN()
                         }}
-                        personData={null} />
+                        personData={personData} />
                 )}
 
                 <LoaderComponent show={showLoader} />

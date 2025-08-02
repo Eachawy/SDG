@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from "app/config/store";
 import { getAllFilteredPersons, getAllMasterFiles } from '../../dashboardLookups.reducer';
 import { useNavigate } from 'react-router';
 import { combineSerialWithName } from 'app/shared/util/utils';
+import { handleResetMasterFileCounters } from '../../dashboard.reducer';
 
 export const FileSearch = () => {
 
@@ -25,13 +26,17 @@ export const FileSearch = () => {
         setValue("searchByNoNameFile1", e.value);
         getFilteredPersonsFN(e.value?.id);
         Storage.session.set("DashboardSelectedMasterFileID", e.value?.id);
-        handleSearchNavigation(true, false);
+        if(e.value?.id){
+            handleSearchNavigation(true, false);
+        }
     }
 
     const ddl2Change = (e) => {
         setValue("searchByNoNameFile2", e.value);
         Storage.session.set("DashboardSelectedPersonID", e.value?.code);
-        handleSearchNavigation(false, true);
+        if(e.value?.code){
+            handleSearchNavigation(false, true);
+        }
     }
 
     useEffect(() => {
