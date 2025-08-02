@@ -6,7 +6,6 @@ import { useAppSelector, useAppDispatch } from "app/config/store";
 import { getAllFilteredPersons, getAllMasterFiles } from '../../dashboardLookups.reducer';
 import { useNavigate } from 'react-router';
 import { combineSerialWithName } from 'app/shared/util/utils';
-import { handleResetMasterFileCounters } from '../../dashboard.reducer';
 
 export const FileSearch = () => {
 

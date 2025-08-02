@@ -1,4 +1,4 @@
-import { RadioButtonComponent, InputComponent, AttachmentMultiFilesComponent, ButtonComponent } from '@eachawy/frontend-library';
+import { RadioButtonComponent, InputComponent, AttachmentMultiFilesComponent, ButtonComponent, InputMaskComponent } from '@eachawy/frontend-library';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
 import PhoneNumberComponent from 'app/shared/components/phoneNumber.Component/phoneNumber.Component';
 import { attachmentDTO, getCountryCodeObj, IsMobileNumberUndefined, IsUndefined, removeCountryCode } from 'app/shared/util/utils';
@@ -59,7 +59,7 @@ export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
             address: IsUndefined(data.address),
             email: IsUndefined(data.email),
             status: masterFileDetails.status,
-            mobileNumber:Number(data.masterCode?.name + data.masterPhone),
+            mobileNumber: Number(data.masterCode?.name + data.masterPhone),
             attachments: attachmentDTO(data.attach1, "MASTER_FILE_ATTACHMENT"),
             // attachments: []
         }
@@ -148,21 +148,19 @@ export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
                             />
                         </div>
                         <div className='col-md-6'>
-                            <InputComponent
+                            <InputMaskComponent
                                 id="nationalNumber"
                                 type="nationalNumber"
                                 name="nationalNumber"
                                 label={translate("createNewProfile.nationalNumber")}
                                 placeholder={translate("createNewProfile.exm") + "1234567"}
                                 register={register}
-                                errors={errors}
                                 setValueMethod={setValue}
+                                mask={(getValues().companyType === 'corporateType') ? "999999999" : "9999999999"}
                                 watch={watch}
                                 onChange={(e) => {
-                                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                                    setValue("nationalNumber", numericValue);
+                                    setValue("nationalNumber", e.target.value);
                                 }}
-                            // className={'col-md-6'}
                             />
                         </div>
                         <div className='col-md-6'>
@@ -183,11 +181,11 @@ export const EditMainProfilePopup = ({ setShowPopup, masterFileDetails }) => {
                         <div className='col-md-6'>
                             <PhoneNumberComponent
                                 register={register}
-                                errors={errors}
+                                // errors={errors}
                                 watch={watch}
                                 setValue={setValue}
                                 name="masterPhone"
-                                listName="masterCode"
+                                listName="countryCode"
                             // className={'col-md-6'}
                             />
                         </div>
