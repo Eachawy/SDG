@@ -20,7 +20,7 @@ export const FileInfoHeader = ({ setShowPopup, masterFileDetails }) => {
         <span>{masterFileDetails?.fileNumber}</span>
       </div>
       <div>
-        {translate('search.companyName')}
+        {masterFileDetails?.company ? translate('search.companyName') : translate('search.personFileName')}
         <span>{$lang === 'en' ? masterFileDetails?.englishName : masterFileDetails?.arabicName}</span>
       </div>
       <div>
@@ -28,9 +28,9 @@ export const FileInfoHeader = ({ setShowPopup, masterFileDetails }) => {
         <span>{dayjs(masterFileDetails?.createdDate).format('DD-MM-YYYY')}</span>
       </div>
       <div>
-        <div className="progressBar">
-          <ProgressBar value={50} />
-          <span>50%</span>
+        <div className={`progressBar ${masterFileDetails?.fileCompletionPercentage === 100 && 'completed'}`}>
+          <ProgressBar value={masterFileDetails?.fileCompletionPercentage ?? 0} />
+          <span>{masterFileDetails?.fileCompletionPercentage ?? 0}%</span>
         </div>
         <span>
           {translate('search.mainFileNeeds')}

@@ -38,6 +38,7 @@
         "save": "Save",
         "close": "Close",
         "personName": "Person Name",
+        "personFileName": "Person File Name",
         "address1": "Address 1",
         "address2": "Address 2",
         "phoneNumber1": "Phone Number 1",
