@@ -130,23 +130,24 @@ export const ViewAllFiles = () => {
                 {fileDetails && fileDetails?.fileType === 'URGENT_REQUEST' && <UrgentRequest urgentRequestDetails={fileDetails?.courtCaseFile} />}
 
                 {fileDetails && fileDetails?.fileType === 'COURT_CASE' && <Lawsuits courtCaseDetails={fileDetails?.courtCaseFile} />}
+                {false &&
+                    <div className="tabs mt-5">
+                        <div
+                            className={footerActiveTab === "legalBonds" && "active"}
+                            onClick={() => setFooterActiveTab("legalBonds")}
+                        >
+                            {translate('search.legalBonds')}
+                        </div>
 
-                <div className="tabs mt-5">
-                    <div
-                        className={footerActiveTab === "legalBonds" && "active"}
-                        onClick={() => setFooterActiveTab("legalBonds")}
-                    >
-                        {translate('search.legalBonds')}
+                        <div
+                            className={footerActiveTab === "followUps" && "active"}
+                            onClick={() => setFooterActiveTab("followUps")}
+                        >
+                            {translate('search.followUps')}
+                        </div>
+
                     </div>
-                    <div
-                        className={footerActiveTab === "followUps" && "active"}
-                        onClick={() => setFooterActiveTab("followUps")}
-                    >
-                        {translate('search.followUps')}
-                    </div>
-
-                </div>
-
+                }
                 {viewFilesFileID && footerActiveTab === "legalBonds" && (
                     <div className='SelectFileTypePage'>
                         <div className="sdg_page " style={{ padding: '10px 0px' }}>
