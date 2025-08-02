@@ -184,40 +184,42 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
                             </div>
                         </div>
                     )}
-                    <div className='filterBy'>
-                        <div>
-                            <p>{translate('search.selectBy')}</p>
-                            <div className='menu' onClick={fileStatusList}>
-                                {translate('search.fileStatus')}
-                                <div className="fileTypeList">
-                                    <span>
-                                        <p>{translate('search.activeFiles')}<span>(10)</span></p>
-                                        <InputSwitch
-                                            inputId="activeFileInputSwitch-id"
-                                            checked={isActiveFileSelected}
-                                            onChange={(e) => handleSwitchChange(e, "activeFileInputSwitch-id")}
-                                        />
-                                    </span>
-                                    <span>
-                                        <p>{translate('search.needUpdateFiles')}<span>(5)</span></p>
-                                        <InputSwitch
-                                            inputId="fileNeedUpdateInputSwitch-id"
-                                            checked={fileNeedUpdateSelected}
-                                            onChange={(e) => handleSwitchChange(e, "fileNeedUpdateInputSwitch-id")}
-                                        />
-                                    </span>
-                                    <span>
-                                        <p>{translate('search.closedFiles')}<span>(5)</span></p>
-                                        <InputSwitch
-                                            inputId="closedFilesInputSwitch-id"
-                                            checked={closedFilesSelected}
-                                            onChange={(e) => handleSwitchChange(e, "closedFilesInputSwitch-id")}
-                                        />
-                                    </span>
+                    {false &&
+                        <div className='filterBy'>
+                            <div>
+                                <p>{translate('search.selectBy')}</p>
+                                <div className='menu' onClick={fileStatusList}>
+                                    {translate('search.fileStatus')}
+                                    <div className="fileTypeList">
+                                        <span>
+                                            <p>{translate('search.activeFiles')}<span>(10)</span></p>
+                                            <InputSwitch
+                                                inputId="activeFileInputSwitch-id"
+                                                checked={isActiveFileSelected}
+                                                onChange={(e) => handleSwitchChange(e, "activeFileInputSwitch-id")}
+                                            />
+                                        </span>
+                                        <span>
+                                            <p>{translate('search.needUpdateFiles')}<span>(5)</span></p>
+                                            <InputSwitch
+                                                inputId="fileNeedUpdateInputSwitch-id"
+                                                checked={fileNeedUpdateSelected}
+                                                onChange={(e) => handleSwitchChange(e, "fileNeedUpdateInputSwitch-id")}
+                                            />
+                                        </span>
+                                        <span>
+                                            <p>{translate('search.closedFiles')}<span>(5)</span></p>
+                                            <InputSwitch
+                                                inputId="closedFilesInputSwitch-id"
+                                                checked={closedFilesSelected}
+                                                onChange={(e) => handleSwitchChange(e, "closedFilesInputSwitch-id")}
+                                            />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                     <div className='totalFiles'>
                         {translate('search.totalFiles')}
                         <span>({(_.find(masterFileCounters, (item) => item.name === 'TOTAL'))?.count || 0})</span>
