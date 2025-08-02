@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { translate, Storage } from 'react-jhipster';
-import { getFilesTableData, getMasterFileCounters, handleResetMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
+import { getFilesTableData, getMasterFileCounters } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import _ from 'lodash';
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
@@ -26,6 +26,7 @@ export const DefendantDataTable = ({ masterFileDetails }) => {
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $masterFileCounters = useAppSelector((state) => state.dashboard.masterFileCounters);
     const $tableFilesData = useAppSelector((state) => state.dashboard.tableFilesData);
+
 
     useEffect(() => {
         getMasterFileCountersFN();

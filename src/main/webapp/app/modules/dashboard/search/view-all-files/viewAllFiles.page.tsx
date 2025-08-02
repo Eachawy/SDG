@@ -13,7 +13,7 @@ import { Lawsuits } from '../components/lawsuits/lawsuits';
 import { UrgentRequest } from '../components/urgnet-request/urgentRequest.component';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
-import { getFileDetails, getMasterFileCounters, getMasterFileDetails } from '../../dashboard.reducer';
+import { getFileDetails, getMasterFileDetails } from '../../dashboard.reducer';
 import _, { set } from 'lodash';
 import { FileStatues, FileTypes } from 'app/modules/shared/constants';
 import LegalBonds from 'app/modules/new-profile/legal-bonds-page/components/legalBonds.component';

@@ -23,8 +23,8 @@ export const SearchByMainFile = () => {
 
     const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
 
-    dispatch(handleResetMasterFileDetails())
-    dispatch(handleResetMasterFileCounters())
+    // dispatch(handleResetMasterFileDetails())
+    // dispatch(handleResetMasterFileCounters())
     
     useEffect(() => {
         const ـDashboardSelectedMasterFileID = Storage.session.get("DashboardSelectedMasterFileID");
