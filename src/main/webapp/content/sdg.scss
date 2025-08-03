@@ -2108,7 +2108,7 @@ body,
 
   >.content {
     background-color: #fff;
-    height: 600px;
+    height: 900px; // 600
     border-radius: 16px;
     width: 85%;
     overflow-y: auto;
@@ -2376,6 +2376,10 @@ body,
         border: 1px solid #D9D9D9;
         background-color: #FAFAFB;
         overflow: auto;
+        > img {
+          height: auto !important; // 648px
+          // width: auto !important;
+        }
       }
 
       .fileCardList {
