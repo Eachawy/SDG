@@ -29,6 +29,10 @@ export const FileStatues = [
     {
         name: { en: 'Closed', ar: 'مغلق' },
         code: 'CLOSED'
+    },
+    {
+        name: { en: 'Active', ar: 'فعال' },
+        code: 'ACTIVE'
     }
 ]
 

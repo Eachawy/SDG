@@ -4,7 +4,7 @@ import { translate } from 'react-jhipster';
 import { useAppSelector } from "app/config/store";
 import dayjs from "dayjs";
 
-export const FileInfoHeader = ({ setShowPopup, masterFileDetails }) => {
+export const FileInfoHeader = ({ setShowPopup, masterFileDetails, fileDetails }) => {
 
   const onUpdateData = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
@@ -17,7 +17,7 @@ export const FileInfoHeader = ({ setShowPopup, masterFileDetails }) => {
     <div className='fileInfoHeader'>
       <div>
         {translate('search.serialNumber')}
-        <span>{masterFileDetails?.fileNumber}</span>
+        <span>{masterFileDetails?.fileNumber} {fileDetails && ' / ' + fileDetails?.fileNumber}</span>
       </div>
       <div>
         {masterFileDetails?.company ? translate('search.companyName') : translate('search.personFileName')}

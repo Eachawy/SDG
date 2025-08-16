@@ -1597,6 +1597,20 @@ body,
           }
         }
       }
+
+      &._dashboardLegalBonds{
+        .sdg_page{
+          padding: 10px 0px;
+          margin-top: 20px;
+
+          > h4{
+            font: 16px / 18px "Cairo-Bold";
+            color: #000;
+            margin-bottom: 20px;
+            width: 100%;
+          }
+        }
+      }
     }
 
     .DetermineResponsibilityAndFollowUpPage,

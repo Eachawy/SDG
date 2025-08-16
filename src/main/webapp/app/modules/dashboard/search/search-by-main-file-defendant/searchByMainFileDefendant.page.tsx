@@ -99,7 +99,7 @@ export const SearchByMainFileDefendant = () => {
 
                 <FileSearch />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} fileDetails={null}/>
 
                 <MainFileDefendantData
                     setShowDefendantPopup={setShowDefendantPopup}

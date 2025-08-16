@@ -115,9 +115,13 @@ export const FileSearch = () => {
         }
         if (secondDDL) {
             if (getValues().searchByNoNameFile1) {
-                navigate("/dashoard/search-by-main-file-defendant");
+                if (location.pathname === '/dashoard/search-by-main-file-defendant') {
+                    window.location.reload();
+                } else {
+                    navigate("/dashoard/search-by-main-file-defendant");
+                }
             } else {
-                if (location.pathname === 'search-by-defendant') {
+                if (location.pathname === '/dashoard/search-by-defendant') {
                     window.location.reload();
                 } else {
                     navigate("/dashoard/search-by-defendant");

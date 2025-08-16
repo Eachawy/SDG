@@ -25,6 +25,7 @@ export const SearchByMainFile = () => {
 
     // dispatch(handleResetMasterFileDetails())
     // dispatch(handleResetMasterFileCounters())
+    Storage.session.remove("DashboardSelectedPersonID");
     
     useEffect(() => {
         const ـDashboardSelectedMasterFileID = Storage.session.get("DashboardSelectedMasterFileID");
@@ -79,7 +80,7 @@ export const SearchByMainFile = () => {
 
                 {masterFileDetails && (
                     <>
-                        <FileInfoHeader setShowPopup={setShowPopup} masterFileDetails={masterFileDetails} />
+                        <FileInfoHeader setShowPopup={setShowPopup} masterFileDetails={masterFileDetails} fileDetails={null} />
                         <MainFileData setShowPopup={setShowPopup} masterFileDetails={masterFileDetails} />
                         <DefendantDataTable masterFileDetails={masterFileDetails} />
                     </>

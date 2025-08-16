@@ -35,8 +35,8 @@ export const ViewAllFiles = () => {
     const [personData, setPersonData] = React.useState(null);
     const { register, formState: { errors }, watch, setValue, getValues, } = useForm({ mode: "onTouched" });
 
-    Storage.session.remove("DashboardSelectedMasterFileID");
-    Storage.session.remove("DashboardSelectedPersonID");
+    // Storage.session.remove("DashboardSelectedMasterFileID");
+    // Storage.session.remove("DashboardSelectedPersonID");
 
     const $lang = useAppSelector((state) => state.locale.currentLocale);
     const $masterFileDetails = useAppSelector((state) => state.dashboard.masterFileDetails);
@@ -133,7 +133,7 @@ export const ViewAllFiles = () => {
 
                 <FileSearch />
 
-                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} />
+                <FileInfoHeader setShowPopup={setShowMainFilePopup} masterFileDetails={masterFileDetails} fileDetails={fileDetails} />
 
                 {fileDetails && (
                     <MainFileDefendantData
@@ -174,8 +174,9 @@ export const ViewAllFiles = () => {
                     </div>
                 }
                 {viewFilesFileID && footerActiveTab === "legalBonds" && (
-                    <div className='SelectFileTypePage'>
-                        <div className="sdg_page " style={{ padding: '10px 0px' }}>
+                    <div className='SelectFileTypePage _dashboardLegalBonds'>
+                        <div className="sdg_page">
+                            <h4>{translate('search.legalBonds')}</h4>
                             <LegalBonds register={register} errors={errors} watch={watch} setValue={setValue} getValues={getValues} returnFileResponseFn={(obj) => { }} isDashboard={true} />
                         </div>
                     </div>

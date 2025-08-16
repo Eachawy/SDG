@@ -75,7 +75,6 @@ const LegalBonds = (props) => {
     <div className="legalBonds">
 
       {/* legalBondsRowDiv */}
-      {!props.isDashboard && (
         <div className="row g-4 gy-4 mb-4">
           <DropDownComponent
             id="legalBondsList-id"
@@ -97,7 +96,6 @@ const LegalBonds = (props) => {
             </div>
           )}
         </div>
-      )}
 
       {((watch("legalBondsList")?.code === "CHQ" && showlegalBondPopup) || (rowDataType === 'CHQ')) &&
         <Cheque

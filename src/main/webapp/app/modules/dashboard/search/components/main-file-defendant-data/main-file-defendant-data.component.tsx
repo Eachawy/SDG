@@ -25,7 +25,7 @@ interface MainFileDefendantDataProps {
 }
 
 export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ setShowDefendantPopup, setShowMainFilePopup, fileData, masterFileDetails, personData }) => {
-    const [activeTab, setActiveTab] = useState("main");
+    const [activeTab, setActiveTab] = useState("defendant");
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [attachmentListRow, setAttachmentListRow] = React.useState<number | null>(null);
@@ -90,23 +90,28 @@ export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ se
         navigate("/create-file/select-file-type");
     }
 
+    const returnToMainFile = (fileDetails: any) => {
+        Storage.session.set("DashboardSelectedMasterFileID", fileDetails.id);
+        Storage.session.set("DashboardSelectedPersonID", null);
+        navigate("/dashoard/search-by-main-file");
+    }
+
     return (
         <div className='main-file-data mb-4'>
             <div className='mainFileHeader _mainDefendantHeader'>
                 <div className="tabs">
-                    <div
-                        className={activeTab === "main" && "active"}
-                        onClick={() => setActiveTab("main")}
-                    >
-                        {translate('search.mainFileData')}
-                    </div>
                     <div
                         className={activeTab === "defendant" && "active"}
                         onClick={() => setActiveTab("defendant")}
                     >
                         {translate('search.defendantData')}
                     </div>
-
+                    <div
+                        className={activeTab === "main" && "active"}
+                        onClick={() => setActiveTab("main")}
+                    >
+                        {translate('search.mainFileData')}
+                    </div>
                 </div>
 
                 <div className='menu' onClick={serviceList}>
@@ -119,6 +124,9 @@ export const MainFileDefendantData: React.FC<MainFileDefendantDataProps> = ({ se
                                 </span>
                                 <span onClick={() => createNewSubFile(masterFileDetails)}>
                                     {translate('search.addsubfile')}
+                                </span>
+                                <span onClick={() => returnToMainFile(masterFileDetails)}>
+                                    العودة للملف الرئيسي
                                 </span>
                                 {/* <span onClick={() => getMasterFileAttachmentsFn(masterFileDetails.id)}>
                                     {translate('search.attachments')}
