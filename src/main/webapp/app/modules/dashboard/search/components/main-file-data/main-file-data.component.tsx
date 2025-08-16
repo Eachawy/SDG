@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import $ from 'jquery';
-import { translate } from 'react-jhipster';
+import { useNavigate } from 'react-router-dom';
+import { translate ,Storage} from 'react-jhipster';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
 import { pushNotification } from 'app/shared/util/utils';
 
 export const MainFileData = ({ setShowPopup, masterFileDetails }) => {
-
+    const navigate = useNavigate();
     const [attachmentListRow, setAttachmentListRow] = React.useState<number | null>(null)
 
     const onEditMainFile = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -40,6 +41,17 @@ export const MainFileData = ({ setShowPopup, masterFileDetails }) => {
         }
     }
 
+    const createNewSubFile = (fileDetails: any) => {
+        const $masterFile = {
+            fileNumber: fileDetails.fileNumber,
+            id: fileDetails.id,
+        }
+        Storage.session.set("isCompany", fileDetails.company);
+        Storage.session.set("applicantName", { en: fileDetails.englishName, ar: fileDetails.arabicName });
+        Storage.session.set("masterFile", $masterFile);
+        navigate("/create-file/select-file-type");
+    }
+
     return (
         <>
             <div className='main-file-data'>
@@ -53,6 +65,9 @@ export const MainFileData = ({ setShowPopup, masterFileDetails }) => {
                         <div className="serviceActionList">
                             <span onClick={(e) => onEditMainFile(e)}>
                                 {translate('search.editMainFile')}
+                            </span>
+                            <span onClick={() => createNewSubFile(masterFileDetails)}>
+                                {translate('search.addsubfile')}
                             </span>
                             <span onClick={() => setAttachments(masterFileDetails)}>
                                 {translate('search.attachments')}

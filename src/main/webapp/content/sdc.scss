@@ -766,6 +766,18 @@
                 border-bottom: none;
               }
             }
+
+            .fileStatsColor_{
+              font-family: 'Cairo-Bold';
+              &.CLOSED {
+                color: #ED0000;
+              }
+
+              &.COMPLETED,
+              &.INCOMPLETE {
+                color: #1fb356;
+              }
+            }
           }
         }
       }
@@ -820,7 +832,8 @@
         border-radius: 6px;
         font: 12px / 18px "Cairo-Regular";
         padding: 4px 20px;
-        width: 103px;
+        width: fit-content;
+        unicode-bidi: plaintext;
         display: flex;
         justify-content: center;
         align-items: center;

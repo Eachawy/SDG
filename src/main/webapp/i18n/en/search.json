@@ -87,6 +87,8 @@
         "lawsuitType": "Lawsuit Type",
         "followUps": "Follow ups",
         "legalBonds": "Legal Bonds",
-        "JOD": "JOD"
+        "JOD": "JOD",
+        "closed": "Closed",
+        "active": "Active"
     }
 }

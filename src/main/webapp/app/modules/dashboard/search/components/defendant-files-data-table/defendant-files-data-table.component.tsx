@@ -8,7 +8,7 @@ import { translate,Storage } from 'react-jhipster';
 import { getFilesTableData, getMasterFileAttachments, handleResetMasterFileAttachments, handleResetMasterFileDetails } from 'app/modules/dashboard/dashboard.reducer';
 import { useAppSelector, useAppDispatch } from "app/config/store";
 import LoaderComponent from 'app/shared/components/loaderComponent/loaderComponent';
-import { FileTypes } from 'app/modules/shared/constants';
+import { FileStatues, FileTypes } from 'app/modules/shared/constants';
 import _ from 'lodash'
 import { pushNotification } from 'app/shared/util/utils';
 import AttachmentPopupComponent from 'app/shared/components/attachmentPopup.Component/attachmentPopup.Component';
@@ -111,7 +111,10 @@ export const DefendantFilesDataTable = ({ personData, masterFileDetails }) => {
     };
 
     const fileTypeTemplate = (rowData) => (
-        <span>{(_.find(FileTypes, (item) => item.code === rowData.fileType)).name[$lang] || ' '}</span>
+        <>
+            <span>{(_.find(FileTypes, (item) => item.code === rowData.fileType)).name[$lang] || ' '}</span>
+            <span className={`fileStatsColor_ ${rowData.fileStatus}`}>{" "}({rowData.fileStatus === 'CLOSED' ? translate('search.closed'): translate('search.active')})</span>
+        </>
     );
 
     const getMasterFileAttachmentsFn = (id) => {
