@@ -21,7 +21,7 @@ const MainDashboardPage = () => {
     }
 
     const followUpsFn = () => {
-
+    navigate('/dashoard/daily-Follow-Ups');
     }
 
     return (

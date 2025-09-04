@@ -1,0 +1,31 @@
+html[dir="rtl"] {
+    .p-paginator {
+
+        .p-paginator-first,
+        .p-paginator-prev,
+        .p-paginator-next,
+        .p-paginator-last {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+    }
+
+
+    .dailyFolloUpsPage {
+        .daily-follow-ups-grid-view {
+            .daily-follow-ups-grid-view-card {
+                .content {
+                    >div {
+                        >p.fileType {
+                            margin-left: 24px;
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

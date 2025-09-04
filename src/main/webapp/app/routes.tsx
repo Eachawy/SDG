@@ -20,6 +20,7 @@ import { SearchByDefendant } from "./modules/dashboard/search/search-by-defendan
 import { SearchByMainFileDefendant } from "./modules/dashboard/search/search-by-main-file-defendant/searchByMainFileDefendant.page";
 import { AllProfiles } from "./modules/dashboard/search/all-profiles/allProfiles.page";
 import { ViewAllFiles } from "./modules/dashboard/search/view-all-files/viewAllFiles.page";
+import DailyFollowUps from "./modules/dashboard/follow-ups/Follow-ups-dashboard/daily-follow-ups";
 
 
 
@@ -83,6 +84,15 @@ const AppRoutes = () => {
                 hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
               >
                 <ViewAllFiles />
+              </PrivateRoute>
+            } />
+
+            {/* DailyFollowUps */}
+            <Route path="daily-Follow-Ups" element={
+              <PrivateRoute
+                hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}
+              >
+                <DailyFollowUps />
               </PrivateRoute>
             } />
 
